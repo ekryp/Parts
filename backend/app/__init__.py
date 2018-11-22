@@ -105,6 +105,7 @@ from app.resources.partners import UploadCSV
 
 from app.resources.users import  Callback, Logout
 from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,ExperimentDetails
+from app.resources.infinera import GetSparePartAnalysis
 
 
 api.add_resource(Callback, '/token')
@@ -116,6 +117,7 @@ api.add_resource(SetProspectDone, '/set_prospects' ,endpoint='set_prospects')
 api.add_resource(UploadCSV, '/upload_csv' ,endpoint='upload_csv')
 api.add_resource(TriggerDag, '/trigger_dag' ,endpoint='trigger_dag')
 api.add_resource(ExperimentDetails, '/experiment_details' ,endpoint='experiment_details')
+api.add_resource(GetSparePartAnalysis,'/get_spare_part_analysis' ,endpoint='get_spare_part_analysis')
 
 app.register_blueprint(api_blueprint)
 

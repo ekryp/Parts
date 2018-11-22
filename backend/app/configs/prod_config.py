@@ -12,6 +12,8 @@ class Configuration(BaseConfig):
 	
     AIRFLOW_DB_URL = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/ekryp_challenge"
 
+    INFINERA_DB_URL = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/infinera"
+
     DRUID_HOST='http://10.138.1.14:8090/druid/indexer/v1/task'
     MYSQL_USER="root"
     MYSQL_HOST="35.199.174.191"
