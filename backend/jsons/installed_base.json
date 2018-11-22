@@ -1,0 +1,90 @@
+{
+  "type": "index_hadoop",
+  "spec": {
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec": {
+        "type": "static",
+        "paths": "/opt/ext_drive/services/ShellScripts/druid_extract/installed_base.tsv"
+      }
+    },
+    "dataSchema": {
+      "dataSource": "installed_base_new",
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "day",
+        "queryGranularity": "day",
+        "intervals": [
+          "2010-01-01/2020-01-01"
+        ]
+      },
+      "parser": {
+        "type": "hadoopyString",
+        "parseSpec": {
+          "format": "tsv",
+          "timestampSpec": {
+            "format": "yyyy-M-dd",
+            "column": "timestamp"
+          },
+          "columns": [
+            "timestamp",
+            "customer_asset_identifier",
+            "serial_number",
+            "warranty_end_date",
+            "service_end_date",
+            "service_start_date",
+            "service_provider_id",
+            "product_status_type",
+            "product_status_date",
+            "site_name",
+            "city",
+            "state",
+            "country",
+            "tzinfo",
+            "site_latitude",
+            "site_longitude",
+            "site_id_mapped",
+            "geo",
+            "company_name",
+            "company_id_mapped",
+            "product_category_id",
+            "product_category",
+            "product_type_id",
+            "product_type",
+            "product_cassette_id",
+            "product_cassette",
+            "product_lock_type_id",
+            "product_lock_type",
+            "product_cd80_id",
+            "product_cd80",
+            "service_provider_name",
+            "firmware_id",
+            "firmware_version_name",
+            "model_group_id",
+            "model_group_name",
+            "model_id",
+            "model_name",
+            "asset_middleware_name"
+          ],
+          "dimensionsSpec": {
+            "dimensions": []
+          }
+        }
+      },
+      "metricsSpec": [
+        {
+          "name": "count",
+          "type": "count"
+        }
+      ]
+    },
+    "tuningConfig": {
+      "type": "hadoop",
+      "partitionsSpec": {
+        "type": "hashed",
+        "targetPartitionSize": 5000000
+      },
+      "jobProperties": {}
+    }
+  }
+}

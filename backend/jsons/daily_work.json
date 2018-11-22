@@ -1,0 +1,60 @@
+{
+  "type": "index_hadoop",
+  "spec": {
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec": {
+        "type": "static",
+        "paths": "/opt/ext_drive/services/ShellScripts/druid_extract/daily_work.tsv"
+      }
+    },
+    "dataSchema": {
+      "dataSource": "daily_work",
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "day",
+        "queryGranularity": "day",
+        "intervals": [
+          "2010-01-01/2020-01-01"
+        ]
+      },
+      "parser": {
+        "type": "hadoopyString",
+        "parseSpec": {
+          "format": "tsv",
+          "timestampSpec": {
+            "format": "yyyy-M-dd",
+            "column": "timestamp"
+          },
+          "columns": [
+            "timestamp",
+            "customer_asset_identifier",
+            "daily_work"
+          ],
+          "dimensionsSpec": {
+            "dimensions": []
+          }
+        }
+      },
+      "metricsSpec": [
+        {
+          "name": "count",
+          "type": "count"
+        },
+        {
+          "type": "longSum",
+          "name": "daily_work_cumsum",
+          "fieldName": "daily_work"
+        }
+      ]
+    },
+    "tuningConfig": {
+      "type": "hadoop",
+      "partitionsSpec": {
+        "type": "hashed",
+        "targetPartitionSize": 5000000
+      },
+      "jobProperties": {}
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "type": "index_hadoop",
+  "spec": {
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec": {
+        "type": "static",
+        "paths": "/opt/ext_drive/services/ShellScripts/druid_extract/asset_life_event.tsv"
+      }
+    },
+    "dataSchema": {
+      "dataSource": "asset_life_event_new",
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "day",
+        "queryGranularity": "day",
+        "intervals": [
+          "2010-01-01/2020-01-01"
+        ]
+      },
+      "parser": {
+        "type": "hadoopyString",
+        "parseSpec": {
+          "format": "tsv",
+          "timestampSpec": {
+            "format": "yyyy-M-dd",
+            "column": "timestamp"
+          },
+          "columns": [
+            "timestamp",
+            "customer_asset_identifier",
+            "serial_number",
+            "life_event_code",
+            "event_date",
+            "life_event_value",
+            "life_event_description"
+          ],
+          "dimensionsSpec": {
+            "dimensions": []
+          }
+        }
+      },
+      "metricsSpec": [
+        {
+          "name": "count",
+          "type": "count"
+        }
+      ]
+    },
+    "tuningConfig": {
+      "type": "hadoop",
+      "partitionsSpec": {
+        "type": "hashed",
+        "targetPartitionSize": 5000000
+      },
+      "jobProperties": {}
+    }
+  }
+}
