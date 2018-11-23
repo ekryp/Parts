@@ -49,10 +49,9 @@ class PostSparePartAnalysis(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('analysis_name', required=True, location='form')
-        #self.reqparse.add_argument('analysis_time', required=True, location='form')
         self.reqparse.add_argument('analysis_type', required=True, location='form')
         self.reqparse.add_argument('replenish_time', required=True, location='form')
-        #self.reqparse.add_argument('file_names', required=True, location='form')
+        self.reqparse.add_argument('customer_name', required=True, location='form')
         self.reqparse.add_argument('user_email_id', required=True, location='form')
         super(PostSparePartAnalysis, self).__init__()
 
@@ -61,34 +60,60 @@ class PostSparePartAnalysis(Resource):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
         analysis_date = str(datetime.now())
-        for file in request.files.getlist('customer_dna_file'):
+        customer_dna_file = ''
+        sap_export_file = ''
+        try:
 
-            name, extension = os.path.splitext(file.filename)
+            for file in request.files.getlist('customer_dna_file'):
 
-            if extension.lower() == '.csv':
-                dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
-                full_path = os.path.abspath(dir_path)
-                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
-                csvs.save(file, folder=dest_folder)
+                name, extension = os.path.splitext(file.filename)
 
-            elif extension.lower() == '.xls' or extension == '.xlsx':
-                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
-                full_path = os.path.abspath(dir_path)
-                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
-                excel.save(file, folder=dest_folder)
+                if extension.lower() == '.csv':
+                    dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                    customer_dna_file = file.filename
+                    csvs.save(file, folder=dest_folder)
 
-        for file in request.files.getlist('sap_export_file'):
+                elif extension.lower() == '.xls' or extension == '.xlsx':
+                    dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                    customer_dna_file = file.filename
+                    excel.save(file, folder=dest_folder)
 
-            name, extension = os.path.splitext(file.filename)
+            for file in request.files.getlist('sap_export_file'):
 
-            if extension.lower() == '.csv':
-                dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
-                full_path = os.path.abspath(dir_path)
-                file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
-                csvs.save(file, folder=dest_folder)
+                name, extension = os.path.splitext(file.filename)
 
-            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
-                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
-                full_path = os.path.abspath(dir_path)
-                file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
-                excel.save(file, folder=dest_folder)
+                if extension.lower() == '.csv':
+                    dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
+                    sap_export_file = file.filename
+                    csvs.save(file, folder=dest_folder)
+
+                elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                    dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
+                    sap_export_file = file.filename
+                    excel.save(file, folder=dest_folder)
+
+            return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in File Uploading,Please try again",http_status_code=400)
+
+        def save_analysis_record_db():
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
+                    "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
+                    "sap_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
+                    "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
+                                                args['replenish_time'].replace(",", "|"),
+                                                args['user_email_id'], analysis_date,
+                                                customer_dna_file, sap_export_file,
+                                                args['customer_name'].replace(",", "|"))
+            engine.execute(query)
+
+        save_analysis_record_db()
