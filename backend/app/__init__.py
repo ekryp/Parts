@@ -37,20 +37,29 @@ printable = set(string.printable)
 from flask_uploads import configure_uploads
 app = Flask(__name__)
 #from app.resources.partners import csvs
-from flask_uploads import UploadSet, DATA
+from flask_uploads import UploadSet, DATA, DOCUMENTS, IMAGES
 csvs = UploadSet('csv', DATA)
-jsons = UploadSet('csv', DATA)
+jsons = UploadSet('json', DATA)
+excel = UploadSet('excel', DOCUMENTS)
+images = UploadSet('image', IMAGES)
+
 
 if platform.system() == 'Windows':
     app.config['UPLOADED_CSV_DEST'] = 'static\csvs'
-    app.config['UPLOADED_JSON_DEST'] = 'jsons'
-    app.config['UPLOADED_SQLS_DEST'] = 'sqls'
+    app.config['UPLOADED_JSON_DEST'] = 'jstatic\sons'
+    app.config['UPLOADED_SQLS_DEST'] = 'static\sqls'
+    app.config['UPLOADED_EXCEL_DEST'] = 'static\excel'
+    app.config['UPLOADED_IMAGE_DEST'] = 'static\image'
 else:
-    app.config['UPLOADED_CSV_DEST'] = 'static/csvs'
-    app.config['UPLOADED_JSON_DEST'] = 'jsons'
-    app.config['UPLOADED_SQLS_DEST'] = 'sqls'
+    app.config['UPLOADED_CSV_DEST'] = 'static/'
+    app.config['UPLOADED_JSON_DEST'] = 'static/'
+    app.config['UPLOADED_SQLS_DEST'] = 'static/'
+    app.config['UPLOADED_EXCEL_DEST'] = 'static/'
+    app.config['UPLOADED_IMAGE_DEST'] = 'static/'
 configure_uploads(app, csvs)
+configure_uploads(app, images)
 configure_uploads(app, jsons)
+configure_uploads(app, excel)
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 app.config.from_object(Configuration)
@@ -105,7 +114,7 @@ from app.resources.partners import UploadCSV
 
 from app.resources.users import  Callback, Logout
 from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,ExperimentDetails
-from app.resources.infinera import GetSparePartAnalysis
+from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis
 
 
 api.add_resource(Callback, '/token')
@@ -117,8 +126,8 @@ api.add_resource(SetProspectDone, '/set_prospects' ,endpoint='set_prospects')
 api.add_resource(UploadCSV, '/upload_csv' ,endpoint='upload_csv')
 api.add_resource(TriggerDag, '/trigger_dag' ,endpoint='trigger_dag')
 api.add_resource(ExperimentDetails, '/experiment_details' ,endpoint='experiment_details')
-api.add_resource(GetSparePartAnalysis,'/get_spare_part_analysis' ,endpoint='get_spare_part_analysis')
-
+api.add_resource(GetSparePartAnalysis, '/get_spare_part_analysis' ,endpoint='get_spare_part_analysis')
+api.add_resource(PostSparePartAnalysis, '/post_spare_part_analysis' ,endpoint='post_spare_part_analysis')
 app.register_blueprint(api_blueprint)
 
 api.init_app(app)

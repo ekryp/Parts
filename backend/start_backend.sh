@@ -1,10 +1,12 @@
 #!/usr/bin/bash
 
 # change directory to backend directory
-cd /home/attachedDisk/eKrypFeeder/backend
+cd /home/aashish/Parts/backend
 
 #activate virtualenv
 source env/bin/activate
+
+pip3.5 install -r requirements.txt
 
 #kill backend services if running
 kill $(ps -eaf | grep -i "python manage.py startserver" | grep -v "grep" | awk '{print $2}') &> /dev/null
@@ -15,7 +17,7 @@ then
 fi
 
 #start backend services
-nohup python manage.py startserver > backend.log&
+nohup python3.5 manage.py startserver > backend.log&
 
 #kill celery  if running
 kill $(ps -eaf | grep -i "celery -A app.tasks:celery worker --concurrency=1" | grep -v "grep" | awk '{print $2}') &> /dev/null
@@ -26,4 +28,4 @@ fi
 #start celery
 
 #sudo rabbitmq-server start
-celery -A app.tasks:celery worker --concurrency=1 > celery.log&
+#celery -A app.tasks:celery worker --concurrency=1 > celery.log&
