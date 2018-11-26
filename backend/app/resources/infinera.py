@@ -23,6 +23,7 @@ import time
 import urllib
 from app import app
 from app import csvs,excel
+from app.tasks import celery
 
 class GetSparePartAnalysis(Resource):
 
@@ -62,6 +63,18 @@ class PostSparePartAnalysis(Resource):
         analysis_date = str(datetime.now())
         customer_dna_file = ''
         sap_export_file = ''
+
+        def save_analysis_record_db():
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
+                    "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
+                    "sap_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
+                    "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
+                                                args['replenish_time'].replace(",", "|"),
+                                                args['user_email_id'], analysis_date,
+                                                customer_dna_file, sap_export_file,
+                                                args['customer_name'].replace(",", "|"))
+            engine.execute(query)
         try:
 
             for file in request.files.getlist('customer_dna_file'):
@@ -100,20 +113,13 @@ class PostSparePartAnalysis(Resource):
                     sap_export_file = file.filename
                     excel.save(file, folder=dest_folder)
 
+            save_analysis_record_db()
+            celery.send_task('app.tasks.dummy', [1, 1])
+
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
         except:
             return jsonify(msg="Error in File Uploading,Please try again",http_status_code=400)
 
-        def save_analysis_record_db():
-            engine = create_engine(Configuration.INFINERA_DB_URL)
-            query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
-                    "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
-                    "sap_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
-                    "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
-                                                args['replenish_time'].replace(",", "|"),
-                                                args['user_email_id'], analysis_date,
-                                                customer_dna_file, sap_export_file,
-                                                args['customer_name'].replace(",", "|"))
-            engine.execute(query)
 
-        save_analysis_record_db()
+
+

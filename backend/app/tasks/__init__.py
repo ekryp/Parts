@@ -570,3 +570,10 @@ def folder_structure_creation(ekryp_partner_id):
 
     create_user_folder(ekryp_partner_id)
     send_email('Test email')
+
+@celery.task
+def dummy(a, b):
+    print("task1 dummy called")
+    import time
+    time.sleep(100)
+    print("task1 dummy done")
