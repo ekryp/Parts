@@ -29,10 +29,8 @@ export default {
   background-color: #293f55;
 }
 .content {
-  /* line-height: 300px; */
   padding-top: 20%;
   text-align: center;
   vertical-align: middle;
-  color: white;
 }
 </style>

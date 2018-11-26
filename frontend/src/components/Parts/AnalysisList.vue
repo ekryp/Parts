@@ -1,8 +1,9 @@
 <template>
      <div>
+     <headernav msg="Analysis Dashboard"/>
      <side-nav menu="analysis" />
-     <div class="custom-container" style="padding:3%">
-     <div class="row" style="color: green">
+     <div class="custom-container" style="padding:3%; paddingTop:7%">
+     <div class="row">
          <div class="col-lg-2">
              <span class="text-top">Total Analysis Request</span><br/>
         </div>
@@ -22,7 +23,7 @@
              <span class="text-top">Requests To Be Submitted</span><br/>
         </div>
     </div>
-    <div class="row" style="marginTop:2%">
+    <div class="row" style="marginTop:0%">
         <div class="col-lg-2">
              <span class="count">100</span>
         </div>
@@ -42,10 +43,10 @@
              <span class="count">100</span>
         </div>
     </div>
-    <div class="float-right" style="marginTop:3%">
+    <div class="float-right" style="marginTop:1%">
         <button type='button' class='btn btn-success' @click="createAnalysis" >Create Analysis</button>
     </div>
-    <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:10%">
+    <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:7%">
     <div class="row" >
         <div class="col-lg-4">
             <input type='text' class='form-control' placeholder='Search by Analysis Name'>
@@ -56,7 +57,7 @@
             <multiselect placeholder='Filter By Status'  :options='options' label='name' :multiple='false' :taggable='true'></multiselect>
         </div>
        </div>
-       <div style="marginTop:3%">
+       <div style="marginTop:0%">
        <table class="table table-borderless">
   <thead>
     <tr style="color:green">
@@ -107,6 +108,7 @@
 
 <script>
 import router from "../../router/";
+import headernav from "@/components/header/header";
 import SideNav from "@/components/sidenav/sidenav";
 import Multiselect from "vue-multiselect";
 
@@ -114,36 +116,59 @@ export default {
   name: "PartsAnalysisList",
   components: {
     SideNav,
-    Multiselect
+    Multiselect,
+    headernav
   },
   data() {
     console.log("AnalysisList");
     return {
       options: [
-        { name: "Vue.js", code: "vu" },
-        { name: "Javascript", code: "js" },
-        { name: "Open Source", code: "os" }
+        { name: "Total Analysis Request" },
+        { name: "Completed Request" },
+        { name: "Completed Request with Error" },
+        { name: "Completed Request Successfully" },
+        { name: "Requests In Progress" },
+        { name: "Requests To Be Submitted" }
       ]
     };
   },
   methods: {
     createAnalysis() {
-      router.push("/parts/analysis");
+      router.push("/parts/analysis/create");
     }
   }
 };
 </script>
 <style>
-.content {
-  max-width: 500px;
-  margin: auto;
-  background: white;
-  padding: 10px;
-}
 .text-top {
-  font-size: 1vw;
+  font-size: 13px;
+  font-weight: 400;
 }
 .count {
-  font-size: 2vw;
+  font-size: 40px;
+  font-weight: 600;
+}
+.multiselect__tags {
+  min-height: 40px;
+  display: block;
+  padding: 8px 40px 0 8px;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  font-size: 12px !important;
+}
+.multiselect {
+  box-sizing: content-box;
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  color: #35495e;
+  font-size: 10px important2;
+}
+.multiselect--active {
+  font-size: 12px !important;
+  z-index: 1;
 }
 </style>

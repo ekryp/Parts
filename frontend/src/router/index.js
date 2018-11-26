@@ -30,11 +30,11 @@ export default new Router({
       name: 'Dashboard',
       component: Dashboard
     }, {
-      path: '/parts/analysis',
+      path: '/parts/analysis/create',
       name: 'PartsAnalysis',
       component: PartsAnalysis
     }, {
-      path: '/parts/analysis-list',
+      path: '/parts/analysis/dashboard',
       name: 'PartsAnalysisList',
       component: PartsAnalysisList
     }

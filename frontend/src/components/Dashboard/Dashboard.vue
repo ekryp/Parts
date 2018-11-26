@@ -1,7 +1,8 @@
 <template>
   <div>
+    <headernav msg="Dashboard"/>
     <side-nav />
-    <div class="custom-container">
+    <div class="custom-container" style="paddingTop: 2%">
       <div class="container">
         <div class="row-one">
           <div class="row">
@@ -80,10 +81,13 @@
 
 <script>
 import SideNav from "@/components/sidenav/sidenav";
+import headernav from "@/components/header/header";
+
 export default {
   name: "Dashboard",
   components: {
-    SideNav
+    SideNav,
+    headernav
   },
   mounted() {
     this.chartone();
