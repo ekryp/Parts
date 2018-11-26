@@ -11,7 +11,7 @@ from app import app
 from app import csvs
 from app.tasks import celery
 from app.utils.utils import get_ekryp_partner_id_from_token
-from app.tasks import add_prospect,update_prospect_step
+
 
 
 
