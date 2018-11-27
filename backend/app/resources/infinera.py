@@ -23,7 +23,7 @@ import time
 import urllib
 from app import app
 from app import csvs,excel
-from app.tasks import celery #, derive_table_creation
+from app.tasks import celery, add_prospect,update_prospect_step #, derive_table_creation
 
 class GetSparePartAnalysis(Resource):
 
@@ -114,6 +114,9 @@ class PostSparePartAnalysis(Resource):
                     excel.save(file, folder=dest_folder)
 
             save_analysis_record_db()
+            prospect_id = add_prospect(args['user_email_id'])
+            print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'],prospect_id ))
+            update_prospect_step(prospect_id, 1, analysis_date)
             dna_file = os.path.join(full_path, customer_dna_file)
             sap_file = os.path.join(full_path, sap_export_file)
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path])

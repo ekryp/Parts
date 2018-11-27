@@ -161,6 +161,29 @@ def validate_depot(pon):
         pon.loc[pon[col_name].str.lower().isin(invalid_list), 'Is Valid' + ' ' + str(col_name)] = False
     return pon
 
+def add_prospect(email_id):
+    engine = create_engine(Configuration.INFINERA_DB_URL)
+    selectquery = "select prospects_id FROM prospect_details where prospects_email='{0}'".format(email_id)
+    result = engine.execute(selectquery).fetchone()
+    if result is not None:
+        return result[0]
+    else:
+        query = "insert into prospect_details (prospects_email) values('{0}')".format(email_id)
+        engine.execute(query)
+        result = engine.execute(selectquery).fetchone()
+        return result[0]
+
+
+def update_prospect_step(prospects_id, step_id, analysis_date):
+    engine = create_engine(Configuration.INFINERA_DB_URL)
+    try:
+        query = "insert into prospect_status (prospects_id,prospects_step,analysis_request_time) values({0},{1},'{2}')".format(prospects_id,
+                                                                                                 step_id, analysis_date)
+        engine.execute(query)
+    except:
+        print("Failed to update status for prospects_id {0}".format(prospects_id))
+
+
 @celery.task
 def derive_table_creation(dna_file, sap_file, data_path):
     print(dna_file, sap_file)
