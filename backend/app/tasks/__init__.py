@@ -177,9 +177,21 @@ def add_prospect(email_id):
 def update_prospect_step(prospects_id, step_id, analysis_date):
     engine = create_engine(Configuration.INFINERA_DB_URL)
     try:
-        query = "insert into prospect_status (prospects_id,prospects_step,analysis_request_time) values({0},{1},'{2}')".format(prospects_id,
+        selectquery = "select * FROM prospect_status where analysis_request_time='{0}'" \
+                      "and prospects_id={1}".format(analysis_date, prospects_id)
+        result = engine.execute(selectquery).fetchone()
+        if result is None:
+            query = "insert into prospect_status (prospects_id,prospects_step,analysis_request_time) values({0},{1},'{2}')".format(prospects_id,
                                                                                                  step_id, analysis_date)
-        engine.execute(query)
+            print(query)
+            engine.execute(query)
+
+        else:
+            query = "update prospect_status set prospects_step = {0} where prospects_id = {1}" \
+                    " and analysis_request_time='{2}'".format(step_id, prospects_id, analysis_date)
+            print(query)
+            engine.execute(query)
+
     except:
         print("Failed to update status for prospects_id {0}".format(prospects_id))
 
