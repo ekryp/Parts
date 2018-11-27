@@ -5,7 +5,7 @@ export default {
     auth0: new auth0.WebAuth({
         domain: 'ekryp.auth0.com',
         clientID: 'NJh7jJsES1ymojwuBodeZJCzT867UNiu',
-        redirectUri: 'http://localhost:2323/callback',
+        redirectUri: 'http://35.230.112.86/callback',
         responseType: 'token id_token',
         scope: 'openid'
     }),
@@ -23,7 +23,7 @@ export default {
         })
     },
     setSession(authResult) {
-        console.log('authResult ------>',authResult)
+        console.log('authResult ------>', authResult)
         let expiresAt = JSON.stringify(
             authResult.expiresIn * 1000 + new Date().getTime()
         )
