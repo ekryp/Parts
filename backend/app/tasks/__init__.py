@@ -196,7 +196,7 @@ def derive_table_creation(dna_file, sap_file, data_path):
     get_misnomer_sql = "SELECT mp.misnomer_pon_name, pt.part_name FROM infinera.`Misnomer PON Conversion` mp, infinera.`parts` pt where mp.correct_part_id = pt.part_id ;"
     get_standard_cost = "SELECT pt.part_name, pt.material_number FROM infinera.`part cost ID` pid right join infinera.parts pt on pt.part_id =pid.part_id where part_name != 'null'"
     get_node = "SELECT * FROM infinera.node where end_customer_node_belongs = 'Bestel' ;"
-    input_db = pd.read_csv(Configuration.Bestal_file_location, sep=',')
+    input_db = pd.read_csv(dna_file, sep=',')
 
     # to_sql_customer_dna_record('customer_dna_record', input_db)
 
@@ -226,7 +226,7 @@ def derive_table_creation(dna_file, sap_file, data_path):
     get_depot_sql = "SELECT depot_name, depot_id FROM infinera.depot;"
     depot = read_data(get_depot_sql, connection)
 
-    sap_inventory = sap_inventory_data = pd.read_excel(Configuration.sap_export, sheet_name='Sheet1')
+    sap_inventory = sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
     print('data fetch complete')
 
     # clean PONs, part# and installed equipments
