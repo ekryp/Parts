@@ -79,8 +79,6 @@ class GetstepsforSpecificRequest(Resource):
 
     def get(self):
         args = self.reqparse.parse_args()
-        import pdb
-        pdb.set_trace()
         request_id = args['request_id']
         query = "SELECT  *  FROM prospect_details as a " \
                 "right join prospect_status as b " \
