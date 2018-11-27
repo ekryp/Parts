@@ -50,8 +50,7 @@ class GetSparePartAnalysis(Resource):
 class GetstepsAllUsers(Resource):
 
     def get(self):
-        engine = create_engine(Configuration.INFINERA_DB_URL)
-        query = "SELECT  analysis_request_id,prospects_email,step_name,d.analysis_request_time FROM prospect_details as a " \
+        query = "SELECT  *  FROM prospect_details as a " \
                 "right join prospect_status as b " \
                 "on a.prospects_id = b.prospects_id " \
                 "right join prospect_steps as c " \
@@ -65,6 +64,8 @@ class GetstepsAllUsers(Resource):
             query=query,
             db_connection_string=Configuration.INFINERA_DB_URL)
 
+        result = result.loc[:, ~result.columns.duplicated()]
+        #Removes duplicate column names not column values
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
