@@ -24,6 +24,7 @@ import urllib
 from app import app
 from app import csvs,excel
 from app.tasks import celery, add_prospect,update_prospect_step #, derive_table_creation
+from app.utils.utils import get_df_from_sql_query
 
 class GetSparePartAnalysis(Resource):
 
@@ -44,6 +45,29 @@ class GetSparePartAnalysis(Resource):
             "replenish_times": replenish_times
         }
         return response
+
+
+class GetstepsAllUsers(Resource):
+
+    def get(self):
+        engine = create_engine(Configuration.INFINERA_DB_URL)
+        query = "SELECT  analysis_request_id,prospects_email,step_name,d.analysis_request_time FROM prospect_details as a " \
+                "right join prospect_status as b " \
+                "on a.prospects_id = b.prospects_id " \
+                "right join prospect_steps as c " \
+                "on c.step_id = b.prospects_step " \
+                "right join analysis_request as d on " \
+                "d.analysis_request_time = b.analysis_request_time " \
+                "where prospects_email is NOT NULL order by prospects_email"
+
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
 
 class PostSparePartAnalysis(Resource):
 
