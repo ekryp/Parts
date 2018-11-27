@@ -175,9 +175,11 @@ class PostSparePartAnalysis(Resource):
             update_prospect_step(prospect_id, 1, analysis_date)
             update_prospect_step(prospect_id, 2, analysis_date)
             update_prospect_step(prospect_id, 3, analysis_date)
+            update_prospect_step(prospect_id, 4, analysis_date)
             dna_file = os.path.join(full_path, customer_dna_file)
             sap_file = os.path.join(full_path, sap_export_file)
-            celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path])
+            celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path, prospect_id,
+                                                                 analysis_date])
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
         except:

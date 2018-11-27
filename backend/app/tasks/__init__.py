@@ -185,7 +185,7 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, data_path):
+def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_date):
     print(dna_file, sap_file)
     print('fetching data from db...')
     ## data required
@@ -309,6 +309,7 @@ def derive_table_creation(dna_file, sap_file, data_path):
     Get_Fru = pd.DataFrame(
         Valid_values.groupby(['Product Ordering Name', 'node_depot_belongs', 'Source'])['node_depot_belongs'].count())
     print('BOM calculation complete')
+    update_prospect_step(prospect_id, 5, analysis_date)
     Get_Fru.to_csv(Configuration.fruc_file_location, index=True)
     Get_Fru = pd.read_csv(Configuration.fruc_file_location)
     Get_Fru = Get_Fru.rename(columns={'node_depot_belongs.1': 'count'})
@@ -505,6 +506,15 @@ def derive_table_creation(dna_file, sap_file, data_path):
     output.to_csv(Configuration.final_output)
 
     to_sql_summarytable('summary_output', output)
+    update_prospect_step(prospect_id, 6, analysis_date)
+
+    def set_request_status_complete(analysis_date):
+        engine = create_engine(Configuration.INFINERA_DB_URL)
+        query = "update analysis_request set requestStatus='completed' " \
+                "where analysis_request_time = '{0}'".format(analysis_date)
+        engine.execute(query)
+    set_request_status_complete(analysis_date)
+
 
 
 
