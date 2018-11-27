@@ -23,7 +23,8 @@ import time
 import urllib
 from app import app
 from app import csvs,excel
-from app.tasks import celery #, derive_table_creation
+from app.tasks import celery, add_prospect,update_prospect_step #, derive_table_creation
+from app.utils.utils import get_df_from_sql_query
 
 class GetSparePartAnalysis(Resource):
 
@@ -44,6 +45,61 @@ class GetSparePartAnalysis(Resource):
             "replenish_times": replenish_times
         }
         return response
+
+
+class GetstepsAllUsers(Resource):
+
+    def get(self):
+        query = "SELECT  *  FROM prospect_details as a " \
+                "right join prospect_status as b " \
+                "on a.prospects_id = b.prospects_id " \
+                "right join prospect_steps as c " \
+                "on c.step_id = b.prospects_step " \
+                "right join analysis_request as d on " \
+                "d.analysis_request_time = b.analysis_request_time " \
+                "where prospects_email is NOT NULL order by prospects_email"
+
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        result = result.loc[:, ~result.columns.duplicated()]
+        #Removes duplicate column names not column values
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetstepsforSpecificRequest(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=False, help='id', location='args')
+        super(GetstepsforSpecificRequest, self).__init__()
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        request_id = args['request_id']
+        query = "SELECT  *  FROM prospect_details as a " \
+                "right join prospect_status as b " \
+                "on a.prospects_id = b.prospects_id " \
+                "right join prospect_steps as c " \
+                "on c.step_id = b.prospects_step " \
+                "right join analysis_request as d on " \
+                "d.analysis_request_time = b.analysis_request_time " \
+                "where prospects_email is NOT NULL and analysis_request_id = {0} " \
+                "order by prospects_email".format(request_id)
+
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        result = result.loc[:, ~result.columns.duplicated()]
+        #Removes duplicate column names not column values
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
 
 class PostSparePartAnalysis(Resource):
 
@@ -114,6 +170,11 @@ class PostSparePartAnalysis(Resource):
                     excel.save(file, folder=dest_folder)
 
             save_analysis_record_db()
+            prospect_id = add_prospect(args['user_email_id'])
+            print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'],prospect_id ))
+            update_prospect_step(prospect_id, 1, analysis_date)
+            update_prospect_step(prospect_id, 2, analysis_date)
+            update_prospect_step(prospect_id, 3, analysis_date)
             dna_file = os.path.join(full_path, customer_dna_file)
             sap_file = os.path.join(full_path, sap_export_file)
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path])

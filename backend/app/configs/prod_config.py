@@ -36,44 +36,46 @@ class Configuration(BaseConfig):
     AUTH0_CLIENT_SECRET_KEY = "PSuFfYPt6tK2ltj2sYiatgL_aSkzOEWOZrJJGUZ6X9w74xAelDTtCnrpWIzYJHPO"
     AUTH0_API_AUDIENCE = "https://prod-services/api/v1/"
 
+    DEBUG = True
     ECLIPSE_DATA_DB_URI = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/infinera"
-    BASE_DIR = r'/Users/anup/eKryp/Parts/backend/static'
+    BASE_DIR = r'/Users/anup/eKryp/infinera/Parts-Analysis/data'
 
+    net_depot = os.path.join(BASE_DIR, 'net_depot.csv')
+    DNA_BOM = os.path.join(BASE_DIR, 'DNA_BOM_table.csv')
+    MTBF_BOM = os.path.join(BASE_DIR, 'MTBF_BOM.csv.csv')
+    gross_quantity_bom = os.path.join(BASE_DIR, 'gross_quantity_bom.csv')
+    summary_output = os.path.join(BASE_DIR, 'summaryoutput.csv')
+    bom_table = os.path.join(BASE_DIR, 'bomcal.csv')
+    mtbf_bom_table = os.path.join(BASE_DIR, 'mtbfbom.csv')
+    depot_master_file_location = os.path.join(BASE_DIR, '5-Depot Master.xlsx')
     sap_export_file_location = os.path.join(BASE_DIR, '3-SAPexport.XLSX')
     sap_export = os.path.join(BASE_DIR, '3-SAPexport.XLSX')
     spms_reference_file_location = os.path.join(BASE_DIR, '4-SPMS_Reference_Data.xlsx')
     standard_cost_file_location = os.path.join(BASE_DIR, '1-Standard Cost.xlsx')
     classic_pon_file_location = os.path.join(BASE_DIR, '2-Substitution Matrix.xlsx')
     substitution_pon_file_location = os.path.join(BASE_DIR, '2-Substitution Matrix.xlsx')
-    #shared_depot_file_location = os.path.join(BASE_DIR, 'shared.csv')
+    shared_depot_file_location = os.path.join(BASE_DIR, 'shared.csv')
+    gross_quantity_bom_depot_file_location = os.path.join(BASE_DIR, 'gross_quantity_bom.csv')
+    gross_quantity_mtbf_bom_depot_file_location = os.path.join(BASE_DIR, 'gross_quantity_mtbf_bom.csv')
     gross_depot_file_location = os.path.join(BASE_DIR, 'grossdepot.csv')
-    fruc_file_location = 'fruc.csv'
-    bom_table = 'bom_table.csv'
-    mtbf_bom_table = 'mtbf_bom_table.csv'
-    DNA_BOM = 'DNA_BOM.csv'
-    MTBF_BOM = 'MTBF_BOM.csv'
-    summary_output = 'summary_output.csv'
-    shared_depot_file_location = "shared_depot_file_location.csv"
-    gross_quantity_bom_depot_file_location = "gross_quantity_bom_depot_file_location.csv"
-    gross_quantity_mtbf_bom_depot_file_location = 'gross_quantity_mtbf_bom_depot_file_location.csv'
-    net_depot = "net_depot.csv"
-    final_output ="final_output.csv"
-    Bestal_file_location = os.path.join(BASE_DIR, 'Bestel_EqptMngr_FlatFile_1.txt')
+    fruc_file_location = os.path.join(BASE_DIR, 'fruc.csv')
+    Bestal_file_location = os.path.join(BASE_DIR, 'Timbuktu - Clean.csv')
     end_customer_file_location = os.path.join(BASE_DIR, '4-SPMS_Reference_Data.xlsx')
+    final_output = os.path.join(BASE_DIR, 'output.csv')
 
     all_parts_array = [
-                  {"fname": standard_cost_file_location, "sheet": "STD COST ",
-                     "part_name_column": "Material Desciption = Part Name"},
-                    {"fname": classic_pon_file_location, "sheet": "Substitution Matrix",
-                     "part_name_column": "ClassicPON"},
-                    {"fname": substitution_pon_file_location, "sheet": "Substitution Matrix",
-                     "part_name_column": "SubstitutionPON"},
-                    {"fname": spms_reference_file_location, "sheet": "Misnomer PONs",
-                     "part_name_column": "Correct PON"},
-                    {"fname": spms_reference_file_location, "sheet": "Unspared PONs",
-                    "part_name_column": "Unspared PONs"}
+        {"fname": standard_cost_file_location, "sheet": "STD COST ",
+         "part_name_column": "Material Desciption = Part Name"},
+        {"fname": classic_pon_file_location, "sheet": "Substitution Matrix",
+         "part_name_column": "ClassicPON"},
+        {"fname": substitution_pon_file_location, "sheet": "Substitution Matrix",
+         "part_name_column": "SubstitutionPON"},
+        {"fname": spms_reference_file_location, "sheet": "Misnomer PONs",
+         "part_name_column": "Correct PON"},
+        {"fname": spms_reference_file_location, "sheet": "Unspared PONs",
+         "part_name_column": "Unspared PONs"}
 
-                    ]
+    ]
 
     find_part_family_array = [
         {"fname": spms_reference_file_location, "sheet": "Rel Class To Pon",
@@ -104,3 +106,17 @@ class Configuration(BaseConfig):
          "keep_column": ['ClassicPON', 'SubstitutionPON']}
     ]
 
+    part_cost = [
+        {"fname": standard_cost_file_location, "sheet": "STD COST "
+         }
+    ]
+
+    find_misnomer_pon = [
+        {"fname": spms_reference_file_location, "sheet": "Misnomer PONs"}
+
+    ]
+
+    site_node = [
+        {"fname": spms_reference_file_location, "sheet": "Node to Depot"}
+
+    ]
