@@ -122,9 +122,47 @@ class GetSummaryforSpecificRequest(Resource):
             query=query,
             db_connection_string=Configuration.INFINERA_DB_URL)
 
+        result.rename(columns={
+            "High Spares?": "High_Spares",
+            "extd std cost": "extd_std_cost",
+            "gross table count": "gross_table_count",
+            "net depot count": "net_depot_count",
+            "net extd std cost": "net_extd_std_cost",
+        }, inplace=True
+        )
+
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
+class GetDashboardRequestCount(Resource):
+
+    def get(self):
+
+        def get_respective_counts():
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+
+            total_request_query = "select count(*) from analysis_request"
+            total_request = engine.execute(total_request_query).fetchone()[0]
+            incomplete_request_query = "select count(*) from analysis_request where requestStatus = 'Processing'"
+            incomplete_request = engine.execute(incomplete_request_query).fetchone()[0]
+            complete_request_query = "select count(*) from analysis_request where requestStatus = 'Completed'"
+            complete_request = engine.execute(complete_request_query).fetchone()[0]
+            failed_request = 0
+            saved_request = 0
+            complete_request_succesfully = complete_request
+            return total_request,incomplete_request, complete_request, failed_request, saved_request, complete_request_succesfully
+
+        total_request, incomplete_request, complete_request, failed_request, saved_request, complete_request_succesfully = get_respective_counts()
+
+        response = {
+            'total_request': total_request,
+            'incomplete_request': incomplete_request,
+            'complete_request': complete_request,
+            'failed_request': failed_request,
+            'saved_request': saved_request,
+            'complete_request_succesfully': complete_request_succesfully
+        }
+        return response
 
 
 class PostSparePartAnalysis(Resource):
