@@ -112,7 +112,8 @@ class GetSummaryforSpecificRequest(Resource):
         request_id = args['request_id']
         query = "select PON,material_number,Qty, standard_cost,`gross table count`,`extd std cost`," \
                 "`net depot count`,`net extd std cost`,`High Spares?`,a.user_email_id," \
-                "a.analysis_request_time,analysis_request_id from summary_output as a " \
+                "a.analysis_request_time,analysis_request_id,analysis_name,customer_name" \
+                " from summary_output as a " \
                 "right join analysis_request as b on " \
                 "a.analysis_request_time = b.analysis_request_time " \
                 "and a.user_email_id = b.user_email_id where b.requestStatus='Completed' " \
