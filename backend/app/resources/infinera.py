@@ -23,7 +23,7 @@ import time
 import urllib
 from app import app
 from app import csvs,excel
-from app.tasks import celery, add_prospect,update_prospect_step #, derive_table_creation
+from app.tasks import celery, add_prospect, update_prospect_step #, derive_table_creation
 from app.utils.utils import get_df_from_sql_query
 
 class GetSparePartAnalysis(Resource):
@@ -178,8 +178,9 @@ class PostSparePartAnalysis(Resource):
             update_prospect_step(prospect_id, 4, analysis_date)
             dna_file = os.path.join(full_path, customer_dna_file)
             sap_file = os.path.join(full_path, sap_export_file)
+            #derive_table_creation(dna_file, sap_file, full_path, prospect_id, analysis_date, args['user_email_id'])
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path, prospect_id,
-                                                                 analysis_date])
+                                                                 analysis_date, args['user_email_id']])
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
         except:

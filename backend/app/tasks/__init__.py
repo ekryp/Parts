@@ -134,16 +134,21 @@ def to_sql_customer_dna_record(table_name, df):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_summarytable(table_name, df):
+def to_sql_summarytable(table_name, df, analysis_date, user_email_id):
     engine = Configuration.ECLIPSE_DATA_DB_URI
     df['cust_id'] = 7
     df['summary_table'] = 1
+    df['user_email_id'] = user_email_id
+    df['analysis_request_time'] = analysis_date
     df.rename(columns={
         'material_number_x' : 'material_number',
         'standard_cost_x' : 'standard_cost'
     }, inplace=True
     )
-    keep_col = ['cust_id', 'summary_table', 'PON', 'material_number', 'Qty','standard_cost','gross table count','extd std cost','High Spares?','net depot count','net extd std cost']
+    keep_col = ['cust_id', 'summary_table', 'PON', 'material_number', 'Qty',
+                'standard_cost', 'gross table count', 'extd std cost',
+                'High Spares?', 'net depot count', 'net extd std cost',
+                'user_email_id', 'analysis_request_time']
     df = df[keep_col]
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
@@ -197,7 +202,7 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_date):
+def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_date, user_email_id):
     print(dna_file, sap_file)
     print('fetching data from db...')
     ## data required
@@ -516,8 +521,7 @@ def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_d
         ['PON', 'material_number', 'Qty', 'standard_cost_x', 'gross table count', 'extd std cost', 'High Spares?',
          'net depot count', 'net extd std cost']]
     output.to_csv(Configuration.final_output)
-
-    to_sql_summarytable('summary_output', output)
+    to_sql_summarytable('summary_output', output, analysis_date, user_email_id)
     update_prospect_step(prospect_id, 6, analysis_date)
 
     def set_request_status_complete(analysis_date):
