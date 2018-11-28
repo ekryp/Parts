@@ -599,7 +599,7 @@ export default {
         this.replensihTime !== ""
       ) {
         if (this.dnafile !== "") {
-          if (this.sapFile !== "") {
+          if (this.sapfile !== "") {
             console.log("post data --------->", data);
             this.post_spare_part_analysis(data).then(() => {
               router.push("/parts/analysis/dashboard");
