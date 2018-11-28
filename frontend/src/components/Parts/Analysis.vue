@@ -432,13 +432,20 @@
                       @click="cancel()"
                     >cancel</button>
                     <button
-                      v-if="requestId !== ''"
+                      v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed'"
                       type="button"
                       class="btn btn-danger"
                       @click="cancel()"
                       disabled
                     >cancel</button>
+                    <button
+                      v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
+                      type="button"
+                      class="btn btn-danger"
+                      @click="cancel()"
+                    >cancel</button>
                   </div>
+
                   <div class="col-lg-3">
                     <button
                       v-if="requestId === ''"
@@ -447,12 +454,19 @@
                       @click="formSubmit()"
                     >Submit For Analysis</button>
                     <button
-                      v-if="requestId !== ''"
+                      v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed'"
                       type="button"
                       class="btn btn-success"
                       @click="formSubmit()"
                       disabled
                     >Processing</button>
+                    <button
+                      v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
+                      type="button"
+                      class="btn btn-success"
+                      @click="formSubmit()"
+                      disabled
+                    >Completed</button>
                   </div>
                 </div>
               </div>
@@ -580,6 +594,9 @@ export default {
         alert("error");
       }
     },
+    cancel() {
+      // router.push("/parts/anlaysis/dashboard");
+    },
     formSubmit() {
       let data = {
         dnafileName: this.dnafileName,
@@ -602,7 +619,7 @@ export default {
           if (this.sapfile !== "") {
             console.log("post data --------->", data);
             this.post_spare_part_analysis(data).then(() => {
-              router.push("/parts/analysis/dashboard");
+              router.push("parts/analysis/dashboard");
             });
           } else {
             alert("Please add your SAP File");
