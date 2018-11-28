@@ -6,17 +6,38 @@
       <div class="row">
         <div class="col-lg-4">
           <div class="form-group">
-            <input type="email" class="form-control" placeholder="Analysis Name" disabled>
+            <label>Analysis Name</label>
+            <input
+              type="email"
+              v-model="partsAnalysisSummaryReslut[0].analysis_name"
+              class="form-control"
+              placeholder="Analysis Name"
+              disabled
+            >
           </div>
         </div>
         <div class="col-lg-4">
           <div class="form-group">
-            <input type="email" class="form-control" placeholder="Customer Name" disabled>
+            <label>Customer Name</label>
+            <input
+              type="email"
+              class="form-control"
+              v-model="partsAnalysisSummaryReslut[0].customer_name"
+              placeholder="Customer Name"
+              disabled
+            >
           </div>
         </div>
         <div class="col-lg-4">
           <div class="form-group">
-            <input type="email" class="form-control" placeholder="Analysis Id" disabled>
+            <label>Analysis ID</label>
+            <input
+              type="email"
+              class="form-control"
+              v-model="partsAnalysisSummaryReslut[0].analysis_request_id"
+              placeholder="Analysis Id"
+              disabled
+            >
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <div v-if="status.success">
-    <headernav msg="Spare Part Analaysis"/>
+    <headernav msg="Spare Part Analysis"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="paddingTop:0%">
       <div class="container">
@@ -592,8 +592,27 @@ export default {
         dnafile: this.dnafile,
         sapfile: this.sapfile
       };
-      console.log("post data --------->", data);
-      this.post_spare_part_analysis(data);
+      if (
+        this.analyisisName !== "" &&
+        this.customerNames !== "" &&
+        this.analysisType !== "" &&
+        this.replensihTime !== ""
+      ) {
+        if (this.dnafile !== "") {
+          if (this.sapFile !== "") {
+            console.log("post data --------->", data);
+            this.post_spare_part_analysis(data).then(() => {
+              router.push("/parts/analysis/dashboard");
+            });
+          } else {
+            alert("Please add your SAP File");
+          }
+        } else {
+          alert("Please add your DNA File");
+        }
+      } else {
+        alert("Please fill the Form to submit");
+      }
     }
   }
 };
