@@ -27,7 +27,7 @@ export default {
     },
     getUserInfo(authResult) {
         console.log('authResult ----->', authResult.idTokenPayload.sub)
-        fetch('https://ekryp.auth0.com/api/v2/users/google-oauth2|105112464656354571923', {
+        fetch('https://ekryp.auth0.com/api/v2/users/' + authResult.idTokenPayload.sub, {
             headers: {
                 Authorization: "Bearer " + authResult.idToken
             }
