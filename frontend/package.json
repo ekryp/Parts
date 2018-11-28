@@ -16,6 +16,7 @@
   "dependencies": {
     "auth0-js": "^9.8.2",
     "eventemitter3": "^3.1.0",
+    "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.2",
     "vue-moment": "^4.0.0",
     "vue-multiselect": "^2.1.3",

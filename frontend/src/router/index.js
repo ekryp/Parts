@@ -6,6 +6,7 @@ import Callback from '@/components/Login/Callback'
 import Dashboard from '@/components/Dashboard/Dashboard'
 import PartsAnalysis from '@/components/Parts/Analysis'
 import PartsAnalysisList from '@/components/Parts/AnalysisList'
+import PartsAnalysisSummary from '@/components/Parts/AnalysisSummary'
 
 Vue.use(Router)
 
@@ -37,6 +38,10 @@ export default new Router({
       path: '/parts/analysis/dashboard',
       name: 'PartsAnalysisList',
       component: PartsAnalysisList
+    }, {
+      path: '/parts/analysis/summary',
+      name: 'PartsAnalysisSummary',
+      component: PartsAnalysisSummary
     }
   ]
 })
