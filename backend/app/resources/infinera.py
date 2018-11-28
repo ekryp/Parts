@@ -100,6 +100,32 @@ class GetstepsforSpecificRequest(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
+class GetSummaryforSpecificRequest(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=False, help='id', location='args')
+        super(GetSummaryforSpecificRequest, self).__init__()
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        request_id = args['request_id']
+        query = "select PON,material_number,Qty, standard_cost,`gross table count`,`extd std cost`," \
+                "`net depot count`,`net extd std cost`,`High Spares?`,a.user_email_id," \
+                "a.analysis_request_time,analysis_request_id from summary_output as a " \
+                "right join analysis_request as b on " \
+                "a.analysis_request_time = b.analysis_request_time " \
+                "and a.user_email_id = b.user_email_id where b.requestStatus='Completed' " \
+                "and analysis_request_id = {0}".format(request_id)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
 
 class PostSparePartAnalysis(Resource):
 

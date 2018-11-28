@@ -526,7 +526,7 @@ def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_d
 
     def set_request_status_complete(analysis_date):
         engine = create_engine(Configuration.INFINERA_DB_URL)
-        query = "update analysis_request set requestStatus='completed' " \
+        query = "update analysis_request set requestStatus='Completed' " \
                 "where analysis_request_time = '{0}'".format(analysis_date)
         engine.execute(query)
     set_request_status_complete(analysis_date)
