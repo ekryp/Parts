@@ -3,7 +3,7 @@
     <headernav msg="Analysis Summary Result"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="padding:3%; paddingTop:7%">
-      <div class="row">
+      <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
         <div class="col-lg-4">
           <div class="form-group">
             <label>Analysis Name</label>
@@ -104,19 +104,38 @@ export default {
     this.get_request_analysis_summary_result(this.requestId);
   },
   computed: {
-    ...mapState({
-      partsAnalysisSummaryReslut: state =>
-        state.partsAnalysis.get_request_analysis_summary_result
-    })
+    // ...mapState({
+    //   partsAnalysisSummaryReslut: state =>
+    //     state.partsAnalysis.get_request_analysis_summary_result
+    // })
   },
   data() {
     console.log("AnalysisSummary", this.$store.state);
     return {
-      requestId: ""
+      requestId: "",
+      partsAnalysisSummaryReslut: []
     };
   },
   methods: {
-    ...mapActions("partsAnalysis", ["get_request_analysis_summary_result"])
+    get_request_analysis_summary_result(requestId) {
+      fetch(
+        "http://10.138.1.2:5000/api/v1/get_summary_specific_request?request_id=" +
+          requestId,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.partsAnalysisSummaryReslut = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    }
   }
 };
 </script>

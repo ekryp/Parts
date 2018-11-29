@@ -1,5 +1,5 @@
 <template>
-  <div v-if="status.success">
+  <div>
     <headernav msg="Spare Part Analysis"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="paddingTop:0%">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-lg-6">
                   <input
-                    v-if="requestId !== ''"
+                    v-if="requestId !== '' && partsAnalysisData.analyisisName !== undefined"
                     type="text"
                     class="form-control"
                     v-model="partsAnalysisData.analyisisName"
@@ -39,14 +39,14 @@
                 </div>
                 <div class="col-lg-6">
                   <input
-                    v-if="requestId !== ''"
+                    v-if="requestId !== '' && partsAnalysisData.customerNames !== undefined"
                     type="text"
                     class="form-control"
                     v-model="partsAnalysisData.customerNames"
                     disabled
                   >
                   <multiselect
-                    v-if="requestId === ''"
+                    v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
                     :value="customerNames"
                     @input="selectedCustomerName"
                     placeholder="Select Customer"
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-lg-6">
                   <input
-                    v-if="requestId !== ''"
+                    v-if="requestId !== '' && partsAnalysisData.date !== undefined"
                     type="text"
                     class="form-control"
                     placeholder="22 Nov 2018"
@@ -89,14 +89,14 @@
                 </div>
                 <div class="col-lg-6">
                   <input
-                    v-if="requestId !== ''"
+                    v-if="requestId !== '' && partsAnalysisData.analysisType !== undefined"
                     type="text"
                     class="form-control"
                     v-model="partsAnalysisData.analysisType"
                     disabled
                   >
                   <multiselect
-                    v-if="requestId === ''"
+                    v-if="requestId === '' && partsAnalysis.analysis_names !== undefined"
                     v-model="analysisType"
                     @input="selectedAnalysisType"
                     placeholder="Select Analysis Type"
@@ -114,14 +114,14 @@
                 </div>
                 <div class="col-lg-6">
                   <input
-                    v-if="requestId !== ''"
+                    v-if="requestId !== '' && partsAnalysisData.replensihTime !== undefined"
                     type="text"
                     class="form-control"
                     v-model="partsAnalysisData.replensihTime"
                     disabled
                   >
                   <multiselect
-                    v-if="requestId === ''"
+                    v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
                     v-model="replensihTime"
                     @input="selectedReplensihTime"
                     placeholder="Select Replensih Time"
@@ -508,24 +508,19 @@ export default {
     headernav
   },
   computed: {
-    // ...mapState({
-    //   partsAnalysis: state => state.partsAnalysis.spare_part_analysis,
-    //   status: state => state.partsAnalysis.status,
-    //   partsAnalysisData: state => state.partsAnalysis.get_request_analysis_by_Id
-    // })
-    partsAnalysis() {
-      console.log("partsAnalysis--computed");
-      return this.$store.state.partsAnalysis.spare_part_analysis;
-    },
-    partsAnalysisData() {
-      return this.$store.state.partsAnalysis.get_request_analysis_by_Id;
-    },
-    status() {
-      return this.$store.state.partsAnalysis.status;
-    },
-    requestAnalysisSuccess(value) {
-      console.log("success");
-    }
+    // partsAnalysis() {
+    //   console.log("partsAnalysis--computed");
+    //   return this.$store.state.partsAnalysis.spare_part_analysis;
+    // },
+    // partsAnalysisData() {
+    //   return this.$store.state.partsAnalysis.get_request_analysis_by_Id;
+    // },
+    // status() {
+    //   return this.$store.state.partsAnalysis.status;
+    // },
+    // requestAnalysisSuccess(value) {
+    //   console.log("success");
+    // }
   },
   data() {
     console.log("Parts-Analysis", this.$store.state);
@@ -539,18 +534,17 @@ export default {
       replensihTime: "",
       date: new Date(),
       dnafile: "",
-      sapfile: ""
+      sapfile: "",
+      partsAnalysisData: "",
+      partsAnalysis: ""
     };
   },
   methods: {
-    ...mapActions("partsAnalysis", [
-      "get_spare_part_analysis",
-      "post_spare_part_analysis",
-      "get_request_analysis_by_Id"
-    ]),
-    submit() {
-      console.log("comming");
-    },
+    // ...mapActions("partsAnalysis", [
+    //   "get_spare_part_analysis",
+    //   "post_spare_part_analysis",
+    //   "get_request_analysis_by_Id"
+    // ]),
     selectedCustomerName(value) {
       this.customerNames = value;
     },
@@ -618,9 +612,7 @@ export default {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
             console.log("post data --------->", data);
-            this.post_spare_part_analysis(data).then(() => {
-              router.push("parts/analysis/dashboard");
-            });
+            this.post_spare_part_analysis(data);
           } else {
             alert("Please add your SAP File");
           }
@@ -630,6 +622,78 @@ export default {
       } else {
         alert("Please fill the Form to submit");
       }
+    },
+
+    // API calls
+    get_request_analysis_by_Id(requestId) {
+      fetch(
+        "http://10.138.1.2:5000/api/v1/get_steps_specific_request?request_id=" +
+          requestId,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const payload = text && JSON.parse(text);
+            console.log("data ---->", payload);
+            let object = {
+              sapfileName: payload[0].sap_file_name,
+              dnafileName: payload[0].dna_file_name,
+              analyisisName: payload[0].analysis_name,
+              customerNames: payload[0].customer_name,
+              analysisType: payload[0].analysis_type,
+              replensihTime: payload[0].replenish_time,
+              date: payload[0].analysis_request_time,
+              requestStatus: payload[0].requestStatus,
+              stepName: payload[0].step_name,
+              stepId: payload[0].step_id
+            };
+            this.partsAnalysisData = object;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_spare_part_analysis() {
+      fetch("http://10.138.1.2:5000/api/v1/get_spare_part_analysis", {
+        method: "GET"
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data ---->", data);
+            this.partsAnalysis = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    post_spare_part_analysis(data) {
+      let formData = new FormData();
+      formData.append("analysis_name", data.analyisisName);
+      formData.append("analysis_type", data.analysisType);
+      formData.append("replenish_time", data.replensihTime);
+      formData.append("customer_dna_file", data.dnafile);
+      formData.append("user_email_id", "khali.saran@ekryp.com");
+      formData.append("customer_name", data.customerNames);
+      formData.append("sap_export_file", data.sapfile);
+      console.log("formdata ----->", formData.get("analysis_name"));
+      fetch("http://10.138.1.2:5000/api/v1/post_spare_part_analysis", {
+        method: "POST",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data ---->", data);
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
     }
   }
 };

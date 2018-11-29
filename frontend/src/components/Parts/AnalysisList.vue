@@ -29,7 +29,7 @@
           <br>
         </div>
       </div>
-      <div class="row" style="marginTop:0%">
+      <div class="row" style="marginTop:0%" v-if="dashboard_request_count !== undefined">
         <div class="col-lg-2">
           <span class="count">{{dashboard_request_count.total_request}}</span>
         </div>
@@ -102,7 +102,7 @@
                 >{{item.requestStatus}}</th>
                 <th v-if="item.requestStatus ==='failed'" style="color:red">{{item.requestStatus}}</th>
                 <th style="cursor:pointer">
-                  <i v-tooltip="view" class="far fa-eye" @click="update(item)"></i>
+                  <i class="far fa-eye" @click="update(item)"></i>
                   <i
                     v-if="item.requestStatus ==='Completed'"
                     class="fas fa-poll"
@@ -138,13 +138,14 @@ export default {
     this.get_all_request_analysis();
     this.get_dashboard_request_count();
   },
+  // Vuex Configure Its not updating the Value once State Changed
   computed: {
-    ...mapState({
-      partsAnalysisRequestList: state =>
-        state.partsAnalysis.get_all_request_analysis,
-      dashboard_request_count: state =>
-        state.partsAnalysis.get_dashboard_request_count
-    })
+    // ...mapState({
+    //   partsAnalysisRequestList: state =>
+    //     state.partsAnalysis.get_all_request_analysis,
+    //   dashboard_request_count: state =>
+    //     state.partsAnalysis.get_dashboard_request_count
+    // })
   },
   data() {
     console.log("Parts-AnalysisReqestList", this.$store.state);
@@ -156,14 +157,16 @@ export default {
         { name: "Completed Request Successfully" },
         { name: "Requests In Progress" },
         { name: "Requests To Be Submitted" }
-      ]
+      ],
+      partsAnalysisRequestList: [],
+      dashboard_request_count: ""
     };
   },
   methods: {
-    ...mapActions("partsAnalysis", [
-      "get_all_request_analysis",
-      "get_dashboard_request_count"
-    ]),
+    // ...mapActions("partsAnalysis", [
+    //   "get_all_request_analysis",
+    //   "get_dashboard_request_count"
+    // ]),
     createAnalysis() {
       router.push("/parts/analysis/create");
     },
@@ -179,6 +182,39 @@ export default {
         path: "/parts/analysis/summary",
         query: { id: data.analysis_request_id }
       });
+    },
+
+    // API Calls
+    get_all_request_analysis() {
+      console.log("working successfully");
+      fetch("http://10.138.1.2:5000/api/v1/get_steps_all_users", {
+        method: "GET"
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data ---->", data);
+            this.partsAnalysisRequestList = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_dashboard_request_count() {
+      fetch("http://10.138.1.2:5000/api/v1/get_dashboard_request_count", {
+        method: "GET"
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.dashboard_request_count = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
     }
   }
 };
