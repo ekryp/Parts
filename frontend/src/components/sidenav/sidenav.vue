@@ -1,40 +1,52 @@
 <template>
-    <div>
-      <div class="header">
-        <div class="sidenav">
-         <div class="sidenav-header">
-            <div style="marginLeft: 20%; marginTop: 10%">
-             <img src="http://portal.ekryp.com/src/assets/ekryp.jpg" width="60%" />
-            </div>
+  <div>
+    <div class="header">
+      <div class="sidenav">
+        <div class="sidenav-header">
+          <div style="marginLeft: 20%; marginTop: 10%">
+            <img src="http://portal.ekryp.com/src/assets/ekryp.jpg" width="60%">
           </div>
-          <div class="menu">
-            <div class="menulist">
-            <router-link  active-class="active" to="/dashboard" style="color:white" >
-                <i class="fas fa-tachometer-alt" style="marginRight: 5%; marginLeft: 5%"></i> 
-                <span>Dashboard</span>
+        </div>
+        <div class="menu">
+          <div class="menulist">
+            <router-link active-class="active-nav" to="/dashboard" style="color:white">
+              <i class="fas fa-tachometer-alt" style="marginRight: 5%; marginLeft: 5%"></i>
+              <span>Dashboard</span>
             </router-link>
-            </div>
-               <div class="menulist" @click="Parts()">
-                <span><i class="fas fa-toolbox" style="marginRight: 5%; marginLeft: 5%"></i> Parts Prediction</span>
-                <span v-if="partsClose"><i class="fas fa-caret-down drop-menu "></i></span>
-                <span v-if="!partsClose"><i  class="fas fa-caret-right drop-menu "></i></span>
-              </div>
-              <div v-if="showPartsChild" class="menulist-child">
-                 <router-link  active-class="active" to="/parts/analysis/dashboard" style="color:white" >
-                  <i  class="fas fa-chart-line" style="marginRight: 5%; marginLeft: 5%"></i> 
-                  <span>Dashboard</span>
-                </router-link><br/>
-              </div>
-               <div v-if="showPartsChild" class="menulist-child">
-                 <router-link  active-class="active" to="/parts/analysis/create" style="color:white" >
-                  <i  class="fas fa-plus" style="marginRight: 5%; marginLeft: 5%"></i> 
-                  <span>Create Analysis</span>
-                </router-link><br/>
-              </div>
+          </div>
+          <div class="menulist" @click="Parts()">
+            <span>
+              <i class="fas fa-toolbox" style="marginRight: 5%; marginLeft: 5%"></i> Parts Prediction
+            </span>
+            <span v-if="partsClose">
+              <i class="fas fa-caret-down drop-menu"></i>
+            </span>
+            <span v-if="!partsClose">
+              <i class="fas fa-caret-right drop-menu"></i>
+            </span>
+          </div>
+          <div v-if="showPartsChild" class="menulist-child">
+            <router-link
+              active-class="active-nav"
+              to="/parts/analysis/dashboard"
+              style="color:white"
+            >
+              <i class="fas fa-chart-line" style="marginRight: 5%; marginLeft: 5%"></i>
+              <span>Dashboard</span>
+            </router-link>
+            <br>
+          </div>
+          <div v-if="showPartsChild" class="menulist-child">
+            <router-link active-class="active-nav" to="/parts/analysis/create" style="color:white">
+              <i class="fas fa-plus" style="marginRight: 5%; marginLeft: 5%"></i>
+              <span>Create Analysis</span>
+            </router-link>
+            <br>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -69,7 +81,7 @@ export default {
 };
 </script>
 <style>
-.active {
+.active-nav {
   border-left: 5px solid green !important;
   color: white;
 }
@@ -78,10 +90,6 @@ export default {
   height: 700px;
   width: 20%;
   background-color: #293f55;
-}
-.header {
-}
-.sidenav-header {
 }
 .menu {
   margin-top: 10%;

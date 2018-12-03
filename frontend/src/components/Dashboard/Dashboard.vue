@@ -1,78 +1,112 @@
 <template>
   <div>
     <headernav msg="Dashboard"/>
-    <side-nav />
+    <side-nav/>
     <div class="custom-container" style="paddingTop: 2%">
       <div class="container">
         <div class="row-one">
           <div class="row">
             <div class="col-lg-2">
-              <span class="text-top">Active Assets Added</span>
-              <span class="text-middle">78</span><br/>
-              <span class="text-bottom">+76.00 Mar-Apr</span>
+              <div class="row">
+                <div class="col-lg-10">
+                  <span class="text-top">Total Customer</span>
+                  <br>
+                  <span class="text-middle">78</span>
+                </div>
+                <div class="vertical"></div>
+              </div>
             </div>
-             <div class="col-lg-2">
-              <span class="text-top">Active Assets Added</span>
-              <span class="text-middle">78</span><br/>
-              <span class="text-bottom">+76.00 Mar-Apr</span>
+            <div class="col-lg-2">
+              <div class="row">
+                <div class="col-lg-10">
+                  <span class="text-top">Critical PONs</span>
+                  <br>
+                  <span class="text-middle">78</span>
+                </div>
+                <div class="vertical"></div>
+              </div>
+              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
             </div>
-             <div class="col-lg-2">
-              <span class="text-top">Active Assets Added</span>
-              <span class="text-middle">78</span><br/>
-              <span class="text-bottom">+76.00 Mar-Apr</span>
+            <div class="col-lg-2">
+              <div class="row">
+                <div class="col-lg-10">
+                  <span class="text-top">Critical Customers</span>
+                  <br>
+                  <span class="text-middle">78</span>
+                </div>
+                <div class="vertical"></div>
+              </div>
+              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
             </div>
-             <div class="col-lg-2">
-              <span class="text-top">Active Assets Added</span>
-              <span class="text-middle">78</span><br/>
-              <span class="text-bottom">+76.00 Mar-Apr</span>
+            <div class="col-lg-2">
+              <div class="row">
+                <div class="col-lg-10">
+                  <span class="text-top">Critical Depots</span>
+                  <br>
+                  <span class="text-middle">78</span>
+                </div>
+                <div class="vertical"></div>
+              </div>
+              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
             </div>
-             <div class="col-lg-2">
-              <span class="text-top">Active Assets Added</span>
-              <span class="text-middle">78</span><br/>
-              <span class="text-bottom">+76.00 Mar-Apr</span>
+            <div class="col-lg-2">
+              <div class="row">
+                <div class="col-lg-10">
+                  <span class="text-top">Total PON types</span>
+                  <br>
+                  <span class="text-middle">78</span>
+                </div>
+                <div class="vertical"></div>
+              </div>
+              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
             </div>
-             <div class="col-lg-2">
-              <span class="text-top">Active Assets Added</span>
-              <span class="text-middle">78</span><br/>
-              <span class="text-bottom">+76.00 Mar-Apr</span>
+            <div class="col-lg-2">
+              <div class="row">
+                <div class="col-lg-10">
+                  <span class="text-top">Total Depots</span>
+                  <br>
+                  <span class="text-middle">78</span>
+                </div>
+              </div>
+              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
             </div>
           </div>
         </div>
         <div class="row-two">
           <div class="row">
             <div class="col-lg-6">
-          <div class="card">
-  <div class="card-body">
-    <canvas id="myChart" width="400" height="400"></canvas>
-  </div>
-</div>
-</div>
-  <div class="col-lg-6">
-          <div class="card">
-  <div class="card-body">
-    <canvas id="myChart2" width="400" height="400"></canvas>
-  </div>
-</div>
-</div>
-</div>
+              <div class="card">
+                <div class="card-body">
+                  <div id="container" style="height:250px"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <div id="container2" style="height:250px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-                <div class="row-two">
+        <div class="row-two">
           <div class="row">
             <div class="col-lg-6">
-          <div class="card">
-  <div class="card-body">
-    <!-- <canvas id="myChart" width="400" height="400"></canvas> -->
-  </div>
-</div>
-</div>
-  <div class="col-lg-6">
-          <div class="card">
-  <div class="card-body">
-   <!-- <canvas id="myChart" width="400" height="400"></canvas> -->
-  </div>
-</div>
-</div>
-</div>
+              <div class="card">
+                <div class="card-body">
+                  <div id="container3" style="height:250px"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <div id="container4" style="height:250px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -82,6 +116,8 @@
 <script>
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
+import piechart from "../../utilies/piechart.json";
+import linechart from "../../utilies/linechart.json";
 
 export default {
   name: "Dashboard",
@@ -91,6 +127,8 @@ export default {
   },
   mounted() {
     this.chartone();
+    this.charttwo();
+    this.chartthree();
   },
   data() {
     console.log("dashboard");
@@ -98,87 +136,82 @@ export default {
   },
   methods: {
     chartone() {
-      var ctx = document.getElementById("myChart").getContext("2d");
-      var ctx2 = document.getElementById("myChart2").getContext("2d");
-      var myChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [
+      Highcharts.chart("container", piechart);
+    },
+    charttwo() {
+      Highcharts.chart("container2", linechart);
+    },
+    chartthree() {
+      Highcharts.chart("container3", {
+        chart: {
+          type: "spline",
+          animation: Highcharts.svg, // don't animate in old IE
+          marginRight: 10,
+          events: {
+            load: function() {
+              // set up the updating of the chart each second
+              var series = this.series[0];
+              setInterval(function() {
+                var x = new Date().getTime(), // current time
+                  y = Math.random();
+                series.addPoint([x, y], true, true);
+              }, 1000);
+            }
+          }
+        },
+
+        time: {
+          useUTC: false
+        },
+
+        title: {
+          text: ""
+        },
+        xAxis: {
+          type: "datetime",
+          tickPixelInterval: 150
+        },
+        yAxis: {
+          title: {
+            text: "Value"
+          },
+          plotLines: [
             {
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-                "rgba(75, 192, 192, 0.2)",
-                "rgba(153, 102, 255, 0.2)",
-                "rgba(255, 159, 64, 0.2)"
-              ],
-              borderColor: [
-                "rgba(255,99,132,1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-                "rgba(75, 192, 192, 1)",
-                "rgba(153, 102, 255, 1)",
-                "rgba(255, 159, 64, 1)"
-              ],
-              borderWidth: 1
+              value: 0,
+              width: 1,
+              color: "#808080"
             }
           ]
         },
-        options: {
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true
-                }
-              }
-            ]
-          }
-        }
-      });
-      var myChart = new Chart(ctx2, {
-        type: "bar",
-        data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [
-            {
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 206, 86, 0.2)",
-                "rgba(75, 192, 192, 0.2)",
-                "rgba(153, 102, 255, 0.2)",
-                "rgba(255, 159, 64, 0.2)"
-              ],
-              borderColor: [
-                "rgba(255,99,132,1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-                "rgba(75, 192, 192, 1)",
-                "rgba(153, 102, 255, 1)",
-                "rgba(255, 159, 64, 1)"
-              ],
-              borderWidth: 1
-            }
-          ]
+        tooltip: {
+          headerFormat: "<b>{series.name}</b><br/>",
+          pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
         },
-        options: {
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true
-                }
+        legend: {
+          enabled: false
+        },
+        exporting: {
+          enabled: false
+        },
+        series: [
+          {
+            name: "Random data",
+            data: (function() {
+              // generate an array of random data
+              var data = [],
+                time = new Date().getTime(),
+                i;
+
+              for (i = -19; i <= 0; i += 1) {
+                data.push({
+                  x: time + i * 1000,
+                  y: Math.random()
+                });
               }
-            ]
+              return data;
+            })()
           }
-        }
+        ]
       });
     }
   }
@@ -199,5 +232,10 @@ export default {
 }
 .row-two {
   margin-top: 5%;
+}
+.vertical {
+  width: 1%;
+  height: 60px;
+  background-color: #adb2b5;
 }
 </style>

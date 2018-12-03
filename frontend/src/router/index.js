@@ -7,6 +7,7 @@ import Dashboard from '@/components/Dashboard/Dashboard'
 import PartsAnalysis from '@/components/Parts/Analysis'
 import PartsAnalysisList from '@/components/Parts/AnalysisList'
 import PartsAnalysisSummary from '@/components/Parts/AnalysisSummary'
+import SpareDetails from '@/components/Parts/SpareDetails'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/parts/analysis/summary',
       name: 'PartsAnalysisSummary',
       component: PartsAnalysisSummary
+    },
+    {
+      path: '/parts/details',
+      name: 'SpareDetails',
+      component: SpareDetails
     }
   ]
 })

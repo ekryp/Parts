@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="shadow p-3 mb-5 bg-white rounded">
-        <table class="table table-bordered center">
+        <table class="table table-bordered table-hover center">
           <thead>
             <tr style="fontSize:0.75vw">
               <th scope="col"></th>
@@ -117,6 +117,7 @@ export default {
     };
   },
   methods: {
+    spareDetails() {},
     get_request_analysis_summary_result(requestId) {
       fetch(
         "http://10.138.1.2:5000/api/v1/get_summary_specific_request?request_id=" +
