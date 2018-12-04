@@ -23,6 +23,7 @@
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
+              style="color:#515356; fontWeight:500"
             >
               <i class="fas fa-user"></i>
               &nbsp;{{firstName}}

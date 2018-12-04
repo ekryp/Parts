@@ -45,7 +45,7 @@ export default new Router({
       component: PartsAnalysisSummary
     },
     {
-      path: '/parts/details',
+      path: '/parts/analysis',
       name: 'SpareDetails',
       component: SpareDetails
     }

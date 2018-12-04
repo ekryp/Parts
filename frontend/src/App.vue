@@ -18,6 +18,7 @@ body {
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
   color: #72879d;
   background-color: #f7f7f7;
+  font-size: 1vw;
 }
 .custom-container {
   margin-left: 20%;

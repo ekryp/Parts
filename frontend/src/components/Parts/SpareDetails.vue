@@ -7,6 +7,15 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
             class="nav-item nav-link active"
+            id="nav-summary-tab"
+            data-toggle="tab"
+            href="#nav-summary"
+            role="tab"
+            aria-controls="nav-summary"
+            aria-selected="true"
+          >Summary Result</a>
+          <a
+            class="nav-item nav-link"
             id="nav-home-tab"
             data-toggle="tab"
             href="#nav-home"
@@ -46,6 +55,14 @@
       <div class="tab-content" id="nav-tabContent">
         <div
           class="tab-pane fade show active"
+          id="nav-summary"
+          role="tabpanel"
+          aria-labelledby="nav-summary-tab"
+        >
+          <AnalysisSummary :analysisId="requestID"/>
+        </div>
+        <div
+          class="tab-pane fade show"
           id="nav-home"
           role="tabpanel"
           aria-labelledby="nav-home-tab"
@@ -214,16 +231,24 @@
 import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
+import AnalysisSummary from "@/components/Parts/AnalysisSummary";
 
 export default {
   name: "SpareDetails",
   components: {
     SideNav,
-    headernav
+    headernav,
+    AnalysisSummary
+  },
+  created() {
+    this.requestID = this.$route.query.id;
+    console.log("requestId ---->", this.requestId);
   },
   data() {
     console.log("SpareDetails");
-    return {};
+    return {
+      requestID: ""
+    };
   },
   methods: {}
 };
@@ -236,9 +261,17 @@ a {
   -webkit-text-decoration-skip: objects;
 }
 .nav-tabs .nav-link.active {
-  color: #26b99a;
+  color: #71879e;
   background-color: #fff;
   border-color: #dee2e6 #dee2e6 #fff;
+  font-weight: 500;
+  font-size: 1.15vw;
+}
+.nav-tabs .nav-link {
+  font-size: 1.15vw;
+  border: 1px solid transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
 }
 /* .form_wizard .stepContainer {
   display: block;

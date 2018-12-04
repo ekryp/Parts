@@ -107,6 +107,7 @@ export default {
   padding: 5%;
   color: white;
   cursor: pointer;
+  font-size: 1.15vw;
 }
 .menu-toptext {
   margin-top: 10%;
@@ -129,7 +130,6 @@ export default {
   background-color: #4d9e34;
   padding: 5%;
   padding-left: 10%;
-  font-size: 1.15vw;
   color: white;
   cursor: pointer;
 }

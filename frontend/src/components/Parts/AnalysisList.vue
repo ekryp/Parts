@@ -61,58 +61,48 @@
         <button type="button" class="btn btn-success" @click="createAnalysis">Create Analysis</button>
       </div>
       <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:7%">
-        <div class="row">
-          <div class="col-lg-4">
-            <!-- <input type="text" class="form-control" placeholder="Search by Analysis Name"> -->
-          </div>
-          <div class="col-lg-4"></div>
-          <div class="col-lg-4">
-            <!-- <multiselect
-              placeholder="Filter By Status"
-              :options="options"
-              label="name"
-              :multiple="false"
-              :taggable="true"
-            ></multiselect>-->
-          </div>
-        </div>
         <div style="marginTop:0%">
-          <table class="table table-borderless">
-            <thead>
-              <tr style="color:#26b99a">
-                <th scope="col">Analysis Name</th>
-                <th scope="col">Analysis Type</th>
-                <th scope="col">Customer Name</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in partsAnalysisRequestList" :key="item.analysis_request_id">
-                <th>{{item.analysis_name}}</th>
-                <th>{{item.analysis_type}}</th>
-                <th>{{item.customer_name}}</th>
-                <th
-                  v-if="item.requestStatus ==='Completed'"
-                  style="color:#86B21D"
-                >{{item.requestStatus}}</th>
-                <th
-                  v-if="item.requestStatus ==='Processing'"
-                  style="color:#2699FB"
-                >{{item.requestStatus}}</th>
-                <th v-if="item.requestStatus ==='failed'" style="color:red">{{item.requestStatus}}</th>
-                <th style="cursor:pointer">
-                  <i class="far fa-eye" @click="update(item)"></i>
-                  <i
+          <div v-if="partsAnalysisRequestList.length !== 0">
+            <table id="example" class="table table-borderless table-hover" style="width:100%">
+              <thead>
+                <tr>
+                  <th scope="col">Analysis Name</th>
+                  <th scope="col">Analysis Type</th>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in partsAnalysisRequestList"
+                  :key="item.analysis_request_id"
+                  style="cursor:pointer"
+                >
+                  <td>{{item.analysis_name}}</td>
+                  <td>{{item.analysis_type}}</td>
+                  <td>{{item.customer_name}}</td>
+                  <td
                     v-if="item.requestStatus ==='Completed'"
-                    class="fas fa-poll"
-                    @click="summaryResult(item)"
-                  ></i>
-                  <!-- <i class="far fa-trash-alt"></i> -->
-                </th>
-              </tr>
-            </tbody>
-          </table>
+                    style="color:#86B21D"
+                  >{{item.requestStatus}}</td>
+                  <td
+                    v-if="item.requestStatus ==='Processing'"
+                    style="color:#2699FB"
+                  >{{item.requestStatus}}</td>
+                  <td v-if="item.requestStatus ==='failed'" style="color:red">{{item.requestStatus}}</td>
+                  <td style="cursor:pointer">
+                    <i class="far fa-eye" @click="update(item)"></i>
+                    <i
+                      v-if="item.requestStatus ==='Completed'"
+                      class="fas fa-poll"
+                      @click="summaryResult(item)"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -133,20 +123,14 @@ export default {
     Multiselect,
     headernav
   },
+
   created() {
     console.log("beforeMount -- get_all_request_analysis", this.$store);
     this.get_all_request_analysis();
     this.get_dashboard_request_count();
   },
   // Vuex Configure Its not updating the Value once State Changed
-  computed: {
-    // ...mapState({
-    //   partsAnalysisRequestList: state =>
-    //     state.partsAnalysis.get_all_request_analysis,
-    //   dashboard_request_count: state =>
-    //     state.partsAnalysis.get_dashboard_request_count
-    // })
-  },
+  computed: {},
   data() {
     console.log("Parts-AnalysisReqestList", this.$store.state);
     return {
@@ -163,10 +147,6 @@ export default {
     };
   },
   methods: {
-    // ...mapActions("partsAnalysis", [
-    //   "get_all_request_analysis",
-    //   "get_dashboard_request_count"
-    // ]),
     createAnalysis() {
       router.push("/parts/analysis/create");
     },
@@ -179,7 +159,7 @@ export default {
     },
     summaryResult(data) {
       router.push({
-        path: "/parts/analysis/summary",
+        path: "/parts/analysis",
         query: { id: data.analysis_request_id }
       });
     },
@@ -193,8 +173,11 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            console.log("data ---->", data);
+            console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
+            $(document).ready(function() {
+              $("#example").DataTable();
+            });
           });
         })
         .catch(handleError => {
