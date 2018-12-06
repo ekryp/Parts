@@ -1,13 +1,15 @@
 import auth0 from 'auth0-js'
 import router from '../../router'
 import Vue from 'vue'
+import * as constant from "../constant/constant";
+
 
 
 export default {
     auth0: new auth0.WebAuth({
         domain: 'ekryp.auth0.com',
         clientID: 'NJh7jJsES1ymojwuBodeZJCzT867UNiu',
-        redirectUri: 'http://35.230.112.86/callback',
+        redirectUri: constant.APPURL + '/callback',
         responseType: 'token id_token',
         scope: 'openid'
     }),
