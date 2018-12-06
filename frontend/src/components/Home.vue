@@ -32,7 +32,7 @@ export default {
 </script>
 <style>
 .main {
-  height: 690px;
+  height: 100vh;
   background-color: #293f55;
 }
 .content {

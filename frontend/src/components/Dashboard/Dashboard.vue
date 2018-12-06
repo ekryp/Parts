@@ -238,4 +238,8 @@ export default {
   height: 60px;
   background-color: #adb2b5;
 }
+.container {
+  width: 100% !important;
+  height: 100%;
+}
 </style>

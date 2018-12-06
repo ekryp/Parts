@@ -1,7 +1,7 @@
 <template>
-  <div style="position:fixed;marginLeft:20%;width:80%;z-index:99999;">
+  <div style="position:fixed;marginLeft:0%;width:100%;z-index:99999;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand text" href="#">{{msg}}</a>
+      <img src="https://staging.ekryp.com/src/assets/ekryp.jpg" style="height:40px;width:100px">
       <button
         class="navbar-toggler"
         type="button"

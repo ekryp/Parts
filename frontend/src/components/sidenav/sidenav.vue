@@ -1,51 +1,33 @@
 <template>
-  <div>
-    <div class="header">
-      <div class="sidenav">
-        <div class="sidenav-header">
-          <div style="marginLeft: 20%; marginTop: 10%">
-            <img src="http://portal.ekryp.com/src/assets/ekryp.jpg" width="60%">
-          </div>
-        </div>
-        <div class="menu">
-          <div class="menulist">
-            <router-link active-class="active-nav" to="/dashboard" style="color:white">
-              <i class="fas fa-tachometer-alt" style="marginRight: 5%; marginLeft: 5%"></i>
-              <span>Dashboard</span>
-            </router-link>
-          </div>
-          <div class="menulist" @click="Parts()">
-            <span>
-              <i class="fas fa-toolbox" style="marginRight: 5%; marginLeft: 5%"></i> Parts Prediction
-            </span>
-            <span v-if="partsClose">
-              <i class="fas fa-caret-down drop-menu"></i>
-            </span>
-            <span v-if="!partsClose">
-              <i class="fas fa-caret-right drop-menu"></i>
-            </span>
-          </div>
-          <div v-if="showPartsChild" class="menulist-child">
-            <router-link
-              active-class="active-nav"
-              to="/parts/analysis/dashboard"
-              style="color:white"
-            >
-              <i class="fas fa-chart-line" style="marginRight: 5%; marginLeft: 5%"></i>
-              <span>Dashboard</span>
-            </router-link>
+  <div class="container">
+    <nav id="sidebar">
+      <ul class="list-unstyled components">
+        <li class="active nav-custom" style="margin-top: 40px;cursor:pointer ">
+          <div class="text-center" @click="dashboard()">
+            <i class="fas fa-home" style="fontSize:20px"></i>
             <br>
+            <p class="upload-text">Dashboard</p>
           </div>
-          <div v-if="showPartsChild" class="menulist-child">
-            <router-link active-class="active-nav" to="/parts/analysis/create" style="color:white">
-              <i class="fas fa-plus" style="marginRight: 5%; marginLeft: 5%"></i>
-              <span>Create Analysis</span>
-            </router-link>
+        </li>
+        <hr>
+        <li class="nav-custom" style="cursor:pointer">
+          <div class="text-center" @click="parts_analysis()">
+            <i class="fas fa-list-ul" style="fontSize:20px"></i>
             <br>
+            <p class="upload-text">Analysis</p>
           </div>
-        </div>
-      </div>
-    </div>
+        </li>
+        <hr>
+        <li class="nav-custom" style="cursor:pointer">
+          <div class="text-center" @click="createPartsRequest()">
+            <i class="fas fa-plus" style="fontSize:20px"></i>
+            <br>
+            <p class="upload-text">Create Analysis Request</p>
+          </div>
+        </li>
+        <hr>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -75,71 +57,74 @@ export default {
       router.push("/dashboard");
     },
     parts_analysis() {
-      router.push("/parts/analysis");
+      router.push("/parts/analysis/dashboard");
+    },
+    createPartsRequest() {
+      router.push("/parts/analysis/create");
     }
   }
 };
 </script>
 <style>
-.active-nav {
-  border-left: 5px solid green !important;
-  color: white;
+.container {
+  width: 70px;
+  height: 100%;
 }
-.sidenav {
+.commonpart .flex-container {
+  display: flex;
+  flex-direction: column;
+}
+.body {
+  background: #f8fafd;
+  overflow: hidden;
+}
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+#sidebar {
+  width: 70px;
   position: fixed;
-  height: 700px;
-  width: 20%;
-  background-color: #293f55;
-}
-.menu {
-  margin-top: 10%;
+  top: 50px;
+  left: 0;
+  height: 100vh;
+  z-index: 999;
+  background: #293f55;
+  color: #fff;
+  transition: all 0.3s;
 }
 
-.menulist:hover {
-  background-color: #4d9e34;
-  height: 50px;
+a {
+  text-decoration: none;
+  color: white;
+}
+.content {
+  margin: 0 0 0 100px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+hr {
+  width: 80%;
+  border-color: #ffffff;
+}
+
+#content {
+  background-color: #f8fafd;
+  overflow: hidden !important;
   width: 100%;
-  color: white;
-  cursor: pointer;
-}
-.menulist {
-  width: 100%;
-  padding: 5%;
-  color: white;
-  cursor: pointer;
-  font-size: 1.15vw;
-}
-.menu-toptext {
-  margin-top: 10%;
-}
-.drop-menu {
-  font-size: 16px;
-  float: right;
-  margin-top: 4px;
-  margin-right: 20px;
-}
-.menulist-child {
-  padding: 5%;
-  padding-left: 10%;
-  font-size: 1.15vw;
-  color: white;
-  cursor: pointer;
+  margin-top: 100px;
 }
 
-.menulist-child:hover {
-  background-color: #4d9e34;
-  padding: 5%;
-  padding-left: 10%;
-  color: white;
-  cursor: pointer;
+.nav-custom {
+  padding-top: 20px rem !important;
 }
 
-.menulist-child:active {
-  background-color: #4d9e34;
-  padding: 5%;
-  padding-left: 10%;
-  font-size: 1.15vw;
-  color: white;
-  cursor: pointer;
+.upload-text {
+  font-size: 0.75vw;
+  font-family: Arial;
 }
 </style>

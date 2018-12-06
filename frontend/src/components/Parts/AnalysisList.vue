@@ -60,6 +60,16 @@
       <div class="float-right" style="marginTop:1%">
         <button type="button" class="btn btn-success" @click="createAnalysis">Create Analysis</button>
       </div>
+      <div class="float-left" style="marginTop:1%">
+        <button type="button" class="btn btn-success">
+          <download-excel :data="partsAnalysisRequestList">
+            <i class="fas fa-file-excel"></i>
+            &nbsp;
+            Export
+          </download-excel>
+        </button>
+      </div>
+
       <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:7%">
         <div style="marginTop:0%">
           <div v-if="partsAnalysisRequestList.length !== 0">
@@ -115,6 +125,10 @@ import headernav from "@/components/header/header";
 import SideNav from "@/components/sidenav/sidenav";
 import Multiselect from "vue-multiselect";
 import { mapState, mapActions, mapGetters } from "vuex";
+import Vue from "vue";
+import JsonExcel from "vue-json-excel";
+
+Vue.component("downloadExcel", JsonExcel);
 
 export default {
   name: "PartsAnalysisList",
@@ -164,6 +178,10 @@ export default {
       });
     },
 
+    exportCSV(data) {
+      console.log("data");
+    },
+
     // API Calls
     get_all_request_analysis() {
       console.log("working successfully");
@@ -175,6 +193,7 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
+            this.exportCSV(data);
             $(document).ready(function() {
               $("#example").DataTable();
             });

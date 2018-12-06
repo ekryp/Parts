@@ -45,7 +45,15 @@
             </div>
           </div>
         </div>
-
+        <div class="float-right" style="paddingBottom:1%">
+          <button type="button" class="btn btn-success">
+            <download-excel :data="partsAnalysisSummaryReslut">
+              <i class="fas fa-file-excel"></i>
+              &nbsp;
+              Export
+            </download-excel>
+          </button>
+        </div>
         <table id="example" class="table table-bordered table-hover center">
           <thead>
             <tr style="fontSize:1vw">

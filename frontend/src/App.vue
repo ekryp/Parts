@@ -21,7 +21,7 @@ body {
   font-size: 1vw;
 }
 .custom-container {
-  margin-left: 20%;
+  margin-left: 5%;
   /* padding-top: 5%; */
 }
 .btn-success {
@@ -29,5 +29,9 @@ body {
 }
 .btn-success:hover {
   background-color: #169f85;
+}
+.container {
+  width: 100% !important;
+  height: 100%;
 }
 </style>
