@@ -487,6 +487,7 @@ import headernav from "@/components/header/header";
 import Multiselect from "vue-multiselect";
 import Datepicker from "vuejs-datepicker";
 import { mapState, mapActions } from "vuex";
+import * as constant from "../constant/constant";
 
 export default {
   name: "PartsAnalysis",
@@ -627,7 +628,8 @@ export default {
     // API calls
     get_request_analysis_by_Id(requestId) {
       fetch(
-        "http://10.138.1.2:5000/api/v1/get_steps_specific_request?request_id=" +
+        constant.APIURL +
+          "api/v1/get_steps_specific_request?request_id=" +
           requestId,
         {
           method: "GET"
@@ -657,7 +659,7 @@ export default {
         });
     },
     get_spare_part_analysis() {
-      fetch("http://10.138.1.2:5000/api/v1/get_spare_part_analysis", {
+      fetch(constant.APIURL + "api/v1/get_spare_part_analysis", {
         method: "GET"
       })
         .then(response => {
@@ -681,7 +683,7 @@ export default {
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
       console.log("formdata ----->", formData.get("analysis_name"));
-      fetch("http://10.138.1.2:5000/api/v1/post_spare_part_analysis", {
+      fetch(constant.APIURL + "api/v1/post_spare_part_analysis", {
         method: "POST",
         body: formData
       })

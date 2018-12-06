@@ -107,6 +107,7 @@ import headernav from "@/components/header/header";
 import { mapActions, mapState } from "vuex";
 import Vue2Filters from "vue2-filters";
 import Vue from "vue";
+import * as constant from "../constant/constant";
 
 Vue.use(Vue2Filters);
 export default {
@@ -137,7 +138,8 @@ export default {
     spareDetails() {},
     get_request_analysis_summary_result(requestId) {
       fetch(
-        "http://10.138.1.2:5000/api/v1/get_summary_specific_request?request_id=" +
+        constant.APIURL +
+          "api/v1/get_summary_specific_request?request_id=" +
           requestId,
         {
           method: "GET"

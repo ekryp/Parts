@@ -127,6 +127,7 @@ import Multiselect from "vue-multiselect";
 import { mapState, mapActions, mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
+import * as constant from "../constant/constant";
 
 Vue.component("downloadExcel", JsonExcel);
 
@@ -185,7 +186,7 @@ export default {
     // API Calls
     get_all_request_analysis() {
       console.log("working successfully");
-      fetch("http://10.138.1.2:5000/api/v1/get_steps_all_users", {
+      fetch(constant.APIURL + "api/v1/get_steps_all_users", {
         method: "GET"
       })
         .then(response => {
@@ -204,7 +205,7 @@ export default {
         });
     },
     get_dashboard_request_count() {
-      fetch("http://10.138.1.2:5000/api/v1/get_dashboard_request_count", {
+      fetch(constant.APIURL + "api/v1/get_dashboard_request_count", {
         method: "GET"
       })
         .then(response => {
