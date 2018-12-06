@@ -9,7 +9,7 @@ export default {
     auth0: new auth0.WebAuth({
         domain: 'ekryp.auth0.com',
         clientID: 'NJh7jJsES1ymojwuBodeZJCzT867UNiu',
-        redirectUri: constant.APPURL + '/callback',
+        redirectUri: constant.APPURL + 'callback',
         responseType: 'token id_token',
         scope: 'openid'
     }),
