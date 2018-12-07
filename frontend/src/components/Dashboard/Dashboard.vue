@@ -5,13 +5,13 @@
     <div class="custom-container" style="paddingTop: 2%">
       <div class="container">
         <div class="row-one">
-          <div class="row">
+          <div class="row text-center">
             <div class="col-lg-2">
               <div class="row">
                 <div class="col-lg-10">
                   <span class="text-top">Total Customer</span>
                   <br>
-                  <span class="text-middle">78</span>
+                  <span class="text-middle">3</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -21,7 +21,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Critical PONs</span>
                   <br>
-                  <span class="text-middle">78</span>
+                  <span class="text-middle">0</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -32,7 +32,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Critical Customers</span>
                   <br>
-                  <span class="text-middle">78</span>
+                  <span class="text-middle">0</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -43,7 +43,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Critical Depots</span>
                   <br>
-                  <span class="text-middle">78</span>
+                  <span class="text-middle">0</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -54,7 +54,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Total PON types</span>
                   <br>
-                  <span class="text-middle">78</span>
+                  <span class="text-middle">4</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -65,7 +65,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Total Depots</span>
                   <br>
-                  <span class="text-middle">78</span>
+                  <span class="text-middle">5</span>
                 </div>
               </div>
               <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
@@ -74,17 +74,117 @@
         </div>
         <div class="row-two">
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <div class="card">
                 <div class="card-body">
-                  <div id="container" style="height:250px"></div>
+                  <h5>Top PONs</h5>
+                  <br>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">PONS</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Depots</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <div class="card">
                 <div class="card-body">
-                  <div id="container2" style="height:250px"></div>
+                  <h5>Top Depots</h5>
+                  <br>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Depots</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">PONs</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Top Customers</h5>
+                  <br>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Depots</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -92,17 +192,24 @@
         </div>
         <div class="row-two">
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <div class="card">
                 <div class="card-body">
-                  <div id="container3" style="height:250px"></div>
+                  <div id="container" style="height:250px"></div>
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <div class="card">
                 <div class="card-body">
-                  <div id="container4" style="height:250px"></div>
+                  <div id="container2" style="height:250px"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card">
+                <div class="card-body">
+                  <GmapMap :center="gmap.center" :zoom="2" style="width: 300px; height: 36vh"></GmapMap>
                 </div>
               </div>
             </div>
@@ -118,6 +225,16 @@ import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import piechart from "../../utilies/piechart.json";
 import linechart from "../../utilies/linechart.json";
+import Vue from "vue";
+import * as VueGoogleMaps from "vue2-google-maps";
+import VueGeolocation from "vue-browser-geolocation";
+Vue.use(VueGeolocation);
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyAk2MMMJwyvyiAYzxIGzjIEmjWVB0Z6Vv0"
+  }
+});
 
 export default {
   name: "Dashboard",
@@ -128,11 +245,19 @@ export default {
   mounted() {
     this.chartone();
     this.charttwo();
-    this.chartthree();
+  },
+  created() {
+    this.$getLocation({ enableHighAccuracy: true }).then(coordinates => {
+      console.log("coordinates ----->", coordinates);
+    });
   },
   data() {
     console.log("dashboard");
-    return {};
+    return {
+      gmap: {
+        center: { lat: 16.1304, lng: 86.3468 }
+      }
+    };
   },
   methods: {
     chartone() {
@@ -140,79 +265,6 @@ export default {
     },
     charttwo() {
       Highcharts.chart("container2", linechart);
-    },
-    chartthree() {
-      Highcharts.chart("container3", {
-        chart: {
-          type: "spline",
-          animation: Highcharts.svg, // don't animate in old IE
-          marginRight: 10,
-          events: {
-            load: function() {
-              // set up the updating of the chart each second
-              var series = this.series[0];
-              setInterval(function() {
-                var x = new Date().getTime(), // current time
-                  y = Math.random();
-                series.addPoint([x, y], true, true);
-              }, 1000);
-            }
-          }
-        },
-
-        time: {
-          useUTC: false
-        },
-
-        title: {
-          text: ""
-        },
-        xAxis: {
-          type: "datetime",
-          tickPixelInterval: 150
-        },
-        yAxis: {
-          title: {
-            text: "Value"
-          },
-          plotLines: [
-            {
-              value: 0,
-              width: 1,
-              color: "#808080"
-            }
-          ]
-        },
-        tooltip: {
-          headerFormat: "<b>{series.name}</b><br/>",
-          pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
-        },
-        legend: {
-          enabled: false
-        },
-        exporting: {
-          enabled: false
-        },
-        series: [
-          {
-            name: "Random data",
-            data: (function() {
-              // generate an array of random data
-              var data = [],
-                time = new Date().getTime(),
-                i;
-
-              for (i = -19; i <= 0; i += 1) {
-                data.push({
-                  x: time + i * 1000,
-                  y: Math.random()
-                });
-              }
-              return data;
-            })()
-          }
-        ]
-      });
     }
   }
 };

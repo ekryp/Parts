@@ -4,39 +4,39 @@
     <side-nav menu="analysis"/>
     <div class="custom-container" style="padding:3%; paddingTop:7%">
       <div class="row">
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="text-top">Total Analysis Request</span>
           <br>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="text-top">Completed Request</span>
           <br>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="text-top">Completed Request with Error</span>
           <br>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="text-top">Completed Request Successfully</span>
           <br>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="text-top">Requests In Progress</span>
           <br>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="text-top">Requests To Be Submitted</span>
           <br>
         </div>
       </div>
       <div class="row" style="marginTop:0%" v-if="dashboard_request_count !== undefined">
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="count">{{dashboard_request_count.total_request}}</span>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="count">{{dashboard_request_count.complete_request}}</span>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span
             class="count"
             v-if="dashboard_request_count.failed_request > 0"
@@ -47,13 +47,13 @@
             v-if="dashboard_request_count.failed_request === 0"
           >{{dashboard_request_count.failed_request}}</span>
         </div>
-        <div class="col-lg-2" style="color:green">
+        <div class="col-lg-2 text-center" style="color:green">
           <span class="count">{{dashboard_request_count.complete_request_succesfully}}</span>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="count">{{dashboard_request_count.incomplete_request}}</span>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 text-center">
           <span class="count">{{dashboard_request_count.saved_request}}</span>
         </div>
       </div>
