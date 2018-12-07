@@ -76,36 +76,23 @@
           <div class="row">
             <div class="col-lg-4">
               <div class="card">
-                <div class="card-body">
+                <div class="card-header">
                   <h5>Top PONs</h5>
-                  <br>
+                </div>
+                <div class="card-body">
                   <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
                         <th scope="col">PONS</th>
                         <th scope="col">Unit</th>
                         <th scope="col">Depots</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
+                      <tr v-for="item in data.topPONs" :key="item.id">
+                        <td>{{item.part_name}}</td>
+                        <td>{{item.depot_name}}</td>
+                        <td>{{item.count}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -114,36 +101,21 @@
             </div>
             <div class="col-lg-4">
               <div class="card">
-                <div class="card-body">
+                <div class="card-header">
                   <h5>Top Depots</h5>
-                  <br>
+                </div>
+                <div class="card-body">
                   <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Depots</th>
-                        <th scope="col">Unit</th>
-                        <th scope="col">PONs</th>
+                        <th scope="col">Depot</th>
+                        <th scope="col">PONs Count</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
+                      <tr v-for="item in data.topDeptos" :key="item.id">
+                        <td>{{item.depot_name}}</td>
+                        <td>{{item.critical_pon_count}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -152,36 +124,23 @@
             </div>
             <div class="col-lg-4">
               <div class="card">
-                <div class="card-body">
+                <div class="card-header">
                   <h5>Top Customers</h5>
-                  <br>
+                </div>
+                <div class="card-body">
                   <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Customer</th>
-                        <th scope="col">Unit</th>
-                        <th scope="col">Depots</th>
+                        <th scope="col">PONs Count</th>
+                        <th scope="col">Depots Count</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
+                        <td>bestel</td>
+                        <td>6</td>
+                        <td>7</td>
                       </tr>
                     </tbody>
                   </table>
@@ -225,6 +184,7 @@ import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import piechart from "../../utilies/piechart.json";
 import linechart from "../../utilies/linechart.json";
+import * as data from "../../utilies/dumpdata.json";
 import Vue from "vue";
 import * as VueGoogleMaps from "vue2-google-maps";
 import VueGeolocation from "vue-browser-geolocation";
@@ -245,6 +205,9 @@ export default {
   mounted() {
     this.chartone();
     this.charttwo();
+    // $(document).ready(function() {
+    //   $("#example").DataTable();
+    // });
   },
   created() {
     this.$getLocation({ enableHighAccuracy: true }).then(coordinates => {
@@ -252,11 +215,12 @@ export default {
     });
   },
   data() {
-    console.log("dashboard");
+    console.log("dashboard", this.data);
     return {
       gmap: {
         center: { lat: 16.1304, lng: 86.3468 }
-      }
+      },
+      data: data
     };
   },
   methods: {
@@ -293,5 +257,32 @@ export default {
 .container {
   width: 100% !important;
   height: 100%;
+}
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  max-height: 42vh;
+  min-height: 42vh;
+}
+.card-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+  overflow: auto;
+}
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgb(237, 237, 237);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 </style>
