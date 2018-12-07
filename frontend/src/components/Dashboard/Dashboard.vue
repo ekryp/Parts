@@ -11,7 +11,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Total Customer</span>
                   <br>
-                  <span class="text-middle">3</span>
+                  <span class="text-middle">1</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -21,7 +21,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Critical PONs</span>
                   <br>
-                  <span class="text-middle">0</span>
+                  <span class="text-middle" style="color:red">6</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -32,7 +32,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Critical Customers</span>
                   <br>
-                  <span class="text-middle">0</span>
+                  <span class="text-middle" style="color:red">1</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -43,7 +43,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Critical Depots</span>
                   <br>
-                  <span class="text-middle">0</span>
+                  <span class="text-middle" style="color:red">7</span>
                 </div>
                 <div class="vertical"></div>
               </div>
@@ -65,7 +65,7 @@
                 <div class="col-lg-10">
                   <span class="text-top">Total Depots</span>
                   <br>
-                  <span class="text-middle">5</span>
+                  <span class="text-middle">7</span>
                 </div>
               </div>
               <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
@@ -84,8 +84,8 @@
                     <thead>
                       <tr>
                         <th scope="col">PONS</th>
-                        <th scope="col">Unit</th>
                         <th scope="col">Depots</th>
+                        <th scope="col">Count</th>
                       </tr>
                     </thead>
                     <tbody>

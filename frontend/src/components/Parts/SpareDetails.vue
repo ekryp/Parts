@@ -43,11 +43,11 @@
           >Current Gross</a>
           <a
             class="nav-item nav-link"
-            id="nav-contact-tab"
+            id="nav-netInventory-tab"
             data-toggle="tab"
-            href="#nav-contact"
+            href="#nav-netInventory"
             role="tab"
-            aria-controls="nav-contact"
+            aria-controls="nav-netInventory"
             aria-selected="false"
           >Current Net</a>
         </div>
@@ -61,6 +61,7 @@
         >
           <AnalysisSummary :analysisId="requestID"/>
         </div>
+        <!-- current Inventory -->
         <div
           class="tab-pane fade show"
           id="nav-home"
@@ -68,32 +69,33 @@
           aria-labelledby="nav-home-tab"
         >
           <div class="shadow p-3 mb-5 bg-white rounded">
-            <table class="table table-bordered">
+            <div class="float-right">
+              <toggle-button
+                :value="state"
+                color="green"
+                :sync="true"
+                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                width="80"
+                @change="stateChange()"
+              />
+            </div>
+            <br>
+            <br>
+            <table id="currentInventory" class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">part_name</th>
+                  <th scope="col">depot_name</th>
+                  <th v-if="state === true" scope="col">reorder_point</th>
+                  <th v-if="state === false" scope="col">total_stock</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                <tr v-for="item in data.data" :key="item.summary_id">
+                  <th>{{item.part_name}}</th>
+                  <td>{{item.depot_name}}</td>
+                  <td v-if="state === true">{{item.reorder_point}}</td>
+                  <td v-if="state === false">{{item.total_stock}}</td>
                 </tr>
               </tbody>
             </table>
@@ -147,32 +149,19 @@
           aria-labelledby="nav-profile-tab"
         >
           <div class="shadow p-3 mb-5 bg-white rounded">
-            <table class="table table-bordered">
+            <table id="currentIBQuantity" class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">product_ordering_name</th>
+                  <th scope="col">node_depot_belongs</th>
+                  <th scope="col">pon_quanity</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                <tr v-for="x in data.ibquantity" :key="x.id">
+                  <td>{{x.product_ordering_name}}</td>
+                  <td>{{x.node_depot_belongs}}</td>
+                  <td>{{x.pon_quanity}}</td>
                 </tr>
               </tbody>
             </table>
@@ -185,32 +174,19 @@
           aria-labelledby="nav-contact-tab"
         >
           <div class="shadow p-3 mb-5 bg-white rounded">
-            <table class="table table-bordered">
+            <table id="currentCross" class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">Part Name</th>
+                  <th scope="col">Depot Name</th>
+                  <th scope="col">Shared Quantity</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                <tr v-for="i in data.data" :key="i.summary_id">
+                  <td>{{i.part_name}}</td>
+                  <td>{{i.depot_name}}</td>
+                  <td>{{i.shared_quantity}}</td>
                 </tr>
               </tbody>
             </table>
@@ -218,10 +194,43 @@
         </div>
         <div
           class="tab-pane fade"
-          id="nav-contact"
+          id="nav-netInventory"
           role="tabpanel"
-          aria-labelledby="nav-contact-tab"
-        >.....</div>
+          aria-labelledby="nav-netInventory-tab"
+        >
+          <div class="shadow p-3 mb-5 bg-white rounded">
+            <div class="float-right">
+              <toggle-button
+                :value="state"
+                color="green"
+                :sync="true"
+                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                width="80"
+                @change="stateChange()"
+              />
+            </div>
+            <br>
+            <br>
+            <table id="netInventory" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Part Name</th>
+                  <th scope="col">Depot Name</th>
+                  <th scope="col" v-if="state === true">Net Reorder Point</th>
+                  <th scope="col" v-if="state === false">Net Total Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="i in data.data" :key="i.summary_id">
+                  <td>{{i.part_name}}</td>
+                  <td>{{i.depot_name}}</td>
+                  <td v-if="state === true">{{i.net_reorder_point}}</td>
+                  <td v-if="state === false">{{i.net_total_stock}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -232,6 +241,10 @@ import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import AnalysisSummary from "@/components/Parts/AnalysisSummary";
+import * as data from "./data.json";
+import Vue from "vue";
+import ToggleButton from "vue-js-toggle-button";
+Vue.use(ToggleButton);
 
 export default {
   name: "SpareDetails",
@@ -247,10 +260,24 @@ export default {
   data() {
     console.log("SpareDetails");
     return {
-      requestID: ""
+      requestID: "",
+      data: data,
+      state: false
     };
   },
-  methods: {}
+  mounted() {
+    $(document).ready(function() {
+      $("#currentIBQuantity").DataTable();
+      $("#currentInventory").DataTable();
+      $("#netInventory").DataTable();
+      $("#currentCross").DataTable();
+    });
+  },
+  methods: {
+    stateChange() {
+      this.state = !this.state;
+    }
+  }
 };
 </script>
 <style>
@@ -268,6 +295,7 @@ a {
   font-size: 1.15vw;
 }
 .nav-tabs .nav-link {
+  color: black;
   font-size: 1.15vw;
   border: 1px solid transparent;
   border-top-left-radius: 0.25rem;
