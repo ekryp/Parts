@@ -1,7 +1,6 @@
 import pandas as pd
-from sqlalchemy import create_engine
-from datetime import datetime
 from app import Configuration
+from sqlalchemy import create_engine
 
 engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
 

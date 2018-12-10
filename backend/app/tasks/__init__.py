@@ -1,40 +1,16 @@
-import json
-import os
+import math
+
+import numpy as np
 import pandas as pd
+from app import Configuration
+from app import app
+from app.tasks.common_functions import fetch_db, misnomer_conversion, \
+    check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
+    to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
+    add_hnad, to_sql_bom, read_data
+from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
-from sqlalchemy import exc
-from shutil import copy
-import glob
-import time
-import smtplib
-from email.mime.text import MIMEText
-
-from app import app
-from app import Configuration
-
-import pandas as pd
-import numpy as np
-from sqlalchemy import create_engine
-import math
-import sys
-import os
-import timeit
-
-import pandas as pd
-import numpy as np
-from sqlalchemy import create_engine
-import math
-import sys
-import os
-import timeit
-from datetime import datetime, timedelta
-from app.tasks.common_functions import fetch_db, misnomer_conversion,\
-    check_in_std_cst, validate_pon, validate_depot, process_error_pon,\
-    to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory,\
-    add_hnad, to_sql_bom, read_data
-
-from app.tasks.customer_dna import cleaned_dna_file
 
 engine = create_engine(Configuration.INFINERA_DB_URL)
 connection = Configuration.INFINERA_DB_URL
