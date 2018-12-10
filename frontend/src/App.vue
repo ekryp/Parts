@@ -22,7 +22,7 @@ body {
 }
 .custom-container {
   margin-left: 5%;
-  /* padding-top: 5%; */
+  padding: 2%;
 }
 .btn-success {
   background-color: #26b99a;
@@ -30,8 +30,8 @@ body {
 .btn-success:hover {
   background-color: #169f85;
 }
-.container {
+/* .container {
   width: 100% !important;
   height: 100%;
-}
+} */
 </style>
