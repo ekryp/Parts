@@ -109,7 +109,7 @@
           <div class="form-group">
             <div class="row">
               <div class="col-lg-3">
-                <label>Replensih time for MTBF based Analaysis :</label>
+                <label>Replensih time :</label>
               </div>
               <div class="col-lg-6">
                 <input
@@ -159,7 +159,7 @@
             </div>
             <div class="row" style="marginTop:0%">
               <div class="col-lg-3">
-                <label>SAP File :</label>
+                <label>SAP Current Inventory File :</label>
               </div>
               <div class="col-lg-6 form-group">
                 <div class="row">
@@ -476,6 +476,7 @@ export default {
   name: "PartsAnalysis",
 
   created() {
+    
     if (this.$route.query.id !== undefined) {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
@@ -520,7 +521,9 @@ export default {
       dnafile: "",
       sapfile: "",
       partsAnalysisData: "",
-      partsAnalysis: ""
+      partsAnalysis: "",
+      partsClose: true,
+      showPartsChild: false
     };
   },
   methods: {
@@ -573,7 +576,8 @@ export default {
       }
     },
     cancel() {
-      // router.push("/parts/anlaysis/dashboard");
+      router.push("/parts/analysis/dashboard");
+      
     },
     formSubmit() {
       let data = {
@@ -687,6 +691,9 @@ export default {
 .file {
   cursor: pointer;
 }
+.nav-custom {
+  padding-top: 20px rem !important;
+}
 .dot {
   height: 50px;
   width: 50px;
@@ -729,4 +736,7 @@ export default {
   border-radius: 50%;
   display: inline-block;
 }
+
+
+
 </style>

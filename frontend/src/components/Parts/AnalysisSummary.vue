@@ -37,7 +37,7 @@
               <input
                 type="email"
                 class="form-control"
-                v-model="partsAnalysisSummaryReslut[0].analysis_request_id"
+                v-model="'AR0000'+partsAnalysisSummaryReslut[0].analysis_request_id"
                 placeholder="Analysis Id"
                 disabled
                 style="text-align:right; fontSize:1vw; marginTop:2%"
@@ -61,7 +61,7 @@
               <!-- <th colspan="2">Shared Depot</th> -->
               <th colspan="2">Gross Requirement</th>
               <th colspan="2">Net by Depots</th>
-              <th scope="col">Has High Spare?</th>
+              <th scope="col" rowspan="2" >Has High Spare?</th>
             </tr>
             <tr style="fontSize:1vw">
               <th scope="col">Item Number</th>
@@ -74,7 +74,7 @@
               <th scope="col">Ext Std Cost ($)</th>
               <th scope="col">Qty</th>
               <th scope="col">Ext Std Cost ($)</th>
-              <th scope="col">Checkbox</th>
+             
             </tr>
           </thead>
           <tbody>
@@ -91,7 +91,16 @@
               <td class="right">{{item.extd_std_cost | currency('')}}</td>
               <td>{{item.net_depot_count}}</td>
               <td class="right">{{item.net_extd_std_cost | currency('')}}</td>
-              <td>{{item.High_Spares}}</td>
+              <td 
+                v-if="item.High_Spares != 0"
+              >
+                <input type="checkbox" name="vehicle3" value="{item.High_Spares}" checked>
+              </td>
+              <td 
+                v-else
+              >
+                <input type="checkbox" name="vehicle3" value="{item.High_Spares}" >
+              </td>
             </tr>
           </tbody>
         </table>

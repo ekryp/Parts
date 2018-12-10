@@ -88,14 +88,12 @@
                   <thead>
                     <tr>
                       <th scope="col">PONs</th>
-                      <th scope="col">Depots</th>
                       <th scope="col">Count</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="item in data.topPONs" :key="item.id">
                       <td>{{item.part_name}}</td>
-                      <td>{{item.depot_name}}</td>
                       <td>{{item.count}}</td>
                     </tr>
                   </tbody>

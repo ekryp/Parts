@@ -3,105 +3,29 @@
         {
             "id": 1,
             "part_name": "AAM-B1",
-            "depot_name": "HNAD",
-            "count": "1"
+            "count": "4"
         },
         {
             "id": 2,
-            "part_name": "AAM-B1",
-            "depot_name": "MEXC",
-            "count": "1"
+            "part_name": "AAM-B2",
+            "count": "3"
         },
         {
             "id": 3,
-            "part_name": "AAM-B1",
-            "depot_name": "SLPM",
-            "count": "1"
+            "part_name": "MTC-9-PEM",
+            "count": "3"
         },
         {
             "id": 4,
-            "part_name": "AAM-B1",
-            "depot_name": "TAM",
-            "count": "1"
+            "part_name": "TOM-10G-D55-LR2",
+            "count": "8"
         },
         {
             "id": 5,
-            "part_name": "AAM-B2",
-            "depot_name": "HNAD",
-            "count": "2"
-        },
-        {
-            "id": 6,
-            "part_name": "AAM-B2",
-            "depot_name": "MEXC",
-            "count": "1"
-        },
-        {
-            "id": 7,
-            "part_name": "MTC-9-PEM",
-            "depot_name": "MEXC",
-            "count": "1"
-        },
-        {
-            "id": 8,
-            "part_name": "MTC-9-PEM",
-            "depot_name": "HNAD",
-            "count": "2"
-        },
-        {
-            "id": 9,
-            "part_name": "TOM-10G-D55-LR2",
-            "depot_name": "MEXC",
-            "count": "2"
-        },
-        {
-            "id": 10,
-            "part_name": "TOM-10G-D55-LR2",
-            "depot_name": "MEXC",
-            "count": "2"
-        },
-        {
-            "id": 17,
-            "part_name": "TOM-10G-D55-LR2",
-            "depot_name": "HNAD",
-            "count": "2"
-        },
-        {
-            "id": 11,
-            "part_name": "TOM-10G-D55-LR2",
-            "depot_name": "HNAD",
-            "count": "2"
-        },
-        {
-            "id": 12,
             "part_name": "TOM-1G-ZX=",
-            "depot_name": "GDLM",
-            "count": "2"
-        },
-        {
-            "id": 13,
-            "part_name": "TOM-1G-ZX=",
-            "depot_name": "HERM",
-            "count": "2"
-        },
-        {
-            "id": 14,
-            "part_name": "TOM-1G-ZX=",
-            "depot_name": "HNAD",
-            "count": "2"
-        },
-        {
-            "id": 15,
-            "part_name": "TOM-1G-ZX=",
-            "depot_name": "MTYM",
-            "count": "2"
-        },
-        {
-            "id": 16,
-            "part_name": "TOM-1G-ZX=",
-            "depot_name": "SLPM",
-            "count": "2"
+            "count": "10"
         }
+        
     ],
     "topDeptos": [
         {
