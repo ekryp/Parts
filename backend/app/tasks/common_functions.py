@@ -68,11 +68,11 @@ def isinarray(Input_Data, Standard_cost):
     return False
 
 
-def to_sql_customer_dna_record(table_name, df):
+def to_sql_customer_dna_record(table_name, df, analysis_date):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
-    analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    #df['analysis_request_time'] = analysis_date
+    # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    # df['analysis_request_time'] = analysis_date
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Hardcoded to 7  infinera
     #df['cust_id'] = 7
@@ -108,11 +108,11 @@ def to_sql_customer_dna_record(table_name, df):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_sap_inventory(table_name, df):
+def to_sql_sap_inventory(table_name, df, analysis_date):
 
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
-    analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     #df['analysis_request_time'] = analysis_date
     engine = Configuration.ECLIPSE_DATA_DB_URI
     #df['cust_id'] = 7
@@ -155,12 +155,12 @@ def to_sql_summarytable(table_name, df):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_error(table_name, df, invalid_reason):
+def to_sql_error(table_name, df, invalid_reason, analysis_date):
 
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
-    analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     #df['analysis_request_time'] = analysis_date
     #df['cust_id'] = 7
     df.loc[:, 'analysis_request_time'] = analysis_date
@@ -182,12 +182,12 @@ def to_sql_error(table_name, df, invalid_reason):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def process_error_pon(table_name, df):
+def process_error_pon(table_name, df, analysis_date):
 
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
-    analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     #df['analysis_request_time'] = analysis_date
     df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
@@ -218,7 +218,7 @@ def process_error_pon(table_name, df):
 
 
 
-def validate_pon(pon):
+def validate_pon(pon, analysis_date):
 
     pon['Valid'] = True
     invalid_list = ["", "none", "n/a", "null", "chassis", "unknown", "@", ".."]
@@ -227,18 +227,18 @@ def validate_pon(pon):
     valid_pon = pon[pon['Valid'] == True]
     invalid_pon = pon[pon['Valid'] == False]
     if not invalid_pon.empty:
-        to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo")
+        to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo", analysis_date)
     return valid_pon
 
 
-def validate_depot(pon):
+def validate_depot(pon, analysis_date):
 
     invalid_list = ["not 4hr", "not supported"]
     pon.loc[pon['Node Name'].isin(invalid_list), 'Valid'] = False
     valid_pon = pon[pon['Valid'] == True]
     invalid_pon = pon[pon['Valid'] == False]
     if not invalid_pon.empty:
-        to_sql_error('error_records', invalid_pon, "Invalid Node Name")
+        to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date)
     return valid_pon
 
 
@@ -303,12 +303,12 @@ def add_hnad(df,quantity):
     return df
 
 
-def to_sql_bom(table_name, df):
+def to_sql_bom(table_name, df, analysis_date):
 
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
-    analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     # df['analysis_request_time'] = analysis_date
     # df['cust_id'] = 7
     df.loc[:, 'analysis_request_time'] = analysis_date
@@ -325,11 +325,11 @@ def to_sql_bom(table_name, df):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_mtbf(table_name, df):
+def to_sql_mtbf(table_name, df, analysis_date):
     engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
-    analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     # df['analysis_request_time'] = analysis_date
     # df['cust_id'] = 7
     df.loc[:, 'analysis_request_time'] = analysis_date
