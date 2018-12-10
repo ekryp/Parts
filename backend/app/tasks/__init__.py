@@ -135,7 +135,7 @@ def shared_function(dna_file, sap_file, analysis_date):
     # 5.9 Process Error Records - Compare Valid PON against
 
     sap_inventory = read_sap_export_file(sap_file)
-    to_sql_sap_inventory('sap_inventory', sap_inventory.head(10), analysis_date)
+    to_sql_sap_inventory('sap_inventory', sap_inventory, analysis_date)
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
@@ -212,7 +212,7 @@ def remove_hub_depot(df, depot):
     return all_depots
 
 
-def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date):
+def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id):
 
     Connection = Configuration.ECLIPSE_DATA_DB_URI
     single_bom = pd.merge(single_bom, high_spares, on='part_name', how='left')
@@ -276,6 +276,7 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     #single_bom['cust_id'] = 7
     single_bom.loc[:, 'cust_id'] = 7
     single_bom.loc[:, 'analysis_request_time'] = analysis_date
+    single_bom.loc[:, 'user_email_id'] = user_email_id
     single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
     print("Loaded data into summary table")
 
@@ -310,7 +311,7 @@ def get_bom(dna_file, sap_file, analysis_date):
 def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_date, user_email_id):
 
     single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date)
-    calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date)
+    calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id)
 
     def set_request_status_complete(analysis_date):
         engine = create_engine(Configuration.INFINERA_DB_URL)
