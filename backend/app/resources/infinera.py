@@ -1,30 +1,19 @@
-import requests
-from flask_restful import Resource
-from flask_restful import reqparse
 import json
 import os
-import sys
-import requests
-from flask import jsonify
-import glob
+from datetime import datetime
 
-from app import Configuration
-from app.auth.authorization import requires_auth
-from app.models.basemodel import get_session
-from app.models.ekryp_user import User, UserSettings
-import time, calendar
-from sqlalchemy import create_engine
 import pandas as pd
-import traceback
-from datetime import datetime, timedelta
-from flask import _app_ctx_stack, session, request
-import json
-import time
-import urllib
+from app import Configuration
 from app import app
-from app import csvs,excel
-from app.tasks import celery, add_prospect, update_prospect_step,shared_function #, derive_table_creation
+from app import csvs, excel
+from app.tasks import celery, add_prospect
 from app.utils.utils import get_df_from_sql_query
+from flask import jsonify
+from flask import request
+from flask_restful import Resource
+from flask_restful import reqparse
+from sqlalchemy import create_engine
+
 
 class GetSparePartAnalysis(Resource):
 
@@ -239,17 +228,18 @@ class PostSparePartAnalysis(Resource):
             prospect_id = add_prospect(args['user_email_id'])
             dna_file = os.path.join(full_path, customer_dna_file)
             sap_file = os.path.join(full_path, sap_export_file)
+            #derive_table_creation(dna_file, sap_file, full_path, prospect_id, analysis_date, args['user_email_id'])
+
             print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id ))
             '''
             update_prospect_step(prospect_id, 1, analysis_date)
             update_prospect_step(prospect_id, 2, analysis_date)
             update_prospect_step(prospect_id, 3, analysis_date)
             update_prospect_step(prospect_id, 4, analysis_date)
-            derive_table_creation(dna_file, sap_file, full_path, prospect_id, analysis_date, args['user_email_id'])
-            celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path, prospect_id,
-            #                                                     analysis_date, args['user_email_id']])
             '''
-            shared_function(dna_file, sap_file)
+            celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path, prospect_id,
+                                                                analysis_date, args['user_email_id']])
+
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
         except:
