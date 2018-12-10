@@ -72,19 +72,21 @@ def to_sql_customer_dna_record(table_name, df):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    df['analysis_request_time'] = analysis_date
+    #df['analysis_request_time'] = analysis_date
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Hardcoded to 7  infinera
-    df['cust_id'] = 7
-
+    #df['cust_id'] = 7
+    df.loc[:, 'analysis_request_time'] = analysis_date
+    df.loc[:, 'cust_id'] = 7
     # Hardcoded as of now but we will get it from customer_name field in frontend
     # Use function get_end_customer_id_from_name to get end_cust_id of customer
-    df['end_customer_id'] = 1
-
+    # df['end_customer_id'] = 1
+    df.loc[:, 'end_customer_id'] = 1
     # Get the serial number and strip any leading zeros and store both striped
     # and unstriped serial number
 
-    df['strip_serial'] = df['Serial#'].str.lstrip('0')
+    # df['strip_serial'] = df['Serial#'].str.lstrip('0')
+    df.loc[:, 'strip_serial'] = df['Serial#'].str.lstrip('0')
 
     df.rename(columns={
         '#Type': 'type',
@@ -111,10 +113,13 @@ def to_sql_sap_inventory(table_name, df):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    df['analysis_request_time'] = analysis_date
+    #df['analysis_request_time'] = analysis_date
     engine = Configuration.ECLIPSE_DATA_DB_URI
-    df['cust_id'] = 7
-    df['strip_material_number'] = df['Material Number'].astype(str).str.lstrip('0')
+    #df['cust_id'] = 7
+    df.loc[:, 'analysis_request_time'] = analysis_date
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'strip_material_number'] = df['Material Number'].astype(str).str.lstrip('0')
+    #df['strip_material_number'] = df['Material Number'].astype(str).str.lstrip('0')
     df.rename(columns={
         'Plant': 'plant_id',
         'Storage Location = Depot Name': 'storage_location',
@@ -135,8 +140,10 @@ def to_sql_sap_inventory(table_name, df):
 
 def to_sql_summarytable(table_name, df):
     engine = Configuration.ECLIPSE_DATA_DB_URI
-    df['cust_id'] = 7
-    df['summary_table'] = 1
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'summary_table'] = 1
+    # df['cust_id'] = 7
+    # df['summary_table'] = 1
     df.rename(columns={
         'material_number_x' : 'material_number',
         'standard_cost_x' : 'standard_cost'
@@ -154,9 +161,11 @@ def to_sql_error(table_name, df, invalid_reason):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    df['analysis_request_time'] = analysis_date
-    df['cust_id'] = 7
-    df['error_reason'] = invalid_reason
+    #df['analysis_request_time'] = analysis_date
+    #df['cust_id'] = 7
+    df.loc[:, 'analysis_request_time'] = analysis_date
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'error_reason'] = invalid_reason
     df.rename(columns={
         'Product Ordering Name': 'PON',
         'Node Name': 'node_name',
@@ -179,8 +188,10 @@ def process_error_pon(table_name, df):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    df['analysis_request_time'] = analysis_date
-    df['cust_id'] = 7
+    #df['analysis_request_time'] = analysis_date
+    df.loc[:, 'analysis_request_time'] = analysis_date
+    df.loc[:, 'cust_id'] = 7
+    #df['cust_id'] = 7
     df = df.drop(['end_customer_node_belongs', 'node_depot_belongs', 'standard_cost',
                    'Valid', 'is_sparrable', 'node_name', 'node_id', 'material_number'], 1)
     for index, row in df.iterrows():
@@ -298,8 +309,10 @@ def to_sql_bom(table_name, df):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    df['analysis_request_time'] = analysis_date
-    df['cust_id'] = 7
+    # df['analysis_request_time'] = analysis_date
+    # df['cust_id'] = 7
+    df.loc[:, 'analysis_request_time'] = analysis_date
+    df.loc[:, 'cust_id'] = 7
     df.rename(columns={
         'Product Ordering Name': 'part_name',
         'node_depot_belongs': 'depot_name',
@@ -317,8 +330,10 @@ def to_sql_mtbf(table_name, df):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    df['analysis_request_time'] = analysis_date
-    df['cust_id'] = 7
+    # df['analysis_request_time'] = analysis_date
+    # df['cust_id'] = 7
+    df.loc[:, 'analysis_request_time'] = analysis_date
+    df.loc[:, 'cust_id'] = 7
     df.rename(columns={
         'Product Ordering Name': 'part_name',
         'node_depot_belongs': 'depot_name',
