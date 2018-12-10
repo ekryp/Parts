@@ -84,10 +84,10 @@
             <table id="currentInventory" class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">part_name</th>
-                  <th scope="col">depot_name</th>
-                  <th v-if="state === true" scope="col">reorder_point</th>
-                  <th v-if="state === false" scope="col">total_stock</th>
+                  <th scope="col">Part Name</th>
+                  <th scope="col">Depot Name</th>
+                  <th v-if="state === true" scope="col">ReOrder Point</th>
+                  <th v-if="state === false" scope="col">Total Stock</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,9 +152,9 @@
             <table id="currentIBQuantity" class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">product_ordering_name</th>
-                  <th scope="col">node_depot_belongs</th>
-                  <th scope="col">pon_quanity</th>
+                  <th scope="col">Product Ordering Name</th>
+                  <th scope="col">Node Depot Belongs</th>
+                  <th scope="col">PON Quantity</th>
                 </tr>
               </thead>
               <tbody>

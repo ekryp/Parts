@@ -3,173 +3,186 @@
     <headernav msg="Dashboard"/>
     <side-nav/>
     <div class="custom-container" style="paddingTop: 2%">
-      <div class="container">
-        <div class="row-one">
-          <div class="row text-center">
-            <div class="col-lg-2">
-              <div class="row">
-                <div class="col-lg-10">
-                  <span class="text-top">Total Customer</span>
-                  <br>
-                  <span class="text-middle">1</span>
-                </div>
-                <div class="vertical"></div>
+      <div class="row-one">
+        <div class="row text-center">
+          <div class="col-lg-2">
+            <div class="row">
+              <div class="col-lg-10">
+                <span class="text-top">Total Customer</span>
+                <br>
+                <span class="text-middle">1</span>
               </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="row">
-                <div class="col-lg-10">
-                  <span class="text-top">Critical PONs</span>
-                  <br>
-                  <span class="text-middle" style="color:red">6</span>
-                </div>
-                <div class="vertical"></div>
-              </div>
-              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-            </div>
-            <div class="col-lg-2">
-              <div class="row">
-                <div class="col-lg-10">
-                  <span class="text-top">Critical Customers</span>
-                  <br>
-                  <span class="text-middle" style="color:red">1</span>
-                </div>
-                <div class="vertical"></div>
-              </div>
-              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-            </div>
-            <div class="col-lg-2">
-              <div class="row">
-                <div class="col-lg-10">
-                  <span class="text-top">Critical Depots</span>
-                  <br>
-                  <span class="text-middle" style="color:red">7</span>
-                </div>
-                <div class="vertical"></div>
-              </div>
-              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-            </div>
-            <div class="col-lg-2">
-              <div class="row">
-                <div class="col-lg-10">
-                  <span class="text-top">Total PON types</span>
-                  <br>
-                  <span class="text-middle">4</span>
-                </div>
-                <div class="vertical"></div>
-              </div>
-              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-            </div>
-            <div class="col-lg-2">
-              <div class="row">
-                <div class="col-lg-10">
-                  <span class="text-top">Total Depots</span>
-                  <br>
-                  <span class="text-middle">7</span>
-                </div>
-              </div>
-              <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
+              <div class="vertical"></div>
             </div>
           </div>
+          <div class="col-lg-2">
+            <div class="row">
+              <div class="col-lg-10">
+                <span class="text-top">Critical PONs</span>
+                <br>
+                <span class="text-middle" style="color:red">6</span>
+              </div>
+              <div class="vertical"></div>
+            </div>
+            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
+          </div>
+          <div class="col-lg-2">
+            <div class="row">
+              <div class="col-lg-10">
+                <span class="text-top">Critical Customers</span>
+                <br>
+                <span class="text-middle" style="color:red">1</span>
+              </div>
+              <div class="vertical"></div>
+            </div>
+            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
+          </div>
+          <div class="col-lg-2">
+            <div class="row">
+              <div class="col-lg-10">
+                <span class="text-top">Critical Depots</span>
+                <br>
+                <span class="text-middle" style="color:red">7</span>
+              </div>
+              <div class="vertical"></div>
+            </div>
+            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
+          </div>
+          <div class="col-lg-2">
+            <div class="row">
+              <div class="col-lg-10">
+                <span class="text-top">Total PON types</span>
+                <br>
+                <span class="text-middle">4</span>
+              </div>
+              <div class="vertical"></div>
+            </div>
+            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
+          </div>
+          <div class="col-lg-2">
+            <div class="row">
+              <div class="col-lg-10">
+                <span class="text-top">Total Depots</span>
+                <br>
+                <span class="text-middle">7</span>
+              </div>
+            </div>
+            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
+          </div>
         </div>
-        <div class="row-two">
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-header">
-                  <h5>Top PONs</h5>
-                </div>
-                <div class="card-body">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">PONS</th>
-                        <th scope="col">Depots</th>
-                        <th scope="col">Count</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="item in data.topPONs" :key="item.id">
-                        <td>{{item.part_name}}</td>
-                        <td>{{item.depot_name}}</td>
-                        <td>{{item.count}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+      </div>
+      <div class="row-two">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-11">
+                    <h6>Top PONs</h6>
+                  </div>
+                  <i class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
               </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-header">
-                  <h5>Top Depots</h5>
-                </div>
-                <div class="card-body">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Depot</th>
-                        <th scope="col">PONs Count</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="item in data.topDeptos" :key="item.id">
-                        <td>{{item.depot_name}}</td>
-                        <td>{{item.critical_pon_count}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-header">
-                  <h5>Top Customers</h5>
-                </div>
-                <div class="card-body">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Customer</th>
-                        <th scope="col">PONs Count</th>
-                        <th scope="col">Depots Count</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>bestel</td>
-                        <td>6</td>
-                        <td>7</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">PONs</th>
+                      <th scope="col">Depots</th>
+                      <th scope="col">Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in data.topPONs" :key="item.id">
+                      <td>{{item.part_name}}</td>
+                      <td>{{item.depot_name}}</td>
+                      <td>{{item.count}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-11">
+                    <h6>Top Depots</h6>
+                  </div>
+                  <i class="fas fa-share-square" style="cursor:pointer"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Depot</th>
+                      <th scope="col">PONs Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in data.topDeptos" :key="item.id">
+                      <td>{{item.depot_name}}</td>
+                      <td>{{item.critical_pon_count}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-11">
+                    <h6>Top Customers</h6>
+                  </div>
+                  <i class="fas fa-share-square" style="cursor:pointer"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Customer</th>
+                      <th scope="col">PONs Count</th>
+                      <th scope="col">Depots Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>bestel</td>
+                      <td>6</td>
+                      <td>7</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row-two">
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-body">
-                  <div id="container" style="height:250px"></div>
-                </div>
+      </div>
+      <div class="row-two">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <div id="container" style="height:250px"></div>
               </div>
             </div>
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-body">
-                  <div id="container2" style="height:250px"></div>
-                </div>
+          </div>
+          <!-- <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <div id="container2" style="height:250px"></div>
               </div>
             </div>
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-body">
-                  <GmapMap :center="gmap.center" :zoom="2" style="width: 300px; height: 36vh"></GmapMap>
-                </div>
+          </div>-->
+          <div class="col-lg-8">
+            <div class="card">
+              <div class="card-body">
+                <GmapMap :center="gmap.center" :zoom="2" style="width: 720px; height: 36vh"></GmapMap>
               </div>
             </div>
           </div>
@@ -235,10 +248,12 @@ export default {
 </script>
 <style>
 .text-top {
-  font-size: 1vw;
+  font-size: 1.15vw;
+  font-weight: 500;
 }
 .text-middle {
-  font-size: 2vw;
+  font-size: 40px;
+  font-weight: 600;
 }
 .text-bottom {
   font-size: 1vw;
@@ -247,7 +262,7 @@ export default {
   padding-top: 5%;
 }
 .row-two {
-  margin-top: 5%;
+  margin-top: 2%;
 }
 .vertical {
   width: 1%;
