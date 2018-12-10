@@ -29,7 +29,11 @@ import sys
 import os
 import timeit
 from datetime import datetime, timedelta
+from app.tasks.common_functions import fetch_db, misnomer_conversion,\
+    check_in_std_cst, validate_pon, validate_depot, process_error_pon,\
+    to_sql_customer_dna_record,read_sap_export_file,to_sql_sap_inventory
 
+from app.tasks.customer_dna import cleaned_dna_file
 
 engine = create_engine(Configuration.INFINERA_DB_URL)
 connection = Configuration.INFINERA_DB_URL
@@ -49,122 +53,6 @@ def make_celery(app):
     return celery
 
 celery = make_celery(app)
-
-def read_data(sql, con):
-    connection = create_engine(con)
-    return pd.read_sql(sql, con=connection)
-
-
-def clean_pon_names(input_db):
-    input_db['Product Ordering Name'] = input_db['Product Ordering Name'].str.replace('/[^a-zA-Z0-9-*.]/',
-                                                                                      '').str.strip()
-    input_db['InstalledEqpt'] = input_db['InstalledEqpt'].str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
-    input_db['Part#'] = input_db['Part#'].str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
-    return input_db
-
-
-def misnomer_conversion(input_db, misnomer_pons):
-    input_with_no_misnomer_pon = pd.DataFrame()
-    input_with_no_misnomer_pon = pd.merge(input_db, misnomer_pons, left_on='Product Ordering Name',
-                                          right_on='misnomer_pon_name', how='left')
-    input_with_no_misnomer_pon.loc[(input_with_no_misnomer_pon['Product Ordering Name'] == input_with_no_misnomer_pon[
-        'misnomer_pon_name']), 'Product Ordering Name'] = input_with_no_misnomer_pon['part_name']
-    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_pon_name', 'part_name'], 1)
-
-    input_with_no_misnomer_pon = pd.merge(input_with_no_misnomer_pon, misnomer_pons, left_on='InstalledEqpt',
-                                          right_on='misnomer_pon_name', how='left')
-    input_with_no_misnomer_pon.loc[(input_with_no_misnomer_pon['InstalledEqpt'] == input_with_no_misnomer_pon[
-        'misnomer_pon_name']), 'InstalledEqpt'] = input_with_no_misnomer_pon['part_name']
-    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_pon_name', 'part_name'], 1)
-
-    input_with_no_misnomer_pon = pd.merge(input_with_no_misnomer_pon, misnomer_pons, left_on='Part#',
-                                          right_on='misnomer_pon_name', how='left')
-    input_with_no_misnomer_pon.loc[
-        (input_with_no_misnomer_pon['Part#'] == input_with_no_misnomer_pon['misnomer_pon_name']), 'Part#'] = \
-    input_with_no_misnomer_pon['part_name']
-    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_pon_name', 'part_name'], 1)
-
-    return input_with_no_misnomer_pon
-
-
-def check_in_std_cst(input_DB_merge_PON_Misnomer, Standard_Cost):
-    for i in range(len(input_DB_merge_PON_Misnomer)):
-        if (str(input_DB_merge_PON_Misnomer['Product Ordering Name'][i]) in ("CHASSIS")):
-            input_DB_merge_PON_Misnomer['Product Ordering Name'][i] = input_DB_merge_PON_Misnomer['InstalledEqpt'][i]
-        else:
-            if (isinarray(input_DB_merge_PON_Misnomer['Product Ordering Name'][i], Standard_Cost) == True):
-                input_DB_merge_PON_Misnomer['Product Ordering Name'][i] = \
-                input_DB_merge_PON_Misnomer['Product Ordering Name'][i]
-
-            elif (isinarray(input_DB_merge_PON_Misnomer['InstalledEqpt'][i], Standard_Cost) == True):
-                input_DB_merge_PON_Misnomer['Product Ordering Name'][i] = input_DB_merge_PON_Misnomer['InstalledEqpt'][
-                    i]
-
-            elif (isinarray(input_DB_merge_PON_Misnomer['Part#'][i], Standard_Cost) == True):
-                input_DB_merge_PON_Misnomer['Product Ordering Name'][i] = input_DB_merge_PON_Misnomer['Part#'][i]
-    return input_DB_merge_PON_Misnomer
-
-
-def isinarray(Input_Data, Standard_cost):
-    for j in range(len(Standard_cost['part_name'])):
-        if Input_Data == Standard_cost['part_name'][j]:
-            return True
-    return False
-
-
-def to_sql_customer_dna_record(table_name, df):
-    engine = Configuration.ECLIPSE_DATA_DB_URI
-    df['cust_id'] = 7
-    df['end_customer_id'] = 1
-    df.rename(columns={
-        '#Type': 'type',
-        'Node ID': 'node_id',
-        'AID': 'aid',
-        'InstalledEqpt': 'installed_eqpt',
-        'Product Ordering Name': 'part_ordering_number',
-        'Part#': 'part',
-        'Serial#': 'serial',
-        'Source': 'source_part_data'
-    }, inplace=True
-    )
-    keep_col = ['cust_id', 'type', 'node_id', 'installed_eqpt', 'part_ordering_number', 'part', 'serial',
-                'source_part_data', 'aid', 'end_customer_id']
-    df = df[keep_col]
-    #df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
-    print("Loaded Data into table : {0}".format(table_name))
-
-
-def to_sql_summarytable(table_name, df, analysis_date, user_email_id):
-    engine = Configuration.ECLIPSE_DATA_DB_URI
-    df['cust_id'] = 7
-    df['summary_table'] = 1
-    df['user_email_id'] = user_email_id
-    df['analysis_request_time'] = analysis_date
-    df.rename(columns={
-        'material_number_x' : 'material_number',
-        'standard_cost_x' : 'standard_cost'
-    }, inplace=True
-    )
-    keep_col = ['cust_id', 'summary_table', 'PON', 'material_number', 'Qty',
-                'standard_cost', 'gross table count', 'extd std cost',
-                'High Spares?', 'net depot count', 'net extd std cost',
-                'user_email_id', 'analysis_request_time']
-    df = df[keep_col]
-    df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
-    print("Loaded Data into table : {0}".format(table_name))
-
-def validate_pon(pon):
-    invalid_list = ["", "none", "n/a", "null", "chassis", "unknown", "@", ".."]
-    for col_name in ['Product Ordering Name', 'InstalledEqpt']:
-        pon.loc[pon[col_name].isin(invalid_list), 'Is Valid' + ' ' + str(col_name)] = False
-    return pon
-
-
-def validate_depot(pon):
-    invalid_list = ["not 4hr", "not supported"]
-    for col_name in ['node_depot_belongs']:
-        pon.loc[pon[col_name].str.lower().isin(invalid_list), 'Is Valid' + ' ' + str(col_name)] = False
-    return pon
 
 def add_prospect(email_id):
     engine = create_engine(Configuration.INFINERA_DB_URL)
@@ -531,6 +419,80 @@ def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_d
         engine.execute(query)
     set_request_status_complete(analysis_date)
 
+
+def shared_function(dna_file, sap_file):
+
+    # 5.4 Load all Data elements from Reference Data
+    (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
+     parts_cost, high_spares, depot) = fetch_db()
+
+    # clean PONs, part# and installed equipments
+    input_db = cleaned_dna_file(dna_file)
+
+
+    # 5.5 Convert Misnomer PON to correct PON
+    # PON with no misnomers
+    input_with_no_misnomer_pon = misnomer_conversion(input_db, misnomer_pons)
+    to_sql_customer_dna_record('customer_dna_record', input_db)
+
+    print('Checking PON, part# in std cost...')
+    # 5.6 Apply Standard Cost Rule
+    input_with_no_misnomer_pon = check_in_std_cst(input_with_no_misnomer_pon, standard_cost)
+
+    # Assign PON to Installed equipments to remove any ambiguity
+    input_with_no_misnomer_pon['InstalledEqpt'] = input_with_no_misnomer_pon['Product Ordering Name']
+
+    # 5.7 Validate PONs and Depot
+    print(input_with_no_misnomer_pon.shape)
+    valid_pon = validate_pon(input_with_no_misnomer_pon)
+    valid_pon = validate_depot(valid_pon)
+    print(valid_pon.shape)
+    # 5.8 Identify Valid Sparable Items and Identify Error Conditions
+
+    # 5.8.1 Calculate node_to_depot
+    valid_pon = pd.merge(valid_pon, node, left_on='Node Name', right_on='node_name', how='left')
+
+    # Add node_depot_belongs attribute ,If True PON has depot name
+    valid_pon['has_node_depot'] = False
+    valid_pon.loc[(valid_pon['node_depot_belongs'].notna()), 'has_node_depot'] = True
+
+    # 5.8.2 Collect attributes A) PON Has Std Cost or Not
+    valid_pon = pd.merge(valid_pon, standard_cost, left_on=['Product Ordering Name'], right_on=['part_name'],
+                         how='left')
+    # Remove unnecessary column generated by merge
+
+    valid_pon = valid_pon.drop(['created_at', 'updated_at', 'Source'], 1)
+    valid_pon['has_std_cost'] = False
+    valid_pon.loc[(valid_pon['standard_cost'].notna()), 'has_std_cost'] = True
+
+    # 5.8.2 Collect attributes - B) PON is Sparrable or Not
+    valid_pon['is_sparrable'] = False
+    valid_pon = pd.merge(valid_pon, spared_pons, left_on=['Product Ordering Name'], right_on=['part_name'], how='inner')
+
+    valid_pon.loc[(valid_pon['Product Ordering Name'] == valid_pon['part_name_x']), 'is_sparrable'] = True
+
+
+    # Remove unnecessary column generated by merge
+    valid_pon = valid_pon.drop(['part_name_x', 'part_name_y'], 1)
+
+    # Keep only sparable pons
+    valid_pon = valid_pon[valid_pon['is_sparrable'] == True]
+
+    # all_valid conditions
+    # PON with sparable, has_std_cost,has_node_depot and valid pon_name & depot name
+    all_valid = valid_pon[((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
+
+    invalid_pon = valid_pon[~((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
+
+    # 5.9 Process Error Records - Store Invalid PONS with Proper Reason
+    process_error_pon('error_records', invalid_pon)
+
+    # 5.9 Process Error Records - Compare Valid PON against
+    import pdb
+    pdb.set_trace()
+    sap_inventory = read_sap_export_file(sap_file)
+    to_sql_sap_inventory('sap_inventory', sap_inventory.head(10))
+    return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
 
