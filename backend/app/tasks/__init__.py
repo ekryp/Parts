@@ -318,7 +318,7 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id):
     return gross_depot_hnad, high_spares, standard_cost, parts
 
 
-#@celery.task
+@celery.task
 def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name):
 
     single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id)
