@@ -174,6 +174,7 @@ class PostSparePartAnalysis(Resource):
         analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         customer_dna_file = ''
         sap_export_file = ''
+        customer_name = args['customer_name'].replace(",", "|")
 
         def save_analysis_record_db():
 
@@ -185,7 +186,7 @@ class PostSparePartAnalysis(Resource):
                                                 args['replenish_time'].replace(",", "|"),
                                                 args['user_email_id'], analysis_date,
                                                 customer_dna_file, sap_export_file,
-                                                args['customer_name'].replace(",", "|"))
+                                                customer_name)
             engine.execute(query)
 
         def get_analysis_id():
@@ -248,7 +249,7 @@ class PostSparePartAnalysis(Resource):
             update_prospect_step(prospect_id, 4, analysis_date)
             '''
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
-                                                                 args['user_email_id'], analysis_id])
+                                                                 args['user_email_id'], analysis_id,customer_name])
 
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)

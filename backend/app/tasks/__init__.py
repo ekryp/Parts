@@ -135,7 +135,7 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id):
     # 5.9 Process Error Records - Compare Valid PON against
 
     sap_inventory = read_sap_export_file(sap_file)
-    to_sql_sap_inventory('sap_inventory', sap_inventory.head(5), analysis_date,analysis_id)
+    to_sql_sap_inventory('sap_inventory', sap_inventory, analysis_date,analysis_id)
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
@@ -213,7 +213,7 @@ def remove_hub_depot(df, depot):
     return all_depots
 
 
-def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id):
+def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id, customer_name):
 
     Connection = Configuration.ECLIPSE_DATA_DB_URI
     single_bom = pd.merge(single_bom, high_spares, on='part_name', how='left')
@@ -279,6 +279,7 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     single_bom.loc[:, 'analysis_request_time'] = analysis_date
     single_bom.loc[:, 'user_email_id'] = user_email_id
     single_bom.loc[:, 'request_id'] = analysis_id
+    single_bom.loc[:, 'customer_name'] = customer_name
     single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
     print("Loaded data into summary table")
 
@@ -312,11 +313,11 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id,customer_name):
 
     single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id)
     calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
-                           user_email_id, analysis_id)
+                           user_email_id, analysis_id, customer_name)
 
     def set_request_status_complete(analysis_date):
         engine = create_engine(Configuration.INFINERA_DB_URL)
