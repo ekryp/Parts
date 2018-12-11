@@ -15,6 +15,7 @@ from flask_restful import reqparse
 from sqlalchemy import create_engine
 
 
+
 class GetSparePartAnalysis(Resource):
 
     def get(self):
@@ -175,6 +176,7 @@ class PostSparePartAnalysis(Resource):
         sap_export_file = ''
 
         def save_analysis_record_db():
+
             engine = create_engine(Configuration.INFINERA_DB_URL)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
@@ -185,6 +187,13 @@ class PostSparePartAnalysis(Resource):
                                                 customer_dna_file, sap_export_file,
                                                 args['customer_name'].replace(",", "|"))
             engine.execute(query)
+
+        def get_analysis_id():
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            query = 'SELECT max(analysis_request_id) FROM analysis_request;'
+            result = engine.execute(query).fetchone()
+            return result[0]
+
         try:
 
             for file in request.files.getlist('customer_dna_file'):
@@ -224,11 +233,12 @@ class PostSparePartAnalysis(Resource):
                     excel.save(file, folder=dest_folder)
 
             save_analysis_record_db()
+            analysis_id = get_analysis_id()
 
             prospect_id = add_prospect(args['user_email_id'])
             dna_file = os.path.join(full_path, customer_dna_file)
             sap_file = os.path.join(full_path, sap_export_file)
-            #derive_table_creation(dna_file, sap_file, full_path, prospect_id, analysis_date, args['user_email_id'])
+            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id)
 
             print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id ))
             '''
@@ -237,8 +247,8 @@ class PostSparePartAnalysis(Resource):
             update_prospect_step(prospect_id, 3, analysis_date)
             update_prospect_step(prospect_id, 4, analysis_date)
             '''
-            celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, full_path, prospect_id,
-                                                                analysis_date, args['user_email_id']])
+            celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
+                                                                 args['user_email_id'], analysis_id])
 
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)

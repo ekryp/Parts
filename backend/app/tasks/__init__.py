@@ -7,7 +7,7 @@ from app import app
 from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
-    add_hnad, to_sql_bom, read_data
+    add_hnad, to_sql_bom, read_data, to_sql_mtbf
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -67,7 +67,7 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
 
 
 
-def shared_function(dna_file, sap_file, analysis_date):
+def shared_function(dna_file, sap_file, analysis_date, analysis_id):
 
     # 5.4 Load all Data elements from Reference Data
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
@@ -80,7 +80,7 @@ def shared_function(dna_file, sap_file, analysis_date):
     # 5.5 Convert Misnomer PON to correct PON
     # PON with no misnomers
     input_with_no_misnomer_pon = misnomer_conversion(input_db, misnomer_pons)
-    to_sql_customer_dna_record('customer_dna_record', input_db, analysis_date)
+    to_sql_customer_dna_record('customer_dna_record', input_db, analysis_date, analysis_id)
 
     # 5.6 Apply Standard Cost Rule
     input_with_no_misnomer_pon = check_in_std_cst(input_with_no_misnomer_pon, standard_cost)
@@ -89,8 +89,8 @@ def shared_function(dna_file, sap_file, analysis_date):
     input_with_no_misnomer_pon['InstalledEqpt'] = input_with_no_misnomer_pon['Product Ordering Name']
 
     # 5.7 Validate PONs and Depot
-    valid_pon = validate_pon(input_with_no_misnomer_pon, analysis_date)
-    valid_pon = validate_depot(valid_pon, analysis_date)
+    valid_pon = validate_pon(input_with_no_misnomer_pon, analysis_date, analysis_id)
+    valid_pon = validate_depot(valid_pon, analysis_date, analysis_id)
 
     # 5.8 Identify Valid Sparable Items and Identify Error Conditions
 
@@ -130,19 +130,20 @@ def shared_function(dna_file, sap_file, analysis_date):
     invalid_pon = valid_pon[~((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
 
     # 5.9 Process Error Records - Store Invalid PONS with Proper Reason
-    process_error_pon('error_records', invalid_pon, analysis_date)
+    process_error_pon('error_records', invalid_pon, analysis_date, analysis_id)
 
     # 5.9 Process Error Records - Compare Valid PON against
 
     sap_inventory = read_sap_export_file(sap_file)
-    to_sql_sap_inventory('sap_inventory', sap_inventory, analysis_date)
+    to_sql_sap_inventory('sap_inventory', sap_inventory.head(5), analysis_date,analysis_id)
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def bom_calcuation(dna_file, sap_file, analysis_date):
+def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id):
 
 
-    all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file, analysis_date)
+    all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file,
+                                                                                            analysis_date, analysis_id)
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
     Get_Fru.to_csv(Configuration.fruc_file_location, index=True)
@@ -212,7 +213,7 @@ def remove_hub_depot(df, depot):
     return all_depots
 
 
-def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id):
+def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id):
 
     Connection = Configuration.ECLIPSE_DATA_DB_URI
     single_bom = pd.merge(single_bom, high_spares, on='part_name', how='left')
@@ -277,41 +278,45 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     single_bom.loc[:, 'cust_id'] = 7
     single_bom.loc[:, 'analysis_request_time'] = analysis_date
     single_bom.loc[:, 'user_email_id'] = user_email_id
+    single_bom.loc[:, 'request_id'] = analysis_id
     single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
     print("Loaded data into summary table")
 
 
-def get_bom(dna_file, sap_file, analysis_date):
+def get_bom(dna_file, sap_file, analysis_date, analysis_id):
 
-    bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file, analysis_date)
+    bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file,
+                                                                                     analysis_date, analysis_id)
 
     # Flag will be there to choose from simple or mtbf calculation.
-
+    '''
     gross_depot = simple_calculation(bom)
 
     # 5.13 Accommodating for Corporate and Regional Disti - Process 13
-
+    
     gross_depot = remove_hub_depot(gross_depot, depot)
     gross_depot_hnad = add_hnad(gross_depot, quantity=1)
-    to_sql_bom('bom_calculated', gross_depot_hnad, analysis_date)
+    to_sql_bom('bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
     return gross_depot_hnad, high_spares, standard_cost, parts
-
     '''
+
+
     gross_depot = mtbf_calculation(bom, get_ratio_to_pon, parts)
 
     #5.13 Accommodating for Corporate and Regional Disti - Process 13
 
     gross_depot = remove_hub_depot(gross_depot, depot)
     gross_depot_hnad = add_hnad(gross_depot, quantity=1)
-    to_sql_mtbf('mtbf_bom_calculated', gross_depot_hnad, analysis_date)
+    to_sql_mtbf('mtbf_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
     return gross_depot_hnad, high_spares, standard_cost, parts
-    '''
+
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, data_path, prospect_id, analysis_date, user_email_id):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id):
 
-    single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date)
-    calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id)
+    single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id)
+    calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
+                           user_email_id, analysis_id)
 
     def set_request_status_complete(analysis_date):
         engine = create_engine(Configuration.INFINERA_DB_URL)

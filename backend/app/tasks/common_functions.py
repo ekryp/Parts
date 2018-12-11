@@ -67,7 +67,7 @@ def isinarray(Input_Data, Standard_cost):
     return False
 
 
-def to_sql_customer_dna_record(table_name, df, analysis_date):
+def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -86,6 +86,8 @@ def to_sql_customer_dna_record(table_name, df, analysis_date):
 
     # df['strip_serial'] = df['Serial#'].str.lstrip('0')
     df.loc[:, 'strip_serial'] = df['Serial#'].str.lstrip('0')
+    df.loc[:, 'request_id'] = analysis_id
+    # added request id to have binding with analysis_ request table
 
     df.rename(columns={
         '#Type': 'type',
@@ -101,13 +103,14 @@ def to_sql_customer_dna_record(table_name, df, analysis_date):
     )
     keep_col = ['cust_id', 'type', 'node_id', 'installed_eqpt', 'part_ordering_number',
                 'part', 'serial', 'source_part_data', 'aid', 'end_customer_id',
-                'node_name', 'strip_serial', 'analysis_request_time']
+                'node_name', 'strip_serial', 'analysis_request_time', 'request_id']
     df = df[keep_col]
+
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_sap_inventory(table_name, df, analysis_date):
+def to_sql_sap_inventory(table_name, df, analysis_date,analysis_id):
 
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
@@ -118,6 +121,7 @@ def to_sql_sap_inventory(table_name, df, analysis_date):
     df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'strip_material_number'] = df['Material Number'].astype(str).str.lstrip('0')
+    df.loc[:, 'request_id'] = analysis_id
     #df['strip_material_number'] = df['Material Number'].astype(str).str.lstrip('0')
     df.rename(columns={
         'Plant': 'plant_id',
@@ -154,7 +158,7 @@ def to_sql_summarytable(table_name, df):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_error(table_name, df, invalid_reason, analysis_date):
+def to_sql_error(table_name, df, invalid_reason, analysis_date, analysis_id):
 
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Analysis datetime will come from frontend to bind with analysis request id
@@ -165,6 +169,7 @@ def to_sql_error(table_name, df, invalid_reason, analysis_date):
     df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'error_reason'] = invalid_reason
+    df.loc[:, 'request_id'] = analysis_id
     df.rename(columns={
         'Product Ordering Name': 'PON',
         'Node Name': 'node_name',
@@ -181,7 +186,7 @@ def to_sql_error(table_name, df, invalid_reason, analysis_date):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def process_error_pon(table_name, df, analysis_date):
+def process_error_pon(table_name, df, analysis_date, analysis_id):
 
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Analysis datetime will come from frontend to bind with analysis request id
@@ -191,6 +196,7 @@ def process_error_pon(table_name, df, analysis_date):
     df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
     #df['cust_id'] = 7
+    df.loc[: , 'request_id'] = analysis_id
     df = df.drop(['end_customer_node_belongs', 'node_depot_belongs', 'standard_cost',
                    'Valid', 'is_sparrable', 'node_name', 'node_id', 'material_number'], 1)
     for index, row in df.iterrows():
@@ -217,7 +223,7 @@ def process_error_pon(table_name, df, analysis_date):
 
 
 
-def validate_pon(pon, analysis_date):
+def validate_pon(pon, analysis_date, analysis_id):
 
     pon['Valid'] = True
     invalid_list = ["", "none", "n/a", "null", "chassis", "unknown", "@", ".."]
@@ -226,18 +232,18 @@ def validate_pon(pon, analysis_date):
     valid_pon = pon[pon['Valid'] == True]
     invalid_pon = pon[pon['Valid'] == False]
     if not invalid_pon.empty:
-        to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo", analysis_date)
+        to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo", analysis_date, analysis_id)
     return valid_pon
 
 
-def validate_depot(pon, analysis_date):
+def validate_depot(pon, analysis_date, analysis_id):
 
     invalid_list = ["not 4hr", "not supported"]
     pon.loc[pon['Node Name'].isin(invalid_list), 'Valid'] = False
     valid_pon = pon[pon['Valid'] == True]
     invalid_pon = pon[pon['Valid'] == False]
     if not invalid_pon.empty:
-        to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date)
+        to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date, analysis_id)
     return valid_pon
 
 
@@ -302,7 +308,7 @@ def add_hnad(df,quantity):
     return df
 
 
-def to_sql_bom(table_name, df, analysis_date):
+def to_sql_bom(table_name, df, analysis_date, analysis_id):
 
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Analysis datetime will come from frontend to bind with analysis request id
@@ -312,6 +318,7 @@ def to_sql_bom(table_name, df, analysis_date):
     # df['cust_id'] = 7
     df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'request_id'] = analysis_id
     df.rename(columns={
         'Product Ordering Name': 'part_name',
         'node_depot_belongs': 'depot_name',
@@ -324,7 +331,7 @@ def to_sql_bom(table_name, df, analysis_date):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_mtbf(table_name, df, analysis_date):
+def to_sql_mtbf(table_name, df, analysis_date, analysis_id):
     engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
@@ -333,12 +340,14 @@ def to_sql_mtbf(table_name, df, analysis_date):
     # df['cust_id'] = 7
     df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'request_id'] = analysis_id
     df.rename(columns={
         'Product Ordering Name': 'part_name',
         'node_depot_belongs': 'depot_name',
         'PON Quanity': 'pon_quantity',
     }, inplace=True
     )
+    df['pon_quantity'] = df['pon_quantity'].astype(int)
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
 
