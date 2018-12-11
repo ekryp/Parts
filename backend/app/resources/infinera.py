@@ -135,10 +135,13 @@ class GetDashboardRequestCount(Resource):
 
             total_request_query = "select count(*) from analysis_request"
             total_request = engine.execute(total_request_query).fetchone()[0]
+
             incomplete_request_query = "select count(*) from analysis_request where requestStatus = 'Processing'"
             incomplete_request = engine.execute(incomplete_request_query).fetchone()[0]
+
             complete_request_query = "select count(*) from analysis_request where requestStatus = 'Completed'"
             complete_request = engine.execute(complete_request_query).fetchone()[0]
+
             failed_request = 0
             saved_request = 0
             complete_request_succesfully = complete_request
@@ -155,6 +158,55 @@ class GetDashboardRequestCount(Resource):
             'complete_request_succesfully': complete_request_succesfully
         }
         return response
+
+class GetMainDashboardCount(Resource):
+
+    def get(self):
+
+        def get_respective_counts():
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+
+            total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary;'
+            total_customer = engine.execute(total_customer_query).fetchone()[0]
+
+            critical_pon_query = 'select  count(distinct(part_name))  FROM summary where  ' \
+                                 'net_reorder_point <0 or net_total_stock < 0;'
+            critical_pon = engine.execute(critical_pon_query).fetchone()[0]
+
+            critical_customer_query = 'select  count(distinct(customer_name))  FROM summary where' \
+                                      '  net_reorder_point <0 or net_total_stock < 0;'
+            critical_customer = engine.execute(critical_customer_query).fetchone()[0]
+
+            critical_depot_query = 'select count(distinct(depot_name)) FROM summary ' \
+                                   'where  net_reorder_point <0 or net_total_stock < 0'
+            critical_depot = engine.execute(critical_depot_query).fetchone()[0]
+
+            total_pon_type_query = 'SELECT count(distinct(part_name))  FROM summary;'
+            total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
+
+            total_depot_query = 'select  count(distinct(depot_name))  FROM summary'
+            total_depot = engine.execute(total_depot_query).fetchone()[0]
+
+            return total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot
+
+        total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot = get_respective_counts()
+
+        response = {
+            'total_customer': total_customer,
+            'critical_pon': critical_pon,
+            'critical_customer': critical_customer,
+            'critical_depot': critical_depot,
+            'total_pon_type': total_pon_type,
+            'total_depot': total_depot
+        }
+        return response
+
+
+
+
+
+
+
 
 
 class PostSparePartAnalysis(Resource):

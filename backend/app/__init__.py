@@ -115,7 +115,8 @@ from app.resources.partners import UploadCSV
 from app.resources.users import  Callback, Logout
 from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,ExperimentDetails
 from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,GetstepsAllUsers,\
-    GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount
+    GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
+    GetMainDashboardCount
 
 
 api.add_resource(Callback, '/token')
@@ -133,6 +134,7 @@ api.add_resource(GetstepsAllUsers, '/get_steps_all_users', endpoint='get_steps_a
 api.add_resource(GetstepsforSpecificRequest, '/get_steps_specific_request', endpoint='get_steps_specific_request')
 api.add_resource(GetSummaryforSpecificRequest, '/get_summary_specific_request', endpoint='get_summary_specific_request')
 api.add_resource(GetDashboardRequestCount, '/get_dashboard_request_count', endpoint='get_dashboard_request_count')
+api.add_resource(GetMainDashboardCount, '/get_main_dashboard_count', endpoint='get_main_dashboard_count')
 app.register_blueprint(api_blueprint)
 
 api.init_app(app)
