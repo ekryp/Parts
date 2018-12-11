@@ -82,6 +82,8 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id):
     input_with_no_misnomer_pon = misnomer_conversion(input_db, misnomer_pons)
     to_sql_customer_dna_record('customer_dna_record', input_db, analysis_date, analysis_id)
 
+    update_prospect_step(Configuration.prospect_id, 2, analysis_date)  # Dump customer_dna Table Status
+
     # 5.6 Apply Standard Cost Rule
     input_with_no_misnomer_pon = check_in_std_cst(input_with_no_misnomer_pon, standard_cost)
 
@@ -132,10 +134,14 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id):
     # 5.9 Process Error Records - Store Invalid PONS with Proper Reason
     process_error_pon('error_records', invalid_pon, analysis_date, analysis_id)
 
+    update_prospect_step(Configuration.prospect_id, 3, analysis_date)  # Dump error_records Table Status
+
     # 5.9 Process Error Records - Compare Valid PON against
 
     sap_inventory = read_sap_export_file(sap_file)
     to_sql_sap_inventory('sap_inventory', sap_inventory, analysis_date,analysis_id)
+
+    update_prospect_step(Configuration.prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
@@ -312,19 +318,23 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id):
     return gross_depot_hnad, high_spares, standard_cost, parts
 
 
-@celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id,customer_name):
+#@celery.task
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name):
 
     single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id)
+    update_prospect_step(Configuration.prospect_id, 5, analysis_date)  # BOM calculation Status
     calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
                            user_email_id, analysis_id, customer_name)
 
-    def set_request_status_complete(analysis_date):
+    def set_request_status_complete(analysis_id):
         engine = create_engine(Configuration.INFINERA_DB_URL)
         query = "update analysis_request set requestStatus='Completed' " \
-                "where analysis_request_time = '{0}'".format(analysis_date)
+                "where analysis_request_id = {0}".format(analysis_id)
         engine.execute(query)
-    set_request_status_complete(analysis_date)
+
+    update_prospect_step(Configuration.prospect_id, 6, analysis_date)  # Summary Calculation  Status
+    set_request_status_complete(analysis_id)
+
 
 
 

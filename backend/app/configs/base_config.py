@@ -13,3 +13,4 @@ class BaseConfig(object):
     MAIL_GUN_API_URL = 'https://api.mailgun.net/v3/noreply.ekryp.com/'
     MAIL_GUN_API_KEY = 'key-06a2334ec7daa13d562564d303582d63'
     CLIENT_SECRET_FILE = 'client_secret.json'
+    prospect_id = ''
