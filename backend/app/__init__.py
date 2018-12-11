@@ -116,7 +116,7 @@ from app.resources.users import  Callback, Logout
 from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,ExperimentDetails
 from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,GetstepsAllUsers,\
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
-    GetMainDashboardCount
+    GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended
 
 
 api.add_resource(Callback, '/token')
@@ -135,6 +135,11 @@ api.add_resource(GetstepsforSpecificRequest, '/get_steps_specific_request', endp
 api.add_resource(GetSummaryforSpecificRequest, '/get_summary_specific_request', endpoint='get_summary_specific_request')
 api.add_resource(GetDashboardRequestCount, '/get_dashboard_request_count', endpoint='get_dashboard_request_count')
 api.add_resource(GetMainDashboardCount, '/get_main_dashboard_count', endpoint='get_main_dashboard_count')
+api.add_resource(GetPieChart, '/get_pie_chart', endpoint='get_pie_chart')
+api.add_resource(GetTopPons, '/get_top_pons', endpoint='get_top_pons')
+api.add_resource(GetTopDepots, '/get_top_depots', endpoint='get_top_depots')
+api.add_resource(GetTopCustomer, '/get_top_customers', endpoint='get_top_customers')
+api.add_resource(GetTopExtended, '/get_top_extended', endpoint='get_top_extended')
 app.register_blueprint(api_blueprint)
 
 api.init_app(app)

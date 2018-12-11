@@ -202,11 +202,94 @@ class GetMainDashboardCount(Resource):
         return response
 
 
+class GetPieChart(Resource):
+
+    def get(self):
+
+        def get_respective_counts():
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+
+            non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
+                                     'net_reorder_point >=0 and net_total_stock >=0'
+            non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
+
+            critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
+                          'net_reorder_point <0 or net_total_stock <0'
+            critical_pon = engine.execute(critical_pon_query).fetchone()[0]
+
+            return non_critical_pon, critical_pon
+
+        non_critical_pon, critical_pon = get_respective_counts()
+
+        response = {
+            'non_critical_pon': non_critical_pon,
+            'critical_pon': critical_pon,
+
+        }
+        return response
 
 
+class GetTopPons(Resource):
+
+    def get(self):
+
+        query = 'select part_name,count(*) as critical_pon_count FROM summary   where' \
+                '  (net_reorder_point <0 or net_total_stock <0 ) group by part_name'
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
 
 
+class GetTopDepots(Resource):
 
+    def get(self):
+
+        query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   where ' \
+                ' (net_reorder_point <0 or net_total_stock <0 ) group by depot_name ' \
+                'order by critical_pon_count desc'
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopCustomer(Resource):
+
+    def get(self):
+
+        query = 'select customer_name,count(part_name) as critical_pon_count FROM summary  ' \
+                ' where  (net_reorder_point <0 or net_total_stock <0 ) ' \
+                'group by customer_name order by critical_pon_count desc'
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopExtended(Resource):
+
+    def get(self):
+
+        query = 'select part_name,depot_name,customer_name,count(*) as critical_pon_count FROM summary ' \
+                '  where  (net_reorder_point <0 or net_total_stock <0 ) ' \
+                'group by part_name,depot_name,customer_name'
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
 
 
 class PostSparePartAnalysis(Resource):
