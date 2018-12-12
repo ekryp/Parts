@@ -224,8 +224,8 @@ export default {
 </script>
 <style>
 .text-top {
-  font-size: 13px;
-  font-weight: 400;
+  font-size: 1.15vw;
+  font-weight: 500;
 }
 .count {
   font-size: 40px;

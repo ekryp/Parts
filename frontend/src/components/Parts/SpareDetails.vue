@@ -91,7 +91,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in data.data" :key="item.summary_id">
+                <tr v-for="item in currentInventory" :key="item.summary_id">
                   <th>{{item.part_name}}</th>
                   <td>{{item.depot_name}}</td>
                   <td v-if="state === true">{{item.reorder_point}}</td>
@@ -158,7 +158,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="x in data.ibquantity" :key="x.id">
+                <tr v-for="x in currentib" :key="x.id">
                   <td>{{x.product_ordering_name}}</td>
                   <td>{{x.node_depot_belongs}}</td>
                   <td>{{x.pon_quanity}}</td>
@@ -183,10 +183,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="i in data.data" :key="i.summary_id">
+                <tr v-for="i in currentGross" :key="i.summary_id">
                   <td>{{i.part_name}}</td>
                   <td>{{i.depot_name}}</td>
-                  <td>{{i.shared_quantity}}</td>
+                  <td>{{i.gross_qty}}</td>
                 </tr>
               </tbody>
             </table>
@@ -216,16 +216,14 @@
                 <tr>
                   <th scope="col">Part Name</th>
                   <th scope="col">Depot Name</th>
-                  <th scope="col" v-if="state === true">Net Reorder Point</th>
-                  <th scope="col" v-if="state === false">Net Total Stock</th>
+                  <th scope="col">Net Quantity</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="i in data.data" :key="i.summary_id">
+                <tr v-for="i in currentNet" :key="i.summary_id">
                   <td>{{i.part_name}}</td>
                   <td>{{i.depot_name}}</td>
-                  <td v-if="state === true">{{i.net_reorder_point}}</td>
-                  <td v-if="state === false">{{i.net_total_stock}}</td>
+                  <td>{{i.net_qty}}</td>
                 </tr>
               </tbody>
             </table>
@@ -244,6 +242,8 @@ import AnalysisSummary from "@/components/Parts/AnalysisSummary";
 import * as data from "./data.json";
 import Vue from "vue";
 import ToggleButton from "vue-js-toggle-button";
+import * as constant from "../constant/constant";
+
 Vue.use(ToggleButton);
 
 export default {
@@ -256,26 +256,145 @@ export default {
   created() {
     this.requestID = this.$route.query.id;
     console.log("requestId ---->", this.requestId);
+    this.get_current_inventory_specific_request(this.$route.query.id);
+    this.get_gross_specific_request(this.$route.query.id);
+    this.get_current_net_specific_request(this.$route.query.id);
+    this.get_current_ib_specific_request(this.$route.query.id);
   },
   data() {
     console.log("SpareDetails");
     return {
       requestID: "",
       data: data,
-      state: false
+      state: false,
+      toggle: "total_stock",
+      currentInventory: [],
+      currentGross: [],
+      currentNet: [],
+      currentib: []
     };
   },
   mounted() {
     $(document).ready(function() {
-      $("#currentIBQuantity").DataTable();
-      $("#currentInventory").DataTable();
-      $("#netInventory").DataTable();
-      $("#currentCross").DataTable();
+      // $("#currentIBQuantity").DataTable();
+      // $("#currentInventory").DataTable();
+      // $("#netInventory").DataTable();
+      // $("#currentCross").DataTable();
     });
   },
   methods: {
     stateChange() {
       this.state = !this.state;
+      if (this.state) {
+        this.toggle = "reorder";
+        this.get_current_net_specific_request(this.$route.query.id);
+        this.get_current_inventory_specific_request(this.$route.query.id);
+      } else {
+        this.toggle = "total_stock";
+        this.get_current_net_specific_request(this.$route.query.id);
+        this.get_current_inventory_specific_request(this.$route.query.id);
+      }
+    },
+    get_current_inventory_specific_request(requestId) {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_current_inventory_specific_request?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log(
+              "data -- get_current_inventory_specific_request-->",
+              data
+            );
+            this.currentInventory = data;
+            $(document).ready(function() {
+              $("#currentInventory").DataTable();
+            });
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_gross_specific_request(requestId) {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_gross_specific_request?request_id=" +
+          requestId,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_gross_specific_request-->", data);
+            this.currentGross = data;
+            $(document).ready(function() {
+              $("#currentCross").DataTable();
+            });
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_current_net_specific_request(requestId) {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_current_net_specific_request?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_current_net_specific_request-->", data);
+            this.currentNet = data;
+            $(document).ready(function() {
+              $("#netInventory").DataTable();
+            });
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_current_ib_specific_request(requestId) {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_current_ib_specific_request?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_current_ib_specific_request-->", data);
+            this.currentib = data;
+            $(document).ready(function() {
+              $("#currentIBQuantity").DataTable();
+            });
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
     }
   }
 };

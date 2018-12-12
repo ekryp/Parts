@@ -80,7 +80,7 @@
                   <div class="col-lg-11">
                     <h6>Top PONs</h6>
                   </div>
-                  <i  @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
+                  <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
               </div>
               <div class="card-body">
@@ -108,7 +108,7 @@
                   <div class="col-lg-11">
                     <h6>Top Depots</h6>
                   </div>
-                  <i  @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
+                  <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
               </div>
               <div class="card-body">
@@ -215,8 +215,8 @@ export default {
     headernav
   },
   mounted() {
-    this.chartone();
-    this.charttwo();
+    // this.chartone();
+    // this.charttwo();
     // $(document).ready(function() {
     //   $("#example").DataTable();
     // });
@@ -238,36 +238,33 @@ export default {
         center: { lat: 16.1304, lng: 86.3468 }
       },
       data: data,
-      dashboardData:[],
-      topPons:[],
-      topDepots:[],
-      topCustomer:[],
-      pieChart:null
+      dashboardData: [],
+      topPons: [],
+      topDepots: [],
+      topCustomer: [],
+      pieChart: null
     };
   },
   methods: {
-    chartone() {
-      Highcharts.chart("container", piechart);
-    },
-    charttwo() {
-      Highcharts.chart("container2", linechart);
-    },
-    routeTable()
-    {
+    // chartone() {
+    //   let pie = piechart;
+    //   // pie.series[0].data[0].y =
+    //   console.log("pie chart ------->", pie.series[0].data[0].y);
+    //   Highcharts.chart("container", piechart);
+    // },
+    // charttwo() {
+    //   Highcharts.chart("container2", linechart);
+    // },
+    routeTable() {
       router.push("/table");
     },
 
-     // This Method is to get data for Main Dash Borad Details
+    // This Method is to get data for Main Dash Borad Details
 
-    getMainDashboardCount()
-    {
-      fetch(
-        constant.APIURL +
-          "api/v1/get_main_dashboard_count",
-        {
-          method: "GET"
-        }
-      )
+    getMainDashboardCount() {
+      fetch(constant.APIURL + "api/v1/get_main_dashboard_count", {
+        method: "GET"
+      })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -278,20 +275,14 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-
     },
 
     // This Method is to get data for TOP PONS table
 
-    getTopPons()
-    {
-      fetch(
-        constant.APIURL +
-          "api/v1/get_top_pons",
-        {
-          method: "GET"
-        }
-      )
+    getTopPons() {
+      fetch(constant.APIURL + "api/v1/get_top_pons", {
+        method: "GET"
+      })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -302,20 +293,14 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-
     },
 
     // This Method is to get data for TOP DEPOTS table
 
-    getTopDepots()
-    {
-      fetch(
-        constant.APIURL +
-          "api/v1/get_top_depots",
-        {
-          method: "GET"
-        }
-      )
+    getTopDepots() {
+      fetch(constant.APIURL + "api/v1/get_top_depots", {
+        method: "GET"
+      })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -326,20 +311,14 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-
     },
 
     // This Method is to get data for TOP CUSTOMER table
 
-    getTopCustomer()
-    {
-      fetch(
-        constant.APIURL +
-          "api/v1/get_top_customers",
-        {
-          method: "GET"
-        }
-      )
+    getTopCustomer() {
+      fetch(constant.APIURL + "api/v1/get_top_customers", {
+        method: "GET"
+      })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -351,28 +330,22 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    getPieChart()
-    {
-      fetch(
-        constant.APIURL +
-          "api/v1/get_pie_chart",
-        {
-          method: "GET"
-        }
-      )
+    getPieChart() {
+      fetch(constant.APIURL + "api/v1/get_pie_chart", {
+        method: "GET"
+      })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            console.log("data -- get_dashboard_request_count-->", data);
-            piechart.series.data[0].y=data.critical_pon;
-            piechart.series.data[1].y=data.non_critical_pon;
-              
+            console.log("data -- getPieChart-->", data);
+            piechart.series[0].data[0].y = data.critical_pon;
+            piechart.series[0].data[1].y = data.non_critical_pon;
+            Highcharts.chart("container", piechart);
           });
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-
     }
   }
 };
