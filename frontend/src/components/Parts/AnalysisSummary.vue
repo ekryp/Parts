@@ -56,24 +56,24 @@
         </div>
         <table id="example" class="table table-bordered table-hover center">
           <thead>
-            <tr style="fontSize:1vw">
+            <!-- <tr style="fontSize:1vw">
               <th colspan="4"></th>
-              <!-- <th colspan="2">Shared Depot</th> -->
+              <th colspan="2">Shared Depot</th>
               <th colspan="2">Gross Requirement</th>
               <th colspan="2">Net by Depots</th>
               <th scope="col" rowspan="2">Has High Spare?</th>
-            </tr>
+            </tr>-->
             <tr style="fontSize:1vw">
-              <th scope="col">Item Number</th>
+              <th scope="col">Customer Name</th>
+              <th scope="col">Part Name</th>
+              <th scope="col">Depot Name</th>
+              <th scope="col">Gross Quantity</th>
               <th scope="col">Material</th>
-              <th scope="col">IB Qty (from BOM)</th>
-              <th scope="col">Std Cost ($)</th>
-              <!-- <th scope="col">Qty</th>
-              <th scope="col">Ext Std Cost</th>-->
+              <th scope="col">Net Quantity</th>
+              <th scope="col">Net Standard Cost ($)</th>
               <th scope="col">Qty</th>
-              <th scope="col">Ext Std Cost ($)</th>
-              <th scope="col">Qty</th>
-              <th scope="col">Ext Std Cost ($)</th>
+              <th scope="col">Standard Cost($)</th>
+              <th scope="col">High Spare</th>
             </tr>
           </thead>
           <tbody>
@@ -82,19 +82,20 @@
               :key="item.analysis_request_id"
               style="fontSize:1vw; cursor:pointer"
             >
-              <td class="left">{{item.PON}}</td>
+              <td class="left">{{item.customer_name}}</td>
+              <td>{{item.part_name}}</td>
+              <td>{{item.depot_name}}</td>
+              <td>{{item.gross_qty}}</td>
               <td>{{item.material_number}}</td>
-              <td>{{item.Qty}}</td>
+              <td>{{item.net_qty}}</td>
+              <td class="right">{{item.net_std_cost | currency('')}}</td>
+              <td>{{item.qty}}</td>
               <td class="right">{{item.standard_cost | currency('')}}</td>
-              <td>{{item.gross_table_count}}</td>
-              <td class="right">{{item.extd_std_cost | currency('')}}</td>
-              <td>{{item.net_depot_count}}</td>
-              <td class="right">{{item.net_extd_std_cost | currency('')}}</td>
-              <td v-if="item.High_Spares != 0">
-                <input type="checkbox" name="vehicle3" value="{item.High_Spares}" checked>
+              <td v-if="item.high_spare != 0">
+                <input type="checkbox" name="vehicle3" value="{item.high_spare}" checked>
               </td>
               <td v-else>
-                <input type="checkbox" name="vehicle3" value="{item.High_Spares}">
+                <input type="checkbox" name="vehicle3" value="{item.high_spare}">
               </td>
             </tr>
           </tbody>
@@ -124,14 +125,15 @@ export default {
   created() {
     console.log("props ----->", this.$props);
     this.requestId = this.$props.analysisId;
-    // this.get_request_analysis_summary_result(this.requestId);
+    this.get_request_analysis_summary_result(this.requestId);
   },
   computed: {},
   data() {
     console.log("AnalysisSummary", this.$store.state);
     return {
       requestId: "",
-      partsAnalysisSummaryReslut: []
+      partsAnalysisSummaryReslut: [],
+      toggle: "reorder"
     };
   },
   methods: {
@@ -144,7 +146,9 @@ export default {
       fetch(
         constant.APIURL +
           "api/v1/get_summary_specific_request?request_id=" +
-          requestId,
+          requestId +
+          "&toggle=" +
+          this.toggle,
         {
           method: "GET"
         }
