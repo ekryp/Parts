@@ -425,6 +425,22 @@ class GetTopExtended(Resource):
         return response
 
 
+class GetLatLon(Resource):
+
+    def get(self):
+
+        query = 'SELECT a.depot_name,b.lat,b.long FROM summary as a right join depot as b ' \
+                ' on a.depot_name= b.depot_name where a.depot_name is not null ' \
+                'and b.lat is not null and b.long is not null group by depot_name'
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
 class PostSparePartAnalysis(Resource):
 
     def __init__(self):
