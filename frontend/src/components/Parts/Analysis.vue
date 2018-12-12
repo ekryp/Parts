@@ -6,7 +6,7 @@
       <div class>
         <h3>Spare Part Analysis</h3>
       </div>
-      <div class="container">
+      <!-- <div class="container"> -->
         <form style="marginTop: 5%">
           <div class="form-group">
             <div class="row">
@@ -456,7 +456,7 @@
             </div>
           </div>
         </form>
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>

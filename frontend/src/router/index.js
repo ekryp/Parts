@@ -8,6 +8,7 @@ import PartsAnalysis from '@/components/Parts/Analysis'
 import PartsAnalysisList from '@/components/Parts/AnalysisList'
 import PartsAnalysisSummary from '@/components/Parts/AnalysisSummary'
 import SpareDetails from '@/components/Parts/SpareDetails'
+import DynamicTable from '@/components/Parts/Table'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/parts/analysis',
       name: 'SpareDetails',
       component: SpareDetails
+    },
+    {
+      path: '/table',
+      name: 'DynamicTable',
+      component: DynamicTable
     }
   ]
 })

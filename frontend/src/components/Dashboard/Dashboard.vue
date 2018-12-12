@@ -10,7 +10,7 @@
               <div class="col-lg-10">
                 <span class="text-top">Total Customer</span>
                 <br>
-                <span class="text-middle">1</span>
+                <span class="text-middle">{{dashboardData.total_customer}}</span>
               </div>
               <div class="vertical"></div>
             </div>
@@ -20,7 +20,7 @@
               <div class="col-lg-10">
                 <span class="text-top">Critical PONs</span>
                 <br>
-                <span class="text-middle" style="color:red">6</span>
+                <span class="text-middle" style="color:red">{{dashboardData.critical_pon}}</span>
               </div>
               <div class="vertical"></div>
             </div>
@@ -31,7 +31,7 @@
               <div class="col-lg-10">
                 <span class="text-top">Critical Customers</span>
                 <br>
-                <span class="text-middle" style="color:red">1</span>
+                <span class="text-middle" style="color:red">{{dashboardData.critical_customer}}</span>
               </div>
               <div class="vertical"></div>
             </div>
@@ -42,7 +42,7 @@
               <div class="col-lg-10">
                 <span class="text-top">Critical Depots</span>
                 <br>
-                <span class="text-middle" style="color:red">7</span>
+                <span class="text-middle" style="color:red">{{dashboardData.critical_depot}}</span>
               </div>
               <div class="vertical"></div>
             </div>
@@ -53,7 +53,7 @@
               <div class="col-lg-10">
                 <span class="text-top">Total PON types</span>
                 <br>
-                <span class="text-middle">4</span>
+                <span class="text-middle">{{dashboardData.total_pon_type}}</span>
               </div>
               <div class="vertical"></div>
             </div>
@@ -64,7 +64,7 @@
               <div class="col-lg-10">
                 <span class="text-top">Total Depots</span>
                 <br>
-                <span class="text-middle">7</span>
+                <span class="text-middle">{{dashboardData.total_depot}}</span>
               </div>
             </div>
             <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
@@ -80,7 +80,7 @@
                   <div class="col-lg-11">
                     <h6>Top PONs</h6>
                   </div>
-                  <i class="fas fa-share-square" style="cursor:pointer"></i>
+                  <i  @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
               </div>
               <div class="card-body">
@@ -92,9 +92,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in data.topPONs" :key="item.id">
+                    <tr v-for="item in topPons" :key="item.id">
                       <td>{{item.part_name}}</td>
-                      <td>{{item.count}}</td>
+                      <td>{{item.critical_pon_count}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -108,7 +108,7 @@
                   <div class="col-lg-11">
                     <h6>Top Depots</h6>
                   </div>
-                  <i class="fas fa-share-square" style="cursor:pointer"></i>
+                  <i  @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
               </div>
               <div class="card-body">
@@ -120,7 +120,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in data.topDeptos" :key="item.id">
+                    <tr v-for="item in topDepots" :key="item.id">
                       <td>{{item.depot_name}}</td>
                       <td>{{item.critical_pon_count}}</td>
                     </tr>
@@ -136,7 +136,7 @@
                   <div class="col-lg-11">
                     <h6>Top Customers</h6>
                   </div>
-                  <i class="fas fa-share-square" style="cursor:pointer"></i>
+                  <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
               </div>
               <div class="card-body">
@@ -145,14 +145,12 @@
                     <tr>
                       <th scope="col">Customer</th>
                       <th scope="col">PONs Count</th>
-                      <th scope="col">Depots Count</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>bestel</td>
-                      <td>6</td>
-                      <td>7</td>
+                    <tr v-for="item in topCustomer" :key="item.id">
+                      <td>{{item.customer_name}}</td>
+                      <td>{{item.critical_pon_count}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -180,7 +178,7 @@
           <div class="col-lg-8">
             <div class="card">
               <div class="card-body">
-                <GmapMap :center="gmap.center" :zoom="2" style="width: 720px; height: 36vh"></GmapMap>
+                <GmapMap :center="gmap.center" :zoom="3" style="width: 100%; height: 36vh"></GmapMap>
               </div>
             </div>
           </div>
@@ -191,6 +189,7 @@
 </template>
 
 <script>
+import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import piechart from "../../utilies/piechart.json";
@@ -199,6 +198,8 @@ import * as data from "../../utilies/dumpdata.json";
 import Vue from "vue";
 import * as VueGoogleMaps from "vue2-google-maps";
 import VueGeolocation from "vue-browser-geolocation";
+import * as constant from "../constant/constant";
+
 Vue.use(VueGeolocation);
 
 Vue.use(VueGoogleMaps, {
@@ -224,6 +225,11 @@ export default {
     this.$getLocation({ enableHighAccuracy: true }).then(coordinates => {
       console.log("coordinates ----->", coordinates);
     });
+    this.getMainDashboardCount();
+    this.getTopPons();
+    this.getTopDepots();
+    this.getTopCustomer();
+    this.getPieChart();
   },
   data() {
     console.log("dashboard", this.data);
@@ -231,7 +237,12 @@ export default {
       gmap: {
         center: { lat: 16.1304, lng: 86.3468 }
       },
-      data: data
+      data: data,
+      dashboardData:[],
+      topPons:[],
+      topDepots:[],
+      topCustomer:[],
+      pieChart:null
     };
   },
   methods: {
@@ -240,6 +251,128 @@ export default {
     },
     charttwo() {
       Highcharts.chart("container2", linechart);
+    },
+    routeTable()
+    {
+      router.push("/table");
+    },
+
+     // This Method is to get data for Main Dash Borad Details
+
+    getMainDashboardCount()
+    {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_main_dashboard_count",
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.dashboardData = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+
+    },
+
+    // This Method is to get data for TOP PONS table
+
+    getTopPons()
+    {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_top_pons",
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.topPons = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+
+    },
+
+    // This Method is to get data for TOP DEPOTS table
+
+    getTopDepots()
+    {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_top_depots",
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.topDepots = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+
+    },
+
+    // This Method is to get data for TOP CUSTOMER table
+
+    getTopCustomer()
+    {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_top_customers",
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.topCustomer = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    getPieChart()
+    {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_pie_chart",
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            piechart.series.data[0].y=data.critical_pon;
+            piechart.series.data[1].y=data.non_critical_pon;
+              
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+
     }
   }
 };
@@ -299,3 +432,5 @@ export default {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 </style>
+
+
