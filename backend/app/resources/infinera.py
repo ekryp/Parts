@@ -65,7 +65,7 @@ class GetstepsforSpecificRequest(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('request_id', type=int, required=False, help='id', location='args')
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         super(GetstepsforSpecificRequest, self).__init__()
 
     def get(self):
@@ -96,7 +96,7 @@ class GetSummaryforSpecificRequest(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('request_id', type=int, required=False, help='id', location='args')
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         self.reqparse.add_argument('toggle', type=str, required=True, location='args')
         super(GetSummaryforSpecificRequest, self).__init__()
 
@@ -136,7 +136,7 @@ class GetGrossforSpecificRequest(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('request_id', type=int, required=False, help='id', location='args')
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         super(GetGrossforSpecificRequest, self).__init__()
 
     def get(self):
@@ -144,10 +144,13 @@ class GetGrossforSpecificRequest(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'select part_name,depot_name,shared_quantity from summary as a right join analysis_request ' \
+        query = 'select part_name,depot_name,shared_quantity as gross_qty from summary as a right join ' \
+                'analysis_request ' \
                 'as b on a.request_id = b.analysis_request_id where b.requestStatus="Completed" ' \
                 'and (net_reorder_point <0 or net_total_stock <0 ) and shared_quantity!=0 ' \
                 'and a.request_id ={0} order by shared_quantity desc'.format(request_id)
+
+        print(query)
 
         result = get_df_from_sql_query(
             query=query,
@@ -161,7 +164,7 @@ class GetCurrentInventory(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('request_id', type=int, required=False, help='id', location='args')
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         self.reqparse.add_argument('toggle', type=str, required=True, location='args')
         super(GetCurrentInventory, self).__init__()
 
@@ -174,11 +177,61 @@ class GetCurrentInventory(Resource):
         # toggle is True by default meaning by default reorder
         # False means total_stock
         if toggle == 'reorder':
-            return 'reorder'
+            query = 'select part_name,depot_name,reorder_point as qty from summary as a right join ' \
+                    'analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and net_reorder_point <0 and ' \
+                    'reorder_point!=0 and a.request_id = {0}'.format(request_id)
         else:
-            return 'total_stock'
+            query = 'select part_name,depot_name,total_stock as qty from summary as a right join ' \
+                    'analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and net_total_stock <0 and  ' \
+                    'total_stock!=0 and a.request_id ={}'.format(request_id)
+
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
 
 
+class GetCurrentNet(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
+        self.reqparse.add_argument('toggle', type=str, required=True, location='args')
+        super(GetCurrentNet, self).__init__()
+
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        request_id = args['request_id']
+        toggle = args['toggle']
+
+        # toggle is True by default meaning by default reorder
+        # False means total_stock
+        if toggle == 'reorder':
+            query = 'select part_name,depot_name,abs(net_reorder_point) as net_qty  from summary as a right join ' \
+                    'analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and net_reorder_point <0 and ' \
+                    'net_reorder_point!=0 and a.request_id = {0}'.format(request_id)
+        else:
+            query = 'select part_name,depot_name,abs(net_total_stock) as net_qty from summary as a right join ' \
+                    'analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and net_total_stock <0 and  ' \
+                    'net_total_stock!=0 and a.request_id ={0};'.format(request_id)
+
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
 
 
 class GetDashboardRequestCount(Resource):
