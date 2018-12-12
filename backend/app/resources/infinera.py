@@ -481,16 +481,16 @@ class PostSparePartAnalysis(Resource):
             analysis_id = get_analysis_id()
 
             prospect_id = add_prospect(args['user_email_id'])
-            Configuration.prospect_id = prospect_id
             dna_file = os.path.join(full_path, customer_dna_file)
             sap_file = os.path.join(full_path, sap_export_file)
 
-            update_prospect_step(Configuration.prospect_id, 1, analysis_date)  # Processing Files Status
+            update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
             print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name)
+            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name,prospect_id)
 
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
-                                                                 args['user_email_id'], analysis_id,customer_name])
+                                                                args['user_email_id'], analysis_id,
+                                                               customer_name, prospect_id])
 
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)

@@ -7,7 +7,7 @@ from app import app
 from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
-    add_hnad, to_sql_bom, read_data, to_sql_mtbf
+    add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -67,7 +67,7 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
 
 
 
-def shared_function(dna_file, sap_file, analysis_date, analysis_id):
+def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id):
 
     # 5.4 Load all Data elements from Reference Data
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
@@ -82,7 +82,7 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id):
     input_with_no_misnomer_pon = misnomer_conversion(input_db, misnomer_pons)
     to_sql_customer_dna_record('customer_dna_record', input_db, analysis_date, analysis_id)
 
-    update_prospect_step(Configuration.prospect_id, 2, analysis_date)  # Dump customer_dna Table Status
+    update_prospect_step(prospect_id, 2, analysis_date)  # Dump customer_dna Table Status
 
     # 5.6 Apply Standard Cost Rule
     input_with_no_misnomer_pon = check_in_std_cst(input_with_no_misnomer_pon, standard_cost)
@@ -134,22 +134,22 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id):
     # 5.9 Process Error Records - Store Invalid PONS with Proper Reason
     process_error_pon('error_records', invalid_pon, analysis_date, analysis_id)
 
-    update_prospect_step(Configuration.prospect_id, 3, analysis_date)  # Dump error_records Table Status
+    update_prospect_step(prospect_id, 3, analysis_date)  # Dump error_records Table Status
 
     # 5.9 Process Error Records - Compare Valid PON against
 
     sap_inventory = read_sap_export_file(sap_file)
     to_sql_sap_inventory('sap_inventory', sap_inventory, analysis_date,analysis_id)
 
-    update_prospect_step(Configuration.prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
+    update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id):
+def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id):
 
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file,
-                                                                                            analysis_date, analysis_id)
+                                                                                            analysis_date, analysis_id, prospect_id)
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
     Get_Fru.to_csv(Configuration.fruc_file_location, index=True)
@@ -159,7 +159,14 @@ def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id):
         fill_value=0).stack().to_csv(Configuration.bom_table, header=True)
     get_bom_for_table = pd.read_csv(Configuration.bom_table)
     get_bom_for_table = get_bom_for_table.rename(columns={'0': 'PON Quanity'})
-    get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
+    #get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
+    to_sql_current_ib('current_ib', get_bom_for_table, analysis_id)
+    get_bom_for_table.rename(columns={
+        'pon_quanity': 'PON Quanity',
+        'product_ordering_name': 'Product Ordering Name'
+    }, inplace=True
+    )
+    get_bom_for_table.drop(['request_id'], 1, inplace=True)
     return get_bom_for_table, get_ratio_to_pon, parts, depot, high_spares, standard_cost
     print('BOM calculation complete')
 
@@ -290,10 +297,10 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     print("Loaded data into summary table")
 
 
-def get_bom(dna_file, sap_file, analysis_date, analysis_id):
+def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file,
-                                                                                     analysis_date, analysis_id)
+                                                                                     analysis_date, analysis_id,prospect_id)
 
     # Flag will be there to choose from simple or mtbf calculation.
     '''
@@ -319,10 +326,10 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id):
 
-    single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id)
-    update_prospect_step(Configuration.prospect_id, 5, analysis_date)  # BOM calculation Status
+    single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id)
+    update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
     calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
                            user_email_id, analysis_id, customer_name)
 
@@ -332,7 +339,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
                 "where analysis_request_id = {0}".format(analysis_id)
         engine.execute(query)
 
-    update_prospect_step(Configuration.prospect_id, 6, analysis_date)  # Summary Calculation  Status
+    update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
     set_request_status_complete(analysis_id)
 
 

@@ -357,6 +357,21 @@ def read_sap_export_file(sap_file):
     sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
     return sap_inventory_data
 
+def to_sql_current_ib(table_name, df, analysis_id):
+
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
+    df.loc[:, 'request_id'] = analysis_id
+    df.rename(columns={
+        'Product Ordering Name': 'product_ordering_name',
+        'PON Quanity': 'pon_quanity',
+    }, inplace=True
+    )
+    df['pon_quanity'] = df['pon_quanity'].astype(int)
+    df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
+    print("Loaded Data into table : {0}".format(table_name))
+
+
+
 
 
 
