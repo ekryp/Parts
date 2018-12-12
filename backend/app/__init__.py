@@ -116,7 +116,8 @@ from app.resources.users import  Callback, Logout
 from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,ExperimentDetails
 from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,GetstepsAllUsers,\
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
-    GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended
+    GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
+    GetGrossforSpecificRequest, GetCurrentInventory
 
 
 api.add_resource(Callback, '/token')
@@ -140,6 +141,8 @@ api.add_resource(GetTopPons, '/get_top_pons', endpoint='get_top_pons')
 api.add_resource(GetTopDepots, '/get_top_depots', endpoint='get_top_depots')
 api.add_resource(GetTopCustomer, '/get_top_customers', endpoint='get_top_customers')
 api.add_resource(GetTopExtended, '/get_top_extended', endpoint='get_top_extended')
+api.add_resource(GetGrossforSpecificRequest, '/get_gross_specific_request', endpoint='get_gross_specific_request')
+api.add_resource(GetCurrentInventory, '/get_current_inventory_specific_request', endpoint='get_current_inventory_specific_request')
 app.register_blueprint(api_blueprint)
 
 api.init_app(app)
