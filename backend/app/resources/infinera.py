@@ -160,6 +160,31 @@ class GetGrossforSpecificRequest(Resource):
         return response
 
 
+class GetCurrentIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
+        super(GetCurrentIB, self).__init__()
+
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        request_id = args['request_id']
+
+        query = 'SELECT product_ordering_name, node_depot_belongs, pon_quanity' \
+                ' FROM current_ib where pon_quanity>0 and request_id = {0}'.format(request_id)
+
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
 class GetCurrentInventory(Resource):
 
     def __init__(self):

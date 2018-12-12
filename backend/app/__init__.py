@@ -117,7 +117,7 @@ from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,Exp
 from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,GetstepsAllUsers,\
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
-    GetGrossforSpecificRequest, GetCurrentInventory,GetCurrentNet
+    GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB
 
 
 api.add_resource(Callback, '/token')
@@ -144,6 +144,7 @@ api.add_resource(GetTopExtended, '/get_top_extended', endpoint='get_top_extended
 api.add_resource(GetGrossforSpecificRequest, '/get_gross_specific_request', endpoint='get_gross_specific_request')
 api.add_resource(GetCurrentInventory, '/get_current_inventory_specific_request', endpoint='get_current_inventory_specific_request')
 api.add_resource(GetCurrentNet, '/get_current_net_specific_request', endpoint='get_current_net_specific_request')
+api.add_resource(GetCurrentIB, '/get_current_ib_specific_request', endpoint='get_current_ib_specific_request')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)
