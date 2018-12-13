@@ -144,11 +144,8 @@ class GetGrossforSpecificRequest(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'select part_name,depot_name,shared_quantity as gross_qty from summary as a right join ' \
-                'analysis_request ' \
-                'as b on a.request_id = b.analysis_request_id where b.requestStatus="Completed" ' \
-                'and (net_reorder_point <0 or net_total_stock <0 ) and shared_quantity!=0 ' \
-                'and a.request_id ={0} order by shared_quantity desc'.format(request_id)
+        query = 'SELECT part_name,depot_name,pon_quantity as gross_qty FROM mtbf_bom_calculated ' \
+                'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
         print(query)
 
@@ -202,15 +199,15 @@ class GetCurrentInventory(Resource):
         # toggle is True by default meaning by default reorder
         # False means total_stock
         if toggle == 'reorder':
-            query = 'select part_name,depot_name,reorder_point as qty from summary as a right join ' \
-                    'analysis_request as b on a.request_id = b.analysis_request_id ' \
-                    'where b.requestStatus="Completed" and net_reorder_point <0 and ' \
-                    'reorder_point!=0 and a.request_id = {0}'.format(request_id)
+            query = 'select part_name,depot_name,sum(reorder_point) as qty from summary as a ' \
+                    'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and reorder_point!=0 and a.request_id = {0}' \
+                    'group by part_name,depot_name,reorder_point;'.format(request_id)
         else:
-            query = 'select part_name,depot_name,total_stock as qty from summary as a right join ' \
-                    'analysis_request as b on a.request_id = b.analysis_request_id ' \
-                    'where b.requestStatus="Completed" and net_total_stock <0 and  ' \
-                    'total_stock!=0 and a.request_id ={}'.format(request_id)
+            query = 'select part_name,depot_name,sum(total_stock) as qty from summary as a ' \
+                    'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and total_stock!=0 and a.request_id = {0} ' \
+                    'group by part_name,depot_name,total_stock;'.format(request_id)
 
         print(query)
 
