@@ -2,7 +2,14 @@
   <div>
     <headernav msg="Spare Details"/>
     <side-nav menu="analysis"/>
+
+    
     <div class="custom-container" style="padding:3%; paddingTop:7%">
+      <div>
+      <div class="breadcrumb">
+        <p class="in-progress" @click="redirectToAnalysis()">{{postMenu}}/</p><p>{{current}}  </p>
+      </div>  
+      </div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
@@ -31,7 +38,7 @@
             role="tab"
             aria-controls="nav-profile"
             aria-selected="false"
-          >Current IB Quantity</a>
+          >IB Quantity</a>
           <a
             class="nav-item nav-link"
             id="nav-contact-tab"
@@ -40,7 +47,7 @@
             role="tab"
             aria-controls="nav-contact"
             aria-selected="false"
-          >Current Gross</a>
+          >Gross</a>
           <a
             class="nav-item nav-link"
             id="nav-netInventory-tab"
@@ -49,7 +56,7 @@
             role="tab"
             aria-controls="nav-netInventory"
             aria-selected="false"
-          >Current Net</a>
+          >Net</a>
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
@@ -204,7 +211,7 @@
                 color="green"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-                width="80"
+                width=80
                 @change="stateChange()"
               />
             </div>
@@ -238,7 +245,7 @@ import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import AnalysisSummary from "@/components/Parts/AnalysisSummary";
-// import * as data from "./data.json";
+import * as data from "./data.json";
 import Vue from "vue";
 import ToggleButton from "vue-js-toggle-button";
 import * as constant from "../constant/constant";
@@ -264,13 +271,15 @@ export default {
     console.log("SpareDetails");
     return {
       requestID: "",
-      // data: data,
-      state: false,
+      data: data,
+      state: true,
       toggle: "total_stock",
       currentInventory: [],
       currentGross: [],
       currentNet: [],
-      currentib: []
+      currentib: [],
+      postMenu:"Analysis",
+      current:"Analysis Summary"
     };
   },
   mounted() {
@@ -286,13 +295,13 @@ export default {
       this.state = !this.state;
       if (this.state) {
         this.toggle = "reorder";
-        this.get_current_inventory_specific_request(this.$route.query.id);
         this.get_current_net_specific_request(this.$route.query.id);
+        this.get_current_inventory_specific_request(this.$route.query.id);
         this.get_current_inventory_specific_request(this.$route.query.id);
       } else {
         this.toggle = "total_stock";
-        this.get_current_inventory_specific_request(this.$route.query.id);
         this.get_current_net_specific_request(this.$route.query.id);
+        this.get_current_inventory_specific_request(this.$route.query.id);
         this.get_current_inventory_specific_request(this.$route.query.id);
       }
     },
@@ -396,6 +405,9 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+    },
+    redirectToAnalysis(){
+       router.push("/parts/analysis/dashboard");
     }
   }
 };
@@ -492,4 +504,7 @@ a {
   width: 50%;
   left: auto;
 } */
+.in-progress {
+  cursor: pointer;
+}
 </style>

@@ -1,7 +1,10 @@
 <template>
+  
   <div>
     <!-- <headernav msg="Analysis Summary Result"/> -->
     <!-- <side-nav menu="analysis"/> -->
+    
+     
     <div style=" marginTop:2%">
       <div class="shadow p-3 mb-5 bg-white rounded">
         <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
@@ -37,7 +40,7 @@
               <input
                 type="email"
                 class="form-control"
-                v-model="partsAnalysisSummaryReslut[0].analysis_request_id"
+                v-model="requestId"
                 placeholder="Analysis Id"
                 disabled
                 style="text-align:right; fontSize:1vw; marginTop:2%"
@@ -45,9 +48,18 @@
             </div>
           </div>
         </div>
+        
         <div class="float-right" style="paddingBottom:1%">
-          <button type="button" class="btn btn-success">
-            <download-excel :data="partsAnalysisSummaryReslut">
+             <toggle-button
+                :value="state"
+                color="green"
+                :sync="true"
+                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                width=80
+                @change="stateChange()"
+              />
+              <button type="button" class="btn btn-success">
+            <download-excel :data="partsAnalysisSummaryReslut" type="csv">
               <i class="fas fa-file-excel"></i>
               &nbsp;
               Export
@@ -56,24 +68,22 @@
         </div>
         <table id="example" class="table table-bordered table-hover center">
           <thead>
-            <!-- <tr style="fontSize:1vw">
-              <th colspan="4"></th>
-              <th colspan="2">Shared Depot</th>
-              <th colspan="2">Gross Requirement</th>
-              <th colspan="2">Net by Depots</th>
-              <th scope="col" rowspan="2">Has High Spare?</th>
-            </tr>-->
             <tr style="fontSize:1vw">
-              <th scope="col">Customer Name</th>
-              <th scope="col">Part Name</th>
-              <th scope="col">Depot Name</th>
-              <th scope="col">Gross Quantity</th>
-              <th scope="col">Material</th>
-              <th scope="col">Net Quantity</th>
-              <th scope="col">Net Standard Cost ($)</th>
-              <th scope="col">Qty</th>
+              <th rowspan="2" scope="col">Part Name</th>
+              <th rowspan="2" scope="col">Depot Name</th>
+              <th rowspan="2" scope="col">Gross Quantity</th>
+              <th rowspan="2" scope="col">Material</th>
+              <th rowspan="2" scope="col">Quantity</th>
+              <th rowspan="2" scope="col">Standard Cost ($)</th>
+              <th colspan="2">Net Requirement</th>
+              <th rowspan="2" style="valign:middle">Has High Spare?</th>
+            </tr>
+            <tr style="fontSize:1vw">
+              <!-- <th scope="col">Customer Name</th> -->
+              
+              <th scope="col">Quantity</th>
               <th scope="col">Standard Cost($)</th>
-              <th scope="col">High Spare</th>
+             
             </tr>
           </thead>
           <tbody>
@@ -82,15 +92,15 @@
               :key="item.analysis_request_id"
               style="fontSize:1vw; cursor:pointer"
             >
-              <td class="left">{{item.customer_name}}</td>
+              <!-- <td class="left">{{item.customer_name}}</td> -->
               <td>{{item.part_name}}</td>
               <td>{{item.depot_name}}</td>
               <td>{{item.gross_qty}}</td>
               <td>{{item.material_number}}</td>
-              <td>{{item.net_qty}}</td>
-              <td class="right">{{item.net_std_cost | currency('')}}</td>
               <td>{{item.qty}}</td>
               <td class="right">{{item.standard_cost | currency('')}}</td>
+              <td>{{item.net_qty}}</td>
+              <td class="right">{{item.net_std_cost | currency('')}}</td>
               <td v-if="item.high_spare != 0">
                 <input type="checkbox" name="vehicle3" value="{item.high_spare}" checked>
               </td>
@@ -133,13 +143,25 @@ export default {
     return {
       requestId: "",
       partsAnalysisSummaryReslut: [],
-      toggle: "reorder"
+      toggle: "reorder",
+      state: true
     };
   },
   methods: {
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",", ".");
+    },
+    stateChange() {
+      this.state = !this.state;
+      if (this.state) {
+        console.log(this.toggle);
+        this.toggle = "reorder";
+        this.get_request_analysis_summary_result(this.requestId);
+      } else {
+        this.toggle = "total_stock";
+        this.get_request_analysis_summary_result(this.requestId);
+      }
     },
     spareDetails() {},
     get_request_analysis_summary_result(requestId) {

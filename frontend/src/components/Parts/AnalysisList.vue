@@ -1,10 +1,16 @@
 <template>
-  <div>
+    <div>
     <headernav msg="Analysis Dashboard"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="padding:3%; paddingTop:7%">
+      <div>
+      <div class="breadcrumb">
+        <p>{{current}}</p>
+      </div>  
+      </div>
       <div class="row">
         <div class="col-lg-2 text-center">
+          
           <span class="text-top">Total Analysis Request</span>
           <br>
         </div>
@@ -62,7 +68,7 @@
       </div>
       <div class="float-left" style="marginTop:1%">
         <button type="button" class="btn btn-success">
-          <download-excel :data="partsAnalysisRequestList">
+          <download-excel :data="partsAnalysisRequestList" type="csv">
             <i class="fas fa-file-excel"></i>
             &nbsp;
             Export
@@ -158,7 +164,8 @@ export default {
         { name: "Requests To Be Submitted" }
       ],
       partsAnalysisRequestList: [],
-      dashboard_request_count: ""
+      dashboard_request_count: "",
+      current:'Analysis'
     };
   },
   methods: {
