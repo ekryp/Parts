@@ -107,29 +107,93 @@ class GetSummaryforSpecificRequest(Resource):
         # toggle is True by default meaning by default reorder
         # False means total_stock
         if toggle == 'reorder':
+            # Find Current Gross
+            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty,request_id FROM mtbf_bom_calculated ' \
+                    'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
-            query = 'select part_name,depot_name,material_number, reorder_point as qty ,' \
-                    'shared_quantity as gross_qty,high_spare, abs(net_reorder_point) as net_qty ' \
-                    ',standard_cost,abs(net_reorder_point_cost) as net_std_cost, a.customer_name ' \
-                    'from summary as a right join analysis_request as b on ' \
-                    'a.request_id = b.analysis_request_id where b.requestStatus="Completed" ' \
-                    'and net_reorder_point <0 and a.request_id ={0}'.format(request_id)
+            gross_df = get_df_from_sql_query(
+                query=gross_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            # Find Current Inventory reorder
+
+            current_inv_query = 'select part_name,depot_name,sum(reorder_point) as qty from summary as a ' \
+                    'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and reorder_point!=0 and a.request_id = {0} ' \
+                    'group by part_name,depot_name,reorder_point;'.format(request_id)
+
+            current_inv = get_df_from_sql_query(
+                query=current_inv_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            net_df = pd.merge(gross_df, current_inv, on=['part_name', 'depot_name'], how='left')
+
+            net_df['qty'].fillna(0, inplace=True)
+
+            # Net = Current - Gross
+            net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
+
+            # Take Only shortage,ignore surplus
+            net_df = net_df[net_df['net_qty'] < 0]
+
+            net_df['net_qty'] = net_df['net_qty'].abs()
+
+            summary_df_query = 'select part_name, depot_name, material_number,high_spare, customer_name, ' \
+                         'standard_cost from summary where request_id={0}'.format(request_id)
+
+            summary_df = get_df_from_sql_query(
+                query=summary_df_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
+            df['net_std_cost'] = df['net_qty'] * df['standard_cost']
+            df = df.drop(['request_id'], 1)
+            response = json.loads(df.to_json(orient="records", date_format='iso'))
+            return response
+
+
         else:
-            query = 'select part_name,depot_name,material_number,total_stock as qty,' \
-                    'shared_quantity as gross_qty,high_spare,abs(net_total_stock) as net_qty,' \
-                    'standard_cost,abs(net_total_stock_cost) as net_std_cost,' \
-                    ' a.customer_name from summary as a right join analysis_request as b ' \
-                    'on a.request_id = b.analysis_request_id where b.requestStatus="Completed" ' \
-                    'and net_total_stock <0 and a.request_id = {0}'.format(request_id)
+            # Find Current Gross
+            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty, request_id FROM mtbf_bom_calculated ' \
+                          'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
-        print(query)
+            gross_df = get_df_from_sql_query(
+                query=gross_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
 
-        result = get_df_from_sql_query(
-            query=query,
-            db_connection_string=Configuration.INFINERA_DB_URL)
+            current_inv_query = 'select part_name,depot_name,sum(total_stock) as qty from summary as a ' \
+                    'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
+                    'where b.requestStatus="Completed" and total_stock!=0 and a.request_id = {0} ' \
+                    'group by part_name,depot_name,total_stock;'.format(request_id)
 
-        response = json.loads(result.to_json(orient="records", date_format='iso'))
-        return response
+            current_inv = get_df_from_sql_query(
+                query=current_inv_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            net_df = pd.merge(gross_df, current_inv, on=['part_name', 'depot_name'], how='left')
+
+            net_df['qty'].fillna(0, inplace=True)
+
+            # Net = Current - Gross
+            net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
+
+            # Take Only shortage,ignore surplus
+            net_df = net_df[net_df['net_qty'] < 0]
+
+            net_df['net_qty'] = net_df['net_qty'].abs()
+
+            summary_df_query = 'select part_name, depot_name, material_number,high_spare, customer_name, ' \
+                         'standard_cost from summary where request_id={0}'.format(request_id)
+
+            summary_df = get_df_from_sql_query(
+                query=summary_df_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
+            df['net_std_cost'] = df['net_qty'] * df['standard_cost']
+            df = df.drop(['request_id'], 1)
+            response = json.loads(df.to_json(orient="records", date_format='iso'))
+            return response
 
 
 class GetGrossforSpecificRequest(Resource):
@@ -201,7 +265,7 @@ class GetCurrentInventory(Resource):
         if toggle == 'reorder':
             query = 'select part_name,depot_name,sum(reorder_point) as qty from summary as a ' \
                     'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
-                    'where b.requestStatus="Completed" and reorder_point!=0 and a.request_id = {0}' \
+                    'where b.requestStatus="Completed" and reorder_point!=0 and a.request_id = {0} ' \
                     'group by part_name,depot_name,reorder_point;'.format(request_id)
         else:
             query = 'select part_name,depot_name,sum(total_stock) as qty from summary as a ' \
