@@ -148,8 +148,10 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id)
 def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id):
 
 
+
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file,
                                                                                             analysis_date, analysis_id, prospect_id)
+
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
     Get_Fru.to_csv(Configuration.fruc_file_location, index=True)
@@ -230,7 +232,8 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 
     Connection = Configuration.ECLIPSE_DATA_DB_URI
     single_bom = pd.merge(single_bom, high_spares, on='part_name', how='left')
-    get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM infinera.sap_inventory '
+    get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM ' \
+                         'sap_inventory where request_id={}'.format(analysis_id)
     z_inventory = read_data(get_zinventory_sql, Connection)
     single_bom = pd.merge(single_bom, z_inventory, left_on=['part_name', 'depot_name'],
                           right_on=['material_desc', 'storage_location'], how='left')
