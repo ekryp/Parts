@@ -94,8 +94,7 @@
                 <tr v-for="item in currentInventory" :key="item.summary_id">
                   <th>{{item.part_name}}</th>
                   <td>{{item.depot_name}}</td>
-                  <td v-if="state === true">{{item.reorder_point}}</td>
-                  <td v-if="state === false">{{item.total_stock}}</td>
+                  <td>{{item.qty}}</td>
                 </tr>
               </tbody>
             </table>
@@ -239,7 +238,7 @@ import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import AnalysisSummary from "@/components/Parts/AnalysisSummary";
-import * as data from "./data.json";
+// import * as data from "./data.json";
 import Vue from "vue";
 import ToggleButton from "vue-js-toggle-button";
 import * as constant from "../constant/constant";
@@ -265,7 +264,7 @@ export default {
     console.log("SpareDetails");
     return {
       requestID: "",
-      data: data,
+      // data: data,
       state: false,
       toggle: "total_stock",
       currentInventory: [],
@@ -287,10 +286,12 @@ export default {
       this.state = !this.state;
       if (this.state) {
         this.toggle = "reorder";
+        this.get_current_inventory_specific_request(this.$route.query.id);
         this.get_current_net_specific_request(this.$route.query.id);
         this.get_current_inventory_specific_request(this.$route.query.id);
       } else {
         this.toggle = "total_stock";
+        this.get_current_inventory_specific_request(this.$route.query.id);
         this.get_current_net_specific_request(this.$route.query.id);
         this.get_current_inventory_specific_request(this.$route.query.id);
       }
