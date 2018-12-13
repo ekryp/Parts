@@ -3,11 +3,10 @@
     <headernav msg="Dashboard"/>
     <side-nav/>
     <div class="custom-container" style="paddingTop: 2%">
-     
       <div class="row-one">
         <div class="breadcrumb">
-        <p>{{current}}  </p>
-      </div> 
+          <p>{{current}}</p>
+        </div>
         <div class="row text-center">
           <div class="col-lg-2">
             <div class="row">
@@ -75,7 +74,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="row-two">
         <div class="row">
           <div class="col-lg-4">
@@ -248,7 +247,7 @@ export default {
       topDepots: [],
       topCustomer: [],
       pieChart: null,
-      current:"Dashboard"
+      current: "Dashboard"
     };
   },
   methods: {

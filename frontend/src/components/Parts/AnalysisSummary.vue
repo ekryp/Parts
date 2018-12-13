@@ -1,10 +1,7 @@
 <template>
-  
   <div>
     <!-- <headernav msg="Analysis Summary Result"/> -->
     <!-- <side-nav menu="analysis"/> -->
-    
-     
     <div style=" marginTop:2%">
       <div class="shadow p-3 mb-5 bg-white rounded">
         <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
@@ -48,17 +45,17 @@
             </div>
           </div>
         </div>
-        
+
         <div class="float-right" style="paddingBottom:1%">
-             <toggle-button
-                :value="state"
-                color="green"
-                :sync="true"
-                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-                width=80
-                @change="stateChange()"
-              />
-              <button type="button" class="btn btn-success">
+          <toggle-button
+            :value="state"
+            color="green"
+            :sync="true"
+            :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+            width="80"
+            @change="stateChange()"
+          />
+          <button type="button" class="btn btn-success">
             <download-excel :data="partsAnalysisSummaryReslut" type="csv">
               <i class="fas fa-file-excel"></i>
               &nbsp;
@@ -80,10 +77,8 @@
             </tr>
             <tr style="fontSize:1vw">
               <!-- <th scope="col">Customer Name</th> -->
-              
               <th scope="col">Quantity</th>
               <th scope="col">Standard Cost($)</th>
-             
             </tr>
           </thead>
           <tbody>

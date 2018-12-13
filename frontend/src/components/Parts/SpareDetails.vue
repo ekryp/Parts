@@ -3,12 +3,12 @@
     <headernav msg="Spare Details"/>
     <side-nav menu="analysis"/>
 
-    
     <div class="custom-container" style="padding:3%; paddingTop:7%">
       <div>
-      <div class="breadcrumb">
-        <p class="in-progress" @click="redirectToAnalysis()">{{postMenu}}/</p><p>{{current}}  </p>
-      </div>  
+        <div class="breadcrumb" style="margin-bottom:1px">
+          <p class="in-progress" @click="redirectToAnalysis()">{{postMenu}}/</p>
+          <p>{{current}}</p>
+        </div>
       </div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -211,7 +211,7 @@
                 color="green"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-                width=80
+                width="80"
                 @change="stateChange()"
               />
             </div>
@@ -278,8 +278,8 @@ export default {
       currentGross: [],
       currentNet: [],
       currentib: [],
-      postMenu:"Analysis",
-      current:"Analysis Summary"
+      postMenu: "Analysis",
+      current: "Analysis Summary"
     };
   },
   mounted() {
@@ -406,8 +406,8 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    redirectToAnalysis(){
-       router.push("/parts/analysis/dashboard");
+    redirectToAnalysis() {
+      router.push("/parts/analysis/dashboard");
     }
   }
 };

@@ -30,6 +30,14 @@ body {
 .btn-success:hover {
   background-color: #169f85;
 }
+.breadcrumb {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  font-size: 1.15vw;
+  font-weight: 500;
+  cursor: pointer;
+}
 /* .container {
   width: 100% !important;
   height: 100%;

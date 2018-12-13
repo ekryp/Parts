@@ -1,26 +1,21 @@
 <template>
-<loading
-     :show="show"
-     :label="label">
-
-  <div>
-    <headernav msg="Spare Part Analysis"/>
-    <side-nav menu="analysis"/>
-    <div class="custom-container" style="paddingTop:0%">
-      
-      <div class>
-        <h3>Spare Part Analysis</h3>
-      </div>
-      <!-- <div class="container"> -->
-
-        
+  <loading :show="show" :label="label">
+    <div>
+      <headernav msg="Spare Part Analysis"/>
+      <side-nav menu="analysis"/>
+      <div class="custom-container" style="paddingTop:0%">
+        <div class>
+          <h3>Spare Part Analysis</h3>
+        </div>
+        <!-- <div class="container"> -->
         <form style="marginTop: 5%">
           <div>
-      <div class="breadcrumb">
-
-        <p v-if="requestId!==''" class="in-progress" @click="cancel()">{{postMenu}}/</p><p>{{current}}  </p>
-      </div>  
-      </div>
+            <div class="breadcrumb">
+              <p class="in-progress" @click="cancel()">{{postMenu}}/</p>
+              <p v-if="requestId!==''">Analysis Update</p>
+              <p v-if="requestId===''">Analysis Create</p>
+            </div>
+          </div>
           <div class="form-group">
             <div class="row">
               <div class="col-lg-3">
@@ -208,7 +203,7 @@
                   <label class="form-check-label" for="exampleCheck1">Use Total Stock</label>
                 </div>
               </div>
-            </div> -->
+            </div>-->
             <!-- Status Tracker -->
             <div style="marginTop:2%" v-if="requestId !== ''">
               <div class="row" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 6">
@@ -469,16 +464,16 @@
             </div>
           </div>
         </form>
-      <!-- </div> -->
+        <!-- </div> -->
+      </div>
     </div>
-  </div>
-   </loading>
+  </loading>
 </template>
 
 
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
@@ -486,14 +481,13 @@ import Multiselect from "vue-multiselect";
 import Datepicker from "vuejs-datepicker";
 import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
-import loading from 'vue-full-loading';
+import loading from "vue-full-loading";
 Vue.use(loading);
 
 export default {
   name: "PartsAnalysis",
 
   created() {
-    
     if (this.$route.query.id !== undefined) {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
@@ -541,10 +535,10 @@ export default {
       partsAnalysis: "",
       partsClose: true,
       showPartsChild: false,
-      postMenu:"Analysis",
-      current:"Analysis Update",
+      postMenu: "Analysis",
+      current: "Analysis Update",
       show: false,
-      label: 'Loading...'
+      label: "Loading..."
     };
   },
   methods: {
@@ -598,11 +592,9 @@ export default {
     },
     cancel() {
       router.push("/parts/analysis/dashboard");
-      
     },
-    
+
     formSubmit() {
-      
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -685,11 +677,11 @@ export default {
     },
     post_spare_part_analysis(data) {
       $(document).ready(function() {
-       $("#loader-2").show();
-        });
-      
+        $("#loader-2").show();
+      });
+
       let formData = new FormData();
-     
+
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
@@ -706,10 +698,10 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data ---->", data);
-             $(document).ready(function() {
-               $("#loader-2").hide();
-             });
-            this.show=false;
+            $(document).ready(function() {
+              $("#loader-2").hide();
+            });
+            this.show = false;
           });
         })
         .catch(handleError => {
@@ -768,7 +760,4 @@ export default {
   border-radius: 50%;
   display: inline-block;
 }
-
-
-
 </style>
