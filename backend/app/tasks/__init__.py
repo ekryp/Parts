@@ -242,7 +242,17 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # given_Spare name, high_spare_name, total_order_given, total_order_high, reorder_give, reorder_high_spare
 
     #get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM infinera.sap_inventory '
-    z_inventory = read_sap_export_file()
+    #z_inventory = read_sap_export_file()
+    get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM ' \
+                         'sap_inventory where request_id={}'.format(analysis_id)
+    z_inventory = read_data(get_zinventory_sql, Connection)
+    z_inventory.rename(columns={
+        'storage_location': 'Storage Location',
+        'material_desc': 'Material Description',
+        'total_stock': 'Total Stock',
+        'reorder_point': 'Reorder Point'
+    }, inplace=True
+    )
 
     ''' This step is important because, when the inventory doesn't have reorder or total stock, the value is replaced - if Highs spare exists with
        high spare qty value if not replcae it with 0, but when we merge, the qty is null and the depot won't show up and grabbing value from high spare
