@@ -63,6 +63,9 @@
             </download-excel>
           </button>
         </div>
+        <br>
+        <br>
+        <br>
         <table id="example" class="table table-bordered table-hover center">
           <thead>
             <tr style="fontSize:1vw">

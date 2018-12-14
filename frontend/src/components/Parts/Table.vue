@@ -6,6 +6,18 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="shadow p-3 mb-5 bg-white rounded">
+            <div class="float-right">
+              <button type="button" class="btn btn-success">
+                <download-excel :data="top_extended" type="csv">
+                  <i class="fas fa-file-excel"></i>
+                  &nbsp;
+                  Export
+                </download-excel>
+              </button>
+            </div>
+            <br>
+            <br>
+            <br>
             <table id="example" class="table table-bordered">
               <thead>
                 <tr>

@@ -85,7 +85,15 @@
                 width="80"
                 @change="stateChange()"
               />
+              <button type="button" class="btn btn-success">
+                <download-excel :data="currentInventory" type="csv">
+                  <i class="fas fa-file-excel"></i>
+                  &nbsp;
+                  Export
+                </download-excel>
+              </button>
             </div>
+            <br>
             <br>
             <br>
             <table id="currentInventory" class="table table-bordered">
@@ -155,6 +163,18 @@
           aria-labelledby="nav-profile-tab"
         >
           <div class="shadow p-3 mb-5 bg-white rounded">
+            <div class="float-right">
+              <button type="button" class="btn btn-success">
+                <download-excel :data="currentib" type="csv">
+                  <i class="fas fa-file-excel"></i>
+                  &nbsp;
+                  Export
+                </download-excel>
+              </button>
+            </div>
+            <br>
+            <br>
+            <br>
             <table id="currentIBQuantity" class="table table-bordered">
               <thead>
                 <tr>
@@ -180,6 +200,18 @@
           aria-labelledby="nav-contact-tab"
         >
           <div class="shadow p-3 mb-5 bg-white rounded">
+            <div class="float-right">
+              <button type="button" class="btn btn-success">
+                <download-excel :data="currentGross" type="csv">
+                  <i class="fas fa-file-excel"></i>
+                  &nbsp;
+                  Export
+                </download-excel>
+              </button>
+            </div>
+            <br>
+            <br>
+            <br>
             <table id="currentCross" class="table table-bordered">
               <thead>
                 <tr>
@@ -214,7 +246,15 @@
                 width="80"
                 @change="stateChange()"
               />
+              <button type="button" class="btn btn-success">
+                <download-excel :data="currentNet" type="csv">
+                  <i class="fas fa-file-excel"></i>
+                  &nbsp;
+                  Export
+                </download-excel>
+              </button>
             </div>
+            <br>
             <br>
             <br>
             <table id="netInventory" class="table table-bordered">
