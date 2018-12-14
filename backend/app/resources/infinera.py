@@ -584,7 +584,7 @@ class GetMainDashboardCount(Resource):
 
         response = {
             'total_customer': total_customer,
-            'critical_pon': summary_df['customer_name'].nunique(),
+            'critical_pon': summary_df['part_name'].nunique(),
             'critical_customer': summary_df['customer_name'].nunique(),
             'critical_depot': summary_df['depot_name'].nunique(),
             'total_pon_type': total_pon_type,
