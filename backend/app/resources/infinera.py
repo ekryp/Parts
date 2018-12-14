@@ -148,7 +148,7 @@ class GetSummaryforSpecificRequest(Resource):
             summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
             summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
 
-            # get IB quantities & current Inv in summary_df
+            # get IB quantities & std_gross_cost in summary_df
             ib_query = 'SELECT product_ordering_name, node_depot_belongs, pon_quanity as ib_quantity' \
                     ' FROM current_ib where pon_quanity>0 and request_id = {0}'.format(request_id)
 
@@ -160,7 +160,9 @@ class GetSummaryforSpecificRequest(Resource):
                                   right_on=['product_ordering_name', 'node_depot_belongs'], how='left')
 
             summary_df.loc[summary_df['ib_quantity'].isna(), 'ib_quantity'] = 0
-            summary_df = summary_df.drop(['request_id','product_ordering_name', 'node_depot_belongs'], 1)
+            summary_df = summary_df.drop(['request_id', 'product_ordering_name', 'node_depot_belongs'], 1)
+
+            summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
 
@@ -205,7 +207,7 @@ class GetSummaryforSpecificRequest(Resource):
             summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
             summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
 
-            # get IB quantities & current Inv in summary_df
+            # get IB quantities & std_gross_cost in summary_df
             ib_query = 'SELECT product_ordering_name, node_depot_belongs, pon_quanity as ib_quantity' \
                        ' FROM current_ib where pon_quanity>0 and request_id = {0}'.format(request_id)
 
@@ -218,6 +220,8 @@ class GetSummaryforSpecificRequest(Resource):
 
             summary_df.loc[summary_df['ib_quantity'].isna(), 'ib_quantity'] = 0
             summary_df = summary_df.drop(['request_id', 'product_ordering_name', 'node_depot_belongs'], 1)
+
+            summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
 
