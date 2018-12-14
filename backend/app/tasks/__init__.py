@@ -132,7 +132,8 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id)
     invalid_pon = valid_pon[~((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
 
     # 5.9 Process Error Records - Store Invalid PONS with Proper Reason
-    process_error_pon('error_records', invalid_pon, analysis_date, analysis_id)
+    if not invalid_pon.empty:
+        process_error_pon('error_records', invalid_pon, analysis_date, analysis_id)
 
     update_prospect_step(prospect_id, 3, analysis_date)  # Dump error_records Table Status
 
