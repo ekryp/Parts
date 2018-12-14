@@ -637,6 +637,143 @@ class GetTopPons(Resource):
 
 class GetTopDepots(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        super(GetTopDepots, self).__init__()
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        toggle = args['toggle']
+        print(toggle)
+        # toggle is True by default meaning by default reorder
+        # False means total_stock
+        if toggle == 'reorder':
+            # Find Current Gross
+            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty,request_id FROM mtbf_bom_calculated ' \
+                          'where pon_quantity > 0  order by gross_qty desc'
+
+            gross_df = get_df_from_sql_query(
+                query=gross_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            # Find Current Inventory reorder
+
+            current_inv_query = 'select part_name,depot_name,sum(reorder_point) as qty from summary as a ' \
+                                'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
+                                'where b.requestStatus="Completed" and reorder_point!=0 ' \
+                                'group by part_name,depot_name,reorder_point;'
+
+            current_inv = get_df_from_sql_query(
+                query=current_inv_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            net_df = pd.merge(gross_df, current_inv, on=['part_name', 'depot_name'], how='left')
+
+            net_df['qty'].fillna(0, inplace=True)
+
+            # Net = Current - Gross
+            net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
+
+            # Take Only shortage,ignore surplus
+            net_df = net_df[net_df['net_qty'] < 0]
+
+            net_df['net_qty'] = net_df['net_qty'].abs()
+
+            summary_df_query = 'select part_name, depot_name, material_number,high_spare, customer_name, ' \
+                               'standard_cost from summary'
+
+            summary_df = get_df_from_sql_query(
+                query=summary_df_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
+            summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
+
+            # get IB quantities & std_gross_cost in summary_df
+            ib_query = 'SELECT product_ordering_name, node_depot_belongs, pon_quanity as ib_quantity' \
+                       ' FROM current_ib where pon_quanity>0 '
+
+            ib_df = get_df_from_sql_query(
+                query=ib_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            summary_df = pd.merge(summary_df, ib_df, left_on=['part_name', 'depot_name'],
+                                  right_on=['product_ordering_name', 'node_depot_belongs'], how='left')
+
+            summary_df.loc[summary_df['ib_quantity'].isna(), 'ib_quantity'] = 0
+            summary_df = summary_df.drop(['product_ordering_name', 'node_depot_belongs'], 1)
+
+            summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
+
+        else:
+            # Find Current Gross
+            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty, request_id FROM mtbf_bom_calculated ' \
+                          'where pon_quantity > 0  order by gross_qty desc'
+
+            gross_df = get_df_from_sql_query(
+                query=gross_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            current_inv_query = 'select part_name,depot_name,sum(total_stock) as qty from summary as a ' \
+                                'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
+                                'where b.requestStatus="Completed" and total_stock!=0  ' \
+                                'group by part_name,depot_name,total_stock;'
+
+            current_inv = get_df_from_sql_query(
+                query=current_inv_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            net_df = pd.merge(gross_df, current_inv, on=['part_name', 'depot_name'], how='left')
+
+            net_df['qty'].fillna(0, inplace=True)
+
+            # Net = Current - Gross
+            net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
+
+            # Take Only shortage,ignore surplus
+            net_df = net_df[net_df['net_qty'] < 0]
+
+            net_df['net_qty'] = net_df['net_qty'].abs()
+
+            summary_df_query = 'select part_name, depot_name, material_number,high_spare, customer_name, ' \
+                               'standard_cost from summary '
+
+            summary_df = get_df_from_sql_query(
+                query=summary_df_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
+            summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
+
+            # get IB quantities & std_gross_cost in summary_df
+            ib_query = 'SELECT product_ordering_name, node_depot_belongs, pon_quanity as ib_quantity' \
+                       ' FROM current_ib where pon_quanity>0 '
+
+            ib_df = get_df_from_sql_query(
+                query=ib_query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            summary_df = pd.merge(summary_df, ib_df, left_on=['part_name', 'depot_name'],
+                                  right_on=['product_ordering_name', 'node_depot_belongs'], how='left')
+
+            summary_df.loc[summary_df['ib_quantity'].isna(), 'ib_quantity'] = 0
+            summary_df = summary_df.drop(['product_ordering_name', 'node_depot_belongs'], 1)
+
+            summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
+
+
+        summary_df = summary_df[['depot_name', 'part_name']]
+        summary_df = summary_df.groupby(['depot_name']).count()
+        summary_df.reset_index(inplace=True)
+        summary_df.rename(columns={
+            'part_name': 'critical_pon_count',
+        }, inplace=True
+        )
+        response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
+        return response
+
+    '''
     def get(self):
 
         query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   where ' \
@@ -649,6 +786,7 @@ class GetTopDepots(Resource):
 
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
+    '''
 
 
 class GetTopCustomer(Resource):
