@@ -4,9 +4,11 @@
     <side-nav menu="analysis"/>
     <div class="custom-container" style="padding:3%; paddingTop:7%">
       <div>
-      <div class="breadcrumb">
-        <p>{{current}}</p>
-      </div>  
+        <div class="myBreadCrumb"  style="margin-bottom:1px">
+          <p>
+          <span  style="font-size: 14px;">{{current}}</span>
+          </p>
+        </div>
       </div>
       <div class="row">
         <div class="col-lg-2 text-center">
@@ -237,5 +239,10 @@ export default {
 .count {
   font-size: 40px;
   font-weight: 600;
+}
+.myBreadCrumb
+{
+ margin-top:-2%;
+ margin-bottom: 2%;  
 }
 </style>

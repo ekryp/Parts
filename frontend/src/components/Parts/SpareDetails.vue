@@ -4,12 +4,17 @@
     <side-nav menu="analysis"/>
 
     <div class="custom-container" style="padding:3%; paddingTop:7%">
+      
       <div>
-        <div class="breadcrumb" style="margin-bottom:1px">
-          <p class="in-progress" @click="redirectToAnalysis()">{{postMenu}}/</p>
-          <p>{{current}}</p>
-        </div>
-      </div>
+            <div class="myBreadCrumb"  style="margin-bottom:1px">
+              <p>
+              <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}
+              </span>
+              <span  style="font-size: 14px;">{{current}}
+              </span>
+              </p>
+            </div>
+          </div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
@@ -114,47 +119,7 @@
               </tbody>
             </table>
           </div>
-          <!-- <div id="progress" class="form_wizard wizard_horizontal">
-            <ul id="progress_ul" class="wizard_steps anchor">
-              <li>
-                <a class="disabled" isdone="0" rel="1">
-                  <span class="step_no">1</span>
-                  <span class="step_descr">Data Setup and
-                    <br>Schema verification
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="2">
-                  <span class="step_no">2</span>
-                  <span class="step_descr">Text Preprocessing</span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="3">
-                  <span class="step_no">3</span>
-                  <span class="step_descr">Feature Generation</span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="4">
-                  <span class="step_no" style="backgroundColor:green">4</span>
-                  <span class="step_descr">Problem Category
-                    <br>Prediction
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="5">
-                  <span id="predictionDownload" class="step_no blink" style="backgroundColor:green">
-                    <span>5</span>
-                    <i style="display:none" class="fa fa-download"></i>
-                  </span>
-                  <span class="step_descr">Save Results</span>
-                </a>
-              </li>
-            </ul>
-          </div>-->
+
         </div>
         <div
           class="tab-pane fade"
@@ -318,7 +283,7 @@ export default {
       currentGross: [],
       currentNet: [],
       currentib: [],
-      postMenu: "Analysis",
+      postMenu: "Analysis >",
       current: "Analysis Summary"
     };
   },
@@ -473,78 +438,14 @@ a {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
 }
-/* .form_wizard .stepContainer {
-  display: block;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  border: 0 solid #ccc;
-  overflow-x: hidden;
-}
-.wizard_horizontal ul.wizard_steps {
-  display: table;
-  list-style: none;
-  position: relative;
-  width: 100%;
-  margin: 0 0 20px;
-}
-.wizard_horizontal ul.wizard_steps li {
-  display: table-cell;
-  text-align: center;
-}
-.wizard_horizontal ul.wizard_steps li a,
-.wizard_horizontal ul.wizard_steps li:hover {
-  display: block;
-  position: relative;
-  -moz-opacity: 1;
-  filter: alpha(opacity=100);
-  opacity: 1;
-  color: #666;
-}
-.wizard_horizontal ul.wizard_steps li a:before {
-  content: "";
-  position: absolute;
-  height: 4px;
-  background: #ccc;
-  top: 20px;
-  width: 100%;
-  z-index: 4;
-  left: 0;
-}
-.wizard_horizontal ul.wizard_steps li a.disabled .step_no {
-  background: #ccc;
-}
-.wizard_horizontal ul.wizard_steps li a .step_no {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  border-radius: 100px;
-  display: block;
-  margin: 0 auto 5px;
-  font-size: 16px;
-  text-align: center;
-  position: relative;
-  z-index: 5;
-}
-.wizard_horizontal ul.wizard_steps li a.selected:before,
-.step_no {
-  background: #34495e;
-  color: #fff;
-}
-.wizard_horizontal ul.wizard_steps li a.done:before,
-.wizard_horizontal ul.wizard_steps li a.done .step_no {
-  background: #1abb9c;
-  color: #fff;
-}
-.wizard_horizontal ul.wizard_steps li:first-child a:before {
-  left: 50%;
-}
-.wizard_horizontal ul.wizard_steps li:last-child a:before {
-  right: 50%;
-  width: 50%;
-  left: auto;
-} */
-.in-progress {
+  
+.in-progress{
   cursor: pointer;
+  font-size: 14px;
+}
+.myBreadCrumb
+{
+ margin-top:-2%;
+ margin-bottom: 2%;  
 }
 </style>
