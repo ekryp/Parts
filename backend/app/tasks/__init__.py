@@ -228,7 +228,163 @@ def remove_hub_depot(df, depot):
     all_depots = all_depots[['Product Ordering Name', 'node_depot_belongs', 'PON Quanity']]
     return all_depots
 
+def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id, customer_name):
 
+    '''
+    step 1. first get parts and its high spare
+    step 2. check if given part's quantity is !=0 if it not equal to 0 retain the value
+    step 3. if given PON's quantity is 0 then get quantity from high spares
+    step 4. quantity is either reorder point or total stock
+    '''
+
+    Connection = Configuration.ECLIPSE_DATA_DB_URI
+    # step 1 get PON and its high spares - we will need
+    # given_Spare name, high_spare_name, total_order_given, total_order_high, reorder_give, reorder_high_spare
+
+    #get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM infinera.sap_inventory '
+    z_inventory = read_sap_export_file()
+
+    ''' This step is important because, when the inventory doesn't have reorder or total stock, the value is replaced - if Highs spare exists with
+       high spare qty value if not replcae it with 0, but when we merge, the qty is null and the depot won't show up and grabbing value from high spare
+       won't be possible, hence this step. '''
+
+    '''
+    This step gives us starting inventory
+    '''
+    # check if process 3 already stores the total inventory in databse then change the follwing line
+    # to read from database instead of file -- For Ashish
+    z_inventory.groupby(['Material Description', 'Storage Location'])['Total Stock', 'Reorder Point'].sum().unstack(
+        fill_value=0).stack().to_csv(Configuration.shared_depot_file, header=True)
+    sub = pd.read_csv(Configuration.shared_depot_file)
+
+    # this step is to make sure that we take into account those depot that are present in the input file
+    # but absent in inventory in which case all the qty in shared depot for missing inventory depot is marked zero
+
+    #shared_depot = pd.merge(single_bom, z_inventory, left_on=['part_name','depot_name'], right_on=['Material Description','Storage Location'], how = 'left')
+    shared_depot = single_bom
+
+    # if the depot name is empty mark it with first occuring depot, set 0 to qty
+
+    shared_depot = pd.merge(shared_depot, high_spares, left_on=['part_name'], right_on=['part_name'], how='left').merge(
+        sub, left_on=['part_name', 'depot_name'], right_on=['Material Description', 'Storage Location'])
+
+    shared_depot = pd.merge(shared_depot, sub, left_on=['high_spare', 'depot_name'], right_on=['Material Description', 'Storage Location'], how='left')
+    shared_depot = shared_depot.replace(np.nan, 0)
+
+    idx = (shared_depot['high_spare'] != 0)
+    shared_depot.loc[idx, 'is_high_spares'] = True
+
+    shared_depot = shared_depot.replace(np.nan, 0)
+
+    shared_depot_total = shared_depot[['Total Stock_x', 'part_name', 'high_spare', 'Material Description_x', 'Total Stock_y', 'depot_name']]
+    shared_depot_reorder = shared_depot[['Reorder Point_x', 'part_name', 'high_spare', 'Material Description_x', 'Reorder Point_y', 'depot_name','is_high_spares']]
+
+    # only for for those pons that have high pons check if pon,s qty is 0, if 0 then grab shared depot qty
+    # else keep depot qty
+
+    shared_depot_total['Total Stock'] = shared_depot_total['Total Stock_x']
+    idx = (shared_depot_total['Total Stock_x'] == 0)
+    shared_depot_total.loc[idx, 'Total Stock'] = shared_depot_total.loc[idx, 'Total Stock_y']
+
+    shared_depot_reorder['Reorder Point'] = shared_depot_reorder['Reorder Point_x']
+    idx = (shared_depot_reorder['Reorder Point_x'] == 0)
+    shared_depot_reorder.loc[idx, 'Reorder Point'] = shared_depot_reorder.loc[idx, 'Reorder Point_y']
+
+
+
+    shared_depot_total = shared_depot_total[['part_name', 'Total Stock', 'depot_name']]
+    shared_depot_reorder = shared_depot_reorder[['part_name', 'Reorder Point', 'depot_name','is_high_spares']]
+
+    shared_depot = pd.merge(shared_depot_reorder, shared_depot_total, on=['part_name','depot_name'])
+
+    single_bom = pd.merge(single_bom, shared_depot, on=['part_name', 'depot_name'])
+
+    # if simple is selected
+    # single_bom.loc[(single_bom['pon_quantity'] > 0), 'shared_quantity'] = single_bom['pon_quantity']
+    # else when mtbf_bom is selected
+    single_bom['shared_quantity'] = single_bom['pon_quantity']
+    single_bom['net_total_stock'] = np.where(single_bom['shared_quantity'] - single_bom['Total Stock'] > 0, single_bom['shared_quantity'] - single_bom['Total Stock'], 0)
+    single_bom['net_reorder_point'] = np.where(single_bom['shared_quantity'] - single_bom['Reorder Point'] > 0,single_bom['shared_quantity'] - single_bom['Reorder Point'], 0)
+
+    # Get Part_number for summary table
+    single_bom = pd.merge(single_bom, parts, on='part_name', how='left')
+    single_bom = single_bom[['part_name', 'depot_name', 'Total Stock', 'Reorder Point',
+                             'is_high_spares', 'shared_quantity', 'material_number', 'net_total_stock' , 'net_reorder_point']]
+
+    # Get Part_Cost for summary table
+
+    single_bom = pd.merge(single_bom, standard_cost, on='material_number', how='left')
+    single_bom = single_bom[['part_name_x', 'depot_name', 'Total Stock', 'Reorder Point',
+                             'is_high_spares', 'shared_quantity', 'material_number', 'net_total_stock', 'net_reorder_point', 'standard_cost']]
+
+    single_bom['net_total_stock_cost'] = single_bom['net_total_stock'] * single_bom['standard_cost']
+    single_bom['net_reorder_point_cost'] = single_bom['net_reorder_point'] * single_bom['standard_cost']
+
+    single_bom.rename(columns={
+        'part_name_x': 'part_name',
+        'is_high_spares':'high_spare',
+        'Reorder Point':'reorder_point',
+        'Total Stock':'total_stock'
+    }, inplace=True
+    )
+
+    single_bom.loc[:, 'cust_id'] = 7
+    single_bom.loc[:, 'analysis_request_time'] = analysis_date
+    single_bom.loc[:, 'user_email_id'] = user_email_id
+    single_bom.loc[:, 'request_id'] = analysis_id
+    single_bom.loc[:, 'customer_name'] = customer_name
+    single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+    print("Loaded data into summary table")
+
+    # Initially make shared_
+    # quantiity for all PON as 0,
+    #single_bom['shared_quantity'] = 0
+    #single_bom['is_high_spares'] = False
+    # For PON in bom whose pon_quantity > 0 and has not having high spares
+    # make shared quantity as bom explosion quantity
+    #single_bom.loc[(single_bom['pon_quantity'] > 0) & (single_bom['high_spare'].isna()), 'shared_quantity'] = single_bom['pon_quantity']
+
+    # For PON in bom whose pon_quantity > 0 and has having high spares
+    # and not present in zinventory
+    # make shared quantity as bom explosion quantity
+
+    #single_bom.loc[(single_bom['pon_quantity'] > 0) & (single_bom['high_spare'].notnull()) & (single_bom['storage_location'].isna()), 'shared_quantity'] = single_bom['pon_quantity']
+
+    # For PON in bom whose pon_quantity > 0 and has having high spares
+    # and present in zinventory
+    # check spared_part in present in same depot as bom & zinventory
+    # make shared quantity as bom explosion quantity
+    '''
+
+    single_bom = single_bom[['part_name', 'depot_name', 'high_spare', 'total_stock', 'reorder_point', 'is_high_spares', 'shared_quantity']]
+    single_bom['net_total_stock'] = single_bom['total_stock'] - single_bom['shared_quantity']
+    single_bom['net_reorder_point'] = single_bom['reorder_point'] - single_bom['shared_quantity']
+
+    # Get Part_number for summary table
+    single_bom = pd.merge(single_bom, parts, on='part_name', how='left')
+    single_bom = single_bom[['part_name', 'depot_name', 'total_stock', 'reorder_point',
+                             'is_high_spares', 'shared_quantity', 'material_number', 'net_total_stock'
+                             , 'net_reorder_point']]
+
+    # Get Part_Cost for summary table
+
+    single_bom = pd.merge(single_bom, standard_cost, on='material_number', how='left')
+    single_bom = single_bom[['part_name_x', 'depot_name', 'total_stock', 'reorder_point',
+                             'is_high_spares', 'shared_quantity', 'material_number','net_total_stock'
+                             , 'net_reorder_point', 'standard_cost']]
+
+    single_bom['net_total_stock_cost'] = single_bom['net_total_stock'] * single_bom['standard_cost']
+    single_bom['net_reorder_point_cost'] = single_bom['net_reorder_point'] * single_bom['standard_cost']
+    single_bom.rename(columns={
+        'part_name_x': 'part_name',
+        'is_high_spares': 'high_spare'
+    }, inplace=True
+    )
+    single_bom['cust_id'] = 7
+    single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+    print("Loaded data into summary table")'''
+
+'''  
 def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id, customer_name):
 
     Connection = Configuration.ECLIPSE_DATA_DB_URI
@@ -299,7 +455,8 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     single_bom.loc[:, 'customer_name'] = customer_name
     single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
     print("Loaded data into summary table")
-
+    
+'''
 
 def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id):
 
