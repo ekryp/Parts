@@ -31,13 +31,13 @@
             "data": [
                 {
                     "name": "Critical PONs",
-                    "y": 28,
+                    "y": 4,
                     "sliced": true,
                     "selected": true
                 },
                 {
                     "name": "Non-Critical PONs",
-                    "y": 34
+                    "y": 50
                 }
             ]
         }

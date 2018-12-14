@@ -2,28 +2,23 @@
     "topPONs": [
         {
             "id": 1,
-            "part_name": "AAM-B1",
-            "count": "4"
+            "part_name": "BMM2P-8-CH1-MS-C",
+            "critical_pon_count": "4"
         },
         {
             "id": 2,
-            "part_name": "AAM-B2",
-            "count": "3"
+            "part_name": "D-PEM-35",
+            "critical_pon_count": "4"
         },
         {
             "id": 3,
-            "part_name": "MTC-9-PEM",
-            "count": "3"
+            "part_name": "OXM-X10",
+            "critical_pon_count": "4"
         },
         {
             "id": 4,
-            "part_name": "TOM-10G-D55-LR2",
-            "count": "8"
-        },
-        {
-            "id": 5,
-            "part_name": "TOM-1G-ZX=",
-            "count": "10"
+            "part_name": "TIM-1-100G",
+            "critical_pon_count": "4"
         }
         
     ],

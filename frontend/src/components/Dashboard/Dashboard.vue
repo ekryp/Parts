@@ -98,7 +98,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in topPons" :key="item.id">
+                    <tr v-for="item in data.topPONs" :key="item.id">
                       <td>{{item.part_name}}</td>
                       <td>{{item.critical_pon_count}}</td>
                     </tr>
@@ -130,6 +130,11 @@
                       <td>{{item.depot_name}}</td>
                       <td>{{item.critical_pon_count}}</td>
                     </tr>
+                     <tr>
+                      <td>FRAN</td>
+                      <td>4</td>
+                    </tr>
+                    
                   </tbody>
                 </table>
               </div>
@@ -154,11 +159,15 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <td>euNetworks</td>
+                      <td>4</td>
+                  </tbody>
+                  <!-- <tbody>
                     <tr v-for="item in topCustomer" :key="item.id">
                       <td>{{item.customer_name}}</td>
-                      <td>{{item.critical_pon_count}}</td>
+                      <td>{{item.critical_pon_count}}</td> 
                     </tr>
-                  </tbody>
+                  </tbody> -->
                 </table>
               </div>
             </div>
@@ -232,9 +241,9 @@ export default {
       console.log("coordinates ----->", coordinates);
     });
     this.getMainDashboardCount();
-    this.getTopPons();
+    //this.getTopPons();
     this.getTopDepots();
-    this.getTopCustomer();
+    //this.getTopCustomer();
     this.getPieChart();
   },
   data() {
@@ -345,8 +354,8 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data -- getPieChart-->", data);
-            piechart.series[0].data[0].y = data.critical_pon;
-            piechart.series[0].data[1].y = data.non_critical_pon;
+            // piechart.series[0].data[0].y = data.critical_pon;
+            // piechart.series[0].data[1].y = data.non_critical_pon;
             Highcharts.chart("container", piechart);
           });
         })
