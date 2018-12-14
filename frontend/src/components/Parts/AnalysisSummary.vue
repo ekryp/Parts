@@ -10,7 +10,7 @@
               <strong>Analysis Name</strong>
               <input
                 type="email"
-                v-model="partsAnalysisSummaryReslut[0].analysis_name"
+                v-model="analysisName[0].analysis_name"
                 class="form-control"
                 placeholder="Analysis Name"
                 disabled
@@ -37,7 +37,7 @@
               <input
                 type="email"
                 class="form-control"
-                v-model="requestId"
+                v-model="dispId"
                 placeholder="Analysis Id"
                 disabled
                 style="text-align:right; fontSize:1vw; marginTop:2%"
@@ -71,15 +71,17 @@
             <tr style="fontSize:1vw">
               <th rowspan="2" scope="col">Part Name</th>
               <th rowspan="2" scope="col">Depot Name</th>
-              <th rowspan="2" scope="col">Gross Quantity</th>
               <th rowspan="2" scope="col">Material</th>
-              <th rowspan="2" scope="col">Quantity</th>
-              <th rowspan="2" scope="col">Standard Cost ($)</th>
+              <th rowspan="2" scope="col">IB Quantity</th>
+              <th rowspan="2" scope="col">Standard Cost($)</th>
+              <th colspan="2">Gross Requirement</th>
               <th colspan="2">Net Requirement</th>
               <th rowspan="2" style="valign:middle">Has High Spare?</th>
             </tr>
             <tr style="fontSize:1vw">
               <!-- <th scope="col">Customer Name</th> -->
+              <th scope="col">Quantity</th>
+              <th scope="col"> Ext Standard Cost($)</th>
               <th scope="col">Quantity</th>
               <th scope="col">Standard Cost($)</th>
             </tr>
@@ -93,10 +95,11 @@
               <!-- <td class="left">{{item.customer_name}}</td> -->
               <td>{{item.part_name}}</td>
               <td>{{item.depot_name}}</td>
-              <td>{{item.gross_qty}}</td>
               <td>{{item.material_number}}</td>
-              <td>{{item.qty}}</td>
+              <td>{{item.ib_quantity}}</td>
               <td class="right">{{item.standard_cost | currency('')}}</td>
+              <td>{{item.gross_qty}}</td>
+              <td class="right">{{item.std_gross_cost | currency('')}}</td>
               <td>{{item.net_qty}}</td>
               <td class="right">{{item.net_std_cost | currency('')}}</td>
               <td v-if="item.high_spare != 0">
@@ -133,7 +136,9 @@ export default {
   created() {
     console.log("props ----->", this.$props);
     this.requestId = this.$props.analysisId;
+    this.dispId=`AR0000`+this.requestId;
     this.get_request_analysis_summary_result(this.requestId);
+    this.get_analysis_name(this.requestId);
   },
   computed: {},
   data() {
@@ -141,6 +146,8 @@ export default {
     return {
       requestId: "",
       partsAnalysisSummaryReslut: [],
+      dispId:"",
+      analysisName:[],
       toggle: "reorder",
       state: true
     };
@@ -162,6 +169,34 @@ export default {
       }
     },
     spareDetails() {},
+    get_analysis_name(requestId)
+    {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_analysis_name?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_analysis_name-->", data);
+            this.analysisName = data;
+            // $(document).ready(function() {
+            //   $("#example").DataTable();
+            // });
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+
+    }
+    ,
     get_request_analysis_summary_result(requestId) {
       fetch(
         constant.APIURL +
