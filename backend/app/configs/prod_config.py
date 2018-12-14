@@ -62,6 +62,7 @@ class Configuration(BaseConfig):
     Bestal_file_location = os.path.join(BASE_DIR, 'Timbuktu - Clean.csv')
     end_customer_file_location = os.path.join(BASE_DIR, '4-SPMS_Reference_Data.xlsx')
     final_output = os.path.join(BASE_DIR, 'output.csv')
+    shared_depot_file = os.path.join(BASE_DIR, 'shared_depot.csv')
 
     all_parts_array = [
         {"fname": standard_cost_file_location, "sheet": "STD COST ",
