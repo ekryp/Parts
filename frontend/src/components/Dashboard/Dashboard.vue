@@ -4,8 +4,10 @@
     <side-nav/>
     <div class="custom-container" style="paddingTop: 2%">
       <div class="row-one">
-        <div class="breadcrumb">
-          <p>{{current}}</p>
+        <div class="myBreadCrumb"  style="margin-bottom:1px">
+          <p>
+          <span  style="font-size: 14px;">{{current}}</span>
+          </p>
         </div>
         <div class="row text-center">
           <div class="col-lg-2">
@@ -246,7 +248,7 @@ export default {
       topPons: [],
       topDepots: [],
       topCustomer: [],
-      pieChart: null,
+      //pieChart: null,
       current: "Dashboard"
     };
   },

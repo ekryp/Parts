@@ -1,5 +1,4 @@
 <template>
-  <loading :show="show" :label="label">
     <div>
       <headernav msg="Spare Part Analysis"/>
       <side-nav menu="analysis"/>
@@ -10,10 +9,15 @@
         <!-- <div class="container"> -->
         <form style="marginTop: 5%">
           <div>
-            <div class="breadcrumb">
-              <p class="in-progress" @click="cancel()">{{postMenu}}/</p>
-              <p v-if="requestId!==''">Analysis Update</p>
-              <p v-if="requestId===''">Analysis Create</p>
+            <div class="myBreadCrumb">
+              <p>
+              <span class="in-progress" @click="cancel()">{{postMenu}}
+              </span>
+              <span v-if="requestId!==''" style="font-size: 14px;">{{current}}
+              </span>
+              <span v-if="requestId===''" style="font-size: 14px;">Analysis Create
+              </span>
+              </p>
             </div>
           </div>
           <div class="form-group">
@@ -207,99 +211,183 @@
             <!-- Status Tracker -->
             <div style="marginTop:2%" v-if="requestId !== ''">
               <div class="row" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 6">
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
+                </div>
               </div>
               <div class="row" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 5">
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
+                </div>
               </div>
               <div class="row" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 4">
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
+                </div>
               </div>
               <div class="row" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 3">
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
+                </div>
               </div>
               <div class="row" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 2">
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
+                </div>
               </div>
               <div class="row" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 1">
+                <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
                 <span class="dot"></span>
+                </div>
               </div>
               <div
                 class="row"
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined "
               >
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
+              </div>
               </div>
               <!-- error -->
               <div
@@ -307,110 +395,182 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined  && partsAnalysisData.requestStatus === 'Failed'"
               >
+              <div class="col-lg-2">
                 <span class="dot-red"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
+              </div>
               </div>
               <div
                 class="row"
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 5 && partsAnalysisData.requestStatus === 'Failed'"
               >
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-red"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-red"></span>
+              </div>
               </div>
               <div
                 class="row"
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 4 && partsAnalysisData.requestStatus === 'Failed'"
               >
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-red"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-red"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
+              </div>
               </div>
               <div
                 class="row"
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 3 && partsAnalysisData.requestStatus === 'Failed'"
               >
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-red"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-red"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
+              </div>
               </div>
               <div
                 class="row"
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 2 && partsAnalysisData.requestStatus === 'Failed'"
               >
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-green"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-red"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-red"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
+              </div>
               </div>
               <div
                 class="row"
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 1 && partsAnalysisData.requestStatus === 'Failed'"
               >
+              <div class="col-lg-2">
                 <span class="dot-green"></span>
                 <span class="line-red"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot-red"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
                 <span class="line"></span>
+              </div>
+              <div class="col-lg-2">
                 <span class="dot"></span>
               </div>
+              </div>
               <div class="row" style="marginLeft:4%">
-                <div class="col-lg-2">Process Files</div>
-                <div class="col-lg-2">Generating Flat Files</div>
-                <div class="col-lg-2">Combining Flat Files</div>
-                <div class="col-lg-2">Analyzing Data</div>
-                <div class="col-lg-2">Generation BOM</div>
-                <div class="col-lg-2">Generting Output</div>
+                <div class="col-lg-2" style="align:center">Process Files</div>
+                <div class="col-lg-2" style=" margin-Left: -1%;">Generating Flat Files</div>
+                <div class="col-lg-2" style=" margin-Left: -1%;">Combining Flat Files</div>
+                <div class="col-lg-2" >Analyzing Data</div>
+                <div class="col-lg-2" >Generation BOM</div>
+                <div class="col-lg-2" >Generting Output</div>
               </div>
             </div>
             <!-- Tracker Ends -->
@@ -467,7 +627,6 @@
         <!-- </div> -->
       </div>
     </div>
-  </loading>
 </template>
 
 
@@ -535,7 +694,7 @@ export default {
       partsAnalysis: "",
       partsClose: true,
       showPartsChild: false,
-      postMenu: "Analysis",
+      postMenu: "Analysis >",
       current: "Analysis Update",
       show: false,
       label: "Loading..."
@@ -721,6 +880,7 @@ export default {
 .dot {
   height: 50px;
   width: 50px;
+  margin-Left: -8%;
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
@@ -728,36 +888,47 @@ export default {
 .dot-green {
   height: 50px;
   width: 50px;
+  margin-Left: -8%;
   background-color: green;
   border-radius: 50%;
   display: inline-block;
 }
 .line {
   height: 10px;
-  width: 110px;
-  margin-top: 2%;
+  width: 84%;
+  margin-bottom: 8%;
   background-color: #bbb;
   display: inline-block;
 }
 .line-green {
   height: 10px;
-  width: 110px;
-  margin-top: 2%;
+  width: 84%;
+  margin-bottom: 8%;
   background-color: green;
   display: inline-block;
 }
 .line-red {
   height: 10px;
-  width: 110px;
-  margin-top: 2%;
+  width: 84%;
+  margin-bottom: 8%;
   background-color: red;
   display: inline-block;
 }
 .dot-red {
   height: 50px;
   width: 50px;
+  margin-Left: -8%;
   background-color: red;
   border-radius: 50%;
   display: inline-block;
+}
+.in-progress{
+  cursor: pointer;
+  font-size: 14px;
+}
+.myBreadCrumb
+{
+ margin-top:-2%;
+ margin-bottom: 2%;  
 }
 </style>

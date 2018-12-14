@@ -4,12 +4,17 @@
     <side-nav menu="analysis"/>
 
     <div class="custom-container" style="padding:3%; paddingTop:7%">
+      
       <div>
-        <div class="breadcrumb" style="margin-bottom:1px">
-          <p class="in-progress" @click="redirectToAnalysis()">{{postMenu}}/</p>
-          <p>{{current}}</p>
-        </div>
-      </div>
+            <div class="myBreadCrumb"  style="margin-bottom:1px">
+              <p>
+              <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}
+              </span>
+              <span  style="font-size: 14px;">{{current}}
+              </span>
+              </p>
+            </div>
+          </div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
@@ -318,7 +323,7 @@ export default {
       currentGross: [],
       currentNet: [],
       currentib: [],
-      postMenu: "Analysis",
+      postMenu: "Analysis >",
       current: "Analysis Summary"
     };
   },
@@ -544,7 +549,13 @@ a {
   width: 50%;
   left: auto;
 } */
-.in-progress {
+.in-progress{
   cursor: pointer;
+  font-size: 14px;
+}
+.myBreadCrumb
+{
+ margin-top:-2%;
+ margin-bottom: 2%;  
 }
 </style>
