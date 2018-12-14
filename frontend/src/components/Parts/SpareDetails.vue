@@ -313,7 +313,7 @@ export default {
       requestID: "",
       data: data,
       state: true,
-      toggle: "total_stock",
+      toggle: "reorder",
       currentInventory: [],
       currentGross: [],
       currentNet: [],
