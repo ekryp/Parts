@@ -451,146 +451,85 @@ class GetMainDashboardCount(Resource):
         # toggle is True by default meaning by default reorder
         # False means total_stock
         if toggle == 'reorder':
-            # Find Current Gross
-            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty,request_id FROM mtbf_bom_calculated ' \
-                          'where pon_quantity > 0  order by gross_qty desc'
 
-            gross_df = get_df_from_sql_query(
-                query=gross_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
+            def get_respective_counts():
+                engine = create_engine(Configuration.INFINERA_DB_URL)
 
-            # Find Current Inventory reorder
+                total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary;'
+                total_customer = engine.execute(total_customer_query).fetchone()[0]
 
-            current_inv_query = 'select part_name,depot_name,sum(reorder_point) as qty from summary as a ' \
-                                'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
-                                'where b.requestStatus="Completed" and reorder_point!=0 ' \
-                                'group by part_name,depot_name,reorder_point;'
+                total_pon_type_query = 'SELECT count(distinct(part_name))  FROM summary;'
+                total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
 
-            current_inv = get_df_from_sql_query(
-                query=current_inv_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
+                total_depot_query = 'select  count(distinct(depot_name))  FROM summary'
+                total_depot = engine.execute(total_depot_query).fetchone()[0]
 
-            net_df = pd.merge(gross_df, current_inv, on=['part_name', 'depot_name'], how='left')
+                critical_pon_query = 'select  count(distinct(part_name))  FROM summary where  ' \
+                                     'net_reorder_point >0'
+                critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
-            net_df['qty'].fillna(0, inplace=True)
+                critical_customer_query = 'select  count(distinct(customer_name))  FROM summary where' \
+                                          '  net_reorder_point >0 '
+                critical_customer = engine.execute(critical_customer_query).fetchone()[0]
 
-            # Net = Current - Gross
-            net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
+                critical_depot_query = 'select count(distinct(depot_name)) FROM summary ' \
+                                       'where  net_reorder_point >0'
+                critical_depot = engine.execute(critical_depot_query).fetchone()[0]
 
-            # Take Only shortage,ignore surplus
-            net_df = net_df[net_df['net_qty'] < 0]
+                return total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot
 
-            net_df['net_qty'] = net_df['net_qty'].abs()
+            total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot = get_respective_counts()
 
-            summary_df_query = 'select part_name, depot_name, material_number,high_spare, customer_name, ' \
-                               'standard_cost from summary'
-
-            summary_df = get_df_from_sql_query(
-                query=summary_df_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
-
-            summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
-            summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
-
-            # get IB quantities & std_gross_cost in summary_df
-            ib_query = 'SELECT product_ordering_name, node_depot_belongs, pon_quanity as ib_quantity' \
-                       ' FROM current_ib where pon_quanity>0 '
-
-            ib_df = get_df_from_sql_query(
-                query=ib_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
-
-            summary_df = pd.merge(summary_df, ib_df, left_on=['part_name', 'depot_name'],
-                                  right_on=['product_ordering_name', 'node_depot_belongs'], how='left')
-
-            summary_df.loc[summary_df['ib_quantity'].isna(), 'ib_quantity'] = 0
-            summary_df = summary_df.drop(['product_ordering_name', 'node_depot_belongs'], 1)
-
-            summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
+            response = {
+                'total_customer': total_customer,
+                'critical_pon': critical_pon,
+                'critical_customer': critical_customer,
+                'critical_depot': critical_depot,
+                'total_pon_type': total_pon_type,
+                'total_depot': total_depot
+            }
+            return response
 
         else:
-            # Find Current Gross
-            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty, request_id FROM mtbf_bom_calculated ' \
-                          'where pon_quantity > 0  order by gross_qty desc'
+            def get_respective_counts():
+                engine = create_engine(Configuration.INFINERA_DB_URL)
 
-            gross_df = get_df_from_sql_query(
-                query=gross_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
+                total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary;'
+                total_customer = engine.execute(total_customer_query).fetchone()[0]
 
-            current_inv_query = 'select part_name,depot_name,sum(total_stock) as qty from summary as a ' \
-                                'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
-                                'where b.requestStatus="Completed" and total_stock!=0  ' \
-                                'group by part_name,depot_name,total_stock;'
+                total_pon_type_query = 'SELECT count(distinct(part_name))  FROM summary;'
+                total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
 
-            current_inv = get_df_from_sql_query(
-                query=current_inv_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
+                total_depot_query = 'select  count(distinct(depot_name))  FROM summary'
+                total_depot = engine.execute(total_depot_query).fetchone()[0]
 
-            net_df = pd.merge(gross_df, current_inv, on=['part_name', 'depot_name'], how='left')
+                critical_pon_query = 'select  count(distinct(part_name))  FROM summary where  ' \
+                                     ' net_total_stock > 0;'
+                critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
-            net_df['qty'].fillna(0, inplace=True)
+                critical_customer_query = 'select  count(distinct(customer_name))  FROM summary where' \
+                                          '  net_total_stock > 0;'
+                critical_customer = engine.execute(critical_customer_query).fetchone()[0]
 
-            # Net = Current - Gross
-            net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
+                critical_depot_query = 'select count(distinct(depot_name)) FROM summary ' \
+                                       'where  net_total_stock > 0'
+                critical_depot = engine.execute(critical_depot_query).fetchone()[0]
 
-            # Take Only shortage,ignore surplus
-            net_df = net_df[net_df['net_qty'] < 0]
+                return total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot
 
-            net_df['net_qty'] = net_df['net_qty'].abs()
+            total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot = get_respective_counts()
 
-            summary_df_query = 'select part_name, depot_name, material_number,high_spare, customer_name, ' \
-                               'standard_cost from summary '
-
-            summary_df = get_df_from_sql_query(
-                query=summary_df_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
-
-            summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
-            summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
-
-            # get IB quantities & std_gross_cost in summary_df
-            ib_query = 'SELECT product_ordering_name, node_depot_belongs, pon_quanity as ib_quantity' \
-                       ' FROM current_ib where pon_quanity>0 '
-
-            ib_df = get_df_from_sql_query(
-                query=ib_query,
-                db_connection_string=Configuration.INFINERA_DB_URL)
-
-            summary_df = pd.merge(summary_df, ib_df, left_on=['part_name', 'depot_name'],
-                                  right_on=['product_ordering_name', 'node_depot_belongs'], how='left')
-
-            summary_df.loc[summary_df['ib_quantity'].isna(), 'ib_quantity'] = 0
-            summary_df = summary_df.drop(['product_ordering_name', 'node_depot_belongs'], 1)
-
-            summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
+            response = {
+                'total_customer': total_customer,
+                'critical_pon': critical_pon,
+                'critical_customer': critical_customer,
+                'critical_depot': critical_depot,
+                'total_pon_type': total_pon_type,
+                'total_depot': total_depot
+            }
+            return response
 
 
-
-        def get_total_counts():
-            engine = create_engine(Configuration.INFINERA_DB_URL)
-
-            total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary;'
-            total_customer = engine.execute(total_customer_query).fetchone()[0]
-
-            total_pon_type_query = 'SELECT count(distinct(part_name))  FROM summary;'
-            total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
-
-            total_depot_query = 'select  count(distinct(depot_name))  FROM summary'
-            total_depot = engine.execute(total_depot_query).fetchone()[0]
-
-            return total_customer, total_pon_type, total_depot
-
-        total_customer, total_pon_type, total_depot = get_total_counts()
-
-        response = {
-            'total_customer': total_customer,
-            'critical_pon': summary_df['part_name'].nunique(),
-            'critical_customer': summary_df['customer_name'].nunique(),
-            'critical_depot': summary_df['depot_name'].nunique(),
-            'total_pon_type': total_pon_type,
-            'total_depot': total_depot
-        }
-        return response
 
 
 class GetPieChart(Resource):
