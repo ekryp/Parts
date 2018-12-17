@@ -140,10 +140,7 @@
                       <td>{{item.depot_name}}</td>
                       <td>{{item.critical_pon_count}}</td>
                     </tr>
-                     <tr>
-                      <td>FRAN</td>
-                      <td>4</td>
-                    </tr>
+                     
                     
                   </tbody>
                 </table>
@@ -341,7 +338,7 @@ export default {
     // This Method is to get data for TOP DEPOTS table
 
     getTopDepots() {
-      fetch(constant.APIURL + "api/v1/get_top_depots", {
+      fetch(constant.APIURL + "api/v1/get_top_depots?toggle="+this.toggle, {
         method: "GET"
       })
         .then(response => {
@@ -423,10 +420,12 @@ export default {
         this.toggle = "reorder";
         this.getMainDashboardCount();
         this.getPieChart();
+        this.getTopDepots();
       } else {
         this.toggle = "total_stock";
         this.getMainDashboardCount();
         this.getPieChart();
+        this.getTopDepots();
       }
       
     }
