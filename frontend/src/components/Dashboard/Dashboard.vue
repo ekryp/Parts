@@ -9,6 +9,16 @@
           <span  style="font-size: 14px;">{{current}}</span>
           </p>
         </div>
+        
+
+         <toggle-button style="margin-left:95% "
+                :value="state"
+                :color="{checked: 'green', unchecked: 'green'}"
+                :sync="true"
+                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                width="80"
+                @change="stateChange()"
+              />
         <div class="row text-center">
           <div class="col-lg-2">
             <div class="row">
@@ -193,7 +203,16 @@
           <div class="col-lg-8">
             <div class="card">
               <div class="card-body">
-                <GmapMap :center="gmap.center" :zoom="3" style="width: 100%; height: 36vh"></GmapMap>
+                <GmapMap :center="gmap.center" :zoom="3" style="width: 100%; height: 36vh">
+                  <gmap-marker
+                    :key="index"
+                    v-for="(m, index) in markers"
+                    :position="m.position"
+                    @click="center=m.position"
+                    :label="{fontSize:'8px',text:m.label}"
+                    :icon="icon"
+                  ></gmap-marker>
+                </GmapMap>
               </div>
             </div>
           </div>
@@ -245,6 +264,7 @@ export default {
     this.getTopDepots();
     //this.getTopCustomer();
     this.getPieChart();
+    this.getMapLocations(this.markers);
   },
   data() {
     console.log("dashboard", this.data);
@@ -257,7 +277,15 @@ export default {
       topPons: [],
       topDepots: [],
       topCustomer: [],
-      //pieChart: null,
+      toggle: "reorder",
+      state: true,
+      icon :{
+              url: require('../../assets/result.svg'), // url
+                 scaledSize: new google.maps.Size(30,30), // scaled size
+                 origin: new google.maps.Point(0,0), // origin
+                 anchor: new google.maps.Point(0, 0) // anchor
+      },
+      markers: [],
       current: "Dashboard"
     };
   },
@@ -278,7 +306,7 @@ export default {
     // This Method is to get data for Main Dash Borad Details
 
     getMainDashboardCount() {
-      fetch(constant.APIURL + "api/v1/get_main_dashboard_count", {
+      fetch(constant.APIURL + "api/v1/get_main_dashboard_count?toggle="+this.toggle, {
         method: "GET"
       })
         .then(response => {
@@ -362,6 +390,44 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+    },
+    getMapLocations(markers)
+    {
+      fetch(constant.APIURL+"api/v1/get_lat_lon",{
+        method:"GET"
+      }).then(response=>{response.text().then(text=>{
+        const data =text && JSON.parse(text);
+        let promise = new Promise(function(resolve, reject) {
+          var i;
+          
+          for(i=0;i<data.length;i++){
+          var mapData={position:{lat:parseInt(data[i].lat),lng:parseInt(data[i].long)},label:data[i].depot_name};
+          console.log("Map datas =>", mapData);
+          markers.push(mapData);
+          }
+          return mapData;
+          });
+          promise.then(
+          mapData => alert("hi this is ",mapData), // shows "done!" after 1 second
+          error => alert(error) // doesn't run
+);
+
+        console.log("final data",this.markers);
+        
+      })})
+    },
+    stateChange()
+    {
+      this.state = !this.state;
+      if (this.state) {
+        console.log(this.toggle);
+        this.toggle = "reorder";
+        this.getMainDashboardCount();
+      } else {
+        this.toggle = "total_stock";
+        this.getMainDashboardCount();
+      }
+      
     }
   }
 };

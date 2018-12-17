@@ -84,7 +84,7 @@
             <div class="float-right">
               <toggle-button
                 :value="state"
-                color="green"
+                :color="{checked: 'green', unchecked: 'green'}"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
                 width="80"
@@ -205,7 +205,7 @@
             <div class="float-right">
               <toggle-button
                 :value="state"
-                color="green"
+                :color="{checked: 'green', unchecked: 'green'}"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
                 width="80"

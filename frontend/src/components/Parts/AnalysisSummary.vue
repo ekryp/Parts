@@ -46,11 +46,12 @@
           </div>
         </div>
 
-        <div class="float-right" style="paddingBottom:1%">
+        <div class="float-right" style="paddingBottom:1%" >
           <toggle-button
             :value="state"
-            color="green"
+            :color="{checked: 'green', unchecked: 'green'}"
             :sync="true"
+            cssColors:true
             :labels="{checked: 'ReOrder', unchecked: 'Total'}"
             width="80"
             @change="stateChange()"
@@ -74,9 +75,9 @@
               <th rowspan="2" scope="col">Material</th>
               <th rowspan="2" scope="col">IB Quantity</th>
               <th rowspan="2" scope="col">Standard Cost($)</th>
-              <th colspan="2">Gross Requirement</th>
-              <th colspan="2">Net Requirement</th>
-              <th rowspan="2" style="valign:middle">Has High Spare?</th>
+              <th colspan="2" scope="col">Gross Requirement</th>
+              <th colspan="2" scope="col">Net Requirement</th>
+              <th rowspan="2" scope="col">Has High Spare?</th>
             </tr>
             <tr style="fontSize:1vw">
               <!-- <th scope="col">Customer Name</th> -->
@@ -186,9 +187,6 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_analysis_name-->", data);
             this.analysisName = data;
-            // $(document).ready(function() {
-            //   $("#example").DataTable();
-            // });
           });
         })
         .catch(handleError => {
@@ -213,9 +211,9 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_dashboard_request_count-->", data);
             this.partsAnalysisSummaryReslut = data;
-            // $(document).ready(function() {
-            //   $("#example").DataTable();
-            // });
+            $(document).ready(function() {
+            $("#example").DataTable();
+            });
           });
         })
         .catch(handleError => {
