@@ -201,7 +201,7 @@
                     :key="index"
                     v-for="(m, index) in markers"
                     :position="m.position"
-                    @click="center=m.position"
+                    @click="routeTable()"
                     :label="{fontSize:'8px',text:m.label}"
                     :icon="icon"
                   ></gmap-marker>
