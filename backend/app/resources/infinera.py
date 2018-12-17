@@ -711,18 +711,43 @@ class GetTopCustomer(Resource):
 
 class GetTopExtended(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        super(GetTopExtended, self).__init__()
+
     def get(self):
 
-        query = 'select part_name,depot_name,customer_name,count(*) as critical_pon_count FROM summary ' \
-                '  where  (net_reorder_point <0 or net_total_stock <0 ) ' \
-                'group by part_name,depot_name,customer_name'
+        args = self.reqparse.parse_args()
+        toggle = args['toggle']
+        print(toggle)
+        # toggle is True by default meaning by default reorder
+        # False means total_stock
+        if toggle == 'reorder':
 
-        result = get_df_from_sql_query(
-            query=query,
-            db_connection_string=Configuration.INFINERA_DB_URL)
+            query = 'select part_name,depot_name,customer_name,count(*) as critical_pon_count FROM summary ' \
+                    'where  net_reorder_point>0 group by part_name,depot_name,customer_name ' \
+                    'order by critical_pon_count desc'
 
-        response = json.loads(result.to_json(orient="records", date_format='iso'))
-        return response
+            result = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            response = json.loads(result.to_json(orient="records", date_format='iso'))
+            return response
+
+        else:
+
+            query = 'select part_name,depot_name,customer_name,count(*) as critical_pon_count FROM summary ' \
+                    'where  net_total_stock>0 group by part_name,depot_name,customer_name ' \
+                    'order by critical_pon_count desc'
+
+            result = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            response = json.loads(result.to_json(orient="records", date_format='iso'))
+            return response
 
 
 class GetLatLon(Resource):
