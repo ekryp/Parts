@@ -534,29 +534,65 @@ class GetMainDashboardCount(Resource):
 
 class GetPieChart(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        super(GetPieChart, self).__init__()
+
     def get(self):
+        args = self.reqparse.parse_args()
+        toggle = args['toggle']
+        print(toggle)
+        # toggle is True by default meaning by default reorder
+        # False means total_stock
+        if toggle == 'reorder':
 
-        def get_respective_counts():
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            def get_respective_counts():
+                engine = create_engine(Configuration.INFINERA_DB_URL)
 
-            non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
-                                     'net_reorder_point >=0 and net_total_stock >=0'
-            non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
+                non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
+                                     'net_reorder_point = 0'
+                non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
 
-            critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
-                          'net_reorder_point <0 or net_total_stock <0'
-            critical_pon = engine.execute(critical_pon_query).fetchone()[0]
+                critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
+                          'net_reorder_point > 0'
+                critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
-            return non_critical_pon, critical_pon
+                return non_critical_pon, critical_pon
 
-        non_critical_pon, critical_pon = get_respective_counts()
+            non_critical_pon, critical_pon = get_respective_counts()
 
-        response = {
-            'non_critical_pon': non_critical_pon,
-            'critical_pon': critical_pon,
+            response = {
+                'non_critical_pon': non_critical_pon,
+                'critical_pon': critical_pon,
 
-        }
-        return response
+            }
+            return response
+
+        else:
+
+            def get_respective_counts():
+                engine = create_engine(Configuration.INFINERA_DB_URL)
+
+                non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
+                                     'net_total_stock = 0'
+                non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
+
+                critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
+                          ' net_total_stock >0'
+                
+                critical_pon = engine.execute(critical_pon_query).fetchone()[0]
+
+                return non_critical_pon, critical_pon
+
+            non_critical_pon, critical_pon = get_respective_counts()
+
+            response = {
+                'non_critical_pon': non_critical_pon,
+                'critical_pon': critical_pon,
+
+            }
+            return response
 
 
 class GetTopPons(Resource):
