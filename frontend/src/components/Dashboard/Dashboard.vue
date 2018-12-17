@@ -108,7 +108,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in data.topPONs" :key="item.id">
+                    <tr v-for="item in topPons" :key="item.id">
                       <td>{{item.part_name}}</td>
                       <td>{{item.critical_pon_count}}</td>
                     </tr>
@@ -166,15 +166,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <td>euNetworks</td>
-                      <td>4</td>
-                  </tbody>
-                  <!-- <tbody>
                     <tr v-for="item in topCustomer" :key="item.id">
                       <td>{{item.customer_name}}</td>
                       <td>{{item.critical_pon_count}}</td> 
                     </tr>
-                  </tbody> -->
+                  </tbody> 
                 </table>
               </div>
             </div>
@@ -258,9 +254,9 @@ export default {
       console.log("coordinates ----->", coordinates);
     });
     this.getMainDashboardCount();
-    //this.getTopPons();
+    this.getTopPons();
     this.getTopDepots();
-    //this.getTopCustomer();
+    this.getTopCustomer();
     this.getPieChart();
     this.getMapLocations(this.markers);
   },
@@ -320,13 +316,13 @@ export default {
     // This Method is to get data for TOP PONS table
 
     getTopPons() {
-      fetch(constant.APIURL + "api/v1/get_top_pons", {
+      fetch(constant.APIURL + "api/v1/get_top_pons?toggle="+this.toggle, {
         method: "GET"
       })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            console.log("data -- get_dashboard_request_count-->", data);
+            console.log("data -- PONS Data-->", data);
             this.topPons = data;
           });
         })
@@ -356,7 +352,7 @@ export default {
     // This Method is to get data for TOP CUSTOMER table
 
     getTopCustomer() {
-      fetch(constant.APIURL + "api/v1/get_top_customers", {
+      fetch(constant.APIURL + "api/v1/get_top_customers?toggle="+this.toggle, {
         method: "GET"
       })
         .then(response => {
@@ -421,11 +417,15 @@ export default {
         this.getMainDashboardCount();
         this.getPieChart();
         this.getTopDepots();
+        this.getTopCustomer();
+        this.getTopPons();
       } else {
         this.toggle = "total_stock";
         this.getMainDashboardCount();
         this.getPieChart();
         this.getTopDepots();
+        this.getTopCustomer();
+        this.getTopPons();
       }
       
     }
