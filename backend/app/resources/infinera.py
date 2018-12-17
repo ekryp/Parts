@@ -672,18 +672,41 @@ class GetTopDepots(Resource):
 
 class GetTopCustomer(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        super(GetTopCustomer, self).__init__()
+
     def get(self):
 
-        query = 'select customer_name,count(part_name) as critical_pon_count FROM summary  ' \
-                ' where  (net_reorder_point <0 or net_total_stock <0 ) ' \
+        args = self.reqparse.parse_args()
+        toggle = args['toggle']
+        print(toggle)
+        # toggle is True by default meaning by default reorder
+        # False means total_stock
+        if toggle == 'reorder':
+            query = 'select customer_name,count(part_name) as critical_pon_count FROM summary  ' \
+                ' where  net_reorder_point >0 ' \
                 'group by customer_name order by critical_pon_count desc'
 
-        result = get_df_from_sql_query(
-            query=query,
-            db_connection_string=Configuration.INFINERA_DB_URL)
+            result = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
 
-        response = json.loads(result.to_json(orient="records", date_format='iso'))
-        return response
+            response = json.loads(result.to_json(orient="records", date_format='iso'))
+            return response
+
+        else:
+            query = 'select customer_name,count(part_name) as critical_pon_count FROM summary  ' \
+                ' where  net_total_stock >0 ' \
+                'group by customer_name order by critical_pon_count desc'
+
+            result = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            response = json.loads(result.to_json(orient="records", date_format='iso'))
+            return response
 
 
 class GetTopExtended(Resource):
