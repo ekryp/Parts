@@ -264,7 +264,8 @@ export default {
     console.log("dashboard", this.data);
     return {
       gmap: {
-        center: { lat: 16.1304, lng: 86.3468 }
+        center: { lat: 48.1667, lng: -100.1667}
+       
       },
       data: data,
       dashboardData: [],
@@ -394,7 +395,7 @@ export default {
           var i;
           
           for(i=0;i<data.length;i++){
-          var mapData={position:{lat:parseInt(data[i].lat),lng:parseInt(data[i].long)},label:data[i].depot_name};
+          var mapData={position:{lat:parseInt(data[i].lat),lng:parseInt(data[i].long)},label:String(data[i].critical_pon_count)};
           console.log("Map datas =>", mapData);
           markers.push(mapData);
           }
