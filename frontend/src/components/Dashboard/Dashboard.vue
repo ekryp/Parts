@@ -234,6 +234,7 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import VueGeolocation from "vue-browser-geolocation";
 import * as constant from "../constant/constant";
 
+
 Vue.use(VueGeolocation);
 
 Vue.use(VueGoogleMaps, {
@@ -281,9 +282,7 @@ export default {
       state: true,
       icon :{
               url: require('../../assets/result.svg'), // url
-                 scaledSize: new google.maps.Size(30,30), // scaled size
-                 origin: new google.maps.Point(0,0), // origin
-                 anchor: new google.maps.Point(0, 0) // anchor
+                
       },
       markers: [],
       current: "Dashboard"
@@ -375,15 +374,15 @@ export default {
         });
     },
     getPieChart() {
-      fetch(constant.APIURL + "api/v1/get_pie_chart", {
+      fetch(constant.APIURL + "api/v1/get_pie_chart?toggle="+this.toggle, {
         method: "GET"
       })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data -- getPieChart-->", data);
-            // piechart.series[0].data[0].y = data.critical_pon;
-            // piechart.series[0].data[1].y = data.non_critical_pon;
+            piechart.series[0].data[0].y = data.critical_pon;
+            piechart.series[0].data[1].y = data.non_critical_pon;
             Highcharts.chart("container", piechart);
           });
         })
@@ -423,9 +422,11 @@ export default {
         console.log(this.toggle);
         this.toggle = "reorder";
         this.getMainDashboardCount();
+        this.getPieChart();
       } else {
         this.toggle = "total_stock";
         this.getMainDashboardCount();
+        this.getPieChart();
       }
       
     }
