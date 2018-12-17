@@ -385,7 +385,8 @@ export default {
     },
     getMapLocations(markers)
     {
-      fetch(constant.APIURL+"api/v1/get_lat_lon",{
+      
+      fetch(constant.APIURL+"api/v1/get_lat_lon?toggle="+this.toggle,{
         method:"GET"
       }).then(response=>{response.text().then(text=>{
         const data =text && JSON.parse(text);
@@ -419,6 +420,8 @@ export default {
         this.getTopDepots();
         this.getTopCustomer();
         this.getTopPons();
+        this.markers=[];
+        this.getMapLocations(this.markers);
       } else {
         this.toggle = "total_stock";
         this.getMainDashboardCount();
@@ -426,6 +429,8 @@ export default {
         this.getTopDepots();
         this.getTopCustomer();
         this.getTopPons();
+        this.markers=[];
+        this.getMapLocations(this.markers);
       }
       
     }
