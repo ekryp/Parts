@@ -727,25 +727,45 @@ class GetTopExtended(Resource):
 
 class GetLatLon(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        super(GetLatLon, self).__init__()
+
+
     def get(self):
-        '''
-        query = 'SELECT a.depot_name,b.lat,b.long FROM summary as a right join depot as b ' \
-                'on a.depot_name= b.depot_name where a.depot_name is not null and ' \
-                'b.lat is not null and b.long is not null and ' \
-                '(net_reorder_point <0 or net_total_stock <0 )  group by depot_name'
 
-        '''
+        args = self.reqparse.parse_args()
+        toggle = args['toggle']
+        print(toggle)
+        # toggle is True by default meaning by default reorder
+        # False means total_stock
+        if toggle == 'reorder':
 
-        query = 'SELECT a.depot_name,b.lat,b.long FROM summary as a right join depot as b ' \
-                'on a.depot_name= b.depot_name where a.depot_name is not null and b.lat ' \
-                'is not null and b.long is not null group by depot_name'
+            query = 'SELECT a.depot_name,b.lat,b.long,count(part_name) as critical_pon_count  FROM summary as a' \
+                    ' right join depot as b on a.depot_name= b.depot_name where a.depot_name is not null and ' \
+                    'b.lat is not null and b.long is not null and net_reorder_point >0  ' \
+                    'group by depot_name order by critical_pon_count desc'
 
-        result = get_df_from_sql_query(
-            query=query,
-            db_connection_string=Configuration.INFINERA_DB_URL)
+            result = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
 
-        response = json.loads(result.to_json(orient="records", date_format='iso'))
-        return response
+            response = json.loads(result.to_json(orient="records", date_format='iso'))
+            return response
+
+        else:
+            query = 'SELECT a.depot_name,b.lat,b.long,count(part_name) as critical_pon_count  FROM summary as a' \
+                    ' right join depot as b on a.depot_name= b.depot_name where a.depot_name is not null and ' \
+                    'b.lat is not null and b.long is not null and net_total_stock >0  ' \
+                    'group by depot_name order by critical_pon_count desc'
+
+            result = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            response = json.loads(result.to_json(orient="records", date_format='iso'))
+            return response
 
 
 class GetAnalysisName(Resource):
