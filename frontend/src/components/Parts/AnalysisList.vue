@@ -148,6 +148,7 @@ export default {
   },
 
   created() {
+    clearImmediate(immediateObj);
     console.log("beforeMount -- get_all_request_analysis", this.$store);
     this.get_all_request_analysis();
     this.get_dashboard_request_count();

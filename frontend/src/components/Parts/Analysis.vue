@@ -1158,8 +1158,6 @@ import Multiselect from "vue-multiselect";
 import Datepicker from "vuejs-datepicker";
 import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
-import loading from "vue-full-loading";
-Vue.use(loading);
 
 export default {
   name: "PartsAnalysis",
@@ -1169,6 +1167,9 @@ export default {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
       this.get_request_analysis_by_Id(this.$route.query.id);
+      window.intervalObj = setInterval(() => {
+  console.log('interviewing the interval');
+}, 500);
     } else {
       console.log("created");
       this.get_spare_part_analysis();

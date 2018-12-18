@@ -197,14 +197,16 @@
             <div class="card">
               <div class="card-body">
                 <GmapMap :center="gmap.center" :zoom="3" style="width: 100%; height: 36vh">
+                  <GmapCluster  :icon="icon">
                   <gmap-marker
                     :key="index"
                     v-for="(m, index) in markers"
                     :position="m.position"
                     @click="routeTable()"
                     :label="{fontSize:'8px',text:m.label}"
-                    :icon="icon"
+                    :title="m.title"
                   ></gmap-marker>
+                  </GmapCluster>
                 </GmapMap>
               </div>
             </div>
@@ -226,8 +228,10 @@ import Vue from "vue";
 import * as VueGoogleMaps from "vue2-google-maps";
 import VueGeolocation from "vue-browser-geolocation";
 import * as constant from "../constant/constant";
+import GmapCluster from 'vue2-google-maps/dist/components/cluster';
 
 
+Vue.component('GmapCluster', GmapCluster)
 Vue.use(VueGeolocation);
 
 Vue.use(VueGoogleMaps, {
@@ -250,6 +254,7 @@ export default {
     // });
   },
   created() {
+    clearInterval(window.intervalObj);
     this.$getLocation({ enableHighAccuracy: true }).then(coordinates => {
       console.log("coordinates ----->", coordinates);
     });
@@ -274,11 +279,11 @@ export default {
       topCustomer: [],
       toggle: "reorder",
       state: true,
-      icon :{
-              url: require('../../assets/result.svg'), // url
+      markers: [],
+       icon :{
+              url: require('../../assets/mapicon.png'), // url
                 
       },
-      markers: [],
       current: "Dashboard"
     };
   },
@@ -395,7 +400,7 @@ export default {
           var i;
           
           for(i=0;i<data.length;i++){
-          var mapData={position:{lat:parseInt(data[i].lat),lng:parseInt(data[i].long)},label:String(data[i].critical_pon_count)};
+          var mapData={position:{lat:parseInt(data[i].lat),lng:parseInt(data[i].long)},label:String(data[i].critical_pon_count),title:String(data[i].depot_name)};
           console.log("Map datas =>", mapData);
           markers.push(mapData);
           }
@@ -410,6 +415,12 @@ export default {
         
       })})
     },
+    mapFunction()
+    {
+
+     map.setZoom(9);
+    },
+
     stateChange()
     {
       this.state = !this.state;
