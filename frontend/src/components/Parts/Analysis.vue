@@ -562,30 +562,8 @@
                   </li>
                 </ul>
               </div>
-              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 1">
-                <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                </div> -->
+              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="(partsAnalysisData.stepId === 1) || (submitFlag === '1')">
+              
                 <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -643,29 +621,7 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined "
               >
-              <!-- <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-              </div> -->
+             
               <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -723,29 +679,7 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined  && partsAnalysisData.requestStatus === 'Failed'"
               >
-              <!-- <div class="col-lg-2">
-                <span class="dot-red"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-              </div> -->
+              
               <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -802,29 +736,7 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 5 && partsAnalysisData.requestStatus === 'Failed'"
               >
-              <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-red"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-red"></span>
-              </div> -->
+              
               <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -881,29 +793,7 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 4 && partsAnalysisData.requestStatus === 'Failed'"
               >
-              <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-red"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-red"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-              </div> -->
+              
               <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -960,29 +850,7 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 3 && partsAnalysisData.requestStatus === 'Failed'"
               >
-              <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-red"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-red"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-              </div> -->
+              
               <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -1039,29 +907,7 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 2 && partsAnalysisData.requestStatus === 'Failed'"
               >
-              <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-red"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-red"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-              </div> -->
+             
               <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -1118,29 +964,7 @@
                 style="marginLeft:7%"
                 v-if="partsAnalysisData.stepId === 1 && partsAnalysisData.requestStatus === 'Failed'"
               >
-              <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-red"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot-red"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-              </div>
-              <div class="col-lg-2">
-                <span class="dot"></span>
-              </div> -->
+              
               <ul id="progress_ul" class="wizard_steps anchor">
                   <li>
                     <a class="disabled" isdone="0" rel="1">
@@ -1192,6 +1016,7 @@
                   </li>
                 </ul>
               </div>
+              
               <!-- <div class="row" style="marginLeft:4%">
                 <div class="col-lg-2" style="align:center">Process Files</div>
                 <div class="col-lg-2" style=" margin-Left: -1%;">Generating Flat Files</div>
@@ -1201,26 +1026,90 @@
                 <div class="col-lg-2" >Generting Output</div>
               </div> -->
             </div>
+            <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="submitFlag === '1'">
+              
+                <ul id="progress_ul" class="wizard_steps anchor">
+                  <li>
+                    <a class="disabled" isdone="0" rel="1">
+                      <span class="step_no" style="backgroundColor:green">1</span>
+                      <span class="step_descr">Process Files
+                      </span> 
+                    </a>
+                  </li>
+                  <li>
+                    <a class="disabled" isdone="0" rel="2">
+                      <span class="step_no" style="backgroundColor:#bbb">2</span>
+                      <span class="step_descr">Generating Flat
+                        <br>Files
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="disabled" isdone="0" rel="3">
+                      <span class="step_no" style="backgroundColor:#bbb">3</span>
+                      <span class="step_descr">Combining Flat
+                        <br>Files
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="disabled" isdone="0" rel="4">
+                      <span class="step_no" style="backgroundColor:#bbb">4</span>
+                      <span class="step_descr">Analyzing Data
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="disabled" isdone="0" rel="5">
+                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
+                        <span>5</span>
+                        <i style="display:none" class="fa fa-download"></i>
+                      </span>
+                      <span class="step_descr">Generation BOM</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="disabled" isdone="0" rel="6">
+                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
+                        <span>6</span>
+                        <i style="display:none" class="fa fa-download"></i>
+                      </span>
+                      <span class="step_descr">Generting Output</span>
+                    </a>
+                  </li>
+                </ul>
+              </div> 
             <!--  -->
                       <!-- Tracker Ends -->
             <div class="float-right" style="marginTop:5%">
               <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-4"  v-if="requestId === '' && submitFlag !== '1'">
                   <button
-                    v-if="requestId === ''"
                     type="button"
+                    id="cancelButton"
                     class="btn btn-danger"
                     @click="cancel()"
                   >cancel</button>
+                </div>
+                <div class="col-lg-4"  v-if="requestId === '' && submitFlag === '1'">
                   <button
-                    v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed'"
+                    type="button"
+                    id="cancelButton"
+                    class="btn btn-danger"
+                    @click="cancel()"
+                    disabled
+                  >cancel</button>
+                </div>
+                <div class="col-lg-4"  v-if="(requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.stepId !==6 ) ">
+                  <button
                     type="button"
                     class="btn btn-danger"
                     @click="cancel()"
                     disabled
                   >cancel</button>
+                </div>
+                <div class="col-lg-4"  v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'">
                   <button
-                    v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
                     type="button"
                     class="btn btn-danger"
                     @click="cancel()"
@@ -1326,7 +1215,8 @@ export default {
       postMenu: "Analysis >",
       current: "Analysis Update",
       show: false,
-      label: "Loading..."
+      label: "Loading...",
+      submitFlag : null
     };
   },
   methods: {
@@ -1490,6 +1380,8 @@ export default {
               $("#loader-2").hide();
             });
             this.show = false;
+            this.submitFlag='1';
+            console.log(this.submitFlag);
           });
         })
         .catch(handleError => {
