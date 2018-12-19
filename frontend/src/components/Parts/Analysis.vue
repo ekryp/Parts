@@ -1168,8 +1168,8 @@ export default {
       this.requestId = this.$route.query.id;
       this.get_request_analysis_by_Id(this.$route.query.id);
       window.intervalObj = setInterval(() => {
-  console.log('interviewing the interval');
-}, 500);
+         this.get_request_analysis_by_Id(this.requestId);
+        }, 15000);
     } else {
       console.log("created");
       this.get_spare_part_analysis();
@@ -1319,7 +1319,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
-            console.log("data ---->", payload);
+            console.log("Get requst Analysis data ---->", payload);
             let object = {
               sapfileName: payload[0].sap_file_name,
               dnafileName: payload[0].dna_file_name,
@@ -1376,7 +1376,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            console.log("data ---->", data);
+            console.log("Response from backend data ---->", data);
             $(document).ready(function() {
               $("#loader-2").hide();
             });

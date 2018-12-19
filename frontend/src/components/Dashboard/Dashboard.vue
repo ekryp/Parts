@@ -197,7 +197,7 @@
             <div class="card">
               <div class="card-body">
                 <GmapMap :center="gmap.center" :zoom="3" style="width: 100%; height: 36vh">
-                  <GmapCluster  :icon="icon">
+                  <GmapCluster  :icon="icon" :zoomOnClick=true>
                   <gmap-marker
                     :key="index"
                     v-for="(m, index) in markers"

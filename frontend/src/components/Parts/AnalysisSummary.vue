@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <!-- <headernav msg="Analysis Summary Result"/> -->
-    <!-- <side-nav menu="analysis"/> -->
-    <div style=" marginTop:2%">
+
+    
       <div class="shadow p-3 mb-5 bg-white rounded">
+        <br>
         <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
           <div class="col-lg-4">
             <div class="form-group">
@@ -113,8 +112,8 @@
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
+    
+ 
 </template>
 
 <script>

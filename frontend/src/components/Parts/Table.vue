@@ -58,6 +58,7 @@ export default {
     headernav
   },
   created() {
+    clearInterval(window.intervalObj);
     this.getTopExtenededData();
   },
   data() {
