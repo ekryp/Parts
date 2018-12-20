@@ -783,7 +783,7 @@ class GetLatLon(Resource):
 
             query = 'SELECT a.depot_name,b.lat,b.long,count(part_name) as critical_pon_count  FROM summary as a' \
                     ' right join depot as b on a.depot_name= b.depot_name where a.depot_name is not null and ' \
-                    'b.lat is not null and b.long is not null and net_reorder_point >0  ' \
+                    'b.lat is not null and b.long is not null and net_reorder_point >0 and is_latest="Y" ' \
                     'group by depot_name order by critical_pon_count desc'
 
             result = get_df_from_sql_query(
@@ -796,7 +796,7 @@ class GetLatLon(Resource):
         else:
             query = 'SELECT a.depot_name,b.lat,b.long,count(part_name) as critical_pon_count  FROM summary as a' \
                     ' right join depot as b on a.depot_name= b.depot_name where a.depot_name is not null and ' \
-                    'b.lat is not null and b.long is not null and net_total_stock >0  ' \
+                    'b.lat is not null and b.long is not null and net_total_stock >0 and is_latest="Y" ' \
                     'group by depot_name order by critical_pon_count desc'
 
             result = get_df_from_sql_query(
