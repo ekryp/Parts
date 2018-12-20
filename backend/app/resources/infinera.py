@@ -619,7 +619,8 @@ class GetTopPons(Resource):
         if toggle == 'reorder':
 
             query = 'select part_name,count(*) as critical_pon_count FROM summary   where' \
-                '  net_reorder_point >0  group by part_name order by critical_pon_count desc'
+                '  net_reorder_point >0  and is_latest="Y" group by part_name order by ' \
+                    'critical_pon_count desc'
 
             result = get_df_from_sql_query(
                 query=query,
@@ -631,7 +632,8 @@ class GetTopPons(Resource):
         else:
 
             query = 'select part_name,count(*) as critical_pon_count FROM summary   where' \
-                '  net_total_stock >0  group by part_name order by critical_pon_count desc'
+                '  net_total_stock >0  and is_latest="Y" group by part_name order by ' \
+                    'critical_pon_count desc'
 
             result = get_df_from_sql_query(
                 query=query,
