@@ -698,7 +698,7 @@ class GetTopCustomer(Resource):
         # False means total_stock
         if toggle == 'reorder':
             query = 'select customer_name,count(part_name) as critical_pon_count FROM summary  ' \
-                ' where  net_reorder_point >0 ' \
+                ' where  net_reorder_point >0 and is_latest="Y" ' \
                 'group by customer_name order by critical_pon_count desc'
 
             result = get_df_from_sql_query(
@@ -710,7 +710,7 @@ class GetTopCustomer(Resource):
 
         else:
             query = 'select customer_name,count(part_name) as critical_pon_count FROM summary  ' \
-                ' where  net_total_stock >0 ' \
+                ' where  net_total_stock >0 and is_latest="Y" ' \
                 'group by customer_name order by critical_pon_count desc'
 
             result = get_df_from_sql_query(
