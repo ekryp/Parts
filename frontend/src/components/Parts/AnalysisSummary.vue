@@ -2,7 +2,7 @@
 
     
       <div class="shadow p-3 mb-5 bg-white rounded">
-        <br>
+        <br> 
         <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
           <div class="col-lg-4">
             <div class="form-group">
