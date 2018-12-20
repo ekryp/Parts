@@ -5,7 +5,7 @@ from datetime import datetime
 import pandas as pd
 from app import Configuration
 from app import app
-from app import csvs, excel
+from app import csvs, excel, mytext
 from app.tasks import celery, add_prospect, update_prospect_step
 from app.utils.utils import get_df_from_sql_query
 from flask import jsonify
@@ -873,6 +873,13 @@ class PostSparePartAnalysis(Resource):
                     customer_dna_file = file.filename
                     excel.save(file, folder=dest_folder)
 
+                elif extension.lower() == '.txt':
+                    dir_path = os.path.join(app.config.get("UPLOADED_TEXT_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                    customer_dna_file = file.filename
+                    mytext.save(file, folder=dest_folder)
+
             for file in request.files.getlist('sap_export_file'):
 
                 name, extension = os.path.splitext(file.filename)
@@ -905,7 +912,6 @@ class PostSparePartAnalysis(Resource):
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id])
-
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
         except:
