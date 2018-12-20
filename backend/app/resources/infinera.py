@@ -658,7 +658,8 @@ class GetTopDepots(Resource):
         # False means total_stock
         if toggle == 'reorder':
             query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   ' \
-                    'where (net_reorder_point >0) group by depot_name order by critical_pon_count desc'
+                    'where (net_reorder_point >0) and is_latest="Y" group by depot_name order by ' \
+                    'critical_pon_count desc'
 
             result = get_df_from_sql_query(
                 query=query,
@@ -670,7 +671,8 @@ class GetTopDepots(Resource):
         else:
 
             query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   ' \
-                    'where (net_total_stock >0) group by depot_name order by critical_pon_count desc'
+                    'where (net_total_stock >0) and is_latest="Y" group by depot_name order by ' \
+                    'critical_pon_count desc'
 
             result = get_df_from_sql_query(
                 query=query,
