@@ -133,7 +133,10 @@ class GetSummaryforSpecificRequest(Resource):
             net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
 
             # Take Only shortage,ignore surplus
-            net_df = net_df[net_df['net_qty'] < 0]
+            # net_df = net_df[net_df['net_qty'] < 0]
+
+            # Make surplus as zero quantity
+            net_df.loc[net_df['net_qty'] > 0, 'net_qty'] = 0
 
             net_df['net_qty'] = net_df['net_qty'].abs()
 
@@ -162,6 +165,7 @@ class GetSummaryforSpecificRequest(Resource):
             summary_df = summary_df.drop(['request_id', 'product_ordering_name', 'node_depot_belongs'], 1)
 
             summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
+            summary_df.sort_values(by=['net_qty'], ascending=False, inplace=True)
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
 
@@ -192,7 +196,10 @@ class GetSummaryforSpecificRequest(Resource):
             net_df['net_qty'] = net_df['qty'] - net_df['gross_qty']
 
             # Take Only shortage,ignore surplus
-            net_df = net_df[net_df['net_qty'] < 0]
+            # net_df = net_df[net_df['net_qty'] < 0]
+
+            # Make surplus as zero quantity
+            net_df.loc[net_df['net_qty'] > 0, 'net_qty'] = 0
 
             net_df['net_qty'] = net_df['net_qty'].abs()
 
@@ -221,6 +228,7 @@ class GetSummaryforSpecificRequest(Resource):
             summary_df = summary_df.drop(['request_id', 'product_ordering_name', 'node_depot_belongs'], 1)
 
             summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
+            summary_df.sort_values(by=['net_qty'], ascending=False, inplace=True)
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
 
