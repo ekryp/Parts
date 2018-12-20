@@ -9,7 +9,7 @@ import PartsAnalysisList from '@/components/Parts/AnalysisList'
 import PartsAnalysisSummary from '@/components/Parts/AnalysisSummary'
 import SpareDetails from '@/components/Parts/SpareDetails'
 import DynamicTable from '@/components/Parts/Table'
-import UploadData from '@/components/Parts/Upload'
+import Reference from '@/components/Reference/Reference'
 
 Vue.use(Router)
 
@@ -57,9 +57,9 @@ export default new Router({
       component: DynamicTable
     },
     {
-      path: '/upload',
-      name: 'UploadData',
-      component: UploadData
+      path: '/reference',
+      name: 'Reference',
+      component: Reference
     }
   ]
 })

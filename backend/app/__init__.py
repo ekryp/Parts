@@ -114,7 +114,7 @@ from app.resources.partners import UploadCSV
 
 from app.resources.users import  Callback, Logout
 from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,ExperimentDetails
-from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,GetstepsAllUsers,\
+from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Reference,GetstepsAllUsers,\
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon,GetAnalysisName
@@ -131,6 +131,7 @@ api.add_resource(TriggerDag, '/trigger_dag', endpoint='trigger_dag')
 api.add_resource(ExperimentDetails, '/experiment_details', endpoint='experiment_details')
 api.add_resource(GetSparePartAnalysis, '/get_spare_part_analysis', endpoint='get_spare_part_analysis')
 api.add_resource(PostSparePartAnalysis, '/post_spare_part_analysis', endpoint='post_spare_part_analysis')
+api.add_resource(Reference, '/reference', endpoint='/reference')
 api.add_resource(GetstepsAllUsers, '/get_steps_all_users', endpoint='get_steps_all_users')
 api.add_resource(GetstepsforSpecificRequest, '/get_steps_specific_request', endpoint='get_steps_specific_request')
 api.add_resource(GetSummaryforSpecificRequest, '/get_summary_specific_request', endpoint='get_summary_specific_request')

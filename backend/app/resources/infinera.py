@@ -931,6 +931,72 @@ class PostSparePartAnalysis(Resource):
         except:
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
 
+class Reference(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('reference_name', required=True, location='form')
+        self.reqparse.add_argument('reference_version', required=True, location='form')
+        self.reqparse.add_argument('user_email_id', required=True, location='form')
+        super(Reference, self).__init__()
+
+    def post(self):
+        print('hitted successfully')
+        args = self.reqparse.parse_args()
+        dest_folder = request.form.get('user_email_id')
+        analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        reference_file = ''
+        print('formdata ---->',args['reference_name'])
+
+        def save_reference_record_db():
+            print('caling query')
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            query = "INSERT INTO reference (name, version, active, " \
+                    "filename, user_email_id,created_at) values ('{0}','{1}','{2}','{3}','{4}'," \
+                    "'{5}')".format( args['reference_name'], args['reference_version'],
+                                                False,reference_file,
+                                                args['user_email_id'], analysis_date)
+            print('query ---->',query)
+            engine.execute(query)
+
+        def get_refernce_id():
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            query = 'SELECT max(id) FROM reference;'
+            result = engine.execute(query).fetchone()
+            return result[0]
+
+        try:
+            print('request ----->',request.files.getlist('reference_file'))
+            for file in request.files.getlist('reference_file'):
+                extension = os.path.splitext(file.filename)
+                print('extension ---->',extension[1])
+                if extension[1] == '.csv':
+                    # dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                    # full_path = os.path.abspath(dir_path)
+                    file.filename = "reference_file_{0}{1}".format(analysis_date, extension[1])
+                    reference_file = file.filename
+                    print('filename ----->',reference_file)
+                    csvs.save(file, folder=dest_folder)
+
+                elif extension[1] == '.xls' or extension == '.xlsx':
+                    # dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                    # full_path = os.path.abspath(dir_path)
+                    file.filename = "reference_file_{0}{1}".format(analysis_date, extension[1])
+                    reference_file = file.filename
+                    print('filename ----->',reference_file)
+                    excel.save(file, folder=dest_folder)
+
+            save_reference_record_db()
+            get_refernce_id()
+
+            # ref_file = os.path.join(full_path, reference_file)
+
+            return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
+
+            
+
 
 
 
