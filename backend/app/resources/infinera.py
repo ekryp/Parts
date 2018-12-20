@@ -559,11 +559,11 @@ class GetPieChart(Resource):
                 engine = create_engine(Configuration.INFINERA_DB_URL)
 
                 non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
-                                     'net_reorder_point = 0'
+                                     'net_reorder_point = 0 and is_latest="Y"'
                 non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
 
                 critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
-                          'net_reorder_point > 0'
+                          'net_reorder_point > 0 and is_latest="Y"'
                 critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
                 return non_critical_pon, critical_pon
@@ -583,11 +583,11 @@ class GetPieChart(Resource):
                 engine = create_engine(Configuration.INFINERA_DB_URL)
 
                 non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
-                                     'net_total_stock = 0'
+                                     'net_total_stock = 0 and is_latest="Y"'
                 non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
 
                 critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
-                          ' net_total_stock >0'
+                          ' net_total_stock >0 and is_latest="Y"'
 
                 critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
