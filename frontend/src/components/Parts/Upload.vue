@@ -42,7 +42,6 @@
             </div>
             <br>
             <div class="input-group">
-            
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="inputGroupFile01" @change="analysisFile" style="display:none">
                 <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
@@ -56,11 +55,12 @@
             
         </div>
       </div>
-      <br>
+      
       <div class="row">
         <div class="col-lg-12 shadow-lg p-3 mb-5 bg-white rounded">
-            
+              <h4>Reference File Table</h4>
             <div class="card-body" style="margin-bottom:20px">
+              
                 <table class="table table-bordered">
                   <thead>
                     <tr>

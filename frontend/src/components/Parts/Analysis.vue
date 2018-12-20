@@ -1244,7 +1244,9 @@ export default {
         file.name.endsWith("xlsx") ||
         file.name.endsWith("csv") ||
         file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV")
+        file.name.endsWith("CSV") ||
+        file.name.endsWith("txt") ||
+        file.name.endsWith("TXT") 
       ) {
         console.log(file.name);
         this.dnafileName = file.name;
@@ -1260,7 +1262,9 @@ export default {
         file.name.endsWith("xlsx") ||
         file.name.endsWith("csv") ||
         file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV")
+        file.name.endsWith("CSV") ||
+        file.name.endsWith("txt") ||
+        file.name.endsWith("TXT") 
       ) {
         console.log(file.name);
         this.sapfileName = file.name;
