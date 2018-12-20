@@ -37,12 +37,11 @@ printable = set(string.printable)
 from flask_uploads import configure_uploads
 app = Flask(__name__)
 #from app.resources.partners import csvs
-from flask_uploads import UploadSet, DATA, DOCUMENTS, IMAGES
+from flask_uploads import UploadSet, DATA, DOCUMENTS, IMAGES, TEXT
 csvs = UploadSet('csv', DATA)
-jsons = UploadSet('json', DATA)
+mytext = UploadSet('text', TEXT)
 excel = UploadSet('excel', DOCUMENTS)
 images = UploadSet('image', IMAGES)
-
 
 if platform.system() == 'Windows':
     app.config['UPLOADED_CSV_DEST'] = 'static\csvs'
@@ -52,13 +51,14 @@ if platform.system() == 'Windows':
     app.config['UPLOADED_IMAGE_DEST'] = 'static\image'
 else:
     app.config['UPLOADED_CSV_DEST'] = 'static/'
-    app.config['UPLOADED_JSON_DEST'] = 'static/'
+    app.config['UPLOADED_TEXT_DEST'] = 'static/'
     app.config['UPLOADED_SQLS_DEST'] = 'static/'
     app.config['UPLOADED_EXCEL_DEST'] = 'static/'
     app.config['UPLOADED_IMAGE_DEST'] = 'static/'
+
 configure_uploads(app, csvs)
 configure_uploads(app, images)
-configure_uploads(app, jsons)
+configure_uploads(app, mytext)
 configure_uploads(app, excel)
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
