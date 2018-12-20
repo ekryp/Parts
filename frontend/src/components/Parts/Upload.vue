@@ -10,32 +10,56 @@
           </p>
         </div>
         </div>
-      <div class="row">
-        <div class="col-lg-12">
-            <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupFileAddon01" @click="uploadData()">Upload</span>
+      <div class="row" >
+        <div class="col-lg-12 col-lg-12 shadow-lg p-3 mb-5 bg-white rounded">
+          <h4>Upload Reference File</h4>
+           <div class="row" style="marginTop:2%">
+              <div class="col-lg-2" >
+                <label>Version Name :</label>
+              </div>
+              <div class="col-lg-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Version Name"
+                  v-model="analyisisName"
+                >
+              </div>
+              <div class="col-lg-1">
+              </div>
+              <div class="col-lg-2">
+                <label>Version No :</label>
+              </div>
+              <div class="col-lg-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Version No"
+                  v-model="analyisisName"
+                >
+              </div>
+              
             </div>
+            <br>
+            <div class="input-group">
+            
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="inputGroupFile01" @change="analysisFile" style="display:none">
                 <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
             </div>
-            </div>  
+            </div> 
+            
+            <div class="input-group-prepend" style="marginTop:2%" >
+                <span class="input-group-text" id="inputGroupFileAddon01" @click="uploadData()"  style="marginLeft:42%">Upload</span>
+                <span class="input-group-text" id="inputGroupFileAddon01" @click="uploadData()" style="marginLeft:3%">Reset</span>
+            </div>
+            
         </div>
       </div>
       <br>
       <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-              <div class="card-header">
-                <div class="row">
-                  <div class="col-lg-11">
-                    <h6>File Details</h6>
-                  </div>
-                  
-                </div>
-              </div>
-
+        <div class="col-lg-12 shadow-lg p-3 mb-5 bg-white rounded">
+            
             <div class="card-body" style="margin-bottom:20px">
                 <table class="table table-bordered">
                   <thead>
@@ -68,7 +92,7 @@
                   </tbody> 
                 </table>
               </div> 
-            </div>
+            
         </div>
       </div>
     </div>
