@@ -1043,6 +1043,25 @@ class DeactivateReference(Resource):
         except:
             return jsonify(msg="Error in updating,Please try again", http_status_code=400)
 
+class GetReferenceById(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('reference_id', type=int, required=True, help='id', location='args')
+        super(GetReferenceById, self).__init__()
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        reference_id = args['reference_id']
+        query = "SELECT * FROM reference where id={0}".format(reference_id)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
             
 
 
