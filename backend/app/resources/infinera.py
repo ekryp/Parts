@@ -936,7 +936,8 @@ class Reference(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('reference_name', required=True, location='form')
-        self.reqparse.add_argument('reference_version', required=True, location='form')
+        self.reqparse.add_argument('reference_version', location='form')
+        self.reqparse.add_argument('id', location='form')
         self.reqparse.add_argument('user_email_id', required=True, location='form')
         super(Reference, self).__init__()
 
@@ -946,20 +947,27 @@ class Reference(Resource):
         dest_folder = request.form.get('user_email_id')
         analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         reference_file = ''
-        print('formdata ---->',args['reference_name'])
+       
+        def update_reference_record_db():
+            print('calling query')
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            query = "UPDATE reference SET filename = '{0}', name= '{1}' WHERE id = {2}".format(reference_file,args['reference_name'],args['id'])
+            print('query ---->',query)
+            engine.execute(query)
 
         def save_reference_record_db():
             print('caling query')
             engine = create_engine(Configuration.INFINERA_DB_URL)
-            query = "INSERT INTO reference (name, version, active, " \
-                    "filename, user_email_id,created_at) values ('{0}','{1}','{2}','{3}','{4}'," \
-                    "'{5}')".format( args['reference_name'], args['reference_version'],
-                                                False,reference_file,
-                                                args['user_email_id'], analysis_date)
+            query = "INSERT INTO reference (name, version, isactive, " \
+                    "filename, user_email_id,created_at,status) values ('{0}',{1},{2},'{3}','{4}'," \
+                    "'{5}',{6})".format( args['reference_name'], reference_id+1,
+                                                True,reference_file,
+                                                args['user_email_id'], analysis_date,False)
             print('query ---->',query)
             engine.execute(query)
 
         def get_refernce_id():
+            print('calling query')
             engine = create_engine(Configuration.INFINERA_DB_URL)
             query = 'SELECT max(id) FROM reference;'
             result = engine.execute(query).fetchone()
@@ -971,29 +979,70 @@ class Reference(Resource):
                 extension = os.path.splitext(file.filename)
                 print('extension ---->',extension[1])
                 if extension[1] == '.csv':
-                    # dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
-                    # full_path = os.path.abspath(dir_path)
                     file.filename = "reference_file_{0}{1}".format(analysis_date, extension[1])
                     reference_file = file.filename
                     print('filename ----->',reference_file)
                     csvs.save(file, folder=dest_folder)
 
                 elif extension[1] == '.xls' or extension == '.xlsx':
-                    # dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
-                    # full_path = os.path.abspath(dir_path)
                     file.filename = "reference_file_{0}{1}".format(analysis_date, extension[1])
                     reference_file = file.filename
                     print('filename ----->',reference_file)
                     excel.save(file, folder=dest_folder)
 
-            save_reference_record_db()
-            get_refernce_id()
-
-            # ref_file = os.path.join(full_path, reference_file)
+            reference_id =  get_refernce_id()
+            if reference_id == None :
+                reference_id = 0
+                save_reference_record_db()
+            else :
+                update_reference_record_db()
+           
+            
+           
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
         except:
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
+
+class GetReference(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_email_id', type=str, required=True, help='id', location='args')
+        super(GetReference, self).__init__()
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        user_email_id = args['user_email_id']
+        query = "SELECT * FROM reference where user_email_id='{0}'".format(user_email_id)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+class DeactivateReference(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('reference_id', type=int, required=True, help='id', location='args')
+        self.reqparse.add_argument('isactive')
+        super(DeactivateReference, self).__init__()
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        reference_id = args['reference_id']
+        isactive = args['isactive']
+        try :
+            query = "UPDATE reference SET isactive = {0} WHERE id = {1}".format(isactive,reference_id)
+            print('query ---->',query)
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine.execute(query)
+            return jsonify(msg="Updated Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in updating,Please try again", http_status_code=400)
 
             
 
