@@ -348,7 +348,7 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # & new records getting inserted are by default is_latest='Y'
 
     engine = create_engine(Configuration.INFINERA_DB_URL)
-    query = "update summary set is_latest='N' where customer_name={0}".format(customer_name)
+    query = "update summary set is_latest='N' where customer_name='{0}'".format(customer_name)
     print(query)
     engine.execute(query)
     single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
