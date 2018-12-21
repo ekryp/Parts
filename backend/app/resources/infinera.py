@@ -1013,7 +1013,7 @@ class GetReference(Resource):
     def get(self):
         args = self.reqparse.parse_args()
         user_email_id = args['user_email_id']
-        query = "SELECT * FROM reference where user_email_id='{0}' AND isactive={1}".format(user_email_id,True)
+        query = "SELECT * FROM reference where user_email_id='{0}' AND status={1}".format(user_email_id,True)
 
         result = get_df_from_sql_query(
             query=query,
@@ -1022,23 +1022,37 @@ class GetReference(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
-class DeactivateReference(Resource):
+class DefaultReference(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('reference_id', type=int, required=True, help='id', location='args')
-        self.reqparse.add_argument('isactive')
-        super(DeactivateReference, self).__init__()
+        self.reqparse.add_argument('user_email_id')
+        super(DefaultReference, self).__init__()
 
     def post(self):
         args = self.reqparse.parse_args()
         reference_id = args['reference_id']
-        isactive = args['isactive']
+        user_email_id = args['user_email_id']
         try :
-            query = "UPDATE reference SET isactive = {0} WHERE id = {1}".format(isactive,reference_id)
-            print('query ---->',query)
+            references = "SELECT * from reference WHERE user_email_id='{0}'".format(user_email_id)
+            print('references query ---->',references)
+            result = get_df_from_sql_query(
+            query=references,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+            response = json.loads(result.to_json(orient="records", date_format='iso'))
+            print('response ----->',response)
             engine = create_engine(Configuration.INFINERA_DB_URL)
-            engine.execute(query)
+
+            for ref in response :
+                print('ref ---->',ref)
+                deactivatequery = "UPDATE reference SET isactive = {0} WHERE id = {1}".format(False,ref['id'])
+                print('query ---->',deactivatequery)
+                engine.execute(deactivatequery)
+            
+            activatequery = "UPDATE reference SET isactive = {0} WHERE id = {1}".format(True,reference_id)
+            print('query ---->',activatequery)
+            engine.execute(activatequery)
             return jsonify(msg="Updated Successfully", http_status_code=200)
         except:
             return jsonify(msg="Error in updating,Please try again", http_status_code=400)
