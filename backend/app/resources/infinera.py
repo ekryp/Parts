@@ -977,22 +977,21 @@ class Reference(Resource):
             print('request ----->',request.files.getlist('reference_file'))
             for file in request.files.getlist('reference_file'):
                 extension = os.path.splitext(file.filename)
-                print('extension ---->',extension[1])
                 if extension[1] == '.csv':
                     file.filename = "reference_file_{0}{1}".format(analysis_date, extension[1])
                     reference_file = file.filename
-                    print('filename ----->',reference_file)
                     csvs.save(file, folder=dest_folder)
 
                 elif extension[1] == '.xls' or extension == '.xlsx':
                     file.filename = "reference_file_{0}{1}".format(analysis_date, extension[1])
                     reference_file = file.filename
-                    print('filename ----->',reference_file)
                     excel.save(file, folder=dest_folder)
 
             reference_id =  get_refernce_id()
             if reference_id == None :
                 reference_id = 0
+            print('id ----->',args['id'])
+            if args['id'] == None :
                 save_reference_record_db()
             else :
                 update_reference_record_db()
@@ -1014,7 +1013,7 @@ class GetReference(Resource):
     def get(self):
         args = self.reqparse.parse_args()
         user_email_id = args['user_email_id']
-        query = "SELECT * FROM reference where user_email_id='{0}'".format(user_email_id)
+        query = "SELECT * FROM reference where user_email_id='{0}' AND isactive={1}".format(user_email_id,True)
 
         result = get_df_from_sql_query(
             query=query,
