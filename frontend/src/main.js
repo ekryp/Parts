@@ -6,6 +6,8 @@ import router from './router'
 import store from './vuex/store'
 import VTooltip from 'v-tooltip'
 import JsonExcel from "vue-json-excel";
+import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+import "../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css";
 
 Vue.component("downloadExcel", JsonExcel);
 

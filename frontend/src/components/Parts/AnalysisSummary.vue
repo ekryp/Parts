@@ -72,7 +72,7 @@
               <th rowspan="2" scope="col">Part Name</th>
               <th rowspan="2" scope="col">Depot Name</th>
               <th rowspan="2" scope="col">Material</th>
-              <th rowspan="2" scope="col">IB Quantity</th>
+              <th rowspan="2" scope="col">Install Base Quantity</th>
               <th rowspan="2" scope="col">Standard Cost($)</th>
               <th colspan="2" scope="col">Gross Requirement</th>
               <th colspan="2" scope="col">Net Requirement</th>
@@ -124,6 +124,7 @@ import { mapActions, mapState } from "vuex";
 import Vue2Filters from "vue2-filters";
 import Vue from "vue";
 import * as constant from "../constant/constant";
+import {AgGridVue} from "ag-grid-vue";
 
 Vue.use(Vue2Filters);
 export default {
@@ -149,7 +150,9 @@ export default {
       dispId:"",
       analysisName:[],
       toggle: "reorder",
-      state: true
+      state: true, 
+      columnDefs: null,
+      rowData: null
     };
   },
   methods: {
