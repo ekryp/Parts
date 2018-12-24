@@ -828,6 +828,12 @@ class GetAnalysisName(Resource):
         return response
 
 
+class FileFormatIssue(Exception):
+    def __init__(self, filename, msg):
+        self.filename = filename
+        self.msg = msg
+
+
 class PostSparePartAnalysis(Resource):
 
     def __init__(self):
@@ -866,6 +872,28 @@ class PostSparePartAnalysis(Resource):
             query = 'SELECT max(analysis_request_id) FROM analysis_request;'
             result = engine.execute(query).fetchone()
             return result[0]
+
+        def check_header_sap_file(sap_file, filename, file_location):
+            print(os.path.join(file_location, filename))
+            sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
+            
+            if len(sap_inventory_data.columns) < 10:
+                    raise FileFormatIssue(filename, "Number of columns are less than minimum columns 10")
+
+            our_columns = ['Plant', 'Storage Location = Depot Name', 'Material Number', 'Material Description = Part Name',
+                       'Total Stock', 'Reorder Point', 'Standard Cost', 'Total Standard Cost', 'STO - Qty To be Dlv.',
+                       'Delivery - Qty To be Dlv.']
+
+            infinera_columns = ['Material Number', 'Material Description', 'Plant', 'Storage Location',
+                                'Reorder Point', 'Total Stock', 'Standard Cost', 'Total Standard Cost',
+                                'STO - Qty To be Dlv.', 'Delivery - Qty To be Dlv.']
+            sap_inventory_data.rename(columns={
+                    'Material Description': 'Material Description = Part Name',
+                    'Storage Location': 'Storage Location = Depot Name',
+                                    }, inplace=True
+                                    )
+
+            sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
 
         try:
 
@@ -911,6 +939,9 @@ class PostSparePartAnalysis(Resource):
                     file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
                     sap_export_file = file.filename
                     excel.save(file, folder=dest_folder)
+                    # Check headers in SAP file names & count of headers ,If headers
+                    # are valid then only save it.
+                    check_header_sap_file(file, sap_export_file, full_path)
 
             save_analysis_record_db()
             analysis_id = get_analysis_id()
@@ -928,8 +959,13 @@ class PostSparePartAnalysis(Resource):
                                                                customer_name, prospect_id])
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
+
+        except FileFormatIssue as e:
+            return jsonify(msg=e.msg, http_status_code=400)
+
         except:
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
+
 
 class Reference(Resource):
 
