@@ -80,17 +80,46 @@
 
       <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:7%">
         <div style="marginTop:0%">
-          <div >
-            <ag-grid-vue style="width: 1600px; height: 500px;"
-                        class="ag-theme-balham"
-                        :columnDefs="columnDefs"
-                        :rowData="rowData"
-                        :enableSorting="true"
-                        :enableFilter="true"
-                        :pagination= "true"
-                        :paginationAutoPageSize="true"
-                        >
-            </ag-grid-vue>
+          <div v-if="partsAnalysisRequestList.length !== 0">
+            <table id="example" class="table table-borderless table-hover" style="width:100%">
+              <thead>
+                <tr>
+                  <th scope="col">Analysis Name</th>
+                  <th scope="col">Analysis Type</th>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in partsAnalysisRequestList"
+                  :key="item.analysis_request_id"
+                  style="cursor:pointer"
+                >
+                  <td>{{item.analysis_name}}</td>
+                  <td>{{item.analysis_type}}</td>
+                  <td>{{item.customer_name}}</td>
+                  <td
+                    v-if="item.requestStatus ==='Completed'"
+                    style="color:#86B21D"
+                  >{{item.requestStatus}}</td>
+                  <td
+                    v-if="item.requestStatus ==='Processing'"
+                    style="color:#2699FB"
+                  >{{item.requestStatus}}</td>
+                  <td v-if="item.requestStatus ==='failed'" style="color:red">{{item.requestStatus}}</td>
+                  <td style="cursor:pointer">
+                    <i class="far fa-eye" @click="update(item)"></i>
+                    <i
+                      v-if="item.requestStatus ==='Completed'"
+                      class="fas fa-poll"
+                      @click="summaryResult(item)"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -107,7 +136,6 @@ import { mapState, mapActions, mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
 import * as constant from "../constant/constant";
-import {AgGridVue} from "ag-grid-vue";
 
 Vue.component("downloadExcel", JsonExcel);
 
@@ -116,8 +144,7 @@ export default {
   components: {
     SideNav,
     Multiselect,
-    headernav,
-    AgGridVue
+    headernav
   },
 
   created() {
@@ -126,15 +153,6 @@ export default {
     console.log("beforeMount -- get_all_request_analysis", this.$store);
     this.get_all_request_analysis();
     this.get_dashboard_request_count();
-    this.columnDefs = [
-      {headerName: 'Analysis Name', field: 'analysis_name',width: 325},
-      {headerName: 'Analysis Type', field: 'analysis_type',width: 325},
-      {headerName: 'Customer Name', field: 'customer_name',width: 325},
-      {headerName: 'Status', field: 'requestStatus',width: 325},
-      {headerName: 'Action', field: 'requestStatus',width: 325}
-        ];
-        
-
   },
   // Vuex Configure Its not updating the Value once State Changed
   computed: {},
@@ -151,10 +169,7 @@ export default {
       ],
       partsAnalysisRequestList: [],
       dashboard_request_count: "",
-      current:'Analysis',
-      columnDefs: null,
-      rowData: null
-      
+      current:'Analysis'
     };
   },
   methods: {
@@ -189,9 +204,11 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
-            this.rowData = data;
+            this.partsAnalysisRequestList = data;
             this.exportCSV(data);
-            
+            $(document).ready(function() {
+              $("#example").DataTable();
+            });
           });
         })
         .catch(handleError => {
