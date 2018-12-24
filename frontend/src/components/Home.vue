@@ -13,6 +13,7 @@ import router from "../router/";
 export default {
   name: "Home",
   created() {
+    console.log(JSON.stringify(localStorage));
     let userId = localStorage.getItem("auth0_user_id");
     console.log("userId---->", userId);
     if (userId !== null && userId !== undefined) {

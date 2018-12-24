@@ -1379,7 +1379,7 @@ export default {
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
       formData.append("customer_dna_file", data.dnafile);
-      formData.append("user_email_id", "khali.saran@ekryp.com");
+      formData.append("user_email_id", localStorage.getItem("email_id"));
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
       console.log("formdata ----->", formData.get("analysis_name"));
