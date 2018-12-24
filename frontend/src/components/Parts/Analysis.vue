@@ -1089,7 +1089,7 @@
                     id="cancelButton"
                     class="btn btn-danger"
                     @click="cancel()"
-                  >cancel</button>
+                  >Cancel</button>
                 </div>
                 <div class="col-lg-4"  v-if="requestId === '' && submitFlag === '1'">
                   <button
@@ -1098,22 +1098,21 @@
                     class="btn btn-danger"
                     @click="cancel()"
                     disabled
-                  >cancel</button>
+                  >Back</button>
                 </div>
                 <div class="col-lg-4"  v-if="(requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.stepId !==6 ) ">
                   <button
                     type="button"
                     class="btn btn-danger"
                     @click="cancel()"
-                    disabled
-                  >cancel</button>
+                  >Back</button>
                 </div>
                 <div class="col-lg-4"  v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'">
                   <button
                     type="button"
                     class="btn btn-danger"
                     @click="cancel()"
-                  >cancel</button>
+                  >Cancel</button>
                 </div>
 
                 <div class="col-lg-3">
@@ -1167,6 +1166,7 @@ export default {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
       this.get_request_analysis_by_Id(this.$route.query.id);
+      
       window.intervalObj = setInterval(() => {
          this.get_request_analysis_by_Id(this.requestId);
         }, 15000);
@@ -1337,6 +1337,18 @@ export default {
               stepId: payload[0].step_id
             };
             this.partsAnalysisData = object;
+            if(this.partsAnalysisData.stepId !== 6)
+              {
+                $(document).ready(function() {
+                $("#loader-2").show();
+                });
+              }
+               else if(this.partsAnalysisData.stepId === 6)
+              {
+                $(document).ready(function() {
+                $("#loader-2").hide();
+                });
+              }
           });
         })
         .catch(handleError => {
@@ -1359,9 +1371,7 @@ export default {
         });
     },
     post_spare_part_analysis(data) {
-      $(document).ready(function() {
-        $("#loader-2").show();
-      });
+      
 
       let formData = new FormData();
 

@@ -43,7 +43,7 @@
             role="tab"
             aria-controls="nav-profile"
             aria-selected="false"
-          >IB Quantity</a>
+          >Install Base Quantity</a>
           <a
             class="nav-item nav-link"
             id="nav-contact-tab"
