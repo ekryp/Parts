@@ -117,7 +117,8 @@ from app.resources.prospects import ProspectsInfo,SetProspectDone,TriggerDag,Exp
 from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Reference,GetReference,DefaultReference,GetReferenceById,GetstepsAllUsers,\
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
-    GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon,GetAnalysisName
+    GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
+    GetErrorRecords
 
 
 api.add_resource(Callback, '/token')
@@ -142,6 +143,7 @@ api.add_resource(GetCurrentInventory, '/get_current_inventory_specific_request',
 api.add_resource(GetCurrentNet, '/get_current_net_specific_request', endpoint='get_current_net_specific_request')
 api.add_resource(GetCurrentIB, '/get_current_ib_specific_request', endpoint='get_current_ib_specific_request')
 api.add_resource(GetAnalysisName, '/get_analysis_name', endpoint='get_analysis_name')
+api.add_resource(GetErrorRecords, '/get_error_records', endpoint='get_error_records')
 api.add_resource(GetDashboardRequestCount, '/get_dashboard_request_count', endpoint='get_dashboard_request_count')
 api.add_resource(GetGrossforSpecificRequest, '/get_gross_specific_request', endpoint='get_gross_specific_request')
 api.add_resource(GetMainDashboardCount, '/get_main_dashboard_count', endpoint='get_main_dashboard_count')
