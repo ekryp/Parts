@@ -236,7 +236,7 @@ def validate_pon(pon, analysis_date, analysis_id):
     return valid_pon
 
 
-def validate_depot(pon):
+def validate_depot(pon, analysis_date, analysis_id):
 
     invalid_list = ["not 4hr", "not supported", "nan", "n/a"]
     pon.loc[pon['Node Name'].str.lower().isin(invalid_list), 'Valid'] = False
@@ -248,7 +248,7 @@ def validate_depot(pon):
     invalid_pon = invalid_pon[['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
                            'Product Ordering Name', 'Part#', 'Serial#', 'Source', 'Valid']]
     if not invalid_pon.empty:
-        to_sql_error('error_records', invalid_pon, "Invalid Node Name")
+        to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date, analysis_id)
 
     return valid_pon
 
