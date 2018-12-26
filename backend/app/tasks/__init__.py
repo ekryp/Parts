@@ -92,12 +92,12 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id)
 
     # 5.7 Validate PONs and Depot
     valid_pon = validate_pon(input_with_no_misnomer_pon, analysis_date, analysis_id)
-    valid_pon = validate_depot(valid_pon, analysis_date, analysis_id)
 
     # 5.8 Identify Valid Sparable Items and Identify Error Conditions
 
     # 5.8.1 Calculate node_to_depot
     valid_pon = pd.merge(valid_pon, node, left_on='Node Name', right_on='node_name', how='left')
+    valid_pon = validate_depot(valid_pon, analysis_date, analysis_id)
 
     # Add node_depot_belongs attribute ,If True PON has depot name
     valid_pon['has_node_depot'] = False
