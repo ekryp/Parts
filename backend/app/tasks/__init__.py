@@ -506,20 +506,29 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id):
 
 @celery.task
 def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id):
+    try:
+        def set_request_status(status, analysis_id):
+            engine = create_engine(Configuration.INFINERA_DB_URL)
+            query = "update analysis_request set requestStatus='{0}' " \
+                "where analysis_request_id = {1}".format(status, analysis_id)
+            print(query)
+            engine.execute(query)
 
-    single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id)
-    update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
-    calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
+        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id)
+        update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
+        calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
                            user_email_id, analysis_id, customer_name)
 
-    def set_request_status_complete(analysis_id):
-        engine = create_engine(Configuration.INFINERA_DB_URL)
-        query = "update analysis_request set requestStatus='Completed' " \
-                "where analysis_request_id = {0}".format(analysis_id)
-        engine.execute(query)
+        update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
+        set_request_status('Completed', analysis_id)
 
-    update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
-    set_request_status_complete(analysis_id)
+    except Exception as e:
+        print("SOME ERROR OCCURRED")
+        print(150 * "*")
+        print(str(e))
+        set_request_status('Failed', analysis_id)
+        print(150 * "*")
+
 
 
 

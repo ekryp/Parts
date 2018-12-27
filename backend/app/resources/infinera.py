@@ -975,18 +975,19 @@ class PostSparePartAnalysis(Resource):
 
             update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
             print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name,prospect_id)
+            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id)
 
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id])
-
+            
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
             return jsonify(msg=e.msg, http_status_code=400)
 
-        except:
+        except Exception as e:
+            print(str(e))
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
 
 
