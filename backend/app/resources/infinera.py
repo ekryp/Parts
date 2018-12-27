@@ -869,8 +869,8 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('replenish_time', required=True, location='form')
         super(PostSparePartAnalysis, self).__init__()
 
-
     def post(self):
+
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
         analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -982,7 +982,7 @@ class PostSparePartAnalysis(Resource):
 
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id], replenish_time)
+                                                               customer_name, prospect_id, replenish_time])
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
 
