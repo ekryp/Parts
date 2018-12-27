@@ -253,7 +253,7 @@ def validate_depot(pon, analysis_date, analysis_id):
     return valid_pon
 
 
-def fetch_db():
+def fetch_db(replenish_time):
     print('fetching data from db...')
     connection = Configuration.ECLIPSE_DATA_DB_URI
     get_misnomer_sql = "SELECT mp.misnomer_pon_name, pt.part_name FROM infinera.`Misnomer PON Conversion` mp, infinera.`parts` pt where mp.correct_part_id = pt.part_id ;"
@@ -275,7 +275,9 @@ def fetch_db():
     high_spare_sql = "SELECT pt.part_name, given_spare_part_id, high_spare_part_id FROM infinera.high_spare, infinera.parts pt where given_spare_part_id = pt.part_id;"
     highspares = read_data(high_spare_sql, connection)
 
-    get_ratio_to_pon_sql = "SELECT * FROM infinera.failure_information where replenish_timetable_id = 1;"
+    get_ratio_to_pon_sql = "SELECT * FROM infinera.failure_information where failure_name = '{0}'".format(replenish_time)
+    print(get_ratio_to_pon_sql)
+
     get_ratio_to_pon = read_data(get_ratio_to_pon_sql, connection)
 
     get_parts_sql = 'SELECT * FROM infinera.parts;'

@@ -866,6 +866,7 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('replenish_time', required=True, location='form')
         self.reqparse.add_argument('customer_name', required=True, location='form')
         self.reqparse.add_argument('user_email_id', required=True, location='form')
+        self.reqparse.add_argument('replenish_time', required=True, location='form')
         super(PostSparePartAnalysis, self).__init__()
 
 
@@ -876,6 +877,7 @@ class PostSparePartAnalysis(Resource):
         customer_dna_file = ''
         sap_export_file = ''
         customer_name = args['customer_name'].replace(",", "|")
+        replenish_time = args['replenish_time'].replace(",", "|")
 
         def save_analysis_record_db():
 
@@ -884,7 +886,7 @@ class PostSparePartAnalysis(Resource):
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
                     "sap_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
                     "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
-                                                args['replenish_time'].replace(",", "|"),
+                                                replenish_time,
                                                 args['user_email_id'], analysis_date,
                                                 customer_dna_file, sap_export_file,
                                                 customer_name)
@@ -975,12 +977,13 @@ class PostSparePartAnalysis(Resource):
 
             update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
             print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id)
+
+            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time)
 
             celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id])
-            
+                                                               customer_name, prospect_id], replenish_time)
+
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
