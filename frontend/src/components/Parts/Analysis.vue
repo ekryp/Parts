@@ -1169,7 +1169,7 @@
       <table id="example" class="table table-bordered" > 
               <thead >
                 <tr>
-                  <th scope="col">PON</th>
+                  <th scope="col">Parts Name</th>
                   <th scope="col">Error Reason</th>
                   <th scope="col">Node Name</th>
                   <th scope="col">Type</th>
