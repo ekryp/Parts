@@ -7,7 +7,7 @@
         <h3>Spare Part Analysis</h3>
       </div>
       <!-- <div class="container"> -->
-      <form style="marginTop: 5%">
+      <form style="marginTop: 5%;">
         <div>
           <div class="myBreadCrumb">
             <p>
@@ -1164,8 +1164,32 @@
             </ul>
           </div>
           <!--  -->
+          <div  class="row" v-if="partsAnalysisData .requestStatus === 'Failed' ">
+          <label class="form-check-label" for="exampleCheck1" style="marginBottom:2%">Error Table :</label>
+      <table id="example" class="table table-bordered" > 
+              <thead >
+                <tr>
+                  <th scope="col">PON</th>
+                  <th scope="col">Error Reason</th>
+                  <th scope="col">Node Name</th>
+                  <th scope="col">Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in errorData" :key="item.id">
+                  <td>{{item.PON}}</td>
+                  <td>{{item.error_reason}}</td>
+                  <td>{{item.node_name}}</td>
+                  <td>{{item.type}}</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+
           <!-- Tracker Ends -->
-          <div class="float-right" style="marginTop:5%">
+          <div class="float-right" style="marginTop:5%;marginBottom:5%">
+            
+          
             <div class="row">
               <div class="col-lg-4" v-if="requestId === '' && submitFlag !== '1'">
                 <button
@@ -1205,12 +1229,19 @@
                   @click="formSubmit()"
                 >Submit For Analysis</button>
                 <button
-                  v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed'"
+                  v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.requestStatus !=='Failed'"
                   type="button"
                   class="btn btn-success"
                   @click="formSubmit()"
                   disabled
                 >Processing</button>
+                <button
+                  v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.requestStatus ==='Failed'"
+                  type="button"
+                  class="btn btn-success"
+                  @click="formSubmit()"
+                  disabled
+                >Failed</button>
                 <button
                   v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
                   type="button"
@@ -1223,6 +1254,7 @@
           </div>
         </div>
       </form>
+      
       <!-- </div> -->
     </div>
   </div>
@@ -1247,7 +1279,7 @@ export default {
     if (this.$route.query.id !== undefined) {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
-      this.get_request_analysis_by_Id(this.$route.query.id);
+      this.get_request_analysis_by_Id(this.requestId);
 
       window.intervalObj = setInterval(() => {
         this.get_request_analysis_by_Id(this.requestId);
@@ -1299,7 +1331,8 @@ export default {
       current: "Analysis Update",
       show: false,
       label: "Loading...",
-      submitFlag: null
+      submitFlag: null,
+      errorData:[]
     };
   },
   methods: {
@@ -1393,6 +1426,31 @@ export default {
     },
 
     // API calls
+
+      get_error_records()
+      {
+        fetch(
+          constant.APIURL +
+            "api/v1/get_error_records?request_id=" +
+            this.requestId,
+          {
+            method: "GET"
+          }
+        )
+        .then(response => {
+          response.text().then(text => {
+            const payload = text && JSON.parse(text);
+            console.log("Get Error data ---->", payload);
+            this.errorData = payload;
+           
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+      },
+
+
     get_request_analysis_by_Id(requestId) {
       fetch(
         constant.APIURL +
@@ -1419,15 +1477,36 @@ export default {
               stepId: payload[0].step_id
             };
             this.partsAnalysisData = object;
-            if (this.partsAnalysisData.stepId !== 6) {
+            // if (this.partsAnalysisData.requestStatus === 'Failed') {
+            //   this.get_error_records();
+            // } 
+            // if ((this.partsAnalysisData.stepId !== 6) && (this.partsAnalysisData.requestStatus !== 'Failed')) {
+            //   $(document).ready(function() {
+            //     $("#loader-2").show();
+            //   });
+            // } else if (this.partsAnalysisData.stepId === 6 )  {
+            //   $(document).ready(function() {
+            //     $("#loader-2").hide();
+            //   });
+            // }
+            if(this.partsAnalysisData.requestStatus !=='Completed' && this.partsAnalysisData.requestStatus !=='Failed')
+            {
               $(document).ready(function() {
                 $("#loader-2").show();
               });
-            } else if (this.partsAnalysisData.stepId === 6) {
+            }else if(this.partsAnalysisData.requestStatus !=='Completed' && this.partsAnalysisData.requestStatus ==='Failed')
+            {
+              this.get_error_records();
+              $(document).ready(function() {
+                $("#loader-2").hide();
+              });
+            }else if(this.partsAnalysisData.requestStatus ==='Completed' )
+            {
               $(document).ready(function() {
                 $("#loader-2").hide();
               });
             }
+            
           });
         })
         .catch(handleError => {
@@ -1468,9 +1547,7 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
-            $(document).ready(function() {
-              $("#loader-2").hide();
-            });
+           
             this.show = false;
             this.submitFlag = "1";
             console.log(this.submitFlag);
