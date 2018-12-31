@@ -149,6 +149,7 @@ export default {
   created() {
     console.log("beforeMount -- get_all_request_analysis", this.$store);
     this.get_all_request_analysis();
+    clearInterval(window.intervalObj);
     this.get_dashboard_request_count();
   },
   // Vuex Configure Its not updating the Value once State Changed
