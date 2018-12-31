@@ -1,199 +1,196 @@
 <template>
-    <div>
-      <headernav msg="Spare Part Analysis"/>
-      <side-nav menu="analysis"/>
-      <div class="custom-container" style="paddingTop:0%">
-        <div class>
-          <h3>Spare Part Analysis</h3>
+  <div>
+    <headernav msg="Spare Part Analysis"/>
+    <side-nav menu="analysis"/>
+    <div class="custom-container" style="paddingTop:0%">
+      <div class>
+        <h3>Spare Part Analysis</h3>
+      </div>
+      <!-- <div class="container"> -->
+      <form style="marginTop: 5%">
+        <div>
+          <div class="myBreadCrumb">
+            <p>
+              <span class="in-progress" @click="cancel()">{{postMenu}}</span>
+              <span v-if="requestId!==''" style="font-size: 14px;">{{current}}</span>
+              <span v-if="requestId===''" style="font-size: 14px;">Analysis Create</span>
+            </p>
+          </div>
         </div>
-        <!-- <div class="container"> -->
-        <form style="marginTop: 5%">
-          <div>
-            <div class="myBreadCrumb">
-              <p>
-              <span class="in-progress" @click="cancel()">{{postMenu}}
-              </span>
-              <span v-if="requestId!==''" style="font-size: 14px;">{{current}}
-              </span>
-              <span v-if="requestId===''" style="font-size: 14px;">Analysis Create
-              </span>
-              </p>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-3">
+              <label>Analysis Name :</label>
+            </div>
+            <div class="col-lg-6">
+              <input
+                v-if="requestId !== '' && partsAnalysisData.analyisisName !== undefined"
+                type="text"
+                class="form-control"
+                v-model="partsAnalysisData.analyisisName"
+                disabled
+              >
+              <input
+                v-if="requestId === ''"
+                type="text"
+                class="form-control"
+                placeholder="Enter Analysis Name"
+                v-model="analyisisName"
+              >
             </div>
           </div>
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-3">
-                <label>Analysis Name :</label>
-              </div>
-              <div class="col-lg-6">
-                <input
-                  v-if="requestId !== '' && partsAnalysisData.analyisisName !== undefined"
-                  type="text"
-                  class="form-control"
-                  v-model="partsAnalysisData.analyisisName"
-                  disabled
-                >
-                <input
-                  v-if="requestId === ''"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter Analysis Name"
-                  v-model="analyisisName"
-                >
-              </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-3">
+              <label>Customer Name :</label>
+            </div>
+            <div class="col-lg-6">
+              <input
+                v-if="requestId !== '' && partsAnalysisData.customerNames !== undefined"
+                type="text"
+                class="form-control"
+                v-model="partsAnalysisData.customerNames"
+                disabled
+              >
+              <multiselect
+                v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
+                :value="customerNames"
+                @input="selectedCustomerName"
+                placeholder="Select Customer"
+                :options="partsAnalysis.customer_names"
+                :multiple="false"
+                :taggable="true"
+              ></multiselect>
             </div>
           </div>
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-3">
-                <label>Customer Name :</label>
-              </div>
-              <div class="col-lg-6">
-                <input
-                  v-if="requestId !== '' && partsAnalysisData.customerNames !== undefined"
-                  type="text"
-                  class="form-control"
-                  v-model="partsAnalysisData.customerNames"
-                  disabled
-                >
-                <multiselect
-                  v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
-                  :value="customerNames"
-                  @input="selectedCustomerName"
-                  placeholder="Select Customer"
-                  :options="partsAnalysis.customer_names"
-                  :multiple="false"
-                  :taggable="true"
-                ></multiselect>
-              </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-3">
+              <label>Date :</label>
+            </div>
+            <div class="col-lg-6">
+              <input
+                v-if="requestId !== '' && partsAnalysisData.date !== undefined"
+                type="text"
+                class="form-control"
+                placeholder="22 Nov 2018"
+                v-model="partsAnalysisData.date"
+                disabled
+              >
+              <input
+                v-if="requestId === ''"
+                type="text"
+                class="form-control"
+                placeholder="22 Nov 2018"
+                :value="date"
+                disabled
+              >
             </div>
           </div>
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-3">
-                <label>Date :</label>
-              </div>
-              <div class="col-lg-6">
-                <input
-                  v-if="requestId !== '' && partsAnalysisData.date !== undefined"
-                  type="text"
-                  class="form-control"
-                  placeholder="22 Nov 2018"
-                  v-model="partsAnalysisData.date"
-                  disabled
-                >
-                <input
-                  v-if="requestId === ''"
-                  type="text"
-                  class="form-control"
-                  placeholder="22 Nov 2018"
-                  :value="date"
-                  disabled
-                >
-              </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-3">
+              <label>Analysis Type :</label>
+            </div>
+            <div class="col-lg-6">
+              <input
+                v-if="requestId !== '' && partsAnalysisData.analysisType !== undefined"
+                type="text"
+                class="form-control"
+                v-model="partsAnalysisData.analysisType"
+                disabled
+              >
+              <multiselect
+                v-if="requestId === '' && partsAnalysis.analysis_names !== undefined"
+                v-model="analysisType"
+                @input="selectedAnalysisType"
+                placeholder="Select Analysis Type"
+                :options="partsAnalysis.analysis_names"
+                :multiple="false"
+                :taggable="true"
+              ></multiselect>
             </div>
           </div>
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-3">
-                <label>Analysis Type :</label>
-              </div>
-              <div class="col-lg-6">
-                <input
-                  v-if="requestId !== '' && partsAnalysisData.analysisType !== undefined"
-                  type="text"
-                  class="form-control"
-                  v-model="partsAnalysisData.analysisType"
-                  disabled
-                >
-                <multiselect
-                  v-if="requestId === '' && partsAnalysis.analysis_names !== undefined"
-                  v-model="analysisType"
-                  @input="selectedAnalysisType"
-                  placeholder="Select Analysis Type"
-                  :options="partsAnalysis.analysis_names"
-                  :multiple="false"
-                  :taggable="true"
-                ></multiselect>
-              </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-3">
+              <label>Replenish time :</label>
+            </div>
+            <div class="col-lg-6">
+              <input
+                v-if="requestId !== '' && partsAnalysisData.replensihTime !== undefined"
+                type="text"
+                class="form-control"
+                v-model="partsAnalysisData.replensihTime"
+                disabled
+              >
+              <multiselect
+                v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
+                v-model="replensihTime"
+                @input="selectedReplensihTime"
+                placeholder="Select Replensih Time"
+                :options="partsAnalysis.replenish_times"
+                :multiple="false"
+                :taggable="true"
+              ></multiselect>
             </div>
           </div>
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-3">
-                <label>Replensih time :</label>
-              </div>
-              <div class="col-lg-6">
-                <input
-                  v-if="requestId !== '' && partsAnalysisData.replensihTime !== undefined"
-                  type="text"
-                  class="form-control"
-                  v-model="partsAnalysisData.replensihTime"
-                  disabled
-                >
-                <multiselect
-                  v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
-                  v-model="replensihTime"
-                  @input="selectedReplensihTime"
-                  placeholder="Select Replensih Time"
-                  :options="partsAnalysis.replenish_times"
-                  :multiple="false"
-                  :taggable="true"
-                ></multiselect>
-              </div>
+        </div>
+        <div class="form-group">
+          <!-- <strong>Files To Upload</strong> -->
+          <div class="row" style="marginTop:0%">
+            <div class="col-lg-3">
+              <label>DNA File :</label>
             </div>
-          </div>
-          <div class="form-group">
-            <!-- <strong>Files To Upload</strong> -->
-            <div class="row" style="marginTop:0%">
-              <div class="col-lg-3">
-                <label>DNA File :</label>
-              </div>
-              <div class="col-lg-6 form-group">
-                <div class="row">
-                  <div class="col-lg-1" v-if="requestId === ''">
-                    <label for="fileupload" class="file">
-                      <input type="file" @change="handleFile" id="fileupload" style="display:none">
-                      <i class="fas fa-paperclip fa-2x"></i>
-                    </label>
-                  </div>
-                  <div class="col-lg-8" v-if="requestId === ''">
-                    <span v-if="dnafileName === ''">no file selected</span>
-                    <span v-if="dnafileName !== ''">{{dnafileName}}</span>
-                  </div>
-                  <div class="col-lg-8" v-if="requestId !== ''">
-                    <span
-                      v-if="partsAnalysisData.dnafileName !== ''"
-                    >{{partsAnalysisData.dnafileName}}</span>
-                  </div>
+            <div class="col-lg-6 form-group">
+              <div class="row">
+                <div class="col-lg-1" v-if="requestId === ''">
+                  <label for="fileupload" class="file">
+                    <input type="file" @change="handleFile" id="fileupload" style="display:none">
+                    <i class="fas fa-paperclip fa-2x"></i>
+                  </label>
+                </div>
+                <div class="col-lg-8" v-if="requestId === ''">
+                  <span v-if="dnafileName === ''">no file selected</span>
+                  <span v-if="dnafileName !== ''">{{dnafileName}}</span>
+                </div>
+                <div class="col-lg-8" v-if="requestId !== ''">
+                  <span
+                    v-if="partsAnalysisData.dnafileName !== ''"
+                  >{{partsAnalysisData.dnafileName}}</span>
                 </div>
               </div>
             </div>
-            <div class="row" style="marginTop:0%">
-              <div class="col-lg-3">
-                <label>SAP Current Inventory File :</label>
-              </div>
-              <div class="col-lg-6 form-group">
-                <div class="row">
-                  <div class="col-lg-1" v-if="requestId === ''">
-                    <label for="fileupload2" class="file">
-                      <input type="file" @change="sapFile" id="fileupload2" style="display:none">
-                      <i class="fas fa-paperclip fa-2x"></i>
-                    </label>
-                  </div>
-                  <div class="col-lg-8" v-if="requestId === ''">
-                    <span v-if="sapfileName === ''">no file selected</span>
-                    <span v-if="sapfileName !== ''">{{sapfileName}}</span>
-                  </div>
-                  <div class="col-lg-8" v-if="requestId !== ''">
-                    <span
-                      v-if="partsAnalysisData.sapfileName !== ''"
-                    >{{partsAnalysisData.sapfileName}}</span>
-                  </div>
+          </div>
+          <div class="row" style="marginTop:0%">
+            <div class="col-lg-3">
+              <label>SAP Current Inventory File :</label>
+            </div>
+            <div class="col-lg-6 form-group">
+              <div class="row">
+                <div class="col-lg-1" v-if="requestId === ''">
+                  <label for="fileupload2" class="file">
+                    <input type="file" @change="sapFile" id="fileupload2" style="display:none">
+                    <i class="fas fa-paperclip fa-2x"></i>
+                  </label>
+                </div>
+                <div class="col-lg-8" v-if="requestId === ''">
+                  <span v-if="sapfileName === ''">no file selected</span>
+                  <span v-if="sapfileName !== ''">{{sapfileName}}</span>
+                </div>
+                <div class="col-lg-8" v-if="requestId !== ''">
+                  <span
+                    v-if="partsAnalysisData.sapfileName !== ''"
+                  >{{partsAnalysisData.sapfileName}}</span>
                 </div>
               </div>
             </div>
-            <!-- <div class="row" style="marginTop:0%">
+          </div>
+          <!-- <div class="row" style="marginTop:0%">
               <div class="col-lg-3"></div>
               <div class="col-lg-3">
                 <div class="form-check">
@@ -207,943 +204,1028 @@
                   <label class="form-check-label" for="exampleCheck1">Use Total Stock</label>
                 </div>
               </div>
-            </div>-->
-            <!-- Status Tracker -->
-            <div style="marginTop:2%" v-if="requestId !== ''">
-              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 6">
-                <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:green">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:green">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:green">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:green">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 5">
-                <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                </div> -->
-                <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:green">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:green">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:green">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 4">
-                <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                </div> -->
-                <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:green">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:green">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 3">
-                <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                </div> -->
-                <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:green">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="partsAnalysisData.stepId === 2">
-                <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                </div> -->
-                <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:#bbb">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="(partsAnalysisData.stepId === 1) || (submitFlag === '1')">
-              
-                <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:#bbb">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:#bbb">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div> 
-              
-              <div
-                class="row form_wizard wizard_horizontal"
-                style="marginLeft:7%"
-                v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined "
-              >
-             
+          </div>-->
+          <!-- Status Tracker -->
+          <div style="marginTop:2%" v-if="requestId !== ''">
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 6 && partsAnalysisData.requestStatus === 'Completed'"
+            >
               <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:#bbb">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:#bbb">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:#bbb">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <!-- error -->
-              <div
-                class="row form_wizard wizard_horizontal"
-                style="marginLeft:7%"
-                v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined  && partsAnalysisData.requestStatus === 'Failed'"
-              >
-              
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:green">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:green">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:green"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:green"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 5 && partsAnalysisData.requestStatus === 'Processing'"
+            >
+              <!-- <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+              </div>-->
               <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:red">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:#bbb">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:#bbb">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="row form_wizard wizard_horizontal"
-                style="marginLeft:7%"
-                v-if="partsAnalysisData.stepId === 5 && partsAnalysisData.requestStatus === 'Failed'"
-              >
-              
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:green">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:green">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:green"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 4 && partsAnalysisData.requestStatus === 'Processing'"
+            >
+              <!-- <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+              </div>-->
               <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:green">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:green">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:green">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:red">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="row form_wizard wizard_horizontal"
-                style="marginLeft:7%"
-                v-if="partsAnalysisData.stepId === 4 && partsAnalysisData.requestStatus === 'Failed'"
-              >
-              
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:green">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:green">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 3 && partsAnalysisData.requestStatus === 'Processing'"
+            >
+              <!-- <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+              </div>-->
               <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:green">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:green">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:red">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="row form_wizard wizard_horizontal"
-                style="marginLeft:7%"
-                v-if="partsAnalysisData.stepId === 3 && partsAnalysisData.requestStatus === 'Failed'"
-              >
-              
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:green">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:#bbb">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 2  && partsAnalysisData.requestStatus === 'Processing'"
+            >
+              <!-- <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line-green"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot-green"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+                <span class="line"></span>
+                </div>
+                <div class="col-lg-2">
+                <span class="dot"></span>
+              </div>-->
               <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:green">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:red">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="row form_wizard wizard_horizontal"
-                style="marginLeft:7%"
-                v-if="partsAnalysisData.stepId === 2 && partsAnalysisData.requestStatus === 'Failed'"
-              >
-             
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:#bbb">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:#bbb">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="(partsAnalysisData.stepId === 1) || (submitFlag === '1')"
+            >
               <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:green">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:red">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="row form_wizard wizard_horizontal"
-                style="marginLeft:7%"
-                v-if="partsAnalysisData.stepId === 1 && partsAnalysisData.requestStatus === 'Failed'"
-              >
-              
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:#bbb">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:#bbb">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:#bbb">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined "
+            >
               <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:red">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:#bbb">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              
-              <!-- <div class="row" style="marginLeft:4%">
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:#bbb">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:#bbb">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:#bbb">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:#bbb">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!-- error -->
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 0 || partsAnalysisData.stepId === undefined  && partsAnalysisData.requestStatus === 'Failed'"
+            >
+              <ul id="progress_ul" class="wizard_steps anchor">
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:red">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:#bbb">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:#bbb">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:#bbb">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 5 && partsAnalysisData.requestStatus === 'Failed'"
+            >
+              <ul id="progress_ul" class="wizard_steps anchor">
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:green">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:green">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:green"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span id="predictionDownload" class="step_no blink" style="backgroundColor:red">
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 4 && partsAnalysisData.requestStatus === 'Failed'"
+            >
+              <ul id="progress_ul" class="wizard_steps anchor">
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:green">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:green">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span id="predictionDownload" class="step_no blink" style="backgroundColor:red">
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 3 && partsAnalysisData.requestStatus === 'Failed'"
+            >
+              <ul id="progress_ul" class="wizard_steps anchor">
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:green">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:red">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 2 && partsAnalysisData.requestStatus === 'Failed'"
+            >
+              <ul id="progress_ul" class="wizard_steps anchor">
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:green">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:red">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:#bbb">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="row form_wizard wizard_horizontal"
+              style="marginLeft:7%"
+              v-if="partsAnalysisData.stepId === 1 && partsAnalysisData.requestStatus === 'Failed'"
+            >
+              <ul id="progress_ul" class="wizard_steps anchor">
+                <li>
+                  <a class="disabled" isdone="0" rel="1">
+                    <span class="step_no" style="backgroundColor:green">1</span>
+                    <span class="step_descr">Process Files</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="2">
+                    <span class="step_no" style="backgroundColor:red">2</span>
+                    <span class="step_descr">Generating Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="3">
+                    <span class="step_no" style="backgroundColor:#bbb">3</span>
+                    <span class="step_descr">Combining Flat
+                      <br>Files
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="4">
+                    <span class="step_no" style="backgroundColor:#bbb">4</span>
+                    <span class="step_descr">Analyzing Data</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="5">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>5</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generation BOM</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="disabled" isdone="0" rel="6">
+                    <span
+                      id="predictionDownload"
+                      class="step_no blink"
+                      style="backgroundColor:#bbb"
+                    >
+                      <span>6</span>
+                      <i style="display:none" class="fa fa-download"></i>
+                    </span>
+                    <span class="step_descr">Generting Output</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- <div class="row" style="marginLeft:4%">
                 <div class="col-lg-2" style="align:center">Process Files</div>
                 <div class="col-lg-2" style=" margin-Left: -1%;">Generating Flat Files</div>
                 <div class="col-lg-2" style=" margin-Left: -1%;">Combining Flat Files</div>
                 <div class="col-lg-2" >Analyzing Data</div>
                 <div class="col-lg-2" >Generation BOM</div>
                 <div class="col-lg-2" >Generting Output</div>
-              </div> -->
-            </div>
-            <div class="row form_wizard wizard_horizontal" style="marginLeft:7%" v-if="submitFlag === '1'">
-              
-                <ul id="progress_ul" class="wizard_steps anchor">
-                  <li>
-                    <a class="disabled" isdone="0" rel="1">
-                      <span class="step_no" style="backgroundColor:green">1</span>
-                      <span class="step_descr">Process Files
-                      </span> 
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="2">
-                      <span class="step_no" style="backgroundColor:#bbb">2</span>
-                      <span class="step_descr">Generating Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="3">
-                      <span class="step_no" style="backgroundColor:#bbb">3</span>
-                      <span class="step_descr">Combining Flat
-                        <br>Files
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="4">
-                      <span class="step_no" style="backgroundColor:#bbb">4</span>
-                      <span class="step_descr">Analyzing Data
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="5">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>5</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generation BOM</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="disabled" isdone="0" rel="6">
-                      <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                        <span>6</span>
-                        <i style="display:none" class="fa fa-download"></i>
-                      </span>
-                      <span class="step_descr">Generting Output</span>
-                    </a>
-                  </li>
-                </ul>
-              </div> 
-            <!--  -->
-                      <!-- Tracker Ends -->
-            <div class="float-right" style="marginTop:5%">
-              <div class="row">
-                <div class="col-lg-4"  v-if="requestId === '' && submitFlag !== '1'">
-                  <button
-                    type="button"
-                    id="cancelButton"
-                    class="btn btn-danger"
-                    @click="cancel()"
-                  >Cancel</button>
-                </div>
-                <div class="col-lg-4"  v-if="requestId === '' && submitFlag === '1'">
-                  <button
-                    type="button"
-                    id="cancelButton"
-                    class="btn btn-danger"
-                    @click="cancel()"
-                    disabled
-                  >Back</button>
-                </div>
-                <div class="col-lg-4"  v-if="(requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.stepId !==6 ) ">
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    @click="cancel()"
-                  >Back</button>
-                </div>
-                <div class="col-lg-4"  v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'">
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    @click="cancel()"
-                  >Cancel</button>
-                </div>
+            </div>-->
+          </div>
+          <div
+            class="row form_wizard wizard_horizontal"
+            style="marginLeft:7%"
+            v-if="submitFlag === '1'"
+          >
+            <ul id="progress_ul" class="wizard_steps anchor">
+              <li>
+                <a class="disabled" isdone="0" rel="1">
+                  <span class="step_no" style="backgroundColor:green">1</span>
+                  <span class="step_descr">Process Files</span>
+                </a>
+              </li>
+              <li>
+                <a class="disabled" isdone="0" rel="2">
+                  <span class="step_no" style="backgroundColor:#bbb">2</span>
+                  <span class="step_descr">Generating Flat
+                    <br>Files
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="disabled" isdone="0" rel="3">
+                  <span class="step_no" style="backgroundColor:#bbb">3</span>
+                  <span class="step_descr">Combining Flat
+                    <br>Files
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="disabled" isdone="0" rel="4">
+                  <span class="step_no" style="backgroundColor:#bbb">4</span>
+                  <span class="step_descr">Analyzing Data</span>
+                </a>
+              </li>
+              <li>
+                <a class="disabled" isdone="0" rel="5">
+                  <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
+                    <span>5</span>
+                    <i style="display:none" class="fa fa-download"></i>
+                  </span>
+                  <span class="step_descr">Generation BOM</span>
+                </a>
+              </li>
+              <li>
+                <a class="disabled" isdone="0" rel="6">
+                  <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
+                    <span>6</span>
+                    <i style="display:none" class="fa fa-download"></i>
+                  </span>
+                  <span class="step_descr">Generting Output</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!--  -->
+          <!-- Tracker Ends -->
+          <div class="float-right" style="marginTop:5%">
+            <div class="row">
+              <div class="col-lg-4" v-if="requestId === '' && submitFlag !== '1'">
+                <button
+                  type="button"
+                  id="cancelButton"
+                  class="btn btn-danger"
+                  @click="cancel()"
+                >Back</button>
+              </div>
+              <div class="col-lg-4" v-if="requestId === '' && submitFlag === '1'">
+                <button
+                  type="button"
+                  id="cancelButton"
+                  class="btn btn-danger"
+                  @click="cancel()"
+                  disabled
+                >Back</button>
+              </div>
+              <div
+                class="col-lg-4"
+                v-if="(requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.stepId !==6 ) "
+              >
+                <button type="button" class="btn btn-danger" @click="cancel()">Back</button>
+              </div>
+              <div
+                class="col-lg-4"
+                v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
+              >
+                <button type="button" class="btn btn-danger" @click="cancel()">Back</button>
+              </div>
 
-                <div class="col-lg-3">
-                  <button
-                    v-if="requestId === ''"
-                    type="button"
-                    class="btn btn-success"
-                    @click="formSubmit()"
-                  >Submit For Analysis</button>
-                  <button
-                    v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed'"
-                    type="button"
-                    class="btn btn-success"
-                    @click="formSubmit()"
-                    disabled
-                  >Processing</button>
-                  <button
-                    v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
-                    type="button"
-                    class="btn btn-success"
-                    @click="formSubmit()"
-                    disabled
-                  >Completed</button>
-                </div>
+              <div class="col-lg-3">
+                <button
+                  v-if="requestId === ''"
+                  type="button"
+                  class="btn btn-success"
+                  @click="formSubmit()"
+                >Submit For Analysis</button>
+                <button
+                  v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed'"
+                  type="button"
+                  class="btn btn-success"
+                  @click="formSubmit()"
+                  disabled
+                >Processing</button>
+                <button
+                  v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
+                  type="button"
+                  class="btn btn-success"
+                  @click="formSubmit()"
+                  disabled
+                >Completed</button>
               </div>
             </div>
           </div>
-        </form>
-        <!-- </div> -->
-      </div>
+        </div>
+      </form>
+      <!-- </div> -->
     </div>
+  </div>
 </template>
 
 
@@ -1166,10 +1248,10 @@ export default {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
       this.get_request_analysis_by_Id(this.$route.query.id);
-      
+
       window.intervalObj = setInterval(() => {
-         this.get_request_analysis_by_Id(this.requestId);
-        }, 15000);
+        this.get_request_analysis_by_Id(this.requestId);
+      }, 15000);
     } else {
       console.log("created");
       this.get_spare_part_analysis();
@@ -1217,7 +1299,7 @@ export default {
       current: "Analysis Update",
       show: false,
       label: "Loading...",
-      submitFlag : null
+      submitFlag: null
     };
   },
   methods: {
@@ -1246,7 +1328,7 @@ export default {
         file.name.endsWith("XLSX") ||
         file.name.endsWith("CSV") ||
         file.name.endsWith("txt") ||
-        file.name.endsWith("TXT") 
+        file.name.endsWith("TXT")
       ) {
         console.log(file.name);
         this.dnafileName = file.name;
@@ -1264,7 +1346,7 @@ export default {
         file.name.endsWith("XLSX") ||
         file.name.endsWith("CSV") ||
         file.name.endsWith("txt") ||
-        file.name.endsWith("TXT") 
+        file.name.endsWith("TXT")
       ) {
         console.log(file.name);
         this.sapfileName = file.name;
@@ -1337,18 +1419,15 @@ export default {
               stepId: payload[0].step_id
             };
             this.partsAnalysisData = object;
-            if(this.partsAnalysisData.stepId !== 6)
-              {
-                $(document).ready(function() {
+            if (this.partsAnalysisData.stepId !== 6) {
+              $(document).ready(function() {
                 $("#loader-2").show();
-                });
-              }
-               else if(this.partsAnalysisData.stepId === 6)
-              {
-                $(document).ready(function() {
+              });
+            } else if (this.partsAnalysisData.stepId === 6) {
+              $(document).ready(function() {
                 $("#loader-2").hide();
-                });
-              }
+              });
+            }
           });
         })
         .catch(handleError => {
@@ -1371,8 +1450,6 @@ export default {
         });
     },
     post_spare_part_analysis(data) {
-      
-
       let formData = new FormData();
 
       formData.append("analysis_name", data.analyisisName);
@@ -1395,7 +1472,7 @@ export default {
               $("#loader-2").hide();
             });
             this.show = false;
-            this.submitFlag='1';
+            this.submitFlag = "1";
             console.log(this.submitFlag);
           });
         })
@@ -1416,7 +1493,7 @@ export default {
 .dot {
   height: 50px;
   width: 50px;
-  margin-Left: -8%;
+  margin-left: -8%;
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
@@ -1424,7 +1501,7 @@ export default {
 .dot-green {
   height: 50px;
   width: 50px;
-  margin-Left: -8%;
+  margin-left: -8%;
   background-color: green;
   border-radius: 50%;
   display: inline-block;
@@ -1453,19 +1530,18 @@ export default {
 .dot-red {
   height: 50px;
   width: 50px;
-  margin-Left: -8%;
+  margin-left: -8%;
   background-color: red;
   border-radius: 50%;
   display: inline-block;
 }
-.in-progress{
+.in-progress {
   cursor: pointer;
   font-size: 14px;
 }
-.myBreadCrumb
-{
- margin-top:-2%;
- margin-bottom: 2%;  
+.myBreadCrumb {
+  margin-top: -2%;
+  margin-bottom: 2%;
 }
 .form_wizard .stepContainer {
   display: block;

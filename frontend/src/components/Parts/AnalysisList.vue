@@ -1,18 +1,17 @@
 <template>
-    <div>
+  <div>
     <headernav msg="Analysis Dashboard"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="padding:3%; paddingTop:7%">
       <div>
-        <div class="myBreadCrumb"  style="margin-bottom:1px">
+        <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
-          <span  style="font-size: 14px;">{{current}}</span>
+            <span style="font-size: 14px;">{{current}}</span>
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-2 text-center">
-          
           <span class="text-top">Total Analysis Request</span>
           <br>
         </div>
@@ -108,7 +107,7 @@
                     v-if="item.requestStatus ==='Processing'"
                     style="color:#2699FB"
                   >{{item.requestStatus}}</td>
-                  <td v-if="item.requestStatus ==='failed'" style="color:red">{{item.requestStatus}}</td>
+                  <td v-if="item.requestStatus ==='Failed'" style="color:red">{{item.requestStatus}}</td>
                   <td style="cursor:pointer">
                     <i class="far fa-eye" @click="update(item)"></i>
                     <i
@@ -148,8 +147,6 @@ export default {
   },
 
   created() {
-   
-    clearInterval(window.intervalObj);
     console.log("beforeMount -- get_all_request_analysis", this.$store);
     this.get_all_request_analysis();
     this.get_dashboard_request_count();
@@ -169,7 +166,7 @@ export default {
       ],
       partsAnalysisRequestList: [],
       dashboard_request_count: "",
-      current:'Analysis'
+      current: "Analysis"
     };
   },
   methods: {
@@ -242,9 +239,8 @@ export default {
   font-size: 40px;
   font-weight: 600;
 }
-.myBreadCrumb
-{
- margin-top:-2%;
- margin-bottom: 2%;  
+.myBreadCrumb {
+  margin-top: -2%;
+  margin-bottom: 2%;
 }
 </style>
