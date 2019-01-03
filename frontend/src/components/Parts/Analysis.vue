@@ -612,7 +612,7 @@
             <div
               class="row form_wizard wizard_horizontal"
               style="marginLeft:7%"
-              v-if="(partsAnalysisData.stepId === 1) || (submitFlag === '1')"
+              v-if="(partsAnalysisData.stepId === 1 && partsAnalysisData.requestStatus !== 'Failed') || (submitFlag === '1')"
             >
               <ul id="progress_ul" class="wizard_steps anchor">
                 <li>
@@ -1223,20 +1223,33 @@
 
               <div class="col-lg-3">
                 <button
-                  v-if="requestId === ''"
+                  v-if="requestId === '' && uplaodFlag !== '1' && submitFlag !== '1' "
                   type="button"
                   class="btn btn-success"
                   @click="formSubmit()"
                 >Submit For Analysis</button>
                 <button
-                  v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.requestStatus !=='Failed'"
+                  v-if="requestId === '' && uplaodFlag === '1'"
+                  type="button"
+                  class="btn btn-success"
+                  @click="formSubmit()"
+                >Uploading</button>
+                <button
+                  v-if="requestId === '' && submitFlag === '1' "
                   type="button"
                   class="btn btn-success"
                   @click="formSubmit()"
                   disabled
                 >Processing</button>
                 <button
-                  v-if="requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.requestStatus ==='Failed'"
+                  v-if="requestId !== '' && (partsAnalysisData.requestStatus ==='Processing') "
+                  type="button"
+                  class="btn btn-success"
+                  @click="formSubmit()"
+                  disabled
+                >Processing</button>
+                <button
+                  v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Failed'"
                   type="button"
                   class="btn btn-success"
                   @click="formSubmit()"
@@ -1332,6 +1345,7 @@ export default {
       show: false,
       label: "Loading...",
       submitFlag: null,
+      uplaodFlag:null,
       errorData:[]
     };
   },
@@ -1393,6 +1407,7 @@ export default {
     },
 
     formSubmit() {
+      this.uplaodFlag="1";
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -1477,36 +1492,18 @@ export default {
               stepId: payload[0].step_id
             };
             this.partsAnalysisData = object;
-            // if (this.partsAnalysisData.requestStatus === 'Failed') {
-            //   this.get_error_records();
-            // } 
-            // if ((this.partsAnalysisData.stepId !== 6) && (this.partsAnalysisData.requestStatus !== 'Failed')) {
-            //   $(document).ready(function() {
-            //     $("#loader-2").show();
-            //   });
-            // } else if (this.partsAnalysisData.stepId === 6 )  {
-            //   $(document).ready(function() {
-            //     $("#loader-2").hide();
-            //   });
-            // }
-            if(this.partsAnalysisData.requestStatus !=='Completed' && this.partsAnalysisData.requestStatus !=='Failed')
+            if(this.partsAnalysisData.requestStatus === 'Processing')
             {
               $(document).ready(function() {
                 $("#loader-2").show();
               });
-            }else if(this.partsAnalysisData.requestStatus !=='Completed' && this.partsAnalysisData.requestStatus ==='Failed')
+            }else 
             {
               this.get_error_records();
               $(document).ready(function() {
                 $("#loader-2").hide();
               });
-            }else if(this.partsAnalysisData.requestStatus ==='Completed' )
-            {
-              $(document).ready(function() {
-                $("#loader-2").hide();
-              });
             }
-            
           });
         })
         .catch(handleError => {
@@ -1530,7 +1527,10 @@ export default {
     },
     post_spare_part_analysis(data) {
       let formData = new FormData();
-
+      console.log("loader show");
+      $(document).ready(function() {
+        $("#loader-2").show();
+      });
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
@@ -1547,9 +1547,12 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
-           
             this.show = false;
+            this.uplaodFlag="0";
             this.submitFlag = "1";
+            $(document).ready(function() {
+              $("#loader-2").hide();
+            });
             console.log(this.submitFlag);
           });
         })
