@@ -242,7 +242,7 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # step 1 get PON and its high spares - we will need
     # given_Spare name, high_spare_name, total_order_given, total_order_high, reorder_give, reorder_high_spare
 
-    #get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM infinera.sap_inventory '
+    #get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM sap_inventory '
     #z_inventory = read_sap_export_file()
     get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM ' \
                          'sap_inventory where request_id={}'.format(analysis_id)
