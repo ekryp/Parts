@@ -11,10 +11,16 @@ def read_data(sql, con):
 
 
 def clean_pon_names(input_db):
-    input_db['Product Ordering Name'] = input_db['Product Ordering Name'].str.replace('/[^a-zA-Z0-9-*.]/',
-                                                                                      '').str.strip()
-    input_db['InstalledEqpt'] = input_db['InstalledEqpt'].str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
-    input_db['Part#'] = input_db['Part#'].str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
+    try:
+        input_db['Product Ordering Name'] = input_db['Product Ordering Name'].str.replace('/[^a-zA-Z0-9-*.]/',
+                                                                                          '').str.strip()
+        input_db['InstalledEqpt'] = input_db['InstalledEqpt'].str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
+        input_db['Part#'] = input_db['Part#'].str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
+    except:
+        input_db['Product Ordering Name'] = (input_db['Product Ordering Name'].astype(str)).str.replace('/[^a-zA-Z0-9-*.]/',
+                                                                                          '').str.strip()
+        input_db['InstalledEqpt'] = (input_db['InstalledEqpt'].astype(str)).str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
+        input_db['Part#'] = (input_db['Part#'].astype(str)).str.replace('/[^a-zA-Z0-9-*.]/', '').str.strip()
     return input_db
 
 
