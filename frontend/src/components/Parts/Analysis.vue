@@ -1233,6 +1233,7 @@
                   type="button"
                   class="btn btn-success"
                   @click="formSubmit()"
+                  disabled
                 >Uploading</button>
                 <button
                   v-if="requestId === '' && submitFlag === '1' "
@@ -1550,9 +1551,7 @@ export default {
             this.show = false;
             this.uplaodFlag="0";
             this.submitFlag = "1";
-            $(document).ready(function() {
-              $("#loader-2").hide();
-            });
+            
             console.log(this.submitFlag);
           });
         })
