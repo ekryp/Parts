@@ -159,12 +159,9 @@ export default {
     createAnalysis() {
       router.push("/parts/analysis/create");
     },
-    update(data) {
-      console.log("dasta ----->", data.analysis_request_id);
-      router.push({
-        path: "/parts/analysis/create",
-        query: { id: data.analysis_request_id }
-      });
+    update() {
+      console.log("dasta ----->");
+      
     },
     summaryResult(data) {
       console.log("inside summary");
@@ -197,6 +194,7 @@ export default {
                   analysis_type:this.partsAnalysisRequestList[i].analysis_type,
                   customer_name:this.partsAnalysisRequestList[i].customer_name,
                   requestStatus:this.partsAnalysisRequestList[i].requestStatus,
+                  createdDate:new Date(this.partsAnalysisRequestList[i].created_at).toDateString().substring(4),
                   completedFlag:this.partsAnalysisRequestList[i].analysis_request_id+','+this.partsAnalysisRequestList[i].requestStatus,
                   })
               }
@@ -234,18 +232,25 @@ export default {
         {
           headerName: 'Analysis Type',
           field: "analysis_type",
-          width: 250
+          width: 150
         },
         {
           headerName: 'Customer Name',
           field: "customer_name",
-          width: 250
+          width: 150
         },
         {
           headerName: 'Status',
           field: "requestStatus",
-          width: 250
-        },{
+          width: 150
+        },
+        {
+          headerName: 'Created Date',
+          field: "createdDate",
+          width: 150,
+          filter: 'date'
+        },
+        {
           headerName: 'Action',
           field: "completedFlag",
           width: 250,

@@ -35,7 +35,7 @@
           role="tabpanel"
           aria-labelledby="nav-summary-tab"
         >
-        <br></br>
+        <br>
         <div class="shadow p-3 mb-5 bg-white rounded">
         <br> 
         <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
@@ -83,9 +83,7 @@
         <div class="float-right" style="paddingBottom:1%" >
           
         </div>
-        <br>
-        <br>
-        <br>
+        
         <table id="example" class="table table-bordered table-hover center">
         <thead >
                 <tr>

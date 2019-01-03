@@ -71,7 +71,7 @@
           role="tabpanel"
           aria-labelledby="nav-summary-tab"
         >
-        <br></br>
+        <br>
           <AnalysisSummary :analysisId="requestID"/>
         </div>
         <!-- current Inventory -->
@@ -81,7 +81,7 @@
           role="tabpanel"
           aria-labelledby="nav-home-tab"
         >
-        <br></br>
+        <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <toggle-button
@@ -129,7 +129,7 @@
           role="tabpanel"
           aria-labelledby="nav-profile-tab"
         >
-        <br></br>
+        <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <button type="button" class="btn btn-success">
@@ -167,7 +167,7 @@
           role="tabpanel"
           aria-labelledby="nav-contact-tab"
         >
-        <br></br>
+        <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <button type="button" class="btn btn-success">
@@ -205,7 +205,7 @@
           role="tabpanel"
           aria-labelledby="nav-netInventory-tab"
         >
-        <br></br>
+        <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <toggle-button
