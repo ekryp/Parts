@@ -4,17 +4,14 @@
     <side-nav menu="analysis"/>
 
     <div class="custom-container" style="padding:3%; paddingTop:7%">
-      
       <div>
-            <div class="myBreadCrumb"  style="margin-bottom:1px">
-              <p>
-              <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}
-              </span>
-              <span  style="font-size: 14px;">{{current}}
-              </span>
-              </p>
-            </div>
-          </div>
+        <div class="myBreadCrumb" style="margin-bottom:1px">
+          <p>
+            <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}</span>
+            <span style="font-size: 14px;">{{current}}</span>
+          </p>
+        </div>
+      </div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
@@ -35,57 +32,55 @@
           role="tabpanel"
           aria-labelledby="nav-summary-tab"
         >
-        <br>
-        <div class="shadow p-3 mb-5 bg-white rounded">
-        <br> 
-        <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
-          <div class="col-lg-4">
-            <div class="form-group">
-              <strong>Analysis Name</strong>
-              <input
-                type="email"
-                v-model="analysisName[0].analysis_name"
-                class="form-control"
-                placeholder="Analysis Name"
-                disabled
-                style="fontSize:1vw; marginTop:2%"
-              >
+          <br>
+          <div class="shadow p-3 mb-5 bg-white rounded">
+            <br>
+            <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <strong>Analysis Name</strong>
+                  <input
+                    type="email"
+                    v-model="analysisName[0].analysis_name"
+                    class="form-control"
+                    placeholder="Analysis Name"
+                    disabled
+                    style="fontSize:1vw; marginTop:2%"
+                  >
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <strong>Customer Name</strong>
+                  <input
+                    type="email"
+                    class="form-control"
+                    v-model="partsAnalysisSummaryReslut[0].customer_name"
+                    placeholder="Customer Name"
+                    disabled
+                    style="fontSize:1vw;marginTop:2%"
+                  >
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <strong>Analysis ID</strong>
+                  <input
+                    type="email"
+                    class="form-control"
+                    v-model="dispId"
+                    placeholder="Analysis Id"
+                    disabled
+                    style="text-align:right; fontSize:1vw; marginTop:2%"
+                  >
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="form-group">
-              <strong>Customer Name</strong>
-              <input
-                type="email"
-                class="form-control"
-                v-model="partsAnalysisSummaryReslut[0].customer_name"
-                placeholder="Customer Name"
-                disabled
-                style="fontSize:1vw;marginTop:2%"
-              >
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="form-group">
-              <strong>Analysis ID</strong>
-              <input
-                type="email"
-                class="form-control"
-                v-model="dispId"
-                placeholder="Analysis Id"
-                disabled
-                style="text-align:right; fontSize:1vw; marginTop:2%"
-              >
-            </div>
-          </div>
-        </div>
 
-        <div class="float-right" style="paddingBottom:1%" >
-          
-        </div>
-        
-        <table id="example" class="table table-bordered table-hover center">
-        <thead >
+            <div class="float-right" style="paddingBottom:1%"></div>
+
+            <table id="example" class="table table-bordered table-hover center">
+              <thead>
                 <tr>
                   <th scope="col">Parts Name</th>
                   <th scope="col">Error Reason</th>
@@ -101,10 +96,9 @@
                   <td>{{item.type}}</td>
                 </tr>
               </tbody>
-        </table>
+            </table>
+          </div>
         </div>
-        </div>
-
       </div>
     </div>
   </div>
@@ -116,17 +110,13 @@ import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import * as data from "./data.json";
 import Vue from "vue";
-import ToggleButton from "vue-js-toggle-button";
 import * as constant from "../constant/constant";
-
-Vue.use(ToggleButton);
 
 export default {
   name: "ErrorSummary",
   components: {
     SideNav,
-    headernav,
-   
+    headernav
   },
   created() {
     this.requestId = this.$route.query.id;
@@ -134,8 +124,7 @@ export default {
     console.log("requestId ---->", this.$route.query.id);
     this.get_analysis_name(this.$route.query.id);
     this.get_request_analysis_summary_result(this.$route.query.id);
-    this.dispId=`AR0000`+this.requestId;
-    
+    this.dispId = `AR0000` + this.requestId;
   },
   data() {
     console.log("SpareDetails");
@@ -146,8 +135,8 @@ export default {
       toggle: "reorder",
       currentInventory: [],
       partsAnalysisSummaryReslut: [],
-      dispId:"",
-      analysisName:[],
+      dispId: "",
+      analysisName: [],
       currentGross: [],
       errorData: [],
       currentib: [],
@@ -164,14 +153,10 @@ export default {
     });
   },
   methods: {
-   
-    
     redirectToAnalysis() {
       router.push("/parts/analysis/dashboard");
-    }
-    ,
-    get_analysis_name(requestId)
-    {
+    },
+    get_analysis_name(requestId) {
       fetch(
         constant.APIURL +
           "api/v1/get_analysis_name?request_id=" +
@@ -192,55 +177,50 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-
     },
-  get_error_records(requestId)
-  {
-    fetch(
-      constant.APIURL +
-        "api/v1/get_error_records?request_id=" +
-        requestId,
-      {
-        method: "GET"
-      }
-    )
-    .then(response => {
-      response.text().then(text => {
-        const payload = text && JSON.parse(text);
-        console.log("Get Error data ---->", payload);
-        this.errorData = payload;
-       
-      });
-    })
-    .catch(handleError => {
-      console.log(" Error Response ------->", handleError);
-    });
-  },
-  get_request_analysis_summary_result(requestId) {
-    fetch(
-      constant.APIURL +
-        "api/v1/get_summary_specific_request?request_id=" +
-        requestId +
-        "&toggle=" +
-        this.toggle,
-      {
-        method: "GET"
-      }
-    )
-      .then(response => {
-        response.text().then(text => {
-          const data = text && JSON.parse(text);
-          console.log("data -- get_dashboard_request_count-->", data);
-          this.partsAnalysisSummaryReslut = data;
-          $(document).ready(function() {
-          $("#example").DataTable();
+    get_error_records(requestId) {
+      fetch(
+        constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const payload = text && JSON.parse(text);
+            console.log("Get Error data ---->", payload);
+            this.errorData = payload;
           });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
         });
-      })
-      .catch(handleError => {
-        console.log(" Error Response ------->", handleError);
-      });
-  }
+    },
+    get_request_analysis_summary_result(requestId) {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_summary_specific_request?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.partsAnalysisSummaryReslut = data;
+            $(document).ready(function() {
+              $("#example").DataTable();
+            });
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    }
   }
 };
 </script>
@@ -265,14 +245,13 @@ a {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
 }
-  
-.in-progress{
+
+.in-progress {
   cursor: pointer;
   font-size: 14px;
 }
-.myBreadCrumb
-{
- margin-top:-2%;
- margin-bottom: 2%;  
+.myBreadCrumb {
+  margin-top: -2%;
+  margin-bottom: 2%;
 }
 </style>

@@ -4,21 +4,20 @@
     <side-nav/>
     <div class="custom-container" style="paddingTop: 2%">
       <div class="row-one">
-        <div class="myBreadCrumb"  style="margin-bottom:1px">
+        <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
-          <span  style="font-size: 14px;">{{current}}</span>
+            <span style="font-size: 14px;">{{current}}</span>
           </p>
         </div>
-        
-
-         <toggle-button style="margin-left:95% "
-                :value="state"
-                :color="{checked: 'green', unchecked: 'green'}"
-                :sync="true"
-                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-                width="80"
-                @change="stateChange()"
-              />
+        <toggle-button
+          style="margin-left:95% "
+          :value="state"
+          :color="{checked: 'green', unchecked: 'green'}"
+          :sync="true"
+          :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+          :width="80"
+          @change="stateChange()"
+        />
         <div class="row text-center">
           <div class="col-lg-2">
             <div class="row">
@@ -140,8 +139,6 @@
                       <td>{{item.depot_name}}</td>
                       <td>{{item.critical_pon_count}}</td>
                     </tr>
-                     
-                    
                   </tbody>
                 </table>
               </div>
@@ -168,9 +165,9 @@
                   <tbody>
                     <tr v-for="item in topCustomer" :key="item.id">
                       <td>{{item.customer_name}}</td>
-                      <td>{{item.critical_pon_count}}</td> 
+                      <td>{{item.critical_pon_count}}</td>
                     </tr>
-                  </tbody> 
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -197,15 +194,15 @@
             <div class="card">
               <div class="card-body">
                 <GmapMap :center="gmap.center" :zoom="3" style="width: 100%; height: 36vh">
-                  <GmapCluster  :icon="icon" :zoomOnClick=true>
-                  <gmap-marker
-                    :key="index"
-                    v-for="(m, index) in markers"
-                    :position="m.position"
-                    @click="routeTable()"
-                    :label="{fontSize:'8px',text:m.label}"
-                    :title="m.title"
-                  ></gmap-marker>
+                  <GmapCluster :icon="icon" :zoomOnClick="true">
+                    <gmap-marker
+                      :key="index"
+                      v-for="(m, index) in markers"
+                      :position="m.position"
+                      @click="routeTable()"
+                      :label="{fontSize:'8px',text:m.label}"
+                      :title="m.title"
+                    ></gmap-marker>
                   </GmapCluster>
                 </GmapMap>
               </div>
@@ -228,10 +225,9 @@ import Vue from "vue";
 import * as VueGoogleMaps from "vue2-google-maps";
 import VueGeolocation from "vue-browser-geolocation";
 import * as constant from "../constant/constant";
-import GmapCluster from 'vue2-google-maps/dist/components/cluster';
+import GmapCluster from "vue2-google-maps/dist/components/cluster";
 
-
-Vue.component('GmapCluster', GmapCluster)
+Vue.component("GmapCluster", GmapCluster);
 Vue.use(VueGeolocation);
 
 Vue.use(VueGoogleMaps, {
@@ -269,8 +265,7 @@ export default {
     console.log("dashboard", this.data);
     return {
       gmap: {
-        center: { lat: 48.1667, lng: -100.1667}
-       
+        center: { lat: 48.1667, lng: -100.1667 }
       },
       data: data,
       dashboardData: [],
@@ -280,9 +275,8 @@ export default {
       toggle: "reorder",
       state: true,
       markers: [],
-       icon :{
-              url: require('../../assets/mapicon.png'), // url
-                
+      icon: {
+        url: require("../../assets/mapicon.png") // url
       },
       current: "Dashboard"
     };
@@ -304,9 +298,14 @@ export default {
     // This Method is to get data for Main Dash Borad Details
 
     getMainDashboardCount() {
-      fetch(constant.APIURL + "api/v1/get_main_dashboard_count?toggle="+this.toggle, {
-        method: "GET"
-      })
+      fetch(
+        constant.APIURL +
+          "api/v1/get_main_dashboard_count?toggle=" +
+          this.toggle,
+        {
+          method: "GET"
+        }
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -322,7 +321,7 @@ export default {
     // This Method is to get data for TOP PONS table
 
     getTopPons() {
-      fetch(constant.APIURL + "api/v1/get_top_pons?toggle="+this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_top_pons?toggle=" + this.toggle, {
         method: "GET"
       })
         .then(response => {
@@ -340,7 +339,7 @@ export default {
     // This Method is to get data for TOP DEPOTS table
 
     getTopDepots() {
-      fetch(constant.APIURL + "api/v1/get_top_depots?toggle="+this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_top_depots?toggle=" + this.toggle, {
         method: "GET"
       })
         .then(response => {
@@ -358,9 +357,12 @@ export default {
     // This Method is to get data for TOP CUSTOMER table
 
     getTopCustomer() {
-      fetch(constant.APIURL + "api/v1/get_top_customers?toggle="+this.toggle, {
-        method: "GET"
-      })
+      fetch(
+        constant.APIURL + "api/v1/get_top_customers?toggle=" + this.toggle,
+        {
+          method: "GET"
+        }
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -373,7 +375,7 @@ export default {
         });
     },
     getPieChart() {
-      fetch(constant.APIURL + "api/v1/get_pie_chart?toggle="+this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_pie_chart?toggle=" + this.toggle, {
         method: "GET"
       })
         .then(response => {
@@ -389,40 +391,43 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    getMapLocations(markers)
-    {
-      
-      fetch(constant.APIURL+"api/v1/get_lat_lon?toggle="+this.toggle,{
-        method:"GET"
-      }).then(response=>{response.text().then(text=>{
-        const data =text && JSON.parse(text);
-        let promise = new Promise(function(resolve, reject) {
-          var i;
-          
-          for(i=0;i<data.length;i++){
-          var mapData={position:{lat:parseInt(data[i].lat),lng:parseInt(data[i].long)},label:String(data[i].critical_pon_count),title:String(data[i].depot_name)};
-          console.log("Map datas =>", mapData);
-          markers.push(mapData);
-          }
-          return mapData;
+    getMapLocations(markers) {
+      fetch(constant.APIURL + "api/v1/get_lat_lon?toggle=" + this.toggle, {
+        method: "GET"
+      }).then(response => {
+        response.text().then(text => {
+          const data = text && JSON.parse(text);
+          let promise = new Promise(function(resolve, reject) {
+            var i;
+
+            for (i = 0; i < data.length; i++) {
+              var mapData = {
+                position: {
+                  lat: parseInt(data[i].lat),
+                  lng: parseInt(data[i].long)
+                },
+                label: String(data[i].critical_pon_count),
+                title: String(data[i].depot_name)
+              };
+              console.log("Map datas =>", mapData);
+              markers.push(mapData);
+            }
+            return mapData;
           });
           promise.then(
-          mapData => alert("hi this is ",mapData), // shows "done!" after 1 second
-          error => alert(error) // doesn't run
-);
+            mapData => alert("hi this is ", mapData), // shows "done!" after 1 second
+            error => alert(error) // doesn't run
+          );
 
-        console.log("final data",this.markers);
-        
-      })})
+          console.log("final data", this.markers);
+        });
+      });
     },
-    mapFunction()
-    {
-
-     map.setZoom(9);
+    mapFunction() {
+      map.setZoom(9);
     },
 
-    stateChange()
-    {
+    stateChange() {
       this.state = !this.state;
       if (this.state) {
         console.log(this.toggle);
@@ -432,7 +437,7 @@ export default {
         this.getTopDepots();
         this.getTopCustomer();
         this.getTopPons();
-        this.markers=[];
+        this.markers = [];
         this.getMapLocations(this.markers);
       } else {
         this.toggle = "total_stock";
@@ -441,10 +446,9 @@ export default {
         this.getTopDepots();
         this.getTopCustomer();
         this.getTopPons();
-        this.markers=[];
+        this.markers = [];
         this.getMapLocations(this.markers);
       }
-      
     }
   }
 };

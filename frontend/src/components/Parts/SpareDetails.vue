@@ -4,17 +4,14 @@
     <side-nav menu="analysis"/>
 
     <div class="custom-container" style="padding:3%; paddingTop:7%">
-      
       <div>
-            <div class="myBreadCrumb"  style="margin-bottom:1px">
-              <p>
-              <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}
-              </span>
-              <span  style="font-size: 14px;">{{current}}
-              </span>
-              </p>
-            </div>
-          </div>
+        <div class="myBreadCrumb" style="margin-bottom:1px">
+          <p>
+            <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}</span>
+            <span style="font-size: 14px;">{{current}}</span>
+          </p>
+        </div>
+      </div>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
@@ -71,7 +68,7 @@
           role="tabpanel"
           aria-labelledby="nav-summary-tab"
         >
-        <br>
+          <br>
           <AnalysisSummary :analysisId="requestID"/>
         </div>
         <!-- current Inventory -->
@@ -81,7 +78,7 @@
           role="tabpanel"
           aria-labelledby="nav-home-tab"
         >
-        <br>
+          <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <toggle-button
@@ -89,7 +86,7 @@
                 :color="{checked: 'green', unchecked: 'green'}"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-                width="80"
+                :width="80"
                 @change="stateChange()"
               />
               <button type="button" class="btn btn-success">
@@ -121,7 +118,6 @@
               </tbody>
             </table>
           </div>
-
         </div>
         <div
           class="tab-pane fade"
@@ -129,7 +125,7 @@
           role="tabpanel"
           aria-labelledby="nav-profile-tab"
         >
-        <br>
+          <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <button type="button" class="btn btn-success">
@@ -167,7 +163,7 @@
           role="tabpanel"
           aria-labelledby="nav-contact-tab"
         >
-        <br>
+          <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <button type="button" class="btn btn-success">
@@ -205,7 +201,7 @@
           role="tabpanel"
           aria-labelledby="nav-netInventory-tab"
         >
-        <br>
+          <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <toggle-button
@@ -213,7 +209,7 @@
                 :color="{checked: 'green', unchecked: 'green'}"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-                width="80"
+                :width="80"
                 @change="stateChange()"
               />
               <button type="button" class="btn btn-success">
@@ -257,10 +253,7 @@ import headernav from "@/components/header/header";
 import AnalysisSummary from "@/components/Parts/AnalysisSummary";
 import * as data from "./data.json";
 import Vue from "vue";
-import ToggleButton from "vue-js-toggle-button";
 import * as constant from "../constant/constant";
-
-Vue.use(ToggleButton);
 
 export default {
   name: "SpareDetails",
@@ -443,14 +436,13 @@ a {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
 }
-  
-.in-progress{
+
+.in-progress {
   cursor: pointer;
   font-size: 14px;
 }
-.myBreadCrumb
-{
- margin-top:-2%;
- margin-bottom: 2%;  
+.myBreadCrumb {
+  margin-top: -2%;
+  margin-bottom: 2%;
 }
 </style>

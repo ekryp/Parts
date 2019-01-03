@@ -10,14 +10,14 @@
           </div>
         </li>
         <hr>
-        <li class="nav-custom" style="cursor:pointer">
+        <!-- <li class="nav-custom" style="cursor:pointer">
           <div class="text-center" @click="reference()">
             <i class="fas fa-swatchbook" style="fontSize:20px"></i>
             <br>
             <p class="upload-text">Reference</p>
           </div>
         </li>
-        <hr>
+        <hr>-->
         <li class="nav-custom" style="cursor:pointer">
           <div class="text-center" @click="parts_analysis()">
             <i class="fas fa-list-ul" style="fontSize:20px"></i>

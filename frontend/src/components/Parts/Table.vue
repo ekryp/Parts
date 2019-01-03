@@ -7,6 +7,16 @@
         <div class="col-lg-12">
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
+              <toggle-button
+                :value="state"
+                :color="{checked: 'green', unchecked: 'green'}"
+                :sync="true"
+                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                :width="80"
+                @change="stateChange()"
+              />
+            </div>
+            <div class="float-left">
               <button type="button" class="btn btn-success">
                 <download-excel :data="top_extended" type="csv">
                   <i class="fas fa-file-excel"></i>
@@ -73,10 +83,22 @@ export default {
       parts: null,
       depots: null,
       partName: "",
-      customerName: ""
+      customerName: "",
+      toggle: "reorder",
+      state: true
     };
   },
   methods: {
+    stateChange() {
+      this.state = !this.state;
+      if (this.state) {
+        this.toggle = "reorder";
+        this.getTopExtenededData();
+      } else {
+        this.toggle = "total_stock";
+        this.getTopExtenededData();
+      }
+    },
     renderMidTable(data) {
       console.log("data" + data);
       console.log("custnamae" + this.customerName);
@@ -137,7 +159,7 @@ export default {
       this.lastTable = "false";
     },
     getTopExtenededData() {
-      fetch(constant.APIURL + "api/v1/get_top_extended", {
+      fetch(constant.APIURL + "api/v1/get_top_extended?toggle=" + this.toggle, {
         method: "GET"
       })
         .then(response => {

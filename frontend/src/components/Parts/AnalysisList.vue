@@ -80,22 +80,21 @@
       <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:7%">
         <div style="marginTop:0%">
           <div v-if="partsAnalysisRequestList.length !== 0">
-          <ag-grid-vue style="width: 100%; height: 500px;" class="ag-theme-balham"
-                         
-                         :columnDefs="columnDefs"
-                         :rowData="rowData"
-                         :gridOptions="gridOptions"
-                         
-                         :enableColResize="true"
-                         :enableSorting="true"
-                         :enableFilter="true"
-                         :groupHeaders="true"
-                         :suppressRowClickSelection="true"
-                         rowSelection="multiple"
-                         pagination="true"
-                         :paginationPageSize=15
-                        >
-            </ag-grid-vue>
+            <ag-grid-vue
+              style="width: 100%; height: 500px;"
+              class="ag-theme-balham"
+              :columnDefs="columnDefs"
+              :rowData="rowData"
+              :gridOptions="gridOptions"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              :suppressRowClickSelection="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="15"
+            ></ag-grid-vue>
           </div>
         </div>
       </div>
@@ -112,7 +111,7 @@ import { mapState, mapActions, mapGetters } from "vuex";
 import Vue from "vue";
 import JsonExcel from "vue-json-excel";
 import * as constant from "../constant/constant";
-import {AgGridVue} from "ag-grid-vue";
+import { AgGridVue } from "ag-grid-vue";
 
 Vue.component("downloadExcel", JsonExcel);
 
@@ -131,8 +130,6 @@ export default {
     clearInterval(window.intervalObj);
     this.get_dashboard_request_count();
     this.createColumnDefs();
-    
-
   },
   // Vuex Configure Its not updating the Value once State Changed
   computed: {},
@@ -152,7 +149,16 @@ export default {
       current: "Analysis",
       columnDefs: null,
       rowData: [],
-      gridOptions: {rowStyle:{background: 'white',color:'#72879d',fontSize:'13.7px',fontFamily: 'Helvetica Neue'},columnStyle:{background: 'red',color:'#72879d',fontSize:'11.05px'}},
+      gridOptions: {
+        rowStyle: {
+          color: "#72879d"
+          // fontSize: "13.7px",
+        },
+        columnStyle: {
+          color: "#72879d"
+          // fontSize: "11.05px"
+        }
+      }
     };
   },
   methods: {
@@ -161,7 +167,6 @@ export default {
     },
     update() {
       console.log("dasta ----->");
-      
     },
     summaryResult(data) {
       console.log("inside summary");
@@ -186,20 +191,25 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
-            for(let i=0;i<this.partsAnalysisRequestList.length;i++)
-              {
-                //console.log(this.partsAnalysisRequestList[i].analysis_name);
-                this.rowData.push({
-                  analysis_name:this.partsAnalysisRequestList[i].analysis_name,
-                  analysis_type:this.partsAnalysisRequestList[i].analysis_type,
-                  customer_name:this.partsAnalysisRequestList[i].customer_name,
-                  requestStatus:this.partsAnalysisRequestList[i].requestStatus,
-                  createdDate:new Date(this.partsAnalysisRequestList[i].created_at).toDateString().substring(4),
-                  completedFlag:this.partsAnalysisRequestList[i].analysis_request_id+','+this.partsAnalysisRequestList[i].requestStatus,
-                  })
-              }
+            for (let i = 0; i < this.partsAnalysisRequestList.length; i++) {
+              //console.log(this.partsAnalysisRequestList[i].analysis_name);
+              this.rowData.push({
+                analysis_name: this.partsAnalysisRequestList[i].analysis_name,
+                analysis_type: this.partsAnalysisRequestList[i].analysis_type,
+                customer_name: this.partsAnalysisRequestList[i].customer_name,
+                requestStatus: this.partsAnalysisRequestList[i].requestStatus,
+                createdDate: new Date(
+                  this.partsAnalysisRequestList[i].created_at
+                )
+                  .toDateString()
+                  .substring(4),
+                completedFlag:
+                  this.partsAnalysisRequestList[i].analysis_request_id +
+                  "," +
+                  this.partsAnalysisRequestList[i].requestStatus
+              });
+            }
             this.exportCSV(data);
-            
           });
         })
         .catch(handleError => {
@@ -221,64 +231,70 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    createColumnDefs()
-    {
+    createColumnDefs() {
       this.columnDefs = [
         {
-            headerName: 'Analysis Name',
-            field: "analysis_name",
-            width: 250
+          headerName: "Analysis Name",
+          field: "analysis_name",
+          width: 250
         },
         {
-          headerName: 'Analysis Type',
+          headerName: "Analysis Type",
           field: "analysis_type",
           width: 150
         },
         {
-          headerName: 'Customer Name',
+          headerName: "Customer Name",
           field: "customer_name",
           width: 150
         },
         {
-          headerName: 'Status',
+          headerName: "Status",
           field: "requestStatus",
           width: 150
         },
         {
-          headerName: 'Created Date',
+          headerName: "Created Date",
           field: "createdDate",
           width: 150,
-          filter: 'date'
+          filter: "date"
         },
         {
-          headerName: 'Action',
+          headerName: "Action",
           field: "completedFlag",
           width: 250,
-          cellRenderer: actionCellRenderer,
+          cellRenderer: actionCellRenderer
         }
-    ];
+      ];
     }
   }
-}
+};
 
 function actionCellRenderer(params) {
   let value = params.value;
-  let actionParams=value.split(",");
+  let actionParams = value.split(",");
   let skills = [];
-  let analysisId=55; 
-    skills.push('<a  style=" background: lightgray;" href="/parts/analysis/create?id='+actionParams[0]+'"><i class="far fa-eye"></i></a>');
-    if(actionParams[1] === 'Completed')
-      {
-      skills.push('<a style=" background: lightgray;" href="/parts/analysis?id='+actionParams[0]+'"><i  class="fas fa-poll"></i></a>');
-      }
-      else if(actionParams[1] === 'Failed')
-      {
-      skills.push('<a style=" background: lightgray;" href="/parts/analysis/error?id='+actionParams[0]+'"><i  class="fas fa-poll"></i></a>');
-      }
-  return skills.join(' ');
-  
+  let analysisId = 55;
+  skills.push(
+    '<a  style=" background: lightgray;" href="/parts/analysis/create?id=' +
+      actionParams[0] +
+      '"><i class="far fa-eye"></i></a>'
+  );
+  if (actionParams[1] === "Completed") {
+    skills.push(
+      '<a style=" background: lightgray;" href="/parts/analysis?id=' +
+        actionParams[0] +
+        '"><i  class="fas fa-poll"></i></a>'
+    );
+  } else if (actionParams[1] === "Failed") {
+    skills.push(
+      '<a style=" background: lightgray;" href="/parts/analysis/error?id=' +
+        actionParams[0] +
+        '"><i  class="fas fa-poll"></i></a>'
+    );
+  }
+  return skills.join(" ");
 }
-
 </script>
 <style>
 .text-top {

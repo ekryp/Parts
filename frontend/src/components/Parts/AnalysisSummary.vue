@@ -1,119 +1,115 @@
 <template>
-
-    
-      <div class="shadow p-3 mb-5 bg-white rounded">
-        <br> 
-        <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
-          <div class="col-lg-4">
-            <div class="form-group">
-              <strong>Analysis Name</strong>
-              <input
-                type="email"
-                v-model="analysisName[0].analysis_name"
-                class="form-control"
-                placeholder="Analysis Name"
-                disabled
-                style="fontSize:1vw; marginTop:2%"
-              >
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="form-group">
-              <strong>Customer Name</strong>
-              <input
-                type="email"
-                class="form-control"
-                v-model="partsAnalysisSummaryReslut[0].customer_name"
-                placeholder="Customer Name"
-                disabled
-                style="fontSize:1vw;marginTop:2%"
-              >
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="form-group">
-              <strong>Analysis ID</strong>
-              <input
-                type="email"
-                class="form-control"
-                v-model="dispId"
-                placeholder="Analysis Id"
-                disabled
-                style="text-align:right; fontSize:1vw; marginTop:2%"
-              >
-            </div>
-          </div>
+  <div class="shadow p-3 mb-5 bg-white rounded">
+    <br>
+    <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
+      <div class="col-lg-4">
+        <div class="form-group">
+          <strong>Analysis Name</strong>
+          <input
+            type="email"
+            v-model="analysisName[0].analysis_name"
+            class="form-control"
+            placeholder="Analysis Name"
+            disabled
+            style="fontSize:1vw; marginTop:2%"
+          >
         </div>
-
-        <div class="float-right" style="paddingBottom:1%" >
-          <toggle-button
-            :value="state"
-            :color="{checked: 'green', unchecked: 'green'}"
-            :sync="true"
-            cssColors:true
-            :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-            width="80"
-            @change="stateChange()"
-          />
-          <button type="button" class="btn btn-success">
-            <download-excel :data="partsAnalysisSummaryReslut" type="csv">
-              <i class="fas fa-file-excel"></i>
-              &nbsp;
-              Export
-            </download-excel>
-          </button>
-        </div>
-        <br>
-        <br>
-        <br>
-        <table id="example" class="table table-bordered table-hover center">
-          <thead>
-            <tr style="fontSize:1vw">
-              <th rowspan="2" scope="col">Part Name</th>
-              <th rowspan="2" scope="col">Depot Name</th>
-              <th rowspan="2" scope="col">Material</th>
-              <th rowspan="2" scope="col">Install Base Quantity</th>
-              <th rowspan="2" scope="col">Standard Cost($)</th>
-              <th colspan="2" scope="col">Gross Requirement</th>
-              <th colspan="2" scope="col">Net Requirement</th>
-              <th rowspan="2" scope="col">Has High Spare?</th>
-            </tr>
-            <tr style="fontSize:1vw">
-              <!-- <th scope="col">Customer Name</th> -->
-              <th scope="col">Quantity</th>
-              <th scope="col"> Ext Standard Cost($)</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Standard Cost($)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="item in partsAnalysisSummaryReslut"
-              :key="item.analysis_request_id"
-              style="fontSize:1vw; cursor:pointer"
-            >
-              <!-- <td class="left">{{item.customer_name}}</td> -->
-              <td>{{item.part_name}}</td>
-              <td>{{item.depot_name}}</td>
-              <td>{{item.material_number}}</td>
-              <td>{{item.ib_quantity}}</td>
-              <td class="right">{{item.standard_cost | currency('')}}</td>
-              <td>{{item.gross_qty}}</td>
-              <td class="right">{{item.std_gross_cost | currency('')}}</td>
-              <td>{{item.net_qty}}</td>
-              <td class="right">{{item.net_std_cost | currency('')}}</td>
-              <td v-if="item.high_spare != 0">
-                <input type="checkbox" name="vehicle3" value="{item.high_spare}" checked>
-              </td>
-              <td v-else>
-                <input type="checkbox" name="vehicle3" value="{item.high_spare}">
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
-    
- 
+      <div class="col-lg-4">
+        <div class="form-group">
+          <strong>Customer Name</strong>
+          <input
+            type="email"
+            class="form-control"
+            v-model="partsAnalysisSummaryReslut[0].customer_name"
+            placeholder="Customer Name"
+            disabled
+            style="fontSize:1vw;marginTop:2%"
+          >
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <strong>Analysis ID</strong>
+          <input
+            type="email"
+            class="form-control"
+            v-model="dispId"
+            placeholder="Analysis Id"
+            disabled
+            style="text-align:right; fontSize:1vw; marginTop:2%"
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="float-right" style="paddingBottom:1%">
+      <toggle-button
+        :value="state"
+        :color="{checked: 'green', unchecked: 'green'}"
+        :sync="true"
+        cssColors:true
+        :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+        :width="80"
+        @change="stateChange()"
+      />
+      <button type="button" class="btn btn-success">
+        <download-excel :data="partsAnalysisSummaryReslut" type="csv">
+          <i class="fas fa-file-excel"></i>
+          &nbsp;
+          Export
+        </download-excel>
+      </button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <table id="example" class="table table-bordered table-hover center">
+      <thead>
+        <tr style="fontSize:1vw">
+          <th rowspan="2" scope="col">Part Name</th>
+          <th rowspan="2" scope="col">Depot Name</th>
+          <th rowspan="2" scope="col">Material</th>
+          <th rowspan="2" scope="col">Install Base Quantity</th>
+          <th rowspan="2" scope="col">Standard Cost($)</th>
+          <th colspan="2" scope="col">Gross Requirement</th>
+          <th colspan="2" scope="col">Net Requirement</th>
+          <th rowspan="2" scope="col">Has High Spare?</th>
+        </tr>
+        <tr style="fontSize:1vw">
+          <!-- <th scope="col">Customer Name</th> -->
+          <th scope="col">Quantity</th>
+          <th scope="col">Ext Standard Cost($)</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Standard Cost($)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="item in partsAnalysisSummaryReslut"
+          :key="item.analysis_request_id"
+          style="fontSize:1vw; cursor:pointer"
+        >
+          <!-- <td class="left">{{item.customer_name}}</td> -->
+          <td>{{item.part_name}}</td>
+          <td>{{item.depot_name}}</td>
+          <td>{{item.material_number}}</td>
+          <td>{{item.ib_quantity}}</td>
+          <td class="right">{{item.standard_cost | currency('')}}</td>
+          <td>{{item.gross_qty}}</td>
+          <td class="right">{{item.std_gross_cost | currency('')}}</td>
+          <td>{{item.net_qty}}</td>
+          <td class="right">{{item.net_std_cost | currency('')}}</td>
+          <td v-if="item.high_spare != 0">
+            <input type="checkbox" name="vehicle3" value="{item.high_spare}" checked>
+          </td>
+          <td v-else>
+            <input type="checkbox" name="vehicle3" value="{item.high_spare}">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -124,7 +120,7 @@ import { mapActions, mapState } from "vuex";
 import Vue2Filters from "vue2-filters";
 import Vue from "vue";
 import * as constant from "../constant/constant";
-import {AgGridVue} from "ag-grid-vue";
+import { AgGridVue } from "ag-grid-vue";
 
 Vue.use(Vue2Filters);
 export default {
@@ -137,7 +133,7 @@ export default {
   created() {
     console.log("props ----->", this.$props);
     this.requestId = this.$props.analysisId;
-    this.dispId=`AR0000`+this.requestId;
+    this.dispId = `AR0000` + this.requestId;
     this.get_request_analysis_summary_result(this.requestId);
     this.get_analysis_name(this.requestId);
   },
@@ -147,10 +143,10 @@ export default {
     return {
       requestId: "",
       partsAnalysisSummaryReslut: [],
-      dispId:"",
-      analysisName:[],
+      dispId: "",
+      analysisName: [],
       toggle: "reorder",
-      state: true, 
+      state: true,
       columnDefs: null,
       rowData: null
     };
@@ -172,8 +168,7 @@ export default {
       }
     },
     spareDetails() {},
-    get_analysis_name(requestId)
-    {
+    get_analysis_name(requestId) {
       fetch(
         constant.APIURL +
           "api/v1/get_analysis_name?request_id=" +
@@ -194,9 +189,7 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-
-    }
-    ,
+    },
     get_request_analysis_summary_result(requestId) {
       fetch(
         constant.APIURL +
@@ -214,7 +207,7 @@ export default {
             console.log("data -- get_dashboard_request_count-->", data);
             this.partsAnalysisSummaryReslut = data;
             $(document).ready(function() {
-            $("#example").DataTable();
+              $("#example").DataTable();
             });
           });
         })

@@ -1164,14 +1164,13 @@
             </ul>
           </div>
           <!--  -->
-          
-
           <!-- Tracker Ends -->
           <div class="float-right" style="marginBottom:5%">
-            
-          
             <div class="row">
-              <div class="col-lg-4" v-if="requestId === '' && submitFlag !== '1'">
+              <div
+                class="col-lg-4"
+                v-if="requestId === '' && submitFlag === '1' || uplaodFlag !== '1'"
+              >
                 <button
                   type="button"
                   id="cancelButton"
@@ -1179,7 +1178,7 @@
                   @click="cancel()"
                 >Back</button>
               </div>
-              <div class="col-lg-4" v-if="requestId === '' && submitFlag === '1'">
+              <div class="col-lg-4" v-if="requestId === '' && uplaodFlag === '1'">
                 <button
                   type="button"
                   id="cancelButton"
@@ -1241,21 +1240,16 @@
                   type="button"
                   class="btn btn-success"
                   @click="redirectToSummary()"
-                  
                 >View Details</button>
               </div>
             </div>
           </div>
         </div>
       </form>
-      
       <!-- </div> -->
     </div>
   </div>
 </template>
-
-
-
 <script>
 import Vue from "vue";
 import router from "../../router/";
@@ -1289,21 +1283,7 @@ export default {
     Datepicker,
     headernav
   },
-  computed: {
-    // partsAnalysis() {
-    //   console.log("partsAnalysis--computed");
-    //   return this.$store.state.partsAnalysis.spare_part_analysis;
-    // },
-    // partsAnalysisData() {
-    //   return this.$store.state.partsAnalysis.get_request_analysis_by_Id;
-    // },
-    // status() {
-    //   return this.$store.state.partsAnalysis.status;
-    // },
-    // requestAnalysisSuccess(value) {
-    //   console.log("success");
-    // }
-  },
+  computed: {},
   data() {
     console.log("Parts-Analysis", this.$store.state);
     return {
@@ -1326,16 +1306,11 @@ export default {
       show: false,
       label: "Loading...",
       submitFlag: null,
-      uplaodFlag:null,
-      errorData:[]
+      uplaodFlag: null,
+      errorData: []
     };
   },
   methods: {
-    // ...mapActions("partsAnalysis", [
-    //   "get_spare_part_analysis",
-    //   "post_spare_part_analysis",
-    //   "get_request_analysis_by_Id"
-    // ]),
     selectedCustomerName(value) {
       this.customerNames = value;
     },
@@ -1388,7 +1363,7 @@ export default {
     },
 
     formSubmit() {
-      this.uplaodFlag="1";
+      this.uplaodFlag = "1";
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -1423,7 +1398,6 @@ export default {
 
     // API calls
 
-     
     get_request_analysis_by_Id(requestId) {
       fetch(
         constant.APIURL +
@@ -1450,13 +1424,11 @@ export default {
               stepId: payload[0].step_id
             };
             this.partsAnalysisData = object;
-            if(this.partsAnalysisData.requestStatus === 'Processing')
-            {
+            if (this.partsAnalysisData.requestStatus === "Processing") {
               $(document).ready(function() {
                 $("#loader-2").show();
               });
-            }else 
-            {
+            } else {
               this.get_error_records();
               $(document).ready(function() {
                 $("#loader-2").hide();
@@ -1513,9 +1485,9 @@ export default {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
             this.show = false;
-            this.uplaodFlag="0";
+            this.uplaodFlag = "0";
             this.submitFlag = "1";
-            
+
             console.log(this.submitFlag);
           });
         })
