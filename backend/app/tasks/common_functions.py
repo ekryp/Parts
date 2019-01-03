@@ -256,11 +256,11 @@ def validate_depot(pon, analysis_date, analysis_id):
 def fetch_db(replenish_time):
     print('fetching data from db...')
     connection = Configuration.ECLIPSE_DATA_DB_URI
-    get_misnomer_sql = "SELECT mp.misnomer_pon_name, pt.part_name FROM infinera.`Misnomer PON Conversion` mp, infinera.`parts` pt where mp.correct_part_id = pt.part_id ;"
+    get_misnomer_sql = "SELECT mp.misnomer_pon_name, pt.part_name FROM `Misnomer PON Conversion` mp, `parts` pt where mp.correct_part_id = pt.part_id ;"
     get_standard_cost = "select pt.part_name,pt.material_number,pid.standard_cost from parts pt " \
                         "left join `part cost ID`pid on pt.part_id =pid.part_id where part_name != 'null'"
 
-    get_node = "SELECT * FROM infinera.node;"
+    get_node = "SELECT * FROM node;"
 
     # to_sql_customer_dna_record('customer_dna_record', input_db)
 
@@ -269,21 +269,21 @@ def fetch_db(replenish_time):
     standard_cost = read_data(get_standard_cost, connection)
     node = read_data(get_node, connection)
 
-    spared_sql = "SELECT part_name FROM infinera.parts where spared_attribute = 1;"
+    spared_sql = "SELECT part_name FROM parts where spared_attribute = 1;"
     spared_pons = read_data(spared_sql, connection)
 
-    high_spare_sql = "SELECT pt.part_name, given_spare_part_id, high_spare_part_id FROM infinera.high_spare, infinera.parts pt where given_spare_part_id = pt.part_id;"
+    high_spare_sql = "SELECT pt.part_name, given_spare_part_id, high_spare_part_id FROM high_spare, parts pt where given_spare_part_id = pt.part_id;"
     highspares = read_data(high_spare_sql, connection)
 
-    get_ratio_to_pon_sql = "SELECT * FROM infinera.failure_information where failure_name = '{0}'".format(replenish_time)
+    get_ratio_to_pon_sql = "SELECT * FROM failure_information where failure_name = '{0}'".format(replenish_time)
     print(get_ratio_to_pon_sql)
 
     get_ratio_to_pon = read_data(get_ratio_to_pon_sql, connection)
 
-    get_parts_sql = 'SELECT * FROM infinera.parts;'
+    get_parts_sql = 'SELECT * FROM parts;'
     parts = read_data(get_parts_sql, connection)
 
-    get_parts_cost_sql = "SELECT * FROM infinera.`part cost ID` pid, infinera.parts pt where  pt.material_number = pid.material_number;"
+    get_parts_cost_sql = "SELECT * FROM `part cost ID` pid, parts pt where  pt.material_number = pid.material_number;"
     parts_cost = read_data(get_parts_cost_sql, connection)
 
     get_high_spares = "select pt1.part_name, pt2.part_name as high_spare from high_spare t " \
@@ -291,7 +291,7 @@ def fetch_db(replenish_time):
                       "inner join parts pt2 on pt2.part_id = t.high_spare_part_id;"
     high_spares = read_data(get_high_spares, connection)
 
-    get_depot_sql = "SELECT * FROM infinera.depot;"
+    get_depot_sql = "SELECT * FROM depot;"
     depot = read_data(get_depot_sql, connection)
 
     return misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts, parts_cost, high_spares, depot
