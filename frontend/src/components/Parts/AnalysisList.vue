@@ -229,22 +229,22 @@ export default {
         {
             headerName: 'Analysis Name',
             field: "analysis_name",
-            width: 350
+            width: 250
         },
         {
           headerName: 'Analysis Type',
           field: "analysis_type",
-          width: 350
+          width: 250
         },
         {
           headerName: 'Customer Name',
           field: "customer_name",
-          width: 350
+          width: 250
         },
         {
           headerName: 'Status',
           field: "requestStatus",
-          width: 350
+          width: 250
         },{
           headerName: 'Action',
           field: "completedFlag",
