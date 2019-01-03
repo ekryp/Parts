@@ -1164,30 +1164,10 @@
             </ul>
           </div>
           <!--  -->
-          <div  class="row" v-if="partsAnalysisData .requestStatus === 'Failed' ">
-          <label class="form-check-label" for="exampleCheck1" style="marginBottom:2%">Error Table :</label>
-      <table id="example" class="table table-bordered" > 
-              <thead >
-                <tr>
-                  <th scope="col">Parts Name</th>
-                  <th scope="col">Error Reason</th>
-                  <th scope="col">Node Name</th>
-                  <th scope="col">Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in errorData" :key="item.id">
-                  <td>{{item.PON}}</td>
-                  <td>{{item.error_reason}}</td>
-                  <td>{{item.node_name}}</td>
-                  <td>{{item.type}}</td>
-                </tr>
-              </tbody>
-            </table>
-            </div>
+          
 
           <!-- Tracker Ends -->
-          <div class="float-right" style="marginTop:5%;marginBottom:5%">
+          <div class="float-right" style="marginBottom:5%">
             
           
             <div class="row">
@@ -1260,9 +1240,9 @@
                   v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
                   type="button"
                   class="btn btn-success"
-                  @click="formSubmit()"
-                  disabled
-                >Completed</button>
+                  @click="redirectToSummary()"
+                  
+                >View Details</button>
               </div>
             </div>
           </div>
@@ -1443,30 +1423,7 @@ export default {
 
     // API calls
 
-      get_error_records()
-      {
-        fetch(
-          constant.APIURL +
-            "api/v1/get_error_records?request_id=" +
-            this.requestId,
-          {
-            method: "GET"
-          }
-        )
-        .then(response => {
-          response.text().then(text => {
-            const payload = text && JSON.parse(text);
-            console.log("Get Error data ---->", payload);
-            this.errorData = payload;
-           
-          });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
-      },
-
-
+     
     get_request_analysis_by_Id(requestId) {
       fetch(
         constant.APIURL +
@@ -1525,6 +1482,13 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+    },
+    redirectToSummary() {
+      console.log("inside summary");
+      router.push({
+        path: "/parts/analysis",
+        query: { id: this.requestId }
+      });
     },
     post_spare_part_analysis(data) {
       let formData = new FormData();

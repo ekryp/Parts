@@ -266,6 +266,10 @@ function actionCellRenderer(params) {
       {
       skills.push('<a style=" background: lightgray;" href="/parts/analysis?id='+actionParams[0]+'"><i  class="fas fa-poll"></i></a>');
       }
+      else if(actionParams[1] === 'Failed')
+      {
+      skills.push('<a style=" background: lightgray;" href="/parts/analysis/error?id='+actionParams[0]+'"><i  class="fas fa-poll"></i></a>');
+      }
   return skills.join(' ');
   
 }
