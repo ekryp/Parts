@@ -10,6 +10,7 @@ import PartsAnalysisSummary from '@/components/Parts/AnalysisSummary'
 import SpareDetails from '@/components/Parts/SpareDetails'
 import DynamicTable from '@/components/Parts/Table'
 import Reference from '@/components/Reference/Reference'
+import ErrorSummary from '@/components/Parts/ErrorSummary'
 
 Vue.use(Router)
 
@@ -60,6 +61,11 @@ export default new Router({
       path: '/reference',
       name: 'Reference',
       component: Reference
+    },
+    {
+      path: '/parts/analysis/error',
+      name: 'ErrorSummary',
+      component: ErrorSummary
     }
   ]
 })
