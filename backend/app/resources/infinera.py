@@ -987,7 +987,7 @@ class PostSparePartAnalysis(Resource):
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time])
 
-            return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
+            return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
 
         except FileFormatIssue as e:
             return jsonify(msg=e.msg, http_status_code=400)
