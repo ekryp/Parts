@@ -15,6 +15,9 @@ from sqlalchemy import create_engine
 engine = create_engine(Configuration.INFINERA_DB_URL)
 connection = Configuration.INFINERA_DB_URL
 
+class CustomException(Exception):
+    def __init__(self, msg):
+        self.msg = msg
 
 def make_celery(app):
     celery = Celery(app.import_name,
@@ -128,6 +131,8 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     # all_valid conditions
     # PON with sparable, has_std_cost,has_node_depot and valid pon_name & depot name
     all_valid = valid_pon[((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
+    if all_valid.empty:
+        raise CustomException("no valid record to process - Aborting the analysis")
 
     invalid_pon = valid_pon[~((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
 
@@ -536,10 +541,10 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, repleni
 @celery.task
 def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time):
     try:
-        def set_request_status(status, analysis_id):
+        def set_request_status(status, analysis_id,msg):
             engine = create_engine(Configuration.INFINERA_DB_URL)
-            query = "update analysis_request set requestStatus='{0}' " \
-                "where analysis_request_id = {1}".format(status, analysis_id)
+            query = "update analysis_request set requestStatus='{0}',failure_reason='{2}' " \
+                "where analysis_request_id = {1}".format(status, analysis_id,msg)
             print(query)
             engine.execute(query)
 
@@ -549,13 +554,15 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
                            user_email_id, analysis_id, customer_name)
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
-        set_request_status('Completed', analysis_id)
+        set_request_status('Completed', analysis_id,'Success')
+    except CustomException as e:
+        set_request_status('Failed', analysis_id,e.msg)
 
     except Exception as e:
         print("SOME ERROR OCCURRED")
         print(150 * "*")
         print(str(e))
-        set_request_status('Failed', analysis_id)
+        set_request_status('Failed', analysis_id,'Unknown Reason')
         print(150 * "*")
 
 
