@@ -444,29 +444,6 @@
               style="marginLeft:7%"
               v-if="partsAnalysisData.stepId === 3 && partsAnalysisData.requestStatus === 'Processing'"
             >
-              <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-              </div>-->
               <ul id="progress_ul" class="wizard_steps anchor">
                 <li>
                   <a class="disabled" isdone="0" rel="1">
@@ -529,29 +506,6 @@
               style="marginLeft:7%"
               v-if="partsAnalysisData.stepId === 2  && partsAnalysisData.requestStatus === 'Processing'"
             >
-              <!-- <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line-green"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot-green"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-                <span class="line"></span>
-                </div>
-                <div class="col-lg-2">
-                <span class="dot"></span>
-              </div>-->
               <ul id="progress_ul" class="wizard_steps anchor">
                 <li>
                   <a class="disabled" isdone="0" rel="1">
@@ -612,7 +566,7 @@
             <div
               class="row form_wizard wizard_horizontal"
               style="marginLeft:7%"
-              v-if="(partsAnalysisData.stepId === 1 && partsAnalysisData.requestStatus !== 'Failed') || (submitFlag === '1')"
+              v-if="(partsAnalysisData.stepId === 1 && partsAnalysisData.requestStatus !== 'Failed')"
             >
               <ul id="progress_ul" class="wizard_steps anchor">
                 <li>
@@ -1099,140 +1053,34 @@
                 </li>
               </ul>
             </div>
-
-            <!-- <div class="row" style="marginLeft:4%">
-                <div class="col-lg-2" style="align:center">Process Files</div>
-                <div class="col-lg-2" style=" margin-Left: -1%;">Generating Flat Files</div>
-                <div class="col-lg-2" style=" margin-Left: -1%;">Combining Flat Files</div>
-                <div class="col-lg-2" >Analyzing Data</div>
-                <div class="col-lg-2" >Generation BOM</div>
-                <div class="col-lg-2" >Generting Output</div>
-            </div>-->
           </div>
-          <div
-            class="row form_wizard wizard_horizontal"
-            style="marginLeft:7%"
-            v-if="submitFlag === '1'"
-          >
-            <ul id="progress_ul" class="wizard_steps anchor">
-              <li>
-                <a class="disabled" isdone="0" rel="1">
-                  <span class="step_no" style="backgroundColor:green">1</span>
-                  <span class="step_descr">Process Files</span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="2">
-                  <span class="step_no" style="backgroundColor:#bbb">2</span>
-                  <span class="step_descr">Generating Flat
-                    <br>Files
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="3">
-                  <span class="step_no" style="backgroundColor:#bbb">3</span>
-                  <span class="step_descr">Combining Flat
-                    <br>Files
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="4">
-                  <span class="step_no" style="backgroundColor:#bbb">4</span>
-                  <span class="step_descr">Analyzing Data</span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="5">
-                  <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                    <span>5</span>
-                    <i style="display:none" class="fa fa-download"></i>
-                  </span>
-                  <span class="step_descr">Generation BOM</span>
-                </a>
-              </li>
-              <li>
-                <a class="disabled" isdone="0" rel="6">
-                  <span id="predictionDownload" class="step_no blink" style="backgroundColor:#bbb">
-                    <span>6</span>
-                    <i style="display:none" class="fa fa-download"></i>
-                  </span>
-                  <span class="step_descr">Generting Output</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <!--  -->
           <!-- Tracker Ends -->
           <div class="float-right" style="marginBottom:5%">
             <div class="row">
-              <div
-                class="col-lg-4"
-                v-if="requestId === '' && submitFlag === '1' || uplaodFlag !== '1'"
-              >
-                <button
-                  type="button"
-                  id="cancelButton"
-                  class="btn btn-danger"
-                  @click="cancel()"
-                >Back</button>
+              <div class="col-lg-4" v-if="uploading">
+                <button type="button" class="btn btn-danger" disabled>Back</button>
               </div>
-              <div class="col-lg-4" v-if="requestId === '' && uplaodFlag === '1'">
-                <button
-                  type="button"
-                  id="cancelButton"
-                  class="btn btn-danger"
-                  @click="cancel()"
-                  disabled
-                >Back</button>
-              </div>
-              <div
-                class="col-lg-4"
-                v-if="(requestId !== '' && partsAnalysisData.requestStatus !=='Completed' && partsAnalysisData.stepId !==6 ) "
-              >
+              <div class="col-lg-4" v-if="!uploading">
                 <button type="button" class="btn btn-danger" @click="cancel()">Back</button>
               </div>
-              <div
-                class="col-lg-4"
-                v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
-              >
-                <button type="button" class="btn btn-danger" @click="cancel()">Back</button>
-              </div>
-
               <div class="col-lg-3">
                 <button
-                  v-if="requestId === '' && uplaodFlag !== '1' && submitFlag !== '1' "
+                  v-if="requestId === '' && !uploading "
                   type="button"
                   class="btn btn-success"
                   @click="formSubmit()"
                 >Submit For Analysis</button>
-                <button
-                  v-if="requestId === '' && uplaodFlag === '1'"
-                  type="button"
-                  class="btn btn-success"
-                  @click="formSubmit()"
-                  disabled
-                >Uploading</button>
-                <button
-                  v-if="requestId === '' && submitFlag === '1' "
-                  type="button"
-                  class="btn btn-success"
-                  @click="formSubmit()"
-                  disabled
-                >Processing</button>
+                <button v-if="uploading " type="button" class="btn btn-success" disabled>Uploading</button>
                 <button
                   v-if="requestId !== '' && (partsAnalysisData.requestStatus ==='Processing') "
                   type="button"
                   class="btn btn-success"
-                  @click="formSubmit()"
                   disabled
                 >Processing</button>
                 <button
                   v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Failed'"
                   type="button"
                   class="btn btn-success"
-                  @click="formSubmit()"
                   disabled
                 >Failed</button>
                 <button
@@ -1305,9 +1153,8 @@ export default {
       current: "Analysis Update",
       show: false,
       label: "Loading...",
-      submitFlag: null,
-      uplaodFlag: null,
-      errorData: []
+      errorData: [],
+      uploading: false
     };
   },
   methods: {
@@ -1363,7 +1210,6 @@ export default {
     },
 
     formSubmit() {
-      this.uplaodFlag = "1";
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -1383,7 +1229,7 @@ export default {
       ) {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
-            console.log("post data --------->", data);
+            this.uploading = true;
             this.post_spare_part_analysis(data);
           } else {
             alert("Please add your SAP File");
@@ -1485,10 +1331,6 @@ export default {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
             this.show = false;
-            this.uplaodFlag = "0";
-            this.submitFlag = "1";
-
-            console.log(this.submitFlag);
           });
         })
         .catch(handleError => {
