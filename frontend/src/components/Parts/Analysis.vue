@@ -1116,10 +1116,7 @@ export default {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
       this.get_request_analysis_by_Id(this.requestId);
-
-      window.intervalObj = setInterval(() => {
-        this.get_request_analysis_by_Id(this.requestId);
-      }, 15000);
+      
     } else {
       console.log("created");
       this.get_spare_part_analysis();
@@ -1271,6 +1268,10 @@ export default {
             };
             this.partsAnalysisData = object;
             if (this.partsAnalysisData.requestStatus === "Processing") {
+              clearInterval(window.intervalObj);
+                window.intervalObj = setInterval(() => {
+                  this.get_request_analysis_by_Id(this.requestId);
+                }, 5000);
               $(document).ready(function() {
                 $("#loader-2").show();
               });

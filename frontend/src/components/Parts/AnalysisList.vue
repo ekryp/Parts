@@ -80,21 +80,46 @@
       <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:7%">
         <div style="marginTop:0%">
           <div v-if="partsAnalysisRequestList.length !== 0">
-            <ag-grid-vue
-              style="width: 100%; height: 500px;"
-              class="ag-theme-balham"
-              :columnDefs="columnDefs"
-              :rowData="rowData"
-              :gridOptions="gridOptions"
-              :enableColResize="true"
-              :enableSorting="true"
-              :enableFilter="true"
-              :groupHeaders="true"
-              :suppressRowClickSelection="true"
-              rowSelection="multiple"
-              pagination="true"
-              :paginationPageSize="15"
-            ></ag-grid-vue>
+          <table id="AnalysisTable" class="table table-borderless table-hover" style="width:100%">
+              <thead>
+                <tr>
+                  <th scope="col">Analysis Name</th>
+                  <th scope="col">Analysis Type</th>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in partsAnalysisRequestList"
+                  :key="item.analysis_request_id"
+                  style="cursor:pointer"
+                >
+                  <td>{{item.analysis_name}}</td>
+                  <td>{{item.analysis_type}}</td>
+                  <td>{{item.customer_name}}</td>
+                  <td
+                    v-if="item.requestStatus ==='Completed'"
+                    style="color:#86B21D"
+                  >{{item.requestStatus}}</td>
+                  <td
+                    v-if="item.requestStatus ==='Processing'"
+                    style="color:#2699FB"
+                  >{{item.requestStatus}}</td>
+                  <td v-if="item.requestStatus ==='Failed'" style="color:red">{{item.requestStatus}}</td>
+                  <td style="cursor:pointer">
+                    <i class="far fa-eye" @click="update(item)"></i>
+                    <i
+                      v-if="item.requestStatus ==='Completed'"
+                      class="fas fa-poll"
+                      @click="summaryResult(item)"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
@@ -191,6 +216,9 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
+            $(document).ready(function() {
+              $("#AnalysisTable").DataTable();
+            });
             for (let i = 0; i < this.partsAnalysisRequestList.length; i++) {
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
               this.rowData.push({
