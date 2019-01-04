@@ -190,11 +190,16 @@ export default {
     createAnalysis() {
       router.push("/parts/analysis/create");
     },
-    update() {
+    update(data) {
       console.log("dasta ----->");
+      router.push({
+        path: "/parts/analysis/view",
+        query: { id: data.analysis_request_id }
+      });
     },
     summaryResult(data) {
       console.log("inside summary");
+      
       router.push({
         path: "/parts/analysis",
         query: { id: data.analysis_request_id }

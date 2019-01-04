@@ -11,6 +11,7 @@ import SpareDetails from '@/components/Parts/SpareDetails'
 import DynamicTable from '@/components/Parts/Table'
 import Reference from '@/components/Reference/Reference'
 import ErrorSummary from '@/components/Parts/ErrorSummary'
+import CreateAnalysis from '@/components/Parts/CreateAnalysis'
 
 Vue.use(Router)
 
@@ -36,9 +37,13 @@ export default new Router({
       component: Dashboard
     }, {
       path: '/parts/analysis/create',
+      name: 'CreateAnalysis',
+      component: CreateAnalysis
+    },{
+      path: '/parts/analysis/view',
       name: 'PartsAnalysis',
       component: PartsAnalysis
-    }, {
+    },{
       path: '/parts/analysis/dashboard',
       name: 'PartsAnalysisList',
       component: PartsAnalysisList

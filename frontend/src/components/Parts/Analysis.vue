@@ -30,13 +30,7 @@
                 v-model="partsAnalysisData.analyisisName"
                 disabled
               >
-              <input
-                v-if="requestId === ''"
-                type="text"
-                class="form-control"
-                placeholder="Enter Analysis Name"
-                v-model="analyisisName"
-              >
+              
             </div>
           </div>
         </div>
@@ -53,15 +47,7 @@
                 v-model="partsAnalysisData.customerNames"
                 disabled
               >
-              <multiselect
-                v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
-                :value="customerNames"
-                @input="selectedCustomerName"
-                placeholder="Select Customer"
-                :options="partsAnalysis.customer_names"
-                :multiple="false"
-                :taggable="true"
-              ></multiselect>
+              
             </div>
           </div>
         </div>
@@ -79,14 +65,7 @@
                 v-model="partsAnalysisData.date"
                 disabled
               >
-              <input
-                v-if="requestId === ''"
-                type="text"
-                class="form-control"
-                placeholder="22 Nov 2018"
-                :value="date"
-                disabled
-              >
+              
             </div>
           </div>
         </div>
@@ -103,15 +82,7 @@
                 v-model="partsAnalysisData.analysisType"
                 disabled
               >
-              <multiselect
-                v-if="requestId === '' && partsAnalysis.analysis_names !== undefined"
-                v-model="analysisType"
-                @input="selectedAnalysisType"
-                placeholder="Select Analysis Type"
-                :options="partsAnalysis.analysis_names"
-                :multiple="false"
-                :taggable="true"
-              ></multiselect>
+              
             </div>
           </div>
         </div>
@@ -128,15 +99,7 @@
                 v-model="partsAnalysisData.replensihTime"
                 disabled
               >
-              <multiselect
-                v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
-                v-model="replensihTime"
-                @input="selectedReplensihTime"
-                placeholder="Select Replensih Time"
-                :options="partsAnalysis.replenish_times"
-                :multiple="false"
-                :taggable="true"
-              ></multiselect>
+             
             </div>
           </div>
         </div>
@@ -1150,7 +1113,6 @@ export default {
       current: "Analysis Update",
       show: false,
       label: "Loading...",
-      errorData: [],
       uploading: false
     };
   },
@@ -1276,7 +1238,7 @@ export default {
                 $("#loader-2").show();
               });
             } else {
-              this.get_error_records();
+              clearInterval(window.intervalObj);
               $(document).ready(function() {
                 $("#loader-2").hide();
               });
