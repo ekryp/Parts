@@ -287,8 +287,8 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 
     shared_depot = shared_depot.replace(np.nan, 0)
 
-    shared_depot_total = shared_depot[['Total Stock_x', 'part_name', 'high_spare', 'Material Description_x', 'Total Stock_y', 'depot_name']]
-    shared_depot_reorder = shared_depot[['Reorder Point_x', 'part_name', 'high_spare', 'Material Description_x', 'Reorder Point_y', 'depot_name','is_high_spares']]
+    shared_depot_total = shared_depot[['Total Stock_x', 'part_name', 'high_spare', 'Material Description_x', 'Total Stock_y', 'depot_name','pon_quantity','is_high_spares']]
+    shared_depot_reorder = shared_depot[['Reorder Point_x', 'part_name', 'high_spare', 'Material Description_x', 'Reorder Point_y', 'depot_name','pon_quantity','is_high_spares']]
 
     # only for for those pons that have high pons check if pon,s qty is 0, if 0 then grab shared depot qty
     # else keep depot qty
@@ -321,8 +321,8 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     shared_depot_reorder.loc[idx, 'Reorder Point'] = shared_depot_reorder.loc[idx, 'Reorder Point_y']
 
     
-    shared_depot_total = shared_depot_total[['part_name', 'Total Stock', 'depot_name']]
-    shared_depot_reorder = shared_depot_reorder[['part_name', 'Reorder Point', 'depot_name','is_high_spares']]
+    shared_depot_total = shared_depot_total[['part_name', 'Total Stock', 'depot_name','highspare_count_for_totalstock']]
+    shared_depot_reorder = shared_depot_reorder[['part_name', 'Reorder Point', 'depot_name','is_high_spares','highspare_count_for_reorderpoint']]
 
     shared_depot = pd.merge(shared_depot_reorder, shared_depot_total, on=['part_name','depot_name'])
 
@@ -338,13 +338,13 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # Get Part_number for summary table
     single_bom = pd.merge(single_bom, parts, on='part_name', how='left')
     single_bom = single_bom[['part_name', 'depot_name', 'Total Stock', 'Reorder Point',
-                             'is_high_spares', 'shared_quantity', 'material_number', 'net_total_stock' , 'net_reorder_point']]
+                             'is_high_spares', 'shared_quantity', 'material_number', 'net_total_stock' , 'net_reorder_point','highspare_count_for_totalstock','highspare_count_for_reorderpoint']]
 
     # Get Part_Cost for summary table
 
     single_bom = pd.merge(single_bom, standard_cost, on='material_number', how='left')
     single_bom = single_bom[['part_name_x', 'depot_name', 'Total Stock', 'Reorder Point',
-                             'is_high_spares', 'shared_quantity', 'material_number', 'net_total_stock', 'net_reorder_point', 'standard_cost']]
+                             'is_high_spares', 'shared_quantity', 'material_number', 'net_total_stock', 'net_reorder_point', 'standard_cost','highspare_count_for_totalstock','highspare_count_for_reorderpoint']]
 
     single_bom['net_total_stock_cost'] = single_bom['net_total_stock'] * single_bom['standard_cost']
     single_bom['net_reorder_point_cost'] = single_bom['net_reorder_point'] * single_bom['standard_cost']
@@ -360,7 +360,9 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
         'part_name_x': 'part_name',
         'is_high_spares':'high_spare',
         'Reorder Point':'reorder_point',
-        'Total Stock':'total_stock'
+        'Total Stock':'total_stock',
+        'highspare_count_for_totalstock':'used_spare_count_total_stock',
+        'highspare_count_for_reorderpoint': 'used_spare_count_reorder'
     }, inplace=True
     )
 
