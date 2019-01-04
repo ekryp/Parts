@@ -295,10 +295,29 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 
     shared_depot_total['Total Stock'] = shared_depot_total['Total Stock_x']
     idx = (shared_depot_total['Total Stock_x'] == 0)
+    idx_pon_qty = (shared_depot_total['pon_quantity'] > 0)
+
+    # set a flag to check if PON is 0 and another flag to check index of IB
+    #shared_depot_total.loc[idx, 'using_highspare_for_totalstock'] = True
+
+    shared_depot_total.loc[idx, 'is_inventory_zero'] = True
+    shared_depot_total.loc[idx_pon_qty, 'has_IB'] = True
+
+    shared_depot_total.loc[
+        ((shared_depot_total['is_inventory_zero'] == True) & (
+                    shared_depot_total['has_IB'] == True)), 'highspare_count_for_totalstock'] = shared_depot_total['Total Stock_y']
     shared_depot_total.loc[idx, 'Total Stock'] = shared_depot_total.loc[idx, 'Total Stock_y']
+
     
     shared_depot_reorder['Reorder Point'] = shared_depot_reorder['Reorder Point_x']
     idx = (shared_depot_reorder['Reorder Point_x'] == 0)
+    shared_depot_reorder.loc[idx, 'is_inventory_zero'] = True
+    shared_depot_reorder.loc[idx_pon_qty, 'has_IB'] = True
+
+
+    shared_depot_reorder.loc[
+        ((shared_depot_reorder['is_inventory_zero'] == True) & (
+                    shared_depot_reorder['has_IB'] == True)), 'highspare_count_for_reorderpoint'] = shared_depot_reorder['Reorder Point_y']
     shared_depot_reorder.loc[idx, 'Reorder Point'] = shared_depot_reorder.loc[idx, 'Reorder Point_y']
 
     
@@ -329,6 +348,13 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 
     single_bom['net_total_stock_cost'] = single_bom['net_total_stock'] * single_bom['standard_cost']
     single_bom['net_reorder_point_cost'] = single_bom['net_reorder_point'] * single_bom['standard_cost']
+    # calculate high spare cost
+    single_bom['High_spare_totalstock_cost'] = single_bom['highspare_count_for_totalstock'] * single_bom[
+        'standard_cost']
+    single_bom['High_spare_reoderpoint_cost'] = single_bom['highspare_count_for_reorderpoint'] * single_bom[
+        'standard_cost']
+
+    single_bom = single_bom.fillna(0)
 
     single_bom.rename(columns={
         'part_name_x': 'part_name',
