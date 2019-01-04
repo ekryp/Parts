@@ -4,11 +4,14 @@
     <side-nav/>
     <div class="custom-container" style="paddingTop: 2%">
       <div class="row-one">
-        <div class="myBreadCrumb" style="margin-bottom:1px">
+        <!-- <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
             <span style="font-size: 14px;">{{current}}</span>
           </p>
-        </div>
+        </div>  -->
+        <ul class="breadcrumb" style="background:#f7f7f7">
+          <li>Dashboard</li>
+        </ul>
         <toggle-button
           style="margin-left:95% "
           :value="state"
@@ -93,7 +96,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h6>Top PONs</h6>
+                    <h5>Top PONs</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -121,7 +124,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h6>Top Depots</h6>
+                    <h5>Top Depots</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -149,7 +152,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h6>Top Customers</h6>
+                    <h5>Top Customers</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -507,6 +510,9 @@ export default {
   background-color: rgb(237, 237, 237);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
+.breadcrumb > li + li::before {
+       content: '>\00a0';
+   }
 </style>
 
 
