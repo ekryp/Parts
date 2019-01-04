@@ -117,7 +117,8 @@ class GetSummaryforSpecificRequest(Resource):
             # Find Current Inventory reorder
 
             current_inv_query = 'select part_name,depot_name,sum(reorder_point) as qty, ' \
-                                'sum(used_spare_count_reorder) as spare_count from summary as a ' \
+                                'sum(used_spare_count_reorder) as spare_count, ' \
+                                'High_spare_reoderpoint_cost as ext_spare_cost from summary as a ' \
                     'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
                     'where b.requestStatus="Completed" and reorder_point!=0 and a.request_id = {0} ' \
                     'group by part_name,depot_name,reorder_point;'.format(request_id)
@@ -149,6 +150,8 @@ class GetSummaryforSpecificRequest(Resource):
                 db_connection_string=Configuration.INFINERA_DB_URL)
 
             summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
+            summary_df['spare_count'].fillna(0, inplace=True)
+            summary_df['ext_spare_cost'].fillna(0, inplace=True)
             summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
 
             # get IB quantities & std_gross_cost in summary_df
@@ -166,7 +169,7 @@ class GetSummaryforSpecificRequest(Resource):
             summary_df = summary_df.drop(['request_id', 'product_ordering_name', 'node_depot_belongs'], 1)
 
             summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
-            summary_df['ext_spare_cost'] = summary_df['standard_cost'] * summary_df['spare_count']
+            #summary_df['ext_spare_cost'] = summary_df['standard_cost'] * summary_df['spare_count']
             summary_df.sort_values(by=['net_qty'], ascending=False, inplace=True)
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
@@ -181,7 +184,8 @@ class GetSummaryforSpecificRequest(Resource):
                 db_connection_string=Configuration.INFINERA_DB_URL)
 
             current_inv_query = 'select part_name,depot_name,sum(total_stock) as qty,' \
-                                ' sum(used_spare_count_total_stock) as spare_count from summary as a ' \
+                                ' sum(used_spare_count_total_stock) as spare_count,' \
+                                'High_spare_totalstock_cost as ext_spare_cost from summary as a ' \
                     'right join analysis_request as b on a.request_id = b.analysis_request_id ' \
                     'where b.requestStatus="Completed" and total_stock!=0 and a.request_id = {0} ' \
                     'group by part_name,depot_name,total_stock;'.format(request_id)
@@ -213,6 +217,8 @@ class GetSummaryforSpecificRequest(Resource):
                 db_connection_string=Configuration.INFINERA_DB_URL)
 
             summary_df = pd.merge(net_df, summary_df, on=['part_name', 'depot_name'], how='left')
+            summary_df['spare_count'].fillna(0, inplace=True)
+            summary_df['ext_spare_cost'].fillna(0, inplace=True)
             summary_df['net_std_cost'] = summary_df['net_qty'] * summary_df['standard_cost']
 
             # get IB quantities & std_gross_cost in summary_df
@@ -230,7 +236,7 @@ class GetSummaryforSpecificRequest(Resource):
             summary_df = summary_df.drop(['request_id', 'product_ordering_name', 'node_depot_belongs'], 1)
 
             summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
-            summary_df['ext_spare_cost'] = summary_df['standard_cost'] * summary_df['spare_count']
+            #summary_df['ext_spare_cost'] = summary_df['standard_cost'] * summary_df['spare_count']
             summary_df.sort_values(by=['net_qty'], ascending=False, inplace=True)
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
