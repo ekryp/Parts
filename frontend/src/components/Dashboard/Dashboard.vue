@@ -4,14 +4,12 @@
     <side-nav/>
     <div class="custom-container" style="paddingTop: 2%">
       <div class="row-one">
-        <!-- <div class="myBreadCrumb" style="margin-bottom:1px">
+         <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
             <span style="font-size: 14px;">{{current}}</span>
           </p>
-        </div>  -->
-        <ul class="breadcrumb" style="background:#f7f7f7">
-          <li>Dashboard</li>
-        </ul>
+        </div>  
+        
         <toggle-button
           style="margin-left:95% "
           :value="state"
@@ -510,9 +508,7 @@ export default {
   background-color: rgb(237, 237, 237);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
-.breadcrumb > li + li::before {
-       content: '>\00a0';
-   }
+
 </style>
 
 

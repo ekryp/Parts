@@ -2,9 +2,9 @@
   <div>
     <headernav msg="Analysis Dashboard"/>
     <side-nav menu="analysis"/>
-    <div class="custom-container" style="paddingTop:7%">
+    <div class="custom-container" style="paddingTop:6.57%">
       <div>
-        <div class="myBreadCrumb" style="margin-bottom:1px">
+        <div class="myBreadCrumb" >
           <p>
             <span style="font-size: 14px;">{{current}}</span>
           </p>
@@ -115,6 +115,11 @@
                       class="fas fa-poll"
                       @click="summaryResult(item)"
                     ></i>
+                    <i
+                      v-if="item.requestStatus ==='Failed'"
+                      class="fas fa-poll"
+                      @click="errorResult(item)"
+                    ></i>
                   </td>
                 </tr>
               </tbody>
@@ -198,10 +203,14 @@ export default {
       });
     },
     summaryResult(data) {
-      console.log("inside summary");
-      
       router.push({
         path: "/parts/analysis",
+        query: { id: data.analysis_request_id }
+      });
+    },
+    errorResult(data) {
+      router.push({
+        path: "/parts/analysis/error",
         query: { id: data.analysis_request_id }
       });
     },

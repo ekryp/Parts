@@ -2,10 +2,8 @@
   <div>
     <headernav msg="Spare Part Analysis"/>
     <side-nav menu="analysis"/>
-    <div class="custom-container" style="paddingTop:0%">
-      <div class>
-        <h3>Spare Part Analysis</h3>
-      </div>
+    <div class="custom-container" style="paddingTop:2%">
+      
       <!-- <div class="container"> -->
       <form style="marginTop: 5%;">
         <div>
