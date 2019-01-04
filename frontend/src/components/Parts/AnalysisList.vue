@@ -2,7 +2,7 @@
   <div>
     <headernav msg="Analysis Dashboard"/>
     <side-nav menu="analysis"/>
-    <div class="custom-container" style="paddingTop:6.57%">
+    <div class="custom-container" style="paddingTop:7.57%">
       <div>
         <div class="myBreadCrumb" >
           <p>

@@ -3,7 +3,7 @@
     <headernav msg="Spare Details"/>
     <side-nav menu="analysis"/>
 
-    <div class="custom-container" style="padding:3%; paddingTop:6.57%;marginLeft:4%">
+    <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
       <div>
         <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>

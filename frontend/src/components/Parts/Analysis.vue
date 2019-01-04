@@ -2,7 +2,7 @@
   <div>
     <headernav msg="Spare Part Analysis"/>
     <side-nav menu="analysis"/>
-    <div class="custom-container" style="paddingTop:2%">
+    <div class="custom-container" style="paddingTop:3%">
       
       <!-- <div class="container"> -->
       <form style="marginTop: 5%;">

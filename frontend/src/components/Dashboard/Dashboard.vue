@@ -2,9 +2,9 @@
   <div>
     <headernav msg="Dashboard"/>
     <side-nav/>
-    <div class="custom-container" style="paddingTop: 2%">
+    <div class="custom-container" style="paddingTop: 3%">
       <div class="row-one">
-         <div class="myBreadCrumb" style="margin-bottom:1px">
+         <div class="myBreadCrumb">
           <p>
             <span style="font-size: 14px;">{{current}}</span>
           </p>
@@ -508,7 +508,10 @@ export default {
   background-color: rgb(237, 237, 237);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
-
+.myBreadCrumb {
+  margin-top: -2%;
+  margin-bottom: 2%;
+}
 </style>
 
 
