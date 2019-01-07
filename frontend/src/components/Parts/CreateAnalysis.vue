@@ -312,22 +312,6 @@ export default {
       });
     },
     formSubmit() {
-      if (this.resubmit) {
-        swal({
-          title: "Info",
-          text: "Are you sure want to Resubmit the Request ?",
-          icon: "info"
-        }).then(ok => {
-          if (ok) {
-            this.formsubmitted();
-          }
-        });
-      } else {
-        this.formsubmitted();
-      }
-      //this.show1();
-    },
-    formsubmitted() {
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -348,10 +332,22 @@ export default {
       ) {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
-            this.resubmit = false;
             this.uploading = true;
             this.diasableFlag = true;
-            this.post_spare_part_analysis(data);
+            if (this.resubmit) {
+              swal({
+                title: "Info",
+                text: "Are you sure want to Resubmit the Request ?",
+                icon: "info"
+              }).then(ok => {
+                if (ok) {
+                  this.resubmit = false;
+                  this.post_spare_part_analysis(data);
+                }
+              });
+            } else {
+              this.post_spare_part_analysis(data);
+            }
           } else {
             swal({
               title: "Error",
