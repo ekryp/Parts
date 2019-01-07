@@ -908,11 +908,18 @@ class PostSparePartAnalysis(Resource):
             return result[0]
 
         def check_header_sap_file(sap_file, filename, file_location):
-            print(os.path.join(file_location, filename))
-            sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
+
+            try:
+                sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
+            except Exception as e:
+                raise FileFormatIssue(filename, "SAP file Corrupt or Sheet1 is not present,BAD SAP File")
+
+            rows, columns = sap_inventory_data.shape
+            if rows < 1:
+                raise FileFormatIssue(filename, "No Records to process,BAD SAP File")
             
             if len(sap_inventory_data.columns) < 10:
-                    raise FileFormatIssue(filename, "Number of columns are less than minimum columns 10")
+                    raise FileFormatIssue(filename, "Number of columns is less than minimum columns 10, BAD SAP File")
 
             our_columns = ['Plant', 'Storage Location = Depot Name', 'Material Number', 'Material Description = Part Name',
                        'Total Stock', 'Reorder Point', 'Standard Cost', 'Total Standard Cost', 'STO - Qty To be Dlv.',
@@ -928,6 +935,14 @@ class PostSparePartAnalysis(Resource):
                                     )
 
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
+
+        def check_dna_file(dna_file):
+
+            dna_df = pd.read_csv(dna_file)
+            dna_row,dna_cols = dna_df.shape
+            if dna_row < 1:
+                raise FileFormatIssue(dna_file, "No Records to process,BAD DNA File")
+
 
         try:
 
@@ -956,11 +971,16 @@ class PostSparePartAnalysis(Resource):
                     customer_dna_file = file.filename
                     mytext.save(file, folder=dest_folder)
 
+                dna_file = os.path.join(full_path, customer_dna_file)
+                check_dna_file(dna_file)
+
             for file in request.files.getlist('sap_export_file'):
 
                 name, extension = os.path.splitext(file.filename)
 
                 if extension.lower() == '.csv':
+
+                    raise FileFormatIssue(filename, "Please upload Excel file, BAD SAP file")
                     dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
                     full_path = os.path.abspath(dir_path)
                     file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
@@ -977,12 +997,13 @@ class PostSparePartAnalysis(Resource):
                     # are valid then only save it.
                     check_header_sap_file(file, sap_export_file, full_path)
 
-            save_analysis_record_db()
-            analysis_id = get_analysis_id()
+
+
+            sap_file = os.path.join(full_path, sap_export_file)
 
             prospect_id = add_prospect(args['user_email_id'])
-            dna_file = os.path.join(full_path, customer_dna_file)
-            sap_file = os.path.join(full_path, sap_export_file)
+            save_analysis_record_db()
+            analysis_id = get_analysis_id()
 
             update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
             print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
