@@ -128,8 +128,8 @@
                   </label>
                 </div>
                 <div class="col-lg-8" v-if="requestId === ''">
-                  <span v-if="dnafileName === ''">no file selected</span>
-                  <span v-if="dnafileName !== ''">{{dnafileName}}</span>
+                  <span v-if="dnafileName === '' || fileshowdna">no file selected</span>
+                  <span v-if="dnafileName !== '' &&  !fileshowdna">{{dnafileName}}</span>
                 </div>
                 <div class="col-lg-8" v-if="requestId !== ''">
                   <span
@@ -152,8 +152,9 @@
                   </label>
                 </div>
                 <div class="col-lg-8" v-if="requestId === ''">
-                  <span v-if="sapfileName === ''">no file selected</span>
-                  <span v-if="sapfileName !== ''">{{sapfileName}}</span>
+                  <span v-if="sapfileName === '' || fileshowsap">no file selected</span>
+                  <span v-if="sapfileName !== '' &&  !fileshowsap">{{sapfileName}}</span>
+                  <!-- <span v-if="resubmit"> !Uplaod the correct Sap File</span> -->
                 </div>
                 <div class="col-lg-8" v-if="requestId !== ''">
                   <span
@@ -189,30 +190,20 @@
               </div>
               <div class="col-lg-3">
                 <button
-                  v-if="requestId === '' && !uploading "
+                  v-if="requestId === '' && !uploading && !resubmit"
                   type="button"
                   class="btn btn-success"
                   @click="formSubmit()"
                 >Submit For Analysis</button>
                 <button v-if="uploading " type="button" class="btn btn-success" disabled>Uploading</button>
-                <button
-                  v-if="requestId !== '' && (partsAnalysisData.requestStatus ==='Processing') "
-                  type="button"
+                <button 
+                  v-if="resubmit" 
+                  type="button" 
                   class="btn btn-success"
-                  disabled
-                >Processing</button>
-                <button
-                  v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Failed'"
-                  type="button"
-                  class="btn btn-success"
-                  disabled
-                >Failed</button>
-                <button
-                  v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
-                  type="button"
-                  class="btn btn-success"
-                  @click="redirectToSummary()"
-                >View Details</button>
+                   @click="formSubmit()">
+                   Resubmit For Analysis
+                   </button>
+                
               </div>
             </div>
           </div>
@@ -268,7 +259,10 @@ export default {
       show: false,
       label: "Loading...",
       errorData: [],
-      uploading: false
+      uploading: false,
+      resubmit: false,
+      fileshowsap:false,
+      fileshowdna:false
     };
   },
   methods: {
@@ -297,6 +291,7 @@ export default {
         console.log(file.name);
         this.dnafileName = file.name;
         this.dnafile = file;
+        this.fileshowdna=false;
       } else {
         alert("error");
       }
@@ -315,6 +310,7 @@ export default {
         console.log(file.name);
         this.sapfileName = file.name;
         this.sapfile = file;
+        this.fileshowsap=false;
       } else {
         alert("error");
       }
@@ -341,6 +337,11 @@ export default {
         dnafile: this.dnafile,
         sapfile: this.sapfile
       };
+      if(this.resubmit)
+      {
+        this.resubmit=false;
+        confirm("Please Check wheather you have subbmited the correct file")
+      }
       if (
         this.analyisisName !== "" &&
         this.customerNames !== "" &&
@@ -407,8 +408,20 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
-            this.routeToView(data);
-            
+            if(data.http_status_code===200)
+              {
+              this.routeToView(data);
+              }
+            else{
+              this.uploading = false;
+              this.resubmit=true;
+              this.fileshowdna=true;
+              this.fileshowsap=true;
+              alert("Upload the proper SAP and DNA File");
+              $(document).ready(function() {
+                $("#loader-2").hide();
+              });
+            }
           });
         })
         .catch(handleError => {
