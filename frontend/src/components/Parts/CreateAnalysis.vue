@@ -3,7 +3,6 @@
     <headernav msg="Spare Part Analysis"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="paddingTop:3%">
-      
       <!-- <div class="container"> -->
       <form style="marginTop: 5%;">
         <div>
@@ -21,7 +20,6 @@
               <label>Analysis Name :</label>
             </div>
             <div class="col-lg-6">
-              
               <input
                 v-if="requestId === ''"
                 type="text"
@@ -38,7 +36,6 @@
               <label>Customer Name :</label>
             </div>
             <div class="col-lg-6">
-              
               <multiselect
                 v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
                 :value="customerNames"
@@ -57,7 +54,6 @@
               <label>Date :</label>
             </div>
             <div class="col-lg-6">
-              
               <input
                 v-if="requestId === ''"
                 type="text"
@@ -100,7 +96,6 @@
               <label>Replenish time :</label>
             </div>
             <div class="col-lg-6">
-              
               <multiselect
                 v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
                 v-model="replensihTime"
@@ -128,8 +123,8 @@
                   </label>
                 </div>
                 <div class="col-lg-8" v-if="requestId === ''">
-                  <span v-if="dnafileName === '' || fileshowdna">no file selected</span>
-                  <span v-if="dnafileName !== '' &&  !fileshowdna">{{dnafileName}}</span>
+                  <span v-if="dnafileName === ''">no file selected</span>
+                  <span v-if="dnafileName !== ''">{{dnafileName}}</span>
                 </div>
                 <div class="col-lg-8" v-if="requestId !== ''">
                   <span
@@ -152,9 +147,8 @@
                   </label>
                 </div>
                 <div class="col-lg-8" v-if="requestId === ''">
-                  <span v-if="sapfileName === '' || fileshowsap">no file selected</span>
-                  <span v-if="sapfileName !== '' &&  !fileshowsap">{{sapfileName}}</span>
-                  <!-- <span v-if="resubmit"> !Uplaod the correct Sap File</span> -->
+                  <span v-if="sapfileName === ''">no file selected</span>
+                  <span v-if="sapfileName !== ''">{{sapfileName}}</span>
                 </div>
                 <div class="col-lg-8" v-if="requestId !== ''">
                   <span
@@ -179,32 +173,28 @@
                 </div>
               </div>
           </div>-->
-         
           <div class="float-right" style="marginBottom:5%">
             <div class="row">
-              <div class="col-lg-4" v-if="uploading">
-                <button type="button" class="btn btn-danger" disabled>Back</button>
-              </div>
-              <div class="col-lg-4" v-if="!uploading">
-                <button type="button" class="btn btn-danger" @click="cancel()">Back</button>
-              </div>
-              <div class="col-lg-3">
-                <button
-                  v-if="requestId === '' && !uploading && !resubmit"
-                  type="button"
-                  class="btn btn-success"
-                  @click="formSubmit()"
-                >Submit For Analysis</button>
-                <button v-if="uploading " type="button" class="btn btn-success" disabled>Uploading</button>
-                <button 
-                  v-if="resubmit" 
-                  type="button" 
-                  class="btn btn-success"
-                   @click="formReSubmit()">
-                   Resubmit For Analysis
-                   </button>
-                <v-dialog/>
-              </div>
+              <button type="button" v-if="uploading" class="btn btn-danger" disabled>Back</button>&nbsp; &nbsp;
+              <button
+                type="button"
+                v-if="!uploading"
+                class="btn btn-danger"
+                @click="cancel()"
+              >Back</button>&nbsp; &nbsp;
+              <button
+                v-if="requestId === '' && !uploading && !resubmit"
+                type="button"
+                class="btn btn-success"
+                @click="formSubmit()"
+              >Submit For Analysis</button>
+              <button
+                v-if="requestId === '' && !uploading && resubmit"
+                type="button"
+                class="btn btn-success"
+                @click="formSubmit()"
+              >ReSubmit For Analysis</button>
+              <button v-if="uploading " type="button" class="btn btn-success" disabled>Uploading</button>
             </div>
           </div>
         </div>
@@ -222,17 +212,14 @@ import Multiselect from "vue-multiselect";
 import Datepicker from "vuejs-datepicker";
 import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
-import VModal from 'vue-js-modal'
- 
-Vue.use(VModal, { dialog: true })
+import swal from "sweetalert";
 
 export default {
   name: "CreateAnalysis",
 
   created() {
-    
-      console.log("created");
-      this.get_spare_part_analysis();
+    console.log("created");
+    this.get_spare_part_analysis();
   },
   components: {
     SideNav,
@@ -264,9 +251,7 @@ export default {
       label: "Loading...",
       errorData: [],
       uploading: false,
-      resubmit: false,
-      fileshowsap:false,
-      fileshowdna:false
+      resubmit: false
     };
   },
   methods: {
@@ -295,7 +280,6 @@ export default {
         console.log(file.name);
         this.dnafileName = file.name;
         this.dnafile = file;
-        this.fileshowdna=false;
       } else {
         alert("error");
       }
@@ -314,7 +298,6 @@ export default {
         console.log(file.name);
         this.sapfileName = file.name;
         this.sapfile = file;
-        this.fileshowsap=false;
       } else {
         alert("error");
       }
@@ -323,19 +306,28 @@ export default {
       router.push("/parts/analysis/dashboard");
     },
     routeToView(data) {
-        router.push({
-            path: "/parts/analysis/view",
-            query: { id: data.analysis_id }
-          });
+      router.push({
+        path: "/parts/analysis/view",
+        query: { id: data.analysis_id }
+      });
     },
-    formReSubmit()
-    {
-      this.uploading=false;
-      this.showModalSubmit();
-    }
-,
     formSubmit() {
+      if (this.resubmit) {
+        swal({
+          title: "Info",
+          text: "Are you sure want to Resubmit the Request ?",
+          icon: "info"
+        }).then(ok => {
+          if (ok) {
+            this.formsubmitted();
+          }
+        });
+      } else {
+        this.formsubmitted();
+      }
       //this.show1();
+    },
+    formsubmitted() {
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -347,7 +339,7 @@ export default {
         dnafile: this.dnafile,
         sapfile: this.sapfile
       };
-      
+
       if (
         this.analyisisName !== "" &&
         this.customerNames !== "" &&
@@ -356,48 +348,33 @@ export default {
       ) {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
-            this.resubmit=false;
+            this.resubmit = false;
             this.uploading = true;
-            this.diasableFlag=true;
+            this.diasableFlag = true;
             this.post_spare_part_analysis(data);
           } else {
-            alert("Please add your SAP File");
+            swal({
+              title: "Error",
+              text: "Please Attach the SAP File",
+              icon: "error"
+            });
           }
         } else {
-          alert("Please add your DNA File");
+          swal({
+            title: "Error",
+            text: "Please Attach the DNA File",
+            icon: "error"
+          });
         }
       } else {
-        alert("Please fill the Form to submit");
+        swal({
+          title: "Error",
+          text: "Please Fill the Form",
+          icon: "error"
+        });
       }
     },
-     showModalFile() {
-    this.$modal.show('dialog', {
-          title: 'Alert!',
-          text: 'Please Upload a Proper File',
-          buttons: [
-           
-            {
-              title: 'Close'
-            }
-        ]
-        })
-    },
-    showModalSubmit() {
-    this.$modal.show(
-      'dialog', {
-          title: 'Alert!',
-          text: 'Are You Sure Want to Resubmit the Request',
-          buttons: [ {
-            title: 'Submit',
-            handler: () => { this.formSubmit();this.$modal.hide('dialog');}
-            },
-            {
-              title: 'Close'
-            }
-        ]
-        })
-    },
-    
+
     // API calls
     get_spare_part_analysis() {
       fetch(constant.APIURL + "api/v1/get_spare_part_analysis", {
@@ -424,7 +401,7 @@ export default {
     post_spare_part_analysis(data) {
       let formData = new FormData();
       console.log("loader show");
-   
+
       $(document).ready(function() {
         $("#loader-2").show();
       });
@@ -444,16 +421,21 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
-            if(data.http_status_code===200)
-              {
+            if (data.http_status_code === 200) {
               this.routeToView(data);
-              }
-            else{
+            } else {
+              swal("Hello world!");
               this.uploading = false;
-              this.resubmit=true;
-              this.fileshowdna=true;
-              this.fileshowsap=true;
-              this.showModalFile();
+              this.resubmit = true;
+              this.sapfileName = "";
+              this.dnafileName = "";
+              this.sapfile = "";
+              this.dnafile = "";
+              swal({
+                title: "Error",
+                text: "Please Attach Correct File",
+                icon: "error"
+              });
               $(document).ready(function() {
                 $("#loader-2").hide();
               });
@@ -599,14 +581,14 @@ export default {
   left: auto;
 }
 .overlay {
-    background-color:#EFEFEF;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    top: 0px;
-    left: 0px;
-    opacity: .5; /* in FireFox */ 
-    filter: alpha(opacity=50); /* in IE */
+  background-color: #efefef;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  top: 0px;
+  left: 0px;
+  opacity: 0.5; /* in FireFox */
+  filter: alpha(opacity=50); /* in IE */
 }
 </style>
