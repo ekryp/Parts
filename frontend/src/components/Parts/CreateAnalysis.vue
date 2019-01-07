@@ -200,10 +200,10 @@
                   v-if="resubmit" 
                   type="button" 
                   class="btn btn-success"
-                   @click="formSubmit()">
+                   @click="formReSubmit()">
                    Resubmit For Analysis
                    </button>
-                
+                <v-dialog/>
               </div>
             </div>
           </div>
@@ -222,11 +222,15 @@ import Multiselect from "vue-multiselect";
 import Datepicker from "vuejs-datepicker";
 import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
+import VModal from 'vue-js-modal'
+ 
+Vue.use(VModal, { dialog: true })
 
 export default {
   name: "CreateAnalysis",
 
   created() {
+    
       console.log("created");
       this.get_spare_part_analysis();
   },
@@ -324,8 +328,13 @@ export default {
             query: { id: data.analysis_id }
           });
     },
-
+    formReSubmit()
+    {
+      this.showModalSubmit();
+    }
+,
     formSubmit() {
+      //this.show1();
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -337,11 +346,7 @@ export default {
         dnafile: this.dnafile,
         sapfile: this.sapfile
       };
-      if(this.resubmit)
-      {
-        this.resubmit=false;
-        confirm("Please Check wheather you have subbmited the correct file")
-      }
+      
       if (
         this.analyisisName !== "" &&
         this.customerNames !== "" &&
@@ -351,6 +356,7 @@ export default {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
             this.uploading = true;
+            this.diasableFlag=true;
             this.post_spare_part_analysis(data);
           } else {
             alert("Please add your SAP File");
@@ -362,7 +368,34 @@ export default {
         alert("Please fill the Form to submit");
       }
     },
-
+     showModalFile() {
+    this.$modal.show('dialog', {
+          title: 'Alert!',
+          text: 'Please Upload a Proper File',
+          buttons: [
+           
+            {
+              title: 'Close'
+            }
+        ]
+        })
+    },
+    showModalSubmit() {
+    this.$modal.show(
+      'dialog', {
+          title: 'Alert!',
+          text: 'Please Check Before Clicking Resubmit',
+          buttons: [ {
+            title: 'Submit',
+            handler: () => { this.formSubmit();this.$modal.hide('dialog');}
+            },
+            {
+              title: 'Close'
+            }
+        ]
+        })
+    },
+    
     // API calls
     get_spare_part_analysis() {
       fetch(constant.APIURL + "api/v1/get_spare_part_analysis", {
@@ -389,6 +422,7 @@ export default {
     post_spare_part_analysis(data) {
       let formData = new FormData();
       console.log("loader show");
+   
       $(document).ready(function() {
         $("#loader-2").show();
       });
@@ -417,7 +451,7 @@ export default {
               this.resubmit=true;
               this.fileshowdna=true;
               this.fileshowsap=true;
-              alert("Upload the proper SAP and DNA File");
+              this.showModalFile();
               $(document).ready(function() {
                 $("#loader-2").hide();
               });
@@ -561,5 +595,16 @@ export default {
   right: 50%;
   width: 50%;
   left: auto;
+}
+.overlay {
+    background-color:#EFEFEF;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    top: 0px;
+    left: 0px;
+    opacity: .5; /* in FireFox */ 
+    filter: alpha(opacity=50); /* in IE */
 }
 </style>

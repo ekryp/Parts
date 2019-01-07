@@ -177,29 +177,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -212,7 +213,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -225,7 +227,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -262,29 +265,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -297,7 +301,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -310,7 +315,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -347,29 +353,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -382,7 +389,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -395,7 +403,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -409,29 +418,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -444,7 +454,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -457,7 +468,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -471,29 +483,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -506,7 +519,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -519,7 +533,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -533,29 +548,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -568,7 +584,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -581,7 +598,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -596,29 +614,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:#bbb">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -631,7 +650,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -644,7 +664,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -659,29 +680,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:red">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -694,7 +716,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -707,7 +730,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -721,29 +745,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -756,7 +781,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -765,7 +791,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -779,29 +806,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -810,7 +838,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -823,7 +852,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -837,29 +867,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:red">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -872,7 +903,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -885,7 +917,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -899,29 +932,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:red">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -934,7 +968,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -947,7 +982,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
@@ -961,29 +997,30 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">Process Files</span>
+                    <span class="step_descr">File Validation Complete</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:red">2</span>
-                    <span class="step_descr">Generating Flat
-                      <br>Files
+                    <span class="step_descr">Customer DNA Data
+                      <br>Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Combining Flat
-                      <br>Files
+                    <span class="step_descr">Filter Error
+                      <br>Records
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Analyzing Data</span>
+                    <span class="step_descr">Loaded Current</span>
+                    <br>Inventory
                   </a>
                 </li>
                 <li>
@@ -996,7 +1033,8 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generation BOM</span>
+                    <span class="step_descr">BOM Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
                 <li>
@@ -1009,7 +1047,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Generting Output</span>
+                    <span class="step_descr">Summary Calculation</span>
+                    <br>Complete
                   </a>
                 </li>
               </ul>
