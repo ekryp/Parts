@@ -3,7 +3,6 @@
     <headernav msg="Spare Part Analysis"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="paddingTop:3%">
-      
       <!-- <div class="container"> -->
       <form style="marginTop: 5%;">
         <div>
@@ -28,7 +27,6 @@
                 v-model="partsAnalysisData.analyisisName"
                 disabled
               >
-              
             </div>
           </div>
         </div>
@@ -45,7 +43,6 @@
                 v-model="partsAnalysisData.customerNames"
                 disabled
               >
-              
             </div>
           </div>
         </div>
@@ -63,7 +60,6 @@
                 v-model="partsAnalysisData.date"
                 disabled
               >
-              
             </div>
           </div>
         </div>
@@ -80,7 +76,6 @@
                 v-model="partsAnalysisData.analysisType"
                 disabled
               >
-              
             </div>
           </div>
         </div>
@@ -97,7 +92,6 @@
                 v-model="partsAnalysisData.replensihTime"
                 disabled
               >
-             
             </div>
           </div>
         </div>
@@ -177,32 +171,32 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation
-                      <br>Complete
-                    </span>
+                    <span class="step_descr">File Validation</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA 
-                      <br> Data Loaded
+                    <span class="step_descr">
+                      DNA File
+                      Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error Records
-                      
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -215,8 +209,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -229,8 +222,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -267,30 +261,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -303,8 +296,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -317,8 +309,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -355,30 +348,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -391,8 +383,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -405,8 +396,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -420,30 +412,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -456,8 +447,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -470,8 +460,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -485,30 +476,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -521,8 +511,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -535,8 +524,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -550,30 +540,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -586,8 +575,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -600,8 +588,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -616,30 +605,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:#bbb">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -652,8 +640,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -666,8 +653,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -682,30 +670,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:red">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -718,8 +705,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -732,8 +718,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -747,30 +734,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -783,8 +769,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -793,8 +778,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -808,30 +794,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -840,8 +825,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -854,8 +838,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -869,30 +854,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:red">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -905,8 +889,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -919,8 +902,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -934,30 +918,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:red">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -970,8 +953,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -984,8 +966,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -999,30 +982,29 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validated</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:red">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
-                    </span>
+                    <span class="step_descr">DNA File loaded</span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Error Records
+                      <br>Filtered
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Loaded Current</span>
-                    <br>Inventory
+                    <span class="step_descr">Current Inventory
+                      <br>Loaded
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -1035,8 +1017,7 @@
                       <span>5</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">BOM Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">BOM Calculated</span>
                   </a>
                 </li>
                 <li>
@@ -1049,8 +1030,9 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation</span>
-                    <br>Complete
+                    <span class="step_descr">Summary Calculation
+                      <br>Completed
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -1118,7 +1100,6 @@ export default {
       console.log("id ---->", this.$route.query.id);
       this.requestId = this.$route.query.id;
       this.get_request_analysis_by_Id(this.requestId);
-      
     } else {
       console.log("created");
       this.get_spare_part_analysis();
@@ -1270,9 +1251,9 @@ export default {
             this.partsAnalysisData = object;
             if (this.partsAnalysisData.requestStatus === "Processing") {
               clearInterval(window.intervalObj);
-                window.intervalObj = setInterval(() => {
-                  this.get_request_analysis_by_Id(this.requestId);
-                }, 5000);
+              window.intervalObj = setInterval(() => {
+                this.get_request_analysis_by_Id(this.requestId);
+              }, 5000);
               $(document).ready(function() {
                 $("#loader-2").show();
               });
