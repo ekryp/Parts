@@ -386,7 +386,7 @@ export default {
     this.$modal.show(
       'dialog', {
           title: 'Alert!',
-          text: 'Please Check Before Clicking Resubmit',
+          text: 'Are You Sure Want to Resubmit the Request',
           buttons: [ {
             title: 'Submit',
             handler: () => { this.formSubmit();this.$modal.hide('dialog');}
