@@ -436,7 +436,9 @@ class GetDashboardRequestCount(Resource):
             complete_request_query = "select count(*) from analysis_request where requestStatus = 'Completed'"
             complete_request = engine.execute(complete_request_query).fetchone()[0]
 
-            failed_request = 0
+            failed_request_query = "select count(*) from analysis_request where requestStatus = 'Failed'"
+            failed_request = engine.execute(failed_request_query).fetchone()[0]
+
             saved_request = 0
             complete_request_succesfully = complete_request
             return total_request,incomplete_request, complete_request, failed_request, saved_request, complete_request_succesfully
