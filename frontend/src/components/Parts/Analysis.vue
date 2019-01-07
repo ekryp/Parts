@@ -177,22 +177,24 @@
                 <li>
                   <a class="disabled" isdone="0" rel="1">
                     <span class="step_no" style="backgroundColor:green">1</span>
-                    <span class="step_descr">File Validation Complete</span>
+                    <span class="step_descr">File Validation
+                      <br>Complete
+                    </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">Customer DNA Data
-                      <br>Loaded
+                    <span class="step_descr">Customer DNA 
+                      <br> Data Loaded
                     </span>
                   </a>
                 </li>
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Filter Error
-                      <br>Records
+                    <span class="step_descr">Filter Error Records
+                      
                     </span>
                   </a>
                 </li>

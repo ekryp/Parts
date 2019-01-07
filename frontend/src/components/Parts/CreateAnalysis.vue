@@ -330,6 +330,7 @@ export default {
     },
     formReSubmit()
     {
+      this.uploading=false;
       this.showModalSubmit();
     }
 ,
@@ -355,6 +356,7 @@ export default {
       ) {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
+            this.resubmit=false;
             this.uploading = true;
             this.diasableFlag=true;
             this.post_spare_part_analysis(data);
