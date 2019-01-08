@@ -59,6 +59,15 @@
             aria-controls="nav-netInventory"
             aria-selected="false"
           >Net</a>
+          <a
+            class="nav-item nav-link"
+            id="nav-error-tab"
+            data-toggle="tab"
+            href="#nav-error"
+            role="tab"
+            aria-controls="nav-error"
+            aria-selected="false"
+          >Error</a>
         </div>
       </nav>
       <div class="tab-content" id="nav-tabContent">
@@ -241,6 +250,54 @@
             </table>
           </div>
         </div>
+         <div
+          class="tab-pane fade"
+          id="nav-error"
+          role="tabpanel"
+          aria-labelledby="nav-error-tab"
+        >
+          <br>
+          <div class="shadow p-3 mb-5 bg-white rounded">
+            <!-- <div class="float-right">
+              <toggle-button
+                :value="state"
+                :color="{checked: 'green', unchecked: 'green'}"
+                :sync="true"
+                :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                :width="80"
+                @change="stateChange()"
+              />
+              <button type="button" class="btn btn-success">
+                <download-excel :data="currentNet" type="csv">
+                  <i class="fas fa-file-excel"></i>
+                  &nbsp;
+                  Export
+                </download-excel>
+              </button>
+            </div>
+            <br>
+            <br> -->
+            <br>
+            <table id="errorTable" class="table table-bordered table-hover center">
+              <thead>
+                <tr>
+                  <th scope="col">Parts Name</th>
+                  <th scope="col">Error Reason</th>
+                  <th scope="col">Node Name</th>
+                  <th scope="col">Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in errorData" :key="item.id">
+                  <td>{{item.PON}}</td>
+                  <td>{{item.error_reason}}</td>
+                  <td>{{item.node_name}}</td>
+                  <td>{{item.type}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -265,6 +322,7 @@ export default {
   created() {
     this.requestID = this.$route.query.id;
     console.log("requestId ---->", this.requestId);
+    this.get_error_records(this.$route.query.id);
     this.get_current_inventory_specific_request(this.$route.query.id);
     this.get_gross_specific_request(this.$route.query.id);
     this.get_current_net_specific_request(this.$route.query.id);
@@ -281,6 +339,7 @@ export default {
       currentGross: [],
       currentNet: [],
       currentib: [],
+      errorData: [],
       postMenu: "Analysis >",
       current: "Analysis Summary"
     };
@@ -296,6 +355,7 @@ export default {
   methods: {
     stateChange() {
       this.state = !this.state;
+      
       if (this.state) {
         this.toggle = "reorder";
         this.get_current_net_specific_request(this.$route.query.id);
@@ -353,6 +413,24 @@ export default {
             $(document).ready(function() {
               $("#currentCross").DataTable();
             });
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_error_records(requestId) {
+      fetch(
+        constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
+        {
+          method: "GET"
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const payload = text && JSON.parse(text);
+            console.log("Get Error data ---->", payload);
+            this.errorData = payload;
           });
         })
         .catch(handleError => {

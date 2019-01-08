@@ -433,7 +433,7 @@ export default {
               this.dnafile = "";
               swal({
                 title: "Error",
-                text: "Please Attach Correct File",
+                text: data.msg,
                 icon: "error"
               });
               $(document).ready(function() {
