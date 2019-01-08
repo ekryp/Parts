@@ -538,9 +538,31 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, repleni
     return gross_depot_hnad, high_spares, standard_cost, parts
 
 
+def convert_headers_in_sap_file(sap_file):
+
+    sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
+
+    our_columns = ['Plant', 'Storage Location = Depot Name', 'Material Number', 'Material Description = Part Name',
+               'Total Stock', 'Reorder Point', 'Standard Cost', 'Total Standard Cost', 'STO - Qty To be Dlv.',
+               'Delivery - Qty To be Dlv.']
+
+    infinera_columns = ['Material Number', 'Material Description', 'Plant', 'Storage Location',
+                        'Reorder Point', 'Total Stock', 'Standard Cost', 'Total Standard Cost',
+                        'STO - Qty To be Dlv.', 'Delivery - Qty To be Dlv.']
+    sap_inventory_data.rename(columns={
+            'Material Description': 'Material Description = Part Name',
+            'Storage Location': 'Storage Location = Depot Name',
+                            }, inplace=True
+                            )
+
+    sap_inventory_data.to_excel(sap_file, index=False)
+
+
+
 @celery.task
 def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time):
     try:
+        convert_headers_in_sap_file(sap_file)
         def set_request_status(status, analysis_id,msg):
             engine = create_engine(Configuration.INFINERA_DB_URL)
             query = "update analysis_request set requestStatus='{0}',failure_reason='{2}' " \

@@ -922,7 +922,7 @@ class PostSparePartAnalysis(Resource):
             
             if len(sap_inventory_data.columns) < 10:
                     raise FileFormatIssue(filename, "Number of columns is less than minimum columns 10, BAD SAP File")
-
+            '''
             our_columns = ['Plant', 'Storage Location = Depot Name', 'Material Number', 'Material Description = Part Name',
                        'Total Stock', 'Reorder Point', 'Standard Cost', 'Total Standard Cost', 'STO - Qty To be Dlv.',
                        'Delivery - Qty To be Dlv.']
@@ -937,6 +937,7 @@ class PostSparePartAnalysis(Resource):
                                     )
 
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
+            '''
 
         def check_dna_file(dna_file, extension):
 
@@ -1004,8 +1005,6 @@ class PostSparePartAnalysis(Resource):
                     # Check headers in SAP file names & count of headers ,If headers
                     # are valid then only save it.
                     check_header_sap_file(file, sap_export_file, full_path)
-
-
 
             sap_file = os.path.join(full_path, sap_export_file)
 
