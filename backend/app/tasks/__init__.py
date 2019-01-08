@@ -554,8 +554,7 @@ def convert_headers_in_sap_file(sap_file):
             'Storage Location': 'Storage Location = Depot Name',
                             }, inplace=True
                             )
-
-    sap_inventory_data.to_excel(sap_file, index=False)
+    sap_inventory_data[our_columns].to_excel(sap_file, index=False)
 
 
 
