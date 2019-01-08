@@ -219,6 +219,7 @@ export default {
   name: "CreateAnalysis",
 
   created() {
+    clearInterval(window.intervalObj);
     console.log("created");
     this.get_spare_part_analysis();
   },
