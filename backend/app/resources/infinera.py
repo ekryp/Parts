@@ -938,12 +938,18 @@ class PostSparePartAnalysis(Resource):
 
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
 
-        def check_dna_file(dna_file):
+        def check_dna_file(dna_file, extension):
 
-            dna_df = pd.read_csv(dna_file)
-            dna_row,dna_cols = dna_df.shape
+            if extension.lower() == '.csv' or extension.lower() == '.txt':
+                dna_df = pd.read_csv(dna_file)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dna_df = pd.read_excel(dna_file)
+
+            dna_row, dna_cols = dna_df.shape
             if dna_row < 1:
                 raise FileFormatIssue(dna_file, "No Records to process,BAD DNA File")
+
 
 
         try:
@@ -959,7 +965,7 @@ class PostSparePartAnalysis(Resource):
                     customer_dna_file = file.filename
                     csvs.save(file, folder=dest_folder)
 
-                elif extension.lower() == '.xls' or extension == '.xlsx':
+                elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                     dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
                     full_path = os.path.abspath(dir_path)
                     file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
@@ -974,7 +980,7 @@ class PostSparePartAnalysis(Resource):
                     mytext.save(file, folder=dest_folder)
 
                 dna_file = os.path.join(full_path, customer_dna_file)
-                check_dna_file(dna_file)
+                check_dna_file(dna_file, extension)
 
             for file in request.files.getlist('sap_export_file'):
 
@@ -982,7 +988,7 @@ class PostSparePartAnalysis(Resource):
 
                 if extension.lower() == '.csv':
 
-                    raise FileFormatIssue(filename, "Please upload Excel file, BAD SAP file")
+                    raise FileFormatIssue('SAP_FILE', "Please upload Excel file, BAD SAP file")
                     dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
                     full_path = os.path.abspath(dir_path)
                     file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
