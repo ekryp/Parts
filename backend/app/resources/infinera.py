@@ -940,9 +940,11 @@ class PostSparePartAnalysis(Resource):
             '''
 
         def check_dna_file(dna_file, extension):
-
-            if extension.lower() == '.csv' or extension.lower() == '.txt':
+            if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file)
+
+            elif extension.lower() == '.txt':
+                dna_df = pd.read_csv(dna_file, sep='\t')
 
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 dna_df = pd.read_excel(dna_file)
