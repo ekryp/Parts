@@ -77,7 +77,7 @@
         </button>
       </div>
 
-        <div class="shadow-lg p-3 mb-5 bg-white rounded" id="agbox" style="marginTop:7%">
+        <div class="" id="agbox" style="marginTop:7%">
         <div style="marginTop:0%">
           <div v-if="partsAnalysisRequestList.length !== 0">
             <ag-grid-vue
