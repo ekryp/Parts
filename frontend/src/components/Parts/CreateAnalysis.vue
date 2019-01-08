@@ -427,10 +427,7 @@ export default {
               this.uploading = false;
               this.resubmit = true;
               this.diasableFlag=false;
-              //this.sapfileName = "";
-              //this.dnafileName = "";
-              this.sapfile = "";
-              this.dnafile = "";
+              
               swal({
                 title: "Error",
                 text: data.msg,
