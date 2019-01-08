@@ -77,57 +77,32 @@
         </button>
       </div>
 
-      <div class="shadow-lg p-3 mb-5 bg-white rounded" style="marginTop:7%">
+        <div class="shadow-lg p-3 mb-5 bg-white rounded" id="agbox" style="marginTop:7%">
         <div style="marginTop:0%">
           <div v-if="partsAnalysisRequestList.length !== 0">
-          <table id="AnalysisTable" class="table table-borderless table-hover" style="width:100%">
-              <thead>
-                <tr>
-                  <th scope="col">Analysis Name</th>
-                  <th scope="col">Analysis Type</th>
-                  <th scope="col">Customer Name</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="item in partsAnalysisRequestList"
-                  :key="item.analysis_request_id"
-                  style="cursor:pointer"
-                >
-                  <td>{{item.analysis_name}}</td>
-                  <td>{{item.analysis_type}}</td>
-                  <td>{{item.customer_name}}</td>
-                  <td
-                    v-if="item.requestStatus ==='Completed'"
-                    style="color:#86B21D"
-                  >{{item.requestStatus}}</td>
-                  <td
-                    v-if="item.requestStatus ==='Processing'"
-                    style="color:#2699FB"
-                  >{{item.requestStatus}}</td>
-                  <td v-if="item.requestStatus ==='Failed'" style="color:red">{{item.requestStatus}}</td>
-                  <td style="cursor:pointer">
-                    <i class="far fa-eye" @click="update(item)"></i>
-                    <i
-                      v-if="item.requestStatus ==='Completed'"
-                      class="fas fa-poll"
-                      @click="summaryResult(item)"
-                    ></i>
-                    <i
-                      v-if="item.requestStatus ==='Failed'"
-                      class="fas fa-poll"
-                      @click="errorResult(item)"
-                    ></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <ag-grid-vue
+              style="width: 100%; height: 500px;"
+              class="ag-theme-balham"
+              :columnDefs="columnDefs"
+              :rowData="rowData"
+              :gridOptions="gridOptions"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              :cellClicked="onCellClicked"
+              :suppressRowClickSelection="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="15"
+              :gridReady="onReady"
+              :gridSizeChanged="onReady"
 
+            ></ag-grid-vue>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -246,9 +221,7 @@ export default {
                   .toDateString()
                   .substring(4),
                 completedFlag:
-                  this.partsAnalysisRequestList[i].analysis_request_id +
-                  "," +
-                  this.partsAnalysisRequestList[i].requestStatus
+                  this.partsAnalysisRequestList[i].analysis_request_id
               });
             }
             this.exportCSV(data);
@@ -308,35 +281,61 @@ export default {
           cellRenderer: actionCellRenderer
         }
       ];
-    }
+    },
+    onCellClicked(event) {
+      console.dir(event);
+      let requestId = event.value;
+      if(Number.isInteger(requestId))
+      {
+        router.push({
+        path: "/parts/analysis/view",
+        query: { id: requestId }
+      });
+      }
+      },
+    onReady(event) {
+       var gridWidth = document.getElementById('agbox').offsetWidth;
+
+        // keep track of which columns to hide/show
+        var columnsToShow = [];
+        var columnsToHide = [];
+
+        // iterate over all columns (visible or not) and work out
+        // now many columns can fit (based on their minWidth)
+        var totalColsWidth = 0;
+        var allColumns = event.columnApi.getAllColumns();
+        for (var i = 0; i < allColumns.length; i++) {
+            let column = allColumns[i];
+            totalColsWidth += column.getMinWidth();
+            if (totalColsWidth > gridWidth) {
+                columnsToHide.push(column.colId);
+            } else {
+                columnsToShow.push(column.colId);
+            }
+        }
+
+        // show/hide columns based on current grid width
+        event.columnApi.setColumnsVisible(columnsToShow, true);
+        event.columnApi.setColumnsVisible(columnsToHide, false);
+
+        // fill out any available space to ensure there are no gaps
+        event.api.sizeColumnsToFit();
+      },
+
   }
 };
 
 function actionCellRenderer(params) {
-  let value = params.value;
-  let actionParams = value.split(",");
+  
   let skills = [];
-  let analysisId = 55;
+  
   skills.push(
-    '<a  style=" background: lightgray;" href="/parts/analysis/create?id=' +
-      actionParams[0] +
-      '"><i class="far fa-eye"></i></a>'
+    '<i class="far fa-eye"></i>'
   );
-  if (actionParams[1] === "Completed") {
-    skills.push(
-      '<a style=" background: lightgray;" href="/parts/analysis?id=' +
-        actionParams[0] +
-        '"><i  class="fas fa-poll"></i></a>'
-    );
-  } else if (actionParams[1] === "Failed") {
-    skills.push(
-      '<a style=" background: lightgray;" href="/parts/analysis/error?id=' +
-        actionParams[0] +
-        '"><i  class="fas fa-poll"></i></a>'
-    );
-  }
+  
   return skills.join(" ");
 }
+ 
 </script>
 <style>
 .text-top {
