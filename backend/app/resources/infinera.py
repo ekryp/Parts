@@ -914,14 +914,14 @@ class PostSparePartAnalysis(Resource):
             try:
                 sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
             except Exception as e:
-                raise FileFormatIssue(filename, "SAP file Corrupt or Sheet1 is not present,BAD SAP File")
+                raise FileFormatIssue(filename, "Current Inventory File Corrupt or Sheet1 is not present,BAD Current Inventory File")
 
             rows, columns = sap_inventory_data.shape
             if rows < 1:
-                raise FileFormatIssue(filename, "No Records to process,BAD SAP File")
+                raise FileFormatIssue(filename, "No Records to process,BAD Current Inventory File")
             
             if len(sap_inventory_data.columns) < 10:
-                    raise FileFormatIssue(filename, "Number of columns is less than minimum columns 10, BAD SAP File")
+                    raise FileFormatIssue(filename, "Number of columns is less than minimum columns 10, BAD Current Inventory File")
             '''
             our_columns = ['Plant', 'Storage Location = Depot Name', 'Material Number', 'Material Description = Part Name',
                        'Total Stock', 'Reorder Point', 'Standard Cost', 'Total Standard Cost', 'STO - Qty To be Dlv.',
@@ -989,7 +989,7 @@ class PostSparePartAnalysis(Resource):
 
                 if extension.lower() == '.csv':
 
-                    raise FileFormatIssue('SAP_FILE', "Please upload Excel file, BAD SAP file")
+                    raise FileFormatIssue('SAP_FILE', "Please upload Excel file, BAD Current Inventory File")
                     dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
                     full_path = os.path.abspath(dir_path)
                     file.filename = "sap_export_file{0}{1}".format(analysis_date, extension.lower())
