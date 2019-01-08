@@ -3,7 +3,12 @@
     <nav id="sidebar">
       <ul class="list-unstyled components">
         <li class="active nav-custom" style="margin-top: 40px;cursor:pointer ">
-          <div class="text-center" @click="dashboard()">
+          <div class="text-center" v-if="!diasableFlag" @click="dashboard()">
+            <i class="fas fa-home" style="fontSize:20px"></i>
+            <br>
+            <p class="upload-text">Dashboard</p>
+          </div>
+          <div class="text-center" v-if="diasableFlag">
             <i class="fas fa-home" style="fontSize:20px"></i>
             <br>
             <p class="upload-text">Dashboard</p>
@@ -19,7 +24,12 @@
         </li>
         <hr>-->
         <li class="nav-custom" style="cursor:pointer">
-          <div class="text-center" @click="parts_analysis()">
+          <div class="text-center" v-if="!diasableFlag" @click="parts_analysis()">
+            <i class="fas fa-list-ul" style="fontSize:20px"></i>
+            <br>
+            <p class="upload-text">Analysis</p>
+          </div>
+          <div class="text-center" v-if="diasableFlag" >
             <i class="fas fa-list-ul" style="fontSize:20px"></i>
             <br>
             <p class="upload-text">Analysis</p>
@@ -40,10 +50,11 @@
 </template>
 
 <script>
+
 import router from "../../router";
 export default {
   name: "SideNav",
-  props: ["menu"],
+  props: ["menu","diasableFlag"],
   data() {
     console.log("props", this.$props);
     return {
@@ -137,5 +148,17 @@ hr {
 .upload-text {
   font-size: 0.75vw;
   font-family: Arial;
+}
+
+.overlay {
+    background-color:#EFEFEF;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    top: 0px;
+    left: 0px;
+    opacity: .5; /* in FireFox */ 
+    filter: alpha(opacity=50); /* in IE */
 }
 </style>

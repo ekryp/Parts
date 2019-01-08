@@ -1,7 +1,7 @@
 <template>
   <div>
     <headernav msg="Spare Part Analysis"/>
-    <side-nav menu="analysis"/>
+    <side-nav menu="analysis" :diasableFlag="diasableFlag"/>
     <div class="custom-container" style="paddingTop:3%">
       <!-- <div class="container"> -->
       <form style="marginTop: 5%;">
@@ -118,7 +118,7 @@
               <div class="row">
                 <div class="col-lg-1" v-if="requestId === ''">
                   <label for="fileupload" class="file">
-                    <input type="file" @change="handleFile" id="fileupload" style="display:none">
+                    <input type="file"  @change="handleFile" id="fileupload" style="display:none">
                     <i class="fas fa-paperclip fa-2x"></i>
                   </label>
                 </div>
@@ -193,6 +193,7 @@
                 type="button"
                 class="btn btn-success"
                 @click="formSubmit()"
+                
               >ReSubmit For Analysis</button>
               <button v-if="uploading " type="button" class="btn btn-success" disabled>Uploading</button>
             </div>
@@ -251,7 +252,8 @@ export default {
       label: "Loading...",
       errorData: [],
       uploading: false,
-      resubmit: false
+      resubmit: false,
+      diasableFlag:false
     };
   },
   methods: {
@@ -332,6 +334,7 @@ export default {
       ) {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
+            this.diasableFlag=true;
             this.uploading = true;
             this.diasableFlag = true;
             if (this.resubmit) {
@@ -423,8 +426,9 @@ export default {
               swal("Hello world!");
               this.uploading = false;
               this.resubmit = true;
-              this.sapfileName = "";
-              this.dnafileName = "";
+              this.diasableFlag=false;
+              //this.sapfileName = "";
+              //this.dnafileName = "";
               this.sapfile = "";
               this.dnafile = "";
               swal({

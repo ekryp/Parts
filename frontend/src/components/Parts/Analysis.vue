@@ -1065,8 +1065,8 @@
                   v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Failed'"
                   type="button"
                   class="btn btn-success"
-                  disabled
-                >Failed</button>
+                  @click="redirectToError()"
+                >Error Details</button>
                 <button
                   v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
                   type="button"
@@ -1285,9 +1285,14 @@ export default {
         });
     },
     redirectToSummary() {
-      console.log("inside summary");
       router.push({
         path: "/parts/analysis",
+        query: { id: this.requestId }
+      });
+    },
+    redirectToError() {
+      router.push({
+        path: "/parts/analysis/error",
         query: { id: this.requestId }
       });
     },
