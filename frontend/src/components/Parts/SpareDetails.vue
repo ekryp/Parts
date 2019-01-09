@@ -96,6 +96,7 @@
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
                 :width="80"
+                v-tooltip.top.hover.focus="'Click to Toggle'"
                 @change="stateChange()"
               />
               <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
@@ -176,7 +177,7 @@
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
               <button type="button" class="btn btn-success">
-                <download-excel :data="currentGross" type="csv">
+                <download-excel :data="currentGross" type="csv" v-tooltip.top.hover.focus="'Click to Download'">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
@@ -219,6 +220,7 @@
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
                 :width="80"
+                v-tooltip.top.hover.focus="'Click to Toggle'"
                 @change="stateChange()"
               />
               <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
@@ -529,10 +531,6 @@ a {
     color:#71869e;
 
 }
-.vue-tooltip {
-    background-color: white;
-    color:#71869e;
-    
-}
+
 
 </style>

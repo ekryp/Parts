@@ -181,19 +181,21 @@
                 v-if="!uploading"
                 class="btn btn-danger"
                 @click="cancel()"
+                v-tooltip.top.hover.focus="'Move to Analysis Dashboard'"
               >Back</button>&nbsp; &nbsp;
               <button
                 v-if="requestId === '' && !uploading && !resubmit"
                 type="button"
                 class="btn btn-success"
                 @click="formSubmit()"
+                v-tooltip.top.hover.focus="'Click to Submit'"
               >Submit For Analysis</button>
               <button
                 v-if="requestId === '' && !uploading && resubmit"
                 type="button"
                 class="btn btn-success"
                 @click="formSubmit()"
-                
+                v-tooltip.top.hover.focus="'Click to Resubmit'"
               >ReSubmit For Analysis</button>
               <button v-if="uploading " type="button" class="btn btn-success" disabled>Uploading</button>
             </div>

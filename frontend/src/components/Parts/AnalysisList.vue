@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="float-right" style="marginTop:1%">
-        <button type="button" class="btn btn-success" @click="createAnalysis">Create Analysis</button>
+        <button type="button" class="btn btn-success" @click="createAnalysis" v-tooltip.top.hover.focus="'Click to Create'">Create Analysis</button>
       </div>
       <div class="float-left" style="marginTop:1%">
         <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
