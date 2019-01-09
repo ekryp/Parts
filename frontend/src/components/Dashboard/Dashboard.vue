@@ -17,6 +17,7 @@
           :sync="true"
           :labels="{checked: 'ReOrder', unchecked: 'Total'}"
           :width="80"
+          v-tooltip.top.hover.focus="'Click to Toggle'"
           @change="stateChange()"
         />
         <div class="row text-center">
@@ -227,6 +228,9 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import VueGeolocation from "vue-browser-geolocation";
 import * as constant from "../constant/constant";
 import GmapCluster from "vue2-google-maps/dist/components/cluster";
+import VTooltip from 'v-tooltip'
+
+Vue.use(VTooltip)
 
 Vue.component("GmapCluster", GmapCluster);
 Vue.use(VueGeolocation);
@@ -511,6 +515,11 @@ export default {
 .myBreadCrumb {
   margin-top: -2%;
   margin-bottom: 2%;
+}
+.vue-tooltip {
+    background-color: white;
+    color:#71869e;
+    
 }
 </style>
 

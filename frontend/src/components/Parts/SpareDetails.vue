@@ -98,7 +98,7 @@
                 :width="80"
                 @change="stateChange()"
               />
-              <button type="button" class="btn btn-success">
+              <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
                 <download-excel :data="currentInventory" type="csv">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
@@ -137,7 +137,7 @@
           <br>
           <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="float-right">
-              <button type="button" class="btn btn-success">
+              <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
                 <download-excel :data="currentib" type="csv">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
@@ -221,7 +221,7 @@
                 :width="80"
                 @change="stateChange()"
               />
-              <button type="button" class="btn btn-success">
+              <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
                 <download-excel :data="currentNet" type="csv">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
@@ -311,6 +311,7 @@ import AnalysisSummary from "@/components/Parts/AnalysisSummary";
 import * as data from "./data.json";
 import Vue from "vue";
 import * as constant from "../constant/constant";
+
 
 export default {
   name: "SpareDetails",
@@ -523,4 +524,15 @@ a {
   margin-top: -2%;
   margin-bottom: 2%;
 }
+.vue-tooltip {
+    background-color: white;
+    color:#71869e;
+
+}
+.vue-tooltip {
+    background-color: white;
+    color:#71869e;
+    
+}
+
 </style>

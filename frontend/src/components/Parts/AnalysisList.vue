@@ -68,7 +68,7 @@
         <button type="button" class="btn btn-success" @click="createAnalysis">Create Analysis</button>
       </div>
       <div class="float-left" style="marginTop:1%">
-        <button type="button" class="btn btn-success">
+        <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
           <download-excel :data="partsAnalysisRequestList" type="csv">
             <i class="fas fa-file-excel"></i>
             &nbsp;
@@ -349,5 +349,10 @@ function actionCellRenderer(params) {
 .myBreadCrumb {
   margin-top: -2%;
   margin-bottom: 2%;
+}
+.vue-tooltip {
+    background-color: white;
+    color:#71869e;
+    
 }
 </style>

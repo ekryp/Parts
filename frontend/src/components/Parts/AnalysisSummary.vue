@@ -51,9 +51,10 @@
         cssColors:true
         :labels="{checked: 'ReOrder', unchecked: 'Total'}"
         :width="80"
+        v-tooltip.top.hover.focus="'Click to Toggle'"
         @change="stateChange()"
       />
-      <button type="button" class="btn btn-success">
+      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" >
         <download-excel :data="partsAnalysisSummaryReslut" type="csv">
           <i class="fas fa-file-excel"></i>
           &nbsp;
@@ -121,6 +122,9 @@ import Vue2Filters from "vue2-filters";
 import Vue from "vue";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/css/index.css';
+Vue.use(Tooltip);
 
 Vue.use(Vue2Filters);
 export default {
@@ -148,7 +152,8 @@ export default {
       toggle: "reorder",
       state: true,
       columnDefs: null,
-      rowData: null
+      rowData: null,
+      msg:"gededed"
     };
   },
   methods: {
@@ -233,4 +238,12 @@ export default {
   background-color: #f5f5f5 !important;
   opacity: 1;
 }
+.vue-tooltip {
+    background-color: white;
+    color:#71869e;
+    
+}
+
+
+
 </style>

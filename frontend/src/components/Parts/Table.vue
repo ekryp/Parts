@@ -13,12 +13,13 @@
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
                 :width="80"
+                v-tooltip.top.hover.focus="'Click to Toggle'"
                 @change="stateChange()"
               />
             </div>
             <div class="float-left">
               <button type="button" class="btn btn-success">
-                <download-excel :data="top_extended" type="csv">
+                <download-excel :data="top_extended" type="csv" v-tooltip.top.hover.focus="'Click to Download'">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
@@ -229,6 +230,11 @@ export default {
 
 .in-progress {
   cursor: pointer;
+}
+.vue-tooltip {
+    background-color: white;
+    color:#71869e;
+    
 }
 </style>
 
