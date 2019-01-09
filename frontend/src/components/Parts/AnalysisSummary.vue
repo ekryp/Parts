@@ -54,7 +54,7 @@
         v-tooltip.top.hover.focus="'Click to Toggle'"
         @change="stateChange()"
       />
-      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" >
+      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
         <download-excel :data="partsAnalysisSummaryReslut" type="csv">
           <i class="fas fa-file-excel"></i>
           &nbsp;
@@ -75,12 +75,15 @@
           <th rowspan="2" scope="col">Standard Cost($)</th>
           <th colspan="2" scope="col">Gross Requirement</th>
           <th colspan="2" scope="col">Net Requirement</th>
+          <th colspan="2" scope="col">Hight Spare Requirement</th>
           <th rowspan="2" scope="col">Has High Spare?</th>
         </tr>
         <tr style="fontSize:1vw">
           <!-- <th scope="col">Customer Name</th> -->
           <th scope="col">Quantity</th>
           <th scope="col">Ext Standard Cost($)</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Standard Cost($)</th>
           <th scope="col">Quantity</th>
           <th scope="col">Standard Cost($)</th>
         </tr>
@@ -101,6 +104,8 @@
           <td class="right">{{item.std_gross_cost | currency('')}}</td>
           <td>{{item.net_qty}}</td>
           <td class="right">{{item.net_std_cost | currency('')}}</td>
+          <td>{{item.spare_count}}</td>
+          <td class="right">{{item.ext_spare_cost | currency('')}}</td>
           <td v-if="item.high_spare != 0">
             <input type="checkbox" name="vehicle3" value="{item.high_spare}" checked>
           </td>
@@ -122,8 +127,8 @@ import Vue2Filters from "vue2-filters";
 import Vue from "vue";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
-import Tooltip from 'vue-directive-tooltip';
-import 'vue-directive-tooltip/css/index.css';
+import Tooltip from "vue-directive-tooltip";
+import "vue-directive-tooltip/css/index.css";
 Vue.use(Tooltip);
 
 Vue.use(Vue2Filters);
@@ -153,7 +158,7 @@ export default {
       state: true,
       columnDefs: null,
       rowData: null,
-      msg:"gededed"
+      msg: "gededed"
     };
   },
   methods: {
@@ -239,11 +244,7 @@ export default {
   opacity: 1;
 }
 .vue-tooltip {
-    background-color: white;
-    color:#71869e;
-    
+  background-color: white;
+  color: #71869e;
 }
-
-
-
 </style>
