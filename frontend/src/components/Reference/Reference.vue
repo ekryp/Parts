@@ -9,83 +9,258 @@
        </p>
      </div>
      <div class="shadow-lg p-3 mb-5 bg-white rounded">
-       <h5>Refernce File Information</h5>
+       <h5>Reference File Information</h5>
        <div class="form-group">
+
          <div class="row" style="marginTop:2%">
-           <div class="col-lg-5">
-             <div class="col-lg-4">
-               <label style="font-size:19px"> Refernce Name :</label>
-             </div>
-             <div class="col-lg-6">
-              <input v-if="referenceId === ''"  
-               type="text" 
-               class="form-control"
-              placeholder="Enter Reference Name" 
-              v-model="referenceName">
-              <input v-if="referenceName !== '' && referenceName !== undefined"
-               type="text" 
-               class="form-control"
-               v-model="referenceName"
-               >
-             </div>
+           <div class="col-lg-3">
+               <label style="font-size:19px"> Part File :</label>
            </div>
-           <div class="col-lg-5">
-             <div class="col-lg-4">
-               <label style="font-size:19px">Reference File :</label>
-             </div>
-             <div class="col-lg-6">
-               <div class="row">
+           <div class="col-lg-4">
+             <div class="row">
+                 <div class="col-lg-1" >
+                   <label for="fileupload" class="file">
+                     <input type="file" @change="partsFileEvent" id="fileupload" style="display:none">
+                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                   </label>
+                 </div>
+                 <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{partsFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-3" style="cursor:pointer">
+            <download-excel :data="partsAnalysisRequestList" type="csv" name="Sample_Parts.csv">
+              <div class="float-left" style="marginTop:1%">
+                <i class="fa fa-download" aria-hidden="true"></i> 
+              </div>
+              <div style="paddingLeft:7%;paddingTop:1%" >
+                <span>Download Sample_Parts.csv</span>
+                </div>
+            </download-excel>  
+           </div>
+           <div class="col-lg-2">
+             <button  v-if="referenceId !== ''" type="button" class="btn btn-success" @click="uploadPartsData()">Update</button>
+             <button  v-else type="button" class="btn btn-success" @click="uploadPartsData()">Save</button>
+           </div>
+         </div>
+
+         <div class="row" style="marginTop:2%">
+           <div class="col-lg-3">
+               <label style="font-size:19px"> Depot File :</label>
+           </div>
+           <div class="col-lg-3">
+             <div class="row">
                  <div class="col-lg-1">
                    <label for="fileupload" class="file">
                      <input type="file" @change="analysisFile" id="fileupload" style="display:none">
                      <i class="fas fa-paperclip fa-2x"></i>
                    </label>
                  </div>
-                 <div style="paddingLeft:7%">
+                 <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
                    <span>{{analysisFileName}}</span>
                  </div>
                </div>
-             </div>
+           </div>
+           <div class="col-lg-4">
+             <div class="row">
+               <div class="float-left" style="marginTop:1%">
+                  <download-excel :data="partsAnalysisRequestList" type="csv">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </download-excel>
+                </div>
+                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
            </div>
            <div class="col-lg-2">
              <button  v-if="referenceId !== ''" type="button" class="btn btn-success" @click="updateReferenceData()">Update</button>
              <button  v-else type="button" class="btn btn-success" @click="uploadReferenceData()">Save</button>
            </div>
          </div>
+
+
+         <div class="row" style="marginTop:2%">
+           <div class="col-lg-3">
+               <label style="font-size:19px"> End Customer File :</label>
+           </div>
+           <div class="col-lg-3">
+             <div class="row">
+                 <div class="col-lg-1">
+                   <label for="fileupload" class="file">
+                     <input type="file" @change="analysisFile" id="fileupload" style="display:none">
+                     <i class="fas fa-paperclip fa-2x"></i>
+                   </label>
+                 </div>
+                 <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-4">
+             <div class="row">
+               <div class="float-left" style="marginTop:1%">
+                  <download-excel :data="partsAnalysisRequestList" type="csv">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </download-excel>
+                </div>
+                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-2">
+             <button  v-if="referenceId !== ''" type="button" class="btn btn-success" @click="updateReferenceData()">Update</button>
+             <button  v-else type="button" class="btn btn-success" @click="uploadReferenceData()">Save</button>
+           </div>
+         </div>
+
+
+         <div class="row" style="marginTop:2%">
+           <div class="col-lg-3">
+               <label style="font-size:19px"> High Spare File :</label>
+           </div>
+           <div class="col-lg-3">
+             <div class="row">
+                 <div class="col-lg-1">
+                   <label for="fileupload" class="file">
+                     <input type="file" @change="analysisFile" id="fileupload" style="display:none">
+                     <i class="fas fa-paperclip fa-2x"></i>
+                   </label>
+                 </div>
+                 <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-4">
+             <div class="row">
+               <div class="float-left" style="marginTop:1%">
+                  <download-excel :data="partsAnalysisRequestList" type="csv">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </download-excel>
+                </div>
+                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-2">
+             <button  v-if="referenceId !== ''" type="button" class="btn btn-success" @click="updateReferenceData()">Update</button>
+             <button  v-else type="button" class="btn btn-success" @click="uploadReferenceData()">Save</button>
+           </div>
+         </div>
+
+
+         <div class="row" style="marginTop:2%">
+           <div class="col-lg-3">
+               <label style="font-size:19px"> Misnomer PON Conversion File :</label>
+           </div>
+           <div class="col-lg-3">
+             <div class="row">
+                 <div class="col-lg-1">
+                   <label for="fileupload" class="file">
+                     <input type="file" @change="analysisFile" id="fileupload" style="display:none">
+                     <i class="fas fa-paperclip fa-2x"></i>
+                   </label>
+                 </div>
+                 <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-4">
+             <div class="row">
+               <div class="float-left" style="marginTop:1%">
+                  <download-excel :data="partsAnalysisRequestList" type="csv">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </download-excel>
+                </div>
+                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-2">
+             <button  v-if="referenceId !== ''" type="button" class="btn btn-success" @click="updateReferenceData()">Update</button>
+             <button  v-else type="button" class="btn btn-success" @click="uploadReferenceData()">Save</button>
+           </div>
+         </div>
+
+         <div class="row" style="marginTop:2%">
+           <div class="col-lg-3">
+               <label style="font-size:19px"> MTBF Spare requirement File :</label>
+           </div>
+           <div class="col-lg-3">
+             <div class="row">
+                 <div class="col-lg-1">
+                   <label for="fileupload" class="file">
+                     <input type="file" @change="analysisFile" id="fileupload" style="display:none">
+                     <i class="fas fa-paperclip fa-2x"></i>
+                   </label>
+                 </div>
+                 <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-4">
+             <div class="row">
+               <div class="float-left" style="marginTop:1%">
+                  <download-excel :data="partsAnalysisRequestList" type="csv">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </download-excel>
+                </div>
+                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-2">
+             <button  v-if="referenceId !== ''" type="button" class="btn btn-success" @click="updateReferenceData()">Update</button>
+             <button  v-else type="button" class="btn btn-success" @click="uploadReferenceData()">Save</button>
+           </div>
+         </div>
+
+         <div class="row" style="marginTop:2%">
+           <div class="col-lg-3">
+               <label style="font-size:19px"> Site Node File :</label>
+           </div>
+           <div class="col-lg-3">
+             <div class="row">
+                 <div class="col-lg-1">
+                   <label for="fileupload" class="file">
+                     <input type="file" @change="analysisFile" id="fileupload" style="display:none">
+                     <i class="fas fa-paperclip fa-2x"></i>
+                   </label>
+                 </div>
+                 <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-4">
+             <div class="row">
+               <div class="float-left" style="marginTop:1%">
+                  <download-excel :data="partsAnalysisRequestList" type="csv">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </download-excel>
+                </div>
+                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
+                   <span>{{analysisFileName}}</span>
+                 </div>
+               </div>
+           </div>
+           <div class="col-lg-2">
+             <button  v-if="referenceId !== ''" type="button" class="btn btn-success" @click="updateReferenceData()">Update</button>
+             <button  v-else type="button" class="btn btn-success" @click="uploadReferenceData()">Save</button>
+           </div>
+         </div>
+
        </div>
      </div>
-     <div class="shadow-lg p-3 mb-5 bg-white rounded">
-       <table class="table">
-         <thead>
-           <tr>
-             <th scope="col">Active Version</th>
-             <th scope="col">Reference Name</th>
-             <th scope="col">Version</th>
-             <th scope="col">Update</th>
-           </tr>
-         </thead>
-         <tbody>
-           <tr
-              v-for="reference in referenceDetails"
-              :key="reference.id"
-              style="fontSize:1vw; cursor:pointer"
-            >
-              <!-- <td class="left">{{item.customer_name}}</td> -->
-              <td v-if="reference.isactive != 0">
-                <input type="checkbox" name="{reference.id}" value="{reference.id}" id="{reference.id}"  checked >
-              </td>
-              <td v-else>
-                <input type="checkbox" name="{reference.id}"  >
-              </td>
-              <td>{{reference.name}}</td>
-              <td>{{reference.version}}</td>
-              <td>
-              <i class="fas fa-pencil-alt" @click="uncheckOthers(reference.id)"></i>
-              </td>
-            </tr>
-         </tbody>
-       </table>
-     </div>
+     
    </div>
  </div>
 </template>
@@ -95,6 +270,8 @@ import router from "../../router";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import * as constant from "../constant/constant";
+//import * as partsData from "../../utilies/sampleparts.json";
+import * as partsData from "../../utilies/dumpdata.json";
 
 export default {
   name: "Reference",
@@ -108,28 +285,24 @@ export default {
   data() {
     console.log("home");
     return {
-      analysisfile: "",
-      analysisFileName: "",
-      referenceName:"",
+      partsFile: "",
+      partsFileName: "no file chosen",
       email_id:"khali.saran@ekryp.com",
-      referenceDetails:[],
-      referenceId:""
+      partsAnalysisRequestList:partsData
     };
   },
   methods: {
-    analysisFile(e) {
+    partsFileEvent(e) {
       console.log("hi");
       console.log("image ----sap->", e.target.files);
       const file = e.target.files[0];
       if (
-        file.name.endsWith("xlsx") ||
         file.name.endsWith("csv") ||
-        file.name.endsWith("XLSX") ||
         file.name.endsWith("CSV")
       ) {
         console.log(file.name);
-        this.analysisFileName = file.name;
-        this.analysisfile = file;
+        this.partsFile = file;
+        this.partsFileName=file.name;
       } else {
         alert("error");
       }
@@ -159,29 +332,23 @@ export default {
 
     ,
 
-    uploadReferenceData() {
+    uploadPartsData() {
       console.log(localStorage.getItem('email_id'));
       //let email_id = localStorage.getItem("email_id");
       this.email_id = "khali.saran@ekryp.com";
        let data = {
-         referenceName: this.referenceName,
-         analysisFileName: this.analysisFileName,
          analysisfile: this.analysisfile,
          email_id:this.email_id
-
        };
-       if (
-         this.referenceName !== "" ) {
-         if (this.analysisfile !== "") {
+       
+         if (this.partsfile !== "") {
              this.post_reference_data(data);
            }
            else {
-           alert("Please add your Reference File");
+           alert("Please add your Parts File");
          }
-         } 
-       else {
-         alert("Please fill the Form to submit");
-       }
+         
+       
      },
      uncheckOthers(id){
       //  let tmp=[1,3,4]
@@ -209,15 +376,13 @@ export default {
          console.log("refer ID",this.referenceId);
         }
      },
-     updateReferenceData()
+     updatePartsData()
      {
        console.log(localStorage.getItem('email_id'));
       //let email_id = localStorage.getItem("email_id");
       this.email_id = "khali.saran@ekryp.com";
        let data = {
-         referenceName: this.referenceName,
-         analysisFileName: this.analysisFileName,
-         analysisfile: this.analysisfile,
+         partsFile: this.partsFile,
          email_id:this.email_id,
          //reference_id:this.referenceId
 
@@ -234,17 +399,15 @@ export default {
      {
 
       let formData = new FormData();
-
-      formData.append("reference_name", data.referenceName);
+      formData.append("parts_file", data.partsFile);
       formData.append("user_email_id", data.email_id);
-      formData.append("reference_file", data.analysisfile);
       if(this.referenceId !== "")
       {
         formData.append("reference_id",this.referenceId);
       }
       
-      console.log("formdata ----->", formData.get("reference_file"));
-      fetch(constant.APIURL + "api/v1/reference", {
+      console.dir("formdata ----->asd", formData.get("parts_file"));
+      fetch("http://10.138.1.3:5000/api/v1/post_parts", {
         method: "POST",
         body: formData
       })

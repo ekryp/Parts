@@ -330,7 +330,7 @@ function actionCellRenderer(params) {
   let skills = [];
   
   skills.push(
-    '<i class="far fa-eye"></i>'
+    '<i style="cursor:pointer" class="far fa-eye"></i>'
   );
   
   return skills.join(" ");
