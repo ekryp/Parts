@@ -88,7 +88,7 @@
           aria-labelledby="nav-home-tab"
         >
           <br>
-          <div class="shadow p-3 mb-5 bg-white rounded">
+          <div class="shadow p-3 mb-5 bg-white rounded" id="CurrDiv">
             <div class="float-right">
               <toggle-button
                 :value="state"
@@ -110,23 +110,23 @@
             <br>
             <br>
             <br>
-            <table id="currentInventory" class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Part Name</th>
-                  <th scope="col">Depot Name</th>
-                  <th v-if="state === true" scope="col">ReOrder Point</th>
-                  <th v-if="state === false" scope="col">Total Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in currentInventory" :key="item.summary_id">
-                  <th>{{item.part_name}}</th>
-                  <td>{{item.depot_name}}</td>
-                  <td>{{item.qty}}</td>
-                </tr>
-              </tbody>
-            </table>
+           <ag-grid-vue
+              style="width: 100%; height: 345px;"
+              class="ag-theme-balham"
+              :columnDefs="currColumnDefs"
+              :rowData="currRowData"
+              :gridOptions="gridOptions3"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="10"
+              :gridReady="currOnReady"
+              :gridSizeChanged="currOnReady"
+
+            ></ag-grid-vue> 
           </div>
         </div>
         <div
@@ -136,7 +136,7 @@
           aria-labelledby="nav-profile-tab"
         >
           <br>
-          <div class="shadow p-3 mb-5 bg-white rounded">
+          <div class="shadow p-3 mb-5 bg-white rounded" id="IbDiv">
             <div class="float-right">
               <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
                 <download-excel :data="currentib" type="csv">
@@ -149,7 +149,7 @@
             <br>
             <br>
             <br>
-            <table id="currentIBQuantity" class="table table-bordered">
+            <!-- <table id="currentIBQuantity" class="table table-bordered">
               <thead>
                 <tr>
                   <th scope="col">Product Ordering Name</th>
@@ -164,7 +164,24 @@
                   <td>{{x.pon_quanity}}</td>
                 </tr>
               </tbody>
-            </table>
+            </table> -->
+            <ag-grid-vue
+              style="width: 100%; height: 345px;"
+              class="ag-theme-balham"
+              :columnDefs="ibColumnDefs"
+              :rowData="ibRowData"
+              :gridOptions="gridOptions2"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="10"
+              :gridReady="ibOnReady"
+              :gridSizeChanged="ibOnReady"
+            ></ag-grid-vue> 
+              
           </div>
         </div>
         <div
@@ -174,7 +191,7 @@
           aria-labelledby="nav-contact-tab"
         >
           <br>
-          <div class="shadow p-3 mb-5 bg-white rounded">
+          <div class="shadow p-3 mb-5 bg-white rounded" id="GrossDiv">
             <div class="float-right">
               <button type="button" class="btn btn-success">
                 <download-excel :data="currentGross" type="csv" v-tooltip.top.hover.focus="'Click to Download'">
@@ -187,22 +204,24 @@
             <br>
             <br>
             <br>
-            <table id="currentCross" class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Part Name</th>
-                  <th scope="col">Depot Name</th>
-                  <th scope="col">Shared Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="i in currentGross" :key="i.summary_id">
-                  <td>{{i.part_name}}</td>
-                  <td>{{i.depot_name}}</td>
-                  <td>{{i.gross_qty}}</td>
-                </tr>
-              </tbody>
-            </table>
+           
+            <ag-grid-vue
+              style="width: 100%; height: 345px;"
+              class="ag-theme-balham"
+              :columnDefs="grossColumnDefs"
+              :rowData="grossRowData"
+              :gridOptions="gridOptions"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="10"
+              :gridReady="grossOnReady"
+              :gridSizeChanged="grossOnReady"
+
+            ></ag-grid-vue>
           </div>
         </div>
         <div
@@ -212,7 +231,7 @@
           aria-labelledby="nav-netInventory-tab"
         >
           <br>
-          <div class="shadow p-3 mb-5 bg-white rounded">
+          <div class="shadow p-3 mb-5 bg-white rounded" id="NetDiv">
             <div class="float-right">
               <toggle-button
                 :value="state"
@@ -234,22 +253,24 @@
             <br>
             <br>
             <br>
-            <table id="netInventory" class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">Part Name</th>
-                  <th scope="col">Depot Name</th>
-                  <th scope="col">Net Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="i in currentNet" :key="i.summary_id">
-                  <td>{{i.part_name}}</td>
-                  <td>{{i.depot_name}}</td>
-                  <td>{{i.net_qty}}</td>
-                </tr>
-              </tbody>
-            </table>
+           <ag-grid-vue
+              style="width: 100%; height: 345px;"
+              class="ag-theme-balham"
+              :columnDefs="netColumnDefs"
+              :rowData="netRowData"
+              :gridOptions="gridOptions1"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="10"
+              :gridReady="netOnReady"
+              :gridSizeChanged="netOnReady"
+
+            ></ag-grid-vue> 
+              
           </div>
         </div>
          <div
@@ -259,7 +280,7 @@
           aria-labelledby="nav-error-tab"
         >
           <br>
-          <div class="shadow p-3 mb-5 bg-white rounded">
+          <div class="shadow p-3 mb-5 bg-white rounded" id="ErrorDiv">
             <!-- <div class="float-right">
               <toggle-button
                 :value="state"
@@ -280,24 +301,23 @@
             <br>
             <br> -->
             <br>
-            <table id="errorTable" class="table table-bordered table-hover center">
-              <thead>
-                <tr>
-                  <th scope="col">Parts Name</th>
-                  <th scope="col">Error Reason</th>
-                  <th scope="col">Node Name</th>
-                  <th scope="col">Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in errorData" :key="item.id">
-                  <td>{{item.PON}}</td>
-                  <td>{{item.error_reason}}</td>
-                  <td>{{item.node_name}}</td>
-                  <td>{{item.type}}</td>
-                </tr>
-              </tbody>
-            </table>
+            <ag-grid-vue
+              style="width: 100%; height: 345px;"
+              class="ag-theme-balham"
+              :columnDefs="errorColumnDefs"
+              :rowData="errorRowData"
+              :gridOptions="ErrorGridOptions"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="10"
+              :gridReady="errorOnReady"
+              :gridSizeChanged="errorOnReady"
+
+            ></ag-grid-vue> 
           </div>
         </div>
       </div>
@@ -313,6 +333,7 @@ import AnalysisSummary from "@/components/Parts/AnalysisSummary";
 import * as data from "./data.json";
 import Vue from "vue";
 import * as constant from "../constant/constant";
+import { AgGridVue } from "ag-grid-vue";
 
 
 export default {
@@ -320,11 +341,17 @@ export default {
   components: {
     SideNav,
     headernav,
-    AnalysisSummary
+    AnalysisSummary,
+    AgGridVue
   },
   created() {
     this.requestID = this.$route.query.id;
     console.log("requestId ---->", this.requestId);
+    this.createNetColumnDefs();
+    this.createGrossColumnDefs();
+    this.createIbColumnDefs();
+    this.createCurrColumnDefs();
+    this.createErrorColumnDefs();
     this.get_error_records(this.$route.query.id);
     this.get_current_inventory_specific_request(this.$route.query.id);
     this.get_gross_specific_request(this.$route.query.id);
@@ -343,8 +370,48 @@ export default {
       currentNet: [],
       currentib: [],
       errorData: [],
+      grossColumnDefs: null,
+      grossRowData: [],
+      netColumnDefs: null,
+      netRowData: [],
+      ibColumnDefs: null,
+      ibRowData: [],
+      currColumnDefs: null,
+      currRowData: [],
+      errorColumnDefs: null,
+      errorRowData: [],
       postMenu: "Analysis >",
-      current: "Analysis Summary"
+      current: "Analysis Summary",
+      gridOptions: {
+        rowStyle: {
+          color: "#72879d"
+          // fontSize: "13.7px",
+        }
+      },gridOptions1: {
+        rowStyle: {
+          color: "#72879d"
+          // fontSize: "13.7px",
+        }
+      },
+      gridOptions2:{
+        rowStyle: {
+          color: "#72879d"
+          // fontSize: "13.7px",
+        }
+      },
+      gridOptions3:{
+        rowStyle: {
+          color: "#72879d"
+          // fontSize: "13.7px",
+        }
+      },
+      ErrorGridOptions:{
+        rowStyle: {
+          color: "#72879d"
+          // fontSize: "13.7px",
+        }
+      }
+       
     };
   },
   mounted() {
@@ -390,9 +457,14 @@ export default {
               data
             );
             this.currentInventory = data;
-            $(document).ready(function() {
-              $("#currentInventory").DataTable();
-            });
+            for (let i = 0; i < this.currentInventory.length; i++) 
+            {
+              this.currRowData.push({
+                  part_name: this.currentInventory[i].part_name,
+                  depot_name: this.currentInventory[i].depot_name,
+                  curr_quantity: this.currentInventory[i].qty
+                  });
+            }
           });
         })
         .catch(handleError => {
@@ -413,9 +485,14 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_gross_specific_request-->", data);
             this.currentGross = data;
-            $(document).ready(function() {
-              $("#currentCross").DataTable();
-            });
+            for (let i = 0; i < this.currentGross.length; i++) 
+            {
+              this.grossRowData.push({
+                  part_name: this.currentGross[i].part_name,
+                  depot_name: this.currentGross[i].depot_name,
+                  gross_quantity: this.currentGross[i].gross_qty
+                  });
+            }
           });
         })
         .catch(handleError => {
@@ -434,6 +511,15 @@ export default {
             const payload = text && JSON.parse(text);
             console.log("Get Error data ---->", payload);
             this.errorData = payload;
+             for (let i = 0; i < this.errorData.length; i++) 
+            {
+              this.errorRowData.push({
+                  part_name: this.errorData[i].PON,
+                  error_reason: this.errorData[i].error_reason,
+                  node_name: this.errorData[i].node_name,
+                  type: this.errorData[i].type
+                  });
+            }
           });
         })
         .catch(handleError => {
@@ -456,9 +542,14 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_current_net_specific_request-->", data);
             this.currentNet = data;
-            $(document).ready(function() {
-              $("#netInventory").DataTable();
-            });
+             for (let i = 0; i < this.currentNet.length; i++) 
+            {
+              this.netRowData.push({
+                  part_name: this.currentNet[i].part_name,
+                  depot_name: this.currentNet[i].depot_name,
+                  net_quantity: this.currentNet[i].net_qty,
+                  });
+            }
           });
         })
         .catch(handleError => {
@@ -481,9 +572,14 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_current_ib_specific_request-->", data);
             this.currentib = data;
-            $(document).ready(function() {
-              $("#currentIBQuantity").DataTable();
-            });
+            for (let i = 0; i < this.currentib.length; i++) 
+            {
+              this.ibRowData.push({
+                  node_depot_belongs: this.currentib[i].node_depot_belongs,
+                  pon_quanity: this.currentib[i].pon_quanity,
+                  product_ordering_name: this.currentib[i].product_ordering_name
+                  });
+            }
           });
         })
         .catch(handleError => {
@@ -492,8 +588,251 @@ export default {
     },
     redirectToAnalysis() {
       router.push("/parts/analysis/dashboard");
-    }
+    },
+    createGrossColumnDefs() {
+      this.grossColumnDefs = [
+        {
+          headerName: "Part Name",
+          field: "part_name",
+          width: 250
+        },
+        {
+          headerName: "Depot Name",
+          field: "depot_name",
+          width: 150
+        },
+        {
+          headerName: "Gross Quantity",
+          field: "gross_quantity",
+          width: 150
+        }
+      ];
+    },
+    createNetColumnDefs() {
+      this.netColumnDefs = [
+        {
+          headerName: "Part Name",
+          field: "part_name",
+          width: 250
+        },
+        {
+          headerName: "Depot Name",
+          field: "depot_name",
+          width: 150
+        },
+        {
+          headerName: "Net Quantity",
+          field: "net_quantity",
+          width: 150
+        }
+      ];
+    },
+    createIbColumnDefs() {
+      this.ibColumnDefs = [
+        {
+          headerName: "Product Ordering Name",
+          field: "node_depot_belongs",
+          width: 250
+        },
+        {
+          headerName: "Product Ordering Name",
+          field: "product_ordering_name",
+          width: 150
+        },
+        {
+          headerName: "PON Quantity",
+          field: "pon_quanity",
+          width: 150
+        }
+      ];
+    },
+    createCurrColumnDefs()
+    {
+      this.currColumnDefs = [
+        {
+          headerName: "Part Name",
+          field: "part_name",
+          width: 250
+        },
+        {
+          headerName: "Depot Name",
+          field: "depot_name",
+          width: 150
+        },
+        {
+          headerName: "Reorder Point",
+          field: "curr_quantity",
+          width: 150
+        }
+      ];
+    },
+    createErrorColumnDefs()
+    {
+      this.errorColumnDefs = [
+        {
+          headerName: "Part Name",
+          field: "part_name",
+          width: 250
+        },
+        {
+          headerName: "Error Reason",
+          field: "error_reason",
+          width: 150
+        },
+        {
+          headerName: "Node Name",
+          field: "node_name",
+          width: 150
+        },
+        {
+          headerName: "Type",
+          field: "type",
+          width: 150
+        }
+      ];
+    },
+    grossOnReady(event) {
+       var gridWidth = document.getElementById('GrossDiv').offsetWidth;
+
+        // keep track of which columns to hide/show
+        var columnsToShow = [];
+        var columnsToHide = [];
+
+        // iterate over all columns (visible or not) and work out
+        // now many columns can fit (based on their minWidth)
+        var totalColsWidth = 0;
+        var allColumns = event.columnApi.getAllColumns();
+        for (var i = 0; i < allColumns.length; i++) {
+            let column = allColumns[i];
+            totalColsWidth += column.getMinWidth();
+            if (totalColsWidth > gridWidth) {
+                columnsToHide.push(column.colId);
+            } else {
+                columnsToShow.push(column.colId);
+            }
+        }
+
+        // show/hide columns based on current grid width
+        event.columnApi.setColumnsVisible(columnsToShow, true);
+        event.columnApi.setColumnsVisible(columnsToHide, false);
+
+        // fill out any available space to ensure there are no gaps
+        event.api.sizeColumnsToFit();
+      },
+      netOnReady(event) {
+       var gridWidth = document.getElementById('NetDiv').offsetWidth;
+
+        // keep track of which columns to hide/show
+        var columnsToShow = [];
+        var columnsToHide = [];
+
+        // iterate over all columns (visible or not) and work out
+        // now many columns can fit (based on their minWidth)
+        var totalColsWidth = 0;
+        var allColumns = event.columnApi.getAllColumns();
+        for (var i = 0; i < allColumns.length; i++) {
+            let column = allColumns[i];
+            totalColsWidth += column.getMinWidth();
+            if (totalColsWidth > gridWidth) {
+                columnsToHide.push(column.colId);
+            } else {
+                columnsToShow.push(column.colId);
+            }
+        }
+
+        // show/hide columns based on current grid width
+        event.columnApi.setColumnsVisible(columnsToShow, true);
+        event.columnApi.setColumnsVisible(columnsToHide, false);
+
+        // fill out any available space to ensure there are no gaps
+        event.api.sizeColumnsToFit();
+      },
+      ibOnReady(event) {
+       var gridWidth = document.getElementById('IbDiv').offsetWidth;
+
+        // keep track of which columns to hide/show
+        var columnsToShow = [];
+        var columnsToHide = [];
+
+        // iterate over all columns (visible or not) and work out
+        // now many columns can fit (based on their minWidth)
+        var totalColsWidth = 0;
+        var allColumns = event.columnApi.getAllColumns();
+        for (var i = 0; i < allColumns.length; i++) {
+            let column = allColumns[i];
+            totalColsWidth += column.getMinWidth();
+            if (totalColsWidth > gridWidth) {
+                columnsToHide.push(column.colId);
+            } else {
+                columnsToShow.push(column.colId);
+            }
+        }
+
+        // show/hide columns based on current grid width
+        event.columnApi.setColumnsVisible(columnsToShow, true);
+        event.columnApi.setColumnsVisible(columnsToHide, false);
+
+        // fill out any available space to ensure there are no gaps
+        event.api.sizeColumnsToFit();
+      },
+      currOnReady(event) {
+       var gridWidth = document.getElementById('CurrDiv').offsetWidth;
+
+        // keep track of which columns to hide/show
+        var columnsToShow = [];
+        var columnsToHide = [];
+
+        // iterate over all columns (visible or not) and work out
+        // now many columns can fit (based on their minWidth)
+        var totalColsWidth = 0;
+        var allColumns = event.columnApi.getAllColumns();
+        for (var i = 0; i < allColumns.length; i++) {
+            let column = allColumns[i];
+            totalColsWidth += column.getMinWidth();
+            if (totalColsWidth > gridWidth) {
+                columnsToHide.push(column.colId);
+            } else {
+                columnsToShow.push(column.colId);
+            }
+        }
+
+        // show/hide columns based on current grid width
+        event.columnApi.setColumnsVisible(columnsToShow, true);
+        event.columnApi.setColumnsVisible(columnsToHide, false);
+
+        // fill out any available space to ensure there are no gaps
+        event.api.sizeColumnsToFit();
+      },
+      errorOnReady(event) {
+       var gridWidth = document.getElementById('ErrorDiv').offsetWidth;
+
+        // keep track of which columns to hide/show
+        var columnsToShow = [];
+        var columnsToHide = [];
+
+        // iterate over all columns (visible or not) and work out
+        // now many columns can fit (based on their minWidth)
+        var totalColsWidth = 0;
+        var allColumns = event.columnApi.getAllColumns();
+        for (var i = 0; i < allColumns.length; i++) {
+            let column = allColumns[i];
+            totalColsWidth += column.getMinWidth();
+            if (totalColsWidth > gridWidth) {
+                columnsToHide.push(column.colId);
+            } else {
+                columnsToShow.push(column.colId);
+            }
+        }
+
+        // show/hide columns based on current grid width
+        event.columnApi.setColumnsVisible(columnsToShow, true);
+        event.columnApi.setColumnsVisible(columnsToHide, false);
+
+        // fill out any available space to ensure there are no gaps
+        event.api.sizeColumnsToFit();
+      }
   }
+  
 };
 </script>
 <style>
@@ -531,6 +870,4 @@ a {
     color:#71869e;
 
 }
-
-
 </style>
