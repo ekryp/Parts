@@ -371,6 +371,7 @@ def read_sap_export_file(sap_file):
     sap_inventory_data = pd.read_excel(sap_file, sheet_name='Sheet1')
     return sap_inventory_data
 
+
 def to_sql_current_ib(table_name, df, analysis_id):
 
     engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
@@ -384,6 +385,17 @@ def to_sql_current_ib(table_name, df, analysis_id):
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
 
+
+def to_sql_part_table(df):
+    df['cust_id'] = 7
+    df['part_number'] = 0
+    df.to_sql(name='parts', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into parts table")
+
+
+def to_sql_std_cost_table(df):
+    df.to_sql(name='part cost ID', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into std_cost table")
 
 
 

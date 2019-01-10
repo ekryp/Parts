@@ -7,7 +7,8 @@ from app import app
 from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
-    add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib
+    add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
+    to_sql_std_cost_table
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -585,6 +586,62 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         print(str(e))
         set_request_status('Failed', analysis_id,'Unknown Reason')
         print(150 * "*")
+
+@celery.task
+def part_table_creation(part_file, extension):
+
+    if extension.lower() == '.csv':
+        part_df = pd.read_csv(part_file)
+
+    elif extension.lower() == '.txt':
+        part_df = pd.read_csv(part_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        part_df = pd.read_excel(part_file)
+
+    # Remove records having cost as NULL & part_name as NULL
+    part_df.dropna(subset=['part_name', 'standard_cost'], inplace=True)
+
+    # Remove duplicate part_name
+    part_df.drop_duplicates(subset="part_name", keep="first", inplace=True)
+
+    # Replace null in part_reliability_class to Others
+    part_df['part_reliability_class'] = part_df['part_reliability_class'].fillna('Others')
+
+    # Part table is without std_cost ,std_cost is seperate table
+    part_table_column = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute']
+
+    # delete parts & append with new values
+    query = "delete from parts"
+    engine.execute(query)
+
+    # Parts table populated
+    to_sql_part_table(part_df[part_table_column])
+
+    # To populate std_cost table,first get part_id with part_name
+    df = pd.read_sql_table(table_name='parts', con=create_engine(Configuration.ECLIPSE_DATA_DB_URI))
+
+    # keep only required column in dataframe
+    df = df[['part_id', 'part_name']]
+
+    # Merge with part_df to get part_id from part_name
+    std_cost_df = pd.merge(part_df, df, on=['part_name'], how='left')
+    std_cost_df = std_cost_df[['part_id', 'material_number', 'standard_cost']]
+    std_cost_df['material_number'] = std_cost_df['material_number'].astype(int)
+
+    # delete parts & append with new values
+    query = "delete from `part cost ID`"
+    engine.execute(query)
+
+    # std_cost table populated
+    to_sql_std_cost_table(std_cost_df)
+
+
+
+
+
+
+
 
 
 

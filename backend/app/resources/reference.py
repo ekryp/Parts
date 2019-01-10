@@ -1,7 +1,7 @@
 from datetime import datetime
 from app import app
 from app import csvs, excel, mytext
-from app.tasks import celery, add_prospect, update_prospect_step
+from app.tasks import celery, part_table_creation
 from flask import jsonify
 from flask import request
 from flask_restful import Resource
@@ -67,7 +67,8 @@ class UploadParts(Resource):
         try:
             check_part_file(parts_file, extension)
 
-            celery.send_task('app.tasks.part_table_creation', [parts_file])
+            #part_table_creation(parts_file, extension)
+            celery.send_task('app.tasks.part_table_creation', [parts_file, extension])
             return jsonify(msg="Part File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
