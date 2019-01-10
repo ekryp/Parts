@@ -120,6 +120,8 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
     GetErrorRecords
 
+from app.resources.reference import UploadParts
+
 
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
@@ -153,6 +155,7 @@ api.add_resource(GetTopDepots, '/get_top_depots', endpoint='get_top_depots')
 api.add_resource(GetTopCustomer, '/get_top_customers', endpoint='get_top_customers')
 api.add_resource(GetTopExtended, '/get_top_extended', endpoint='get_top_extended')
 api.add_resource(GetLatLon, '/get_lat_lon', endpoint='get_lat_lon')
+api.add_resource(UploadParts, '/post_parts', endpoint='post_parts')
 
 
 app.register_blueprint(api_blueprint)
