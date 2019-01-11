@@ -399,9 +399,29 @@ def to_sql_std_cost_table(df):
 
 
 def to_sql_depot_table(df):
-    df['cust_id'] = 7
+    df.loc[:, 'cust_id'] = 7
     df.to_sql(name='depot', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into depot table")
+
+
+def to_sql_node_table(df):
+    df.loc[:, 'cust_id'] = 7
+    df.to_sql(name='node', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into node table")
+
+
+def to_sql_end_customer_table(df):
+    df.loc[:, 'end_cust_site_count'] = df.groupby('end_customer_node_belongs')['node_name'].transform('count')
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'end_cust_status'] = 'Active'
+
+    df.drop(['node_name', 'node_depot_belongs'], axis=1, inplace=True)
+    df.rename(columns={
+        'end_customer_node_belongs': 'end_cust_name'
+    }, inplace=True
+    )
+    df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into end_customer table")
 
 
 

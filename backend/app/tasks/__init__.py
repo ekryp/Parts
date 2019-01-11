@@ -8,7 +8,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
-    to_sql_std_cost_table, to_sql_depot_table
+    to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -649,12 +649,44 @@ def depot_table_creation(depot_file, extension):
     elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
         depot_df = pd.read_excel(depot_file)
 
+    # Remove duplicate part_name
+    depot_df.drop_duplicates(subset="depot_name", keep="first", inplace=True)
+
     # delete depot  & append with new values
     query = "delete from depot"
     engine.execute(query)
 
     # depot table populated
     to_sql_depot_table(depot_df)
+
+
+@celery.task
+def node_table_creation(node_file, extension):
+
+    if extension.lower() == '.csv':
+        node_df = pd.read_csv(node_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        node_df = pd.read_csv(node_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        node_df = pd.read_excel(node_file)
+
+    # Remove duplicate from dataframe
+    node_df.drop_duplicates(keep="first", inplace=True)
+
+    # delete node  & append with new values
+    query = "delete from node"
+    engine.execute(query)
+
+    #depot table populated
+    to_sql_node_table(node_df)
+
+    # delete end_customer & append with new values
+    query = "delete from end_customer"
+    engine.execute(query)
+
+    to_sql_end_customer_table(node_df)
 
 
 
