@@ -420,6 +420,7 @@ def to_sql_end_customer_table(df):
         'end_customer_node_belongs': 'end_cust_name'
     }, inplace=True
     )
+    df.drop_duplicates(subset="end_cust_name", inplace=True, keep="first")
     df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into end_customer table")
 
