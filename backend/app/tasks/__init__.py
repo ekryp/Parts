@@ -8,7 +8,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
-    to_sql_std_cost_table
+    to_sql_std_cost_table, to_sql_depot_table
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -591,7 +591,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
 def part_table_creation(part_file, extension):
 
     if extension.lower() == '.csv':
-        part_df = pd.read_csv(part_file)
+        part_df = pd.read_csv(part_file, error_bad_lines=False)
 
     elif extension.lower() == '.txt':
         part_df = pd.read_csv(part_file, sep='\t')
@@ -636,6 +636,25 @@ def part_table_creation(part_file, extension):
     # std_cost table populated
     to_sql_std_cost_table(std_cost_df)
 
+
+@celery.task
+def depot_table_creation(depot_file, extension):
+
+    if extension.lower() == '.csv':
+        depot_df = pd.read_csv(depot_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        depot_df = pd.read_csv(depot_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        depot_df = pd.read_excel(depot_file)
+
+    # delete depot  & append with new values
+    query = "delete from depot"
+    engine.execute(query)
+
+    # depot table populated
+    to_sql_depot_table(depot_df)
 
 
 

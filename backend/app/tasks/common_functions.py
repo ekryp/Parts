@@ -398,6 +398,12 @@ def to_sql_std_cost_table(df):
     print("Loaded into std_cost table")
 
 
+def to_sql_depot_table(df):
+    df['cust_id'] = 7
+    df.to_sql(name='depot', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into depot table")
+
+
 
 
 
