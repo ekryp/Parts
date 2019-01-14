@@ -8,7 +8,8 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
-    to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table
+    to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
+    to_sql_high_spare_table
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -687,6 +688,47 @@ def node_table_creation(node_file, extension):
     engine.execute(query)
 
     to_sql_end_customer_table(node_df)
+
+
+@celery.task
+def high_spare_table_creation(high_spare_file, extension):
+
+    if extension.lower() == '.csv':
+        high_spare_df = pd.read_csv(high_spare_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        high_spare_df = pd.read_csv(high_spare_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        high_spare_df = pd.read_excel(high_spare_file)
+
+    # Remove duplicate from dataframe
+    high_spare_df.drop_duplicates(keep="first", inplace=True)
+
+    # Get all parts info first
+    parts_df = pd.read_sql_table(table_name='parts', con=engine)
+
+
+    # Get part_id for Classic & Substitution Parts
+
+    classic_PON_merge = pd.merge(high_spare_df, parts_df, left_on='ClassicPON', right_on='part_name', how='left')
+    classic_PON_merge = classic_PON_merge.rename(columns={'part_id': 'Given_Spare_Part_Id'})
+
+    classic_PON_merge = classic_PON_merge[['ClassicPON', 'SubstitutionPON', 'Given_Spare_Part_Id']]
+
+    Subsitution_PON_merge = pd.merge(classic_PON_merge, parts_df, left_on='SubstitutionPON', right_on='part_name', how='left')
+    Subsitution_PON_merge = Subsitution_PON_merge.rename(columns={'part_id': 'High_Spare_Part_Id'})
+    Subsitution_PON_merge = Subsitution_PON_merge[['Given_Spare_Part_Id', 'High_Spare_Part_Id', 'cust_id']]
+
+    #Subsitution_PON_merge.dropna(inplace=True)
+    
+    # delete high_spare  & append with new values
+    query = "delete from high_spare"
+    engine.execute(query)
+
+    # high_spare table populated
+    to_sql_high_spare_table(Subsitution_PON_merge)
+
 
 
 

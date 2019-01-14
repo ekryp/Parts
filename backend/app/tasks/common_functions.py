@@ -425,6 +425,13 @@ def to_sql_end_customer_table(df):
     print("Loaded into end_customer table")
 
 
+def to_sql_high_spare_table(df):
+    df.to_sql(name='high_spare', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into high_spare table")
+
+
+
+
 
 
 
