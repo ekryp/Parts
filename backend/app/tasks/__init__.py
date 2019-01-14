@@ -9,7 +9,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
-    to_sql_high_spare_table
+    to_sql_high_spare_table, to_sql_misnomer_table
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -728,6 +728,36 @@ def high_spare_table_creation(high_spare_file, extension):
 
     # high_spare table populated
     to_sql_high_spare_table(Subsitution_PON_merge)
+
+
+@celery.task
+def misnomer_table_creation(misnomer_file, extension):
+
+    if extension.lower() == '.csv':
+        misnomer_df = pd.read_csv(misnomer_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        misnomer_df = pd.read_csv(misnomer_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        misnomer_df = pd.read_excel(misnomer_file)
+
+    # Remove duplicate from dataframe
+    misnomer_df.drop_duplicates(keep="first", inplace=True)
+
+    # Get all parts info first
+    parts_df = pd.read_sql_table(table_name='parts', con=engine)
+
+    misnomer = pd.merge(parts_df, misnomer_df, right_on='Correct PON', left_on='part_name', how='inner')
+    misnomer = misnomer[['Misnomer PON', 'part_id']]
+
+    # delete high_spare  & append with new values
+    query = "delete from `Misnomer PON Conversion`"
+    engine.execute(query)
+
+    # high_spare table populated
+    to_sql_misnomer_table(misnomer)
+
 
 
 

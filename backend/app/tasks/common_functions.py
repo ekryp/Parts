@@ -430,6 +430,20 @@ def to_sql_high_spare_table(df):
     print("Loaded into high_spare table")
 
 
+def to_sql_misnomer_table(df):
+    df.loc[:, 'cust_id'] = 7
+    df.rename(columns={
+        'Misnomer PON': 'misnomer_pon_name',
+        'part_id': 'correct_part_id',
+        'cust_id': 'eKryp_cust_id'
+        }, inplace=True
+              )
+    df.to_sql(name='Misnomer PON Conversion', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into Misnomer table")
+
+
+
+
 
 
 

@@ -120,7 +120,8 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
     GetErrorRecords
 
-from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare
+from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
+    UploadMisnomer
 
 
 api.add_resource(Callback, '/token')
@@ -159,6 +160,7 @@ api.add_resource(UploadParts, '/post_parts', endpoint='post_parts')
 api.add_resource(UploadDepot, '/post_depot', endpoint='post_depot')
 api.add_resource(UploadNode, '/post_node', endpoint='post_node')
 api.add_resource(UploadHighSpare, '/post_high_spare', endpoint='post_high_spare')
+api.add_resource(UploadMisnomer, '/post_misnomer', endpoint='post_misnomer')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)
