@@ -121,7 +121,7 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetErrorRecords
 
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
-    UploadMisnomer
+    UploadMisnomer, UploadRatio
 
 
 api.add_resource(Callback, '/token')
@@ -161,6 +161,7 @@ api.add_resource(UploadDepot, '/post_depot', endpoint='post_depot')
 api.add_resource(UploadNode, '/post_node', endpoint='post_node')
 api.add_resource(UploadHighSpare, '/post_high_spare', endpoint='post_high_spare')
 api.add_resource(UploadMisnomer, '/post_misnomer', endpoint='post_misnomer')
+api.add_resource(UploadRatio, '/post_ratio', endpoint='post_ratio')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)

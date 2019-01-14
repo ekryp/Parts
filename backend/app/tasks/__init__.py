@@ -9,7 +9,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
-    to_sql_high_spare_table, to_sql_misnomer_table
+    to_sql_high_spare_table, to_sql_misnomer_table, to_sql_failure_information_table
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -757,6 +757,37 @@ def misnomer_table_creation(misnomer_file, extension):
 
     # high_spare table populated
     to_sql_misnomer_table(misnomer)
+
+
+@celery.task
+def ratio_table_creation(ratio_file, extension, analysis_type):
+
+    if extension.lower() == '.csv':
+        ratio_df = pd.read_csv(ratio_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        ratio_df = pd.read_csv(ratio_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        ratio_df = pd.read_excel(ratio_file)
+
+    # Reformat file to be in proper dataframe
+
+    ratio_df.columns = ratio_df.iloc[np.where((ratio_df.isin(['Products'])) == True)[0]].values[0]
+    ratio_df = ratio_df.iloc[(int(np.where((ratio_df.isin(['Products']) == True))[0])) + 1:]
+    ratio_df = ratio_df.drop(['Telcorida MTBF (hrs.)'], 1)
+
+    # Remove duplicate from dataframe
+    ratio_df.drop_duplicates(keep="first", inplace=True)
+    ratio_df['failure_name'] = analysis_type
+
+    # delete ratio  & append with new values
+    query = "delete from failure_information where failure_name = '{0}'".format(analysis_type)
+    print(query)
+    engine.execute(query)
+
+    # ratio table populated
+    to_sql_failure_information_table(ratio_df)
 
 
 

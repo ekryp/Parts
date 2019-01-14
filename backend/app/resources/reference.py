@@ -2,7 +2,7 @@ from datetime import datetime
 from app import app
 from app import csvs, excel, mytext
 from app.tasks import celery, part_table_creation, depot_table_creation, node_table_creation, \
-    high_spare_table_creation, misnomer_table_creation
+    high_spare_table_creation, misnomer_table_creation, ratio_table_creation
 from flask import jsonify
 from flask import request
 from flask_restful import Resource
@@ -338,11 +338,11 @@ def check_misnomer_file(misnomer_file, extension):
     misnomer_cols = ['Misnomer PON', 'Correct PON']
 
     if set(misnomer_df.columns.values.tolist()) != set(misnomer_cols):
-        raise FileFormatIssue(misnomer_file, "Header mismatch, BAD HMisnomer File")
+        raise FileFormatIssue(misnomer_file, "Header mismatch, BAD Misnomer File")
 
 
 class UploadMisnomer(Resource):
-    ''' It populates 1 tables high_spare '''
+    ''' It populates 1 table misnomer  '''
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -382,4 +382,80 @@ class UploadMisnomer(Resource):
             print(str(e))
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
 
+
+def check_ratio_file(ratio_file, extension):
+    import numpy as np
+
+    if extension.lower() == '.csv':
+        ratio_df = pd.read_csv(ratio_file, nrows=200)
+
+    elif extension.lower() == '.txt':
+        ratio_df = pd.read_csv(ratio_file, sep='\t', nrows=200)
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        ratio_df = pd.read_excel(ratio_file)
+
+    # Reformat file to be in proper dataframe
+
+    ratio_df.columns = ratio_df.iloc[np.where((ratio_df.isin(['Products'])) == True)[0]].values[0]
+    ratio_df = ratio_df.iloc[(int(np.where((ratio_df.isin(['Products']) == True))[0])) + 1:]
+
+    ratio_df_row, ratio_df_cols = ratio_df.shape
+    if ratio_df_row < 1:
+        raise FileFormatIssue(ratio_file, "No Records to process, BAD Ratio File")
+
+    if ratio_df_cols < 12:
+        raise FileFormatIssue(ratio_file, "Less than required 12 columns, BAD Ratio File")
+
+    if ratio_df_cols > 12:
+        raise FileFormatIssue(ratio_file, "More than required 12 columns, BAD Ratio File")
+
+    ratio_cols = ['Products', 'Telcorida MTBF (hrs.)', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+    if set(ratio_df.columns.values.tolist()) != set(ratio_cols):
+        raise FileFormatIssue(ratio_file, "Header mismatch, BAD Ratio File")
+
+
+class UploadRatio(Resource):
+    ''' It populates 1 table ratio  '''
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
+        self.reqparse.add_argument('analysis_type', required=True, location='form')
+        super(UploadRatio, self).__init__()
+
+    def post(self):
+
+        args = self.reqparse.parse_args()
+        dest_folder = request.form.get('user_email_id')
+        upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        ratio_file = ''
+        analysis_type = request.form.get('analysis_type')
+
+        for file in request.files.getlist('ratio_file'):
+
+            name, extension = os.path.splitext(file.filename)
+
+            if extension.lower() == '.csv':
+                dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "high_spare_file_{0}{1}".format(upload_date, extension.lower())
+                ratio_file = file.filename
+                csvs.save(file, folder=dest_folder)
+
+            ratio_file = os.path.join(full_path, ratio_file)
+        try:
+            check_ratio_file(ratio_file, extension)
+
+            #ratio_table_creation(ratio_file, extension, analysis_type)
+            celery.send_task('app.tasks.ratio_table_creation', [ratio_file, extension, analysis_type])
+            return jsonify(msg="Ratio File Uploaded Successfully", http_status_code=200)
+
+        except FileFormatIssue as e:
+            return jsonify(msg=e.msg, http_status_code=400)
+
+        except Exception as e:
+            print(str(e))
+            return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
 

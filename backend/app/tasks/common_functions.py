@@ -442,6 +442,15 @@ def to_sql_misnomer_table(df):
     print("Loaded into Misnomer table")
 
 
+def to_sql_failure_information_table(df):
+    df.rename(columns={
+        'Products': 'product_family',
+
+    }, inplace=True
+    )
+    df.to_sql(name='failure_information', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into failure_information table")
+
 
 
 
