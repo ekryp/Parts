@@ -264,7 +264,7 @@ def fetch_db(replenish_time):
     connection = Configuration.ECLIPSE_DATA_DB_URI
     get_misnomer_sql = "SELECT mp.misnomer_part_name, pt.part_name FROM `misnomer_part_conversion` mp, `parts` pt where mp.correct_part_id = pt.part_id ;"
     get_standard_cost = "select pt.part_name,pt.material_number,pid.standard_cost from parts pt " \
-                        "left join `part cost ID`pid on pt.part_id =pid.part_id where part_name != 'null'"
+                        "left join `part_cost` pid on pt.part_id =pid.part_id where part_name != 'null'"
 
     get_node = "SELECT * FROM node;"
 
@@ -289,7 +289,7 @@ def fetch_db(replenish_time):
     get_parts_sql = 'SELECT * FROM parts;'
     parts = read_data(get_parts_sql, connection)
 
-    get_parts_cost_sql = "SELECT * FROM `part cost ID` pid, parts pt where  pt.material_number = pid.material_number;"
+    get_parts_cost_sql = "SELECT * FROM `part_cost` pid, parts pt where  pt.material_number = pid.material_number;"
     parts_cost = read_data(get_parts_cost_sql, connection)
 
     get_high_spares = "select pt1.part_name, pt2.part_name as high_spare from high_spare t " \
@@ -394,7 +394,7 @@ def to_sql_part_table(df):
 
 
 def to_sql_std_cost_table(df):
-    df.to_sql(name='part cost ID', con=engine, index=False, if_exists='append', chunksize=1000)
+    df.to_sql(name='part_cost', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into std_cost table")
 
 

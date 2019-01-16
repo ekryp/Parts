@@ -631,7 +631,7 @@ def part_table_creation(part_file, extension):
     std_cost_df['material_number'] = std_cost_df['material_number'].astype(int)
 
     # delete parts & append with new values
-    query = "delete from `part cost ID`"
+    query = "delete from `part_cost`"
     engine.execute(query)
 
     # std_cost table populated
