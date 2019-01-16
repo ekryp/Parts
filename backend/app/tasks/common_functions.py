@@ -27,23 +27,23 @@ def clean_pon_names(input_db):
 def misnomer_conversion(input_db, misnomer_pons):
     input_with_no_misnomer_pon = pd.DataFrame()
     input_with_no_misnomer_pon = pd.merge(input_db, misnomer_pons, left_on='Product Ordering Name',
-                                          right_on='misnomer_pon_name', how='left')
+                                          right_on='misnomer_part_name', how='left')
     input_with_no_misnomer_pon.loc[(input_with_no_misnomer_pon['Product Ordering Name'] == input_with_no_misnomer_pon[
-        'misnomer_pon_name']), 'Product Ordering Name'] = input_with_no_misnomer_pon['part_name']
-    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_pon_name', 'part_name'], 1)
+        'misnomer_part_name']), 'Product Ordering Name'] = input_with_no_misnomer_pon['part_name']
+    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_part_name', 'part_name'], 1)
 
     input_with_no_misnomer_pon = pd.merge(input_with_no_misnomer_pon, misnomer_pons, left_on='InstalledEqpt',
-                                          right_on='misnomer_pon_name', how='left')
+                                          right_on='misnomer_part_name', how='left')
     input_with_no_misnomer_pon.loc[(input_with_no_misnomer_pon['InstalledEqpt'] == input_with_no_misnomer_pon[
-        'misnomer_pon_name']), 'InstalledEqpt'] = input_with_no_misnomer_pon['part_name']
-    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_pon_name', 'part_name'], 1)
+        'misnomer_part_name']), 'InstalledEqpt'] = input_with_no_misnomer_pon['part_name']
+    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_part_name', 'part_name'], 1)
 
     input_with_no_misnomer_pon = pd.merge(input_with_no_misnomer_pon, misnomer_pons, left_on='Part#',
-                                          right_on='misnomer_pon_name', how='left')
+                                          right_on='misnomer_part_name', how='left')
     input_with_no_misnomer_pon.loc[
-        (input_with_no_misnomer_pon['Part#'] == input_with_no_misnomer_pon['misnomer_pon_name']), 'Part#'] = \
+        (input_with_no_misnomer_pon['Part#'] == input_with_no_misnomer_pon['misnomer_part_name']), 'Part#'] = \
     input_with_no_misnomer_pon['part_name']
-    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_pon_name', 'part_name'], 1)
+    input_with_no_misnomer_pon = input_with_no_misnomer_pon.drop(['misnomer_part_name', 'part_name'], 1)
 
     return input_with_no_misnomer_pon
 
@@ -262,7 +262,7 @@ def validate_depot(pon, analysis_date, analysis_id):
 def fetch_db(replenish_time):
     print('fetching data from db...')
     connection = Configuration.ECLIPSE_DATA_DB_URI
-    get_misnomer_sql = "SELECT mp.misnomer_pon_name, pt.part_name FROM `Misnomer PON Conversion` mp, `parts` pt where mp.correct_part_id = pt.part_id ;"
+    get_misnomer_sql = "SELECT mp.misnomer_part_name, pt.part_name FROM `Misnomer PON Conversion` mp, `parts` pt where mp.correct_part_id = pt.part_id ;"
     get_standard_cost = "select pt.part_name,pt.material_number,pid.standard_cost from parts pt " \
                         "left join `part cost ID`pid on pt.part_id =pid.part_id where part_name != 'null'"
 
@@ -433,9 +433,9 @@ def to_sql_high_spare_table(df):
 def to_sql_misnomer_table(df):
     df.loc[:, 'cust_id'] = 7
     df.rename(columns={
-        'Misnomer PON': 'misnomer_pon_name',
+        'Misnomer PON': 'misnomer_part_name',
         'part_id': 'correct_part_id',
-        'cust_id': 'eKryp_cust_id'
+        # 'cust_id': 'eKryp_cust_id'
         }, inplace=True
               )
     df.to_sql(name='Misnomer PON Conversion', con=engine, index=False, if_exists='append', chunksize=1000)
