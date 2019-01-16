@@ -752,7 +752,7 @@ def misnomer_table_creation(misnomer_file, extension):
     misnomer = misnomer[['Misnomer PON', 'part_id']]
 
     # delete high_spare  & append with new values
-    query = "delete from `Misnomer PON Conversion`"
+    query = "delete from `misnomer_part_conversion`"
     engine.execute(query)
 
     # high_spare table populated
