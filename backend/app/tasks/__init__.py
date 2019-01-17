@@ -525,7 +525,7 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, repleni
     
     gross_depot = remove_hub_depot(gross_depot, depot)
     gross_depot_hnad = add_hnad(gross_depot, quantity=1)
-    to_sql_bom('bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
+    to_sql_bom('simple_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
     return gross_depot_hnad, high_spares, standard_cost, parts
     '''
 
