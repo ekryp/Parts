@@ -81,7 +81,7 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     engine = Configuration.ECLIPSE_DATA_DB_URI
     # Hardcoded to 7  infinera
     #df['cust_id'] = 7
-    df.loc[:, 'analysis_request_time'] = analysis_date
+    # df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
     # Hardcoded as of now but we will get it from customer_name field in frontend
     # Use function get_end_customer_id_from_name to get end_cust_id of customer
