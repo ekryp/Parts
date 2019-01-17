@@ -281,7 +281,7 @@ def fetch_db(replenish_time):
     high_spare_sql = "SELECT pt.part_name, given_spare_part_id, high_spare_part_id FROM high_spare, parts pt where given_spare_part_id = pt.part_id;"
     highspares = read_data(high_spare_sql, connection)
 
-    get_ratio_to_pon_sql = "SELECT * FROM failure_information where failure_name = '{0}'".format(replenish_time)
+    get_ratio_to_pon_sql = "SELECT * FROM reliability_class where replenish_time = '{0}'".format(replenish_time)
     print(get_ratio_to_pon_sql)
 
     get_ratio_to_pon = read_data(get_ratio_to_pon_sql, connection)
@@ -442,14 +442,15 @@ def to_sql_misnomer_table(df):
     print("Loaded into Misnomer table")
 
 
-def to_sql_failure_information_table(df):
+def to_sql_reliability_class_table(df):
+    df.loc[:, 'cust_id'] = 7
     df.rename(columns={
         'Products': 'product_family',
 
     }, inplace=True
     )
-    df.to_sql(name='failure_information', con=engine, index=False, if_exists='append', chunksize=1000)
-    print("Loaded into failure_information table")
+    df.to_sql(name='reliability_class', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into reliability_class table")
 
 
 

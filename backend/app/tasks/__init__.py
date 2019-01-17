@@ -9,7 +9,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
-    to_sql_high_spare_table, to_sql_misnomer_table, to_sql_failure_information_table
+    to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -779,15 +779,15 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
     # Remove duplicate from dataframe
     ratio_df.drop_duplicates(keep="first", inplace=True)
-    ratio_df['failure_name'] = analysis_type
+    ratio_df['replenish_time'] = analysis_type
 
     # delete ratio  & append with new values
-    query = "delete from failure_information where failure_name = '{0}'".format(analysis_type)
+    query = "delete from reliability_class where replenish_time = '{0}'".format(analysis_type)
     print(query)
     engine.execute(query)
 
     # ratio table populated
-    to_sql_failure_information_table(ratio_df)
+    to_sql_reliability_class_table(ratio_df)
 
 
 
