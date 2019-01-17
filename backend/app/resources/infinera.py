@@ -895,7 +895,7 @@ class PostSparePartAnalysis(Resource):
             engine = create_engine(Configuration.INFINERA_DB_URL)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
-                    "sap_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
+                    "current_inventory_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
                     "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
                                                 replenish_time,
                                                 args['user_email_id'], analysis_date,
