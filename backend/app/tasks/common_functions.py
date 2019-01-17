@@ -109,7 +109,7 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     )
     keep_col = ['cust_id', 'type', 'node_id', 'installed_eqpt', 'part_ordering_number',
                 'part', 'serial', 'source_part_data', 'aid', 'end_customer_id',
-                'node_name', 'strip_serial', 'analysis_request_time', 'request_id']
+                'node_name', 'strip_serial', 'request_id']
     df = df[keep_col]
 
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
