@@ -381,6 +381,7 @@ def to_sql_current_ib(table_name, df, analysis_id):
     }, inplace=True
     )
     df['pon_quanity'] = df['pon_quanity'].astype(int)
+    df.loc[:, 'cust_id'] = 7
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
 
