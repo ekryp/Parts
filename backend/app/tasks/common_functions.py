@@ -101,14 +101,14 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
         'AID': 'aid',
         'InstalledEqpt': 'installed_eqpt',
         'Product Ordering Name': 'part_ordering_name',
-        'Part#': 'part',
+        'Part#': 'part_id',
         'Serial#': 'serial',
         'Source': 'source_part_data',
         'Node Name': 'node_name'
     }, inplace=True
     )
     keep_col = ['cust_id', 'type', 'node_id', 'installed_eqpt', 'part_ordering_name',
-                'part', 'serial', 'source_part_data', 'aid', 'end_customer_id',
+                'part_id', 'serial', 'source_part_data', 'aid', 'end_customer_id',
                 'node_name', 'strip_serial', 'request_id']
     df = df[keep_col]
 
