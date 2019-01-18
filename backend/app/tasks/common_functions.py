@@ -351,7 +351,7 @@ def to_sql_mtbf(table_name, df, analysis_date, analysis_id):
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     # df['analysis_request_time'] = analysis_date
     # df['cust_id'] = 7
-    df.loc[:, 'analysis_request_time'] = analysis_date
+    # df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'request_id'] = analysis_id
     df.rename(columns={
