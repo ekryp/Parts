@@ -107,7 +107,7 @@ class GetSummaryforSpecificRequest(Resource):
         # False means total_stock
         if toggle == 'reorder':
             # Find Current Gross
-            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty,request_id FROM mtbf_bom_calculated ' \
+            gross_query = 'SELECT part_name,depot_name,part_quantity as gross_qty,request_id FROM mtbf_bom_calculated ' \
                     'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
             gross_df = get_df_from_sql_query(
@@ -176,7 +176,7 @@ class GetSummaryforSpecificRequest(Resource):
 
         else:
             # Find Current Gross
-            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty, request_id FROM mtbf_bom_calculated ' \
+            gross_query = 'SELECT part_name,depot_name,part_quantity as gross_qty, request_id FROM mtbf_bom_calculated ' \
                           'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
             gross_df = get_df_from_sql_query(
@@ -254,7 +254,7 @@ class GetGrossforSpecificRequest(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'SELECT part_name,depot_name,pon_quantity as gross_qty FROM mtbf_bom_calculated ' \
+        query = 'SELECT part_name,depot_name,part_quantity as gross_qty FROM mtbf_bom_calculated ' \
                 'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
         print(query)
@@ -348,7 +348,7 @@ class GetCurrentNet(Resource):
 
         if toggle == 'reorder':
             # Find Current Gross
-            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty FROM mtbf_bom_calculated ' \
+            gross_query = 'SELECT part_name,depot_name,part_quantity as gross_qty FROM mtbf_bom_calculated ' \
                     'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
             gross_df = get_df_from_sql_query(
@@ -386,7 +386,7 @@ class GetCurrentNet(Resource):
 
         else:
             # Find Current Gross
-            gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty FROM mtbf_bom_calculated ' \
+            gross_query = 'SELECT part_name,depot_name,part_quantity as gross_qty FROM mtbf_bom_calculated ' \
                           'where pon_quantity > 0 and request_id={0} order by gross_qty desc'.format(request_id)
 
             gross_df = get_df_from_sql_query(
