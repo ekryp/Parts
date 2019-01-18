@@ -9,7 +9,7 @@ source env/bin/activate
 pip3.5 install -r requirements.txt
 
 #kill backend services if running
-kill $(ps -eaf | grep -i "python manage.py startserver" | grep -v "grep" | awk '{print $2}') &> /dev/null
+kill -9 $(ps -eaf | grep -i startserver | grep -v 'grep' | awk '{print $2}') &> /dev/null
 
 if [ $? != 0 ]
 then
@@ -17,10 +17,10 @@ then
 fi
 
 #start backend services
-nohup python3.5 manage.py startserver > backend.log&
+nohup gunicorn app:app -w 4 --log-level debug -b 0.0.0.0:5000 --timeout 600 > backend.log&
 
 #kill celery  if running
-kill $(ps -eaf | grep -i "celery -A app.tasks:celery worker --concurrency=1" | grep -v "grep" | awk '{print $2}') &> /dev/null
+kill -9 $(ps -eaf | grep -i celery | grep -v 'grep' | awk '{print $2}') &> /dev/null
 if [ $? != 0 ]
 then
        echo "Celery Services not running & starting Celery services,creating logs in celery.log file"
