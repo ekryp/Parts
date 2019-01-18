@@ -1,6 +1,6 @@
 import os
 
-env = os.getenv('EKRYP_ENV', 'prod')
+env = os.getenv('EKRYP_ENV', 'uat')
 
 if env == 'prod':
 	from .prod_config import Configuration

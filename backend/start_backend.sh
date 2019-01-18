@@ -28,4 +28,4 @@ fi
 #start celery
 
 #sudo rabbitmq-server start
-#celery -A app.tasks:celery worker --concurrency=1 > celery.log&
+celery -A app.tasks:celery worker --concurrency=1 > celery.log&
