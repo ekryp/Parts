@@ -123,6 +123,7 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
     UploadMisnomer, UploadRatio
 
+from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer
 
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
@@ -162,6 +163,11 @@ api.add_resource(UploadNode, '/post_node', endpoint='post_node')
 api.add_resource(UploadHighSpare, '/post_high_spare', endpoint='post_high_spare')
 api.add_resource(UploadMisnomer, '/post_misnomer', endpoint='post_misnomer')
 api.add_resource(UploadRatio, '/post_ratio', endpoint='post_ratio')
+api.add_resource(GetParts, '/get_all_parts', endpoint='get_all_parts')
+api.add_resource(GetHighSpare, '/get_all_high_spare', endpoint='get_all_high_spare')
+api.add_resource(GetNode, '/get_all_node', endpoint='get_all_node')
+api.add_resource(GetDepot, '/get_all_depot', endpoint='get_all_depot')
+api.add_resource(GetMisnomer, '/get_all_misnomer', endpoint='get_all_misnomer')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)

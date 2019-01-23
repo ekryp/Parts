@@ -1,0 +1,294 @@
+[
+    {
+      "Misnomer PON": "D-FANTRAY",
+      "Correct PON": "D-FANTRAY-B="
+    },
+    {
+      "Misnomer PON": "D-FANTRAY-B",
+      "Correct PON": "D-FANTRAY-B="
+    },
+    {
+      "Misnomer PON": "DTC-ANSI-A",
+      "Correct PON": "DTC-ANSI-B="
+    },
+    {
+      "Misnomer PON": "DTC-ANSI-A=",
+      "Correct PON": "DTC-ANSI-B="
+    },
+    {
+      "Misnomer PON": "DTC-ANSI-B",
+      "Correct PON": "DTC-ANSI-B="
+    },
+    {
+      "Misnomer PON": "DTC-ETSI-B",
+      "Correct PON": "DTC-ETSI-B="
+    },
+    {
+      "Misnomer PON": "GAM-2C",
+      "Correct PON": "GAM-2"
+    },
+    {
+      "Misnomer PON": "M-FANTRAY",
+      "Correct PON": "M-FANTRAY="
+    },
+    {
+      "Misnomer PON": "BMM-BLANK-A",
+      "Correct PON": "BMM-BLANK-A="
+    },
+    {
+      "Misnomer PON": "BMMH-BLANK-A",
+      "Correct PON": "BMMH-BLANK-A="
+    },
+    {
+      "Misnomer PON": "D-AIRFLTR-A",
+      "Correct PON": "D-AIRFLTR-A="
+    },
+    {
+      "Misnomer PON": "MTC-ANSI",
+      "Correct PON": "MTC-ANSI="
+    },
+    {
+      "Misnomer PON": "MTC-ETSI",
+      "Correct PON": "MTC-ETSI="
+    },
+    {
+      "Misnomer PON": "D-PEM-A",
+      "Correct PON": "D-PEM-A="
+    },
+    {
+      "Misnomer PON": "TAM-2-10G",
+      "Correct PON": "TAM-2-10G-A="
+    },
+    {
+      "Misnomer PON": "TAM-2-10G-A",
+      "Correct PON": "TAM-2-10G-A="
+    },
+    {
+      "Misnomer PON": "TAM-2-10GR",
+      "Correct PON": "TAM-2-10GR="
+    },
+    {
+      "Misnomer PON": "TAM-4-1G-A",
+      "Correct PON": "TAM-4-1G-A="
+    },
+    {
+      "Misnomer PON": "TAM-8-1G",
+      "Correct PON": "TAM-8-1G="
+    },
+    {
+      "Misnomer PON": "TAM-4-2.5G",
+      "Correct PON": "TAM-4-2.5G-A="
+    },
+    {
+      "Misnomer PON": "TAM-4-2.5G-A",
+      "Correct PON": "TAM-4-2.5G-A="
+    },
+    {
+      "Misnomer PON": "X-PEM-A",
+      "Correct PON": "X-PS-DC"
+    },
+    {
+      "Misnomer PON": "X-FANTRAY-A",
+      "Correct PON": "X-FANTRAY-X10"
+    },
+    {
+      "Misnomer PON": "DCM1H-BLANK-A",
+      "Correct PON": "DCM1H-BLANK-A="
+    },
+    {
+      "Misnomer PON": "O-AIRFLTR-A",
+      "Correct PON": "O-AIRFLTR-A="
+    },
+    {
+      "Misnomer PON": "O-FANTRAY-B",
+      "Correct PON": "O-FANTRAY-B="
+    },
+    {
+      "Misnomer PON": "OTC",
+      "Correct PON": "OTC-ANSI-A="
+    },
+    {
+      "Misnomer PON": "OTC-ANSI-A",
+      "Correct PON": "OTC-ANSI-A="
+    },
+    {
+      "Misnomer PON": "OTC-ETSI-A",
+      "Correct PON": "OTC-ETSI-A="
+    },
+    {
+      "Misnomer PON": "OTC-PEMCVR-KIT",
+      "Correct PON": "OTC-PEMCVR-KIT="
+    },
+    {
+      "Misnomer PON": "O-PEM-A",
+      "Correct PON": "O-PEM-A="
+    },
+    {
+      "Misnomer PON": "TOM-10G-IR2-A",
+      "Correct PON": "TOM-10G-IR2-A="
+    },
+    {
+      "Misnomer PON": "TOM-10G-LR2",
+      "Correct PON": "TOM-10G-LR2="
+    },
+    {
+      "Misnomer PON": "TOM-10G-SR0",
+      "Correct PON": "TOM-10G-SR0="
+    },
+    {
+      "Misnomer PON": "TOM-10G-SR1",
+      "Correct PON": "TOM-10G-SR1-A="
+    },
+    {
+      "Misnomer PON": "TOM-10G-SR1-A",
+      "Correct PON": "TOM-10G-SR1-A="
+    },
+    {
+      "Misnomer PON": "TOM-1G-LX",
+      "Correct PON": "TOM-1G-LX-A="
+    },
+    {
+      "Misnomer PON": "TOM-1G-LX-A",
+      "Correct PON": "TOM-1G-LX-A="
+    },
+    {
+      "Misnomer PON": "TOM-1G-SX-A",
+      "Correct PON": "TOM-1G-SX-A="
+    },
+    {
+      "Misnomer PON": "TOM-1G-ZX",
+      "Correct PON": "TOM-1G-ZX="
+    },
+    {
+      "Misnomer PON": "TOM-2.5G-IR1-A",
+      "Correct PON": "TOM-2.5G-IR1-A="
+    },
+    {
+      "Misnomer PON": "TOM-2.5G-IR2",
+      "Correct PON": "TOM-2.5G-IR2="
+    },
+    {
+      "Misnomer PON": "TOM-2.5G-LR2",
+      "Correct PON": "TOM-2.5G-LR2="
+    },
+    {
+      "Misnomer PON": "TOM-2.5GMR-IR1",
+      "Correct PON": "TOM-2.5GMR-IR1="
+    },
+    {
+      "Misnomer PON": "TOM-2.5G-SR1",
+      "Correct PON": "TOM-2.5G-SR1-A="
+    },
+    {
+      "Misnomer PON": "TOM-2.5G-SR1-A",
+      "Correct PON": "TOM-2.5G-SR1-A="
+    },
+    {
+      "Misnomer PON": "TOM-10G-LR2A",
+      "Correct PON": "TOM-10G-LR2A="
+    },
+    {
+      "Misnomer PON": "DTC-ETSI-A",
+      "Correct PON": "DTC-ETSI-A="
+    },
+    {
+      "Misnomer PON": "OTC-ANSI-A-B1",
+      "Correct PON": "OTC-ANSI-A-B1="
+    },
+    {
+      "Misnomer PON": "OTC-ETSI-A-B1",
+      "Correct PON": "OTC-ETSI-A-B1="
+    },
+    {
+      "Misnomer PON": "M-FANTRAY-A",
+      "Correct PON": "MTC-9-FANTRAY"
+    },
+    {
+      "Misnomer PON": "MTC9-FANTRAY",
+      "Correct PON": "MTC-9-FANTRAY"
+    },
+    {
+      "Misnomer PON": "M-PEM-A",
+      "Correct PON": "MTC-9-PEM"
+    },
+    {
+      "Misnomer PON": "MTC-9",
+      "Correct PON": "MTC-9-B"
+    },
+    {
+      "Misnomer PON": "TOM-10G-SFPP-LRL",
+      "Correct PON": "TOM-10GE-LRL"
+    },
+    {
+      "Misnomer PON": "LC-SC-YSS-4-B",
+      "Correct PON": "LC-SC-YSS-4-B="
+    },
+    {
+      "Misnomer PON": "QSFP+:FINISAR CORP",
+      "Correct PON": "TOM-40G-Q-LR4"
+    },
+    {
+      "Misnomer PON": "TOM-40G-Q-LR4",
+      "Correct PON": "TOM-40G-Q-LR4"
+    },
+    {
+      "Misnomer PON": "C-PEM-A",
+      "Correct PON": "XP-FANMODULE"
+    },
+    {
+      "Misnomer PON": "AC-PEM",
+      "Correct PON": "XP-PEM-AC"
+    },
+    {
+      "Misnomer PON": "C-FANTRAY",
+      "Correct PON": "XP-PEM-AC"
+    },
+    {
+      "Misnomer PON": "XT-AC-PEM",
+      "Correct PON": "XP-PEM-AC"
+    },
+    {
+      "Misnomer PON": "XT-FANMODULE",
+      "Correct PON": "XP-PEM-AC"
+    },
+    {
+      "Misnomer PON": "DC-PEM",
+      "Correct PON": "XP-PEM-DC"
+    },
+    {
+      "Misnomer PON": "XT-DC-PEM",
+      "Correct PON": "XP-PEM-DC"
+    },
+    {
+      "Misnomer PON": "FMM-C-5-ECTR",
+      "Correct PON": "FMM-C-5-EC-TR"
+    },
+    {
+      "Misnomer PON": "X-FANTRAY-X2E-O",
+      "Correct PON": "X-FANTRAY-X2O"
+    },
+    {
+      "Misnomer PON": "XCMH",
+      "Correct PON": "XCM-H"
+    },
+    {
+      "Misnomer PON": "FAN4A/M3000/II",
+      "Correct PON": "FAN4A/M3000/IISP"
+    },
+    {
+      "Misnomer PON": "TRX100117",
+      "Correct PON": "TRX100117/TC"
+    },
+    {
+      "Misnomer PON": "MTC-6-DC-PEM",
+      "Correct PON": "MTC-6-PEM-DC"
+    },
+    {
+      "Misnomer PON": "MTC-6-AC-PEM",
+      "Correct PON": "MTC-6-PEM-AC"
+    },
+    {
+      "Misnomer PON": "M102/II/ENC",
+      "Correct PON": "M102/II/ENC/COM"
+    }
+  ]

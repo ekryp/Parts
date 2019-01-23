@@ -12,6 +12,7 @@ import DynamicTable from '@/components/Parts/Table'
 import Reference from '@/components/Reference/Reference'
 import ErrorSummary from '@/components/Parts/ErrorSummary'
 import CreateAnalysis from '@/components/Parts/CreateAnalysis'
+import ReferenceView from '@/components/Reference/ReferenceView'
 
 Vue.use(Router)
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/reference',
       name: 'Reference',
       component: Reference
+    },
+    {
+      path: '/reference/view',
+      name: 'ReferenceView',
+      component: ReferenceView
     },
     {
       path: '/parts/analysis/error',

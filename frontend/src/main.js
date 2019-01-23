@@ -9,7 +9,9 @@ import JsonExcel from "vue-json-excel";
 import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 import "../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css";
 import ToggleButton from 'vue-js-toggle-button'
+import { VudalPlugin } from 'vudal';
 
+Vue.use(VudalPlugin);
 Vue.use(ToggleButton)
 Vue.component("downloadExcel", JsonExcel);
 

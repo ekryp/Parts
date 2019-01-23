@@ -205,9 +205,7 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
-            $(document).ready(function() {
-              $("#AnalysisTable").DataTable();
-            });
+            
             for (let i = 0; i < this.partsAnalysisRequestList.length; i++) {
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
               this.rowData.push({
@@ -320,7 +318,7 @@ export default {
 
         // fill out any available space to ensure there are no gaps
         event.api.sizeColumnsToFit();
-      },
+      }
 
   }
 };
