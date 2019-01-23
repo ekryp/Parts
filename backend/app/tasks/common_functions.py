@@ -116,7 +116,7 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     print("Loaded Data into table : {0}".format(table_name))
 
 
-def to_sql_sap_inventory(table_name, df, analysis_date,analysis_id):
+def to_sql_current_inventory(table_name, df, analysis_date, analysis_id):
 
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
@@ -124,7 +124,7 @@ def to_sql_sap_inventory(table_name, df, analysis_date,analysis_id):
     #df['analysis_request_time'] = analysis_date
     engine = Configuration.ECLIPSE_DATA_DB_URI
     #df['cust_id'] = 7
-    df.loc[:, 'analysis_request_time'] = analysis_date
+    #df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'strip_material_number'] = df['Material Number'].astype(str).str.lstrip('0')
     df.loc[:, 'request_id'] = analysis_id
@@ -133,7 +133,7 @@ def to_sql_sap_inventory(table_name, df, analysis_date,analysis_id):
         'Plant': 'plant_id',
         'Storage Location = Depot Name': 'storage_location',
         'Material Number': 'material_number',
-        'Material Description = Part Name': 'material_desc',
+        'Material Description = Part Name': 'part_name',
         'Total Stock': 'total_stock',
         'Reorder Point': 'reorder_point',
         'Standard Cost': 'std_cost',

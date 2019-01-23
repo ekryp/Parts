@@ -6,7 +6,7 @@ from app import Configuration
 from app import app
 from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     check_in_std_cst, validate_pon, validate_depot, process_error_pon, \
-    to_sql_customer_dna_record, read_sap_export_file, to_sql_sap_inventory, \
+    to_sql_customer_dna_record, read_sap_export_file, to_sql_current_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table
@@ -147,7 +147,7 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     # 5.9 Process Error Records - Compare Valid PON against
 
     sap_inventory = read_sap_export_file(sap_file)
-    to_sql_sap_inventory('sap_inventory', sap_inventory, analysis_date,analysis_id)
+    to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
 
     update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
@@ -251,8 +251,8 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 
     #get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM sap_inventory '
     #z_inventory = read_sap_export_file()
-    get_zinventory_sql = 'SELECT storage_location,material_desc,total_stock,reorder_point FROM ' \
-                         'sap_inventory where request_id={}'.format(analysis_id)
+    get_zinventory_sql = 'SELECT storage_location,part_name as material_desc,total_stock,reorder_point FROM ' \
+                         'current_inventory where request_id={}'.format(analysis_id)
     z_inventory = read_data(get_zinventory_sql, Connection)
     z_inventory.rename(columns={
         'storage_location': 'Storage Location',
