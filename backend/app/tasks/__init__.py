@@ -374,8 +374,8 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     )
 
     single_bom.loc[:, 'cust_id'] = 7
-    single_bom.loc[:, 'analysis_request_time'] = analysis_date
-    single_bom.loc[:, 'user_email_id'] = user_email_id
+    # single_bom.loc[:, 'analysis_request_time'] = analysis_date
+    # single_bom.loc[:, 'user_email_id'] = user_email_id
     single_bom.loc[:, 'request_id'] = analysis_id
     single_bom.loc[:, 'customer_name'] = customer_name
 
@@ -577,7 +577,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
                            user_email_id, analysis_id, customer_name)
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
-        set_request_status('Completed', analysis_id,'Success')
+        set_request_status('Completed', analysis_id, 'Success')
     except CustomException as e:
         set_request_status('Failed', analysis_id,e.msg)
 
