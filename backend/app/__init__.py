@@ -82,7 +82,7 @@ db = db
 api.decorators = [
     cors.crossdomain(
         origin='*',
-        methods=['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+        methods=['GET', 'PUT', 'POST','DELETE', 'OPTIONS','PATCH'],
         headers=['authorization', 'content-type'],
         attach_to_all=True,
         automatic_options=True
@@ -123,7 +123,7 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
     UploadMisnomer, UploadRatio
 
-from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer
+from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer,GetRatio
 
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
@@ -168,6 +168,7 @@ api.add_resource(GetHighSpare, '/get_all_high_spare', endpoint='get_all_high_spa
 api.add_resource(GetNode, '/get_all_node', endpoint='get_all_node')
 api.add_resource(GetDepot, '/get_all_depot', endpoint='get_all_depot')
 api.add_resource(GetMisnomer, '/get_all_misnomer', endpoint='get_all_misnomer')
+api.add_resource(GetRatio, '/get_all_ratio', endpoint='get_all_ratio')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)

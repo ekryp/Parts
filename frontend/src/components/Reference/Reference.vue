@@ -207,7 +207,7 @@
            </div>
            <div class="col-lg-2">
              <button   type="button" class="btn btn-success" @click="uploadRatioData('Ratio of PON - 2Day')">Save</button>
-             <button   type="button" class="btn btn-success" @click="routeToView('2DayPon')" style="margin-left:10%">View</button>
+             <button   type="button" class="btn btn-success" @click="routeToView('Ratio of PON - 2Day')" style="margin-left:10%">View</button>
            </div>
          </div>
 
@@ -240,7 +240,7 @@
            </div>
            <div class="col-lg-2">
              <button   type="button" class="btn btn-success" @click="uploadRatioData('Ratio of PON - 7Day')">Save</button>
-             <button   type="button" class="btn btn-success" @click="routeToView('7DayPon')" style="margin-left:10%">View</button>
+             <button   type="button" class="btn btn-success" @click="routeToView('Ratio of PON - 7Day')" style="margin-left:10%">View</button>
            </div>
          </div>
 
@@ -273,7 +273,7 @@
            </div>
            <div class="col-lg-2">
              <button   type="button" class="btn btn-success" @click="uploadRatioData('Ratio of PON - 30Day')">Save</button>
-             <button   type="button" class="btn btn-success" @click="routeToView('30DayPon')" style="margin-left:10%">View</button>
+             <button   type="button" class="btn btn-success" @click="routeToView('Ratio of PON - 30Day')" style="margin-left:10%">View</button>
             </div>
          </div> 
 
@@ -306,7 +306,7 @@
            </div>
            <div class="col-lg-2">
              <button   type="button" class="btn btn-success" @click="uploadRatioData('Ratio of PON - 60Day')">Save</button>
-             <button   type="button" class="btn btn-success" @click="routeToView('60DayPon')" style="margin-left:10%">View</button>   
+             <button   type="button" class="btn btn-success" @click="routeToView('Ratio of PON - 60Day')" style="margin-left:10%">View</button>   
            </div>
          </div>
 

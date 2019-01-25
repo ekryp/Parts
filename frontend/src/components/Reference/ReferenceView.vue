@@ -22,13 +22,36 @@
     Title
   </div>
   <div class="content">
-    Content
+    <div class="form-group">
+      <span v-for="(item,index) in columnList" :key="item.columnName">
+
+          <div class="row" >
+            <div class="col-lg-5">
+              <label>{{item.columnName}}</label>
+            </div>
+            <div class="col-lg-6">
+              <input
+                type="text"
+                class="form-control"
+                v-model="formDatas[index]"
+              >
+            </div>
+          </div>
+          <br>
+            </span>
+        </div>
+      
   </div>
   <div class="actions">
-    <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="hideEntry()">
-                    Hide
+    <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addData()">
+                    ADD
                 </button>
-    <div class="ui button">Ok</div>
+                <button
+                type="button"
+                class="btn btn-danger"
+                @click="hideEntry()"
+                v-tooltip.top.hover.focus="'Move to Analysis Dashboard'"
+              >Back</button>
   </div>
 </vudal> 
 
@@ -59,6 +82,7 @@
               rowSelection="multiple"
               pagination="true"
               :paginationPageSize="10"
+              :cellClicked="onCellClicked"
               :gridReady="OnRefReady"
               :gridSizeChanged="OnRefReady"
 
@@ -74,7 +98,7 @@
                 type="button"
                 class="btn btn-danger"
                 @click="cancel()"
-                v-tooltip.top.hover.focus="'Move to Analysis Dashboard'"
+                v-tooltip.top.hover.focus="'Move to Reference Page'"
               >Back</button>
             </div>
             <br>
@@ -136,6 +160,10 @@ export default {
       this.misnomerColumnDef();
       this.getMisnomer();
     }
+    else{
+      this.ratioPONColumnDef();
+      this.getRatioPON(this.fileType);
+    }
   },
 
   data()
@@ -148,9 +176,12 @@ export default {
           referenceColumnDefs:null,
           referenceRowData:[],
           referenceList: [],
+          columnList:[],
+          formDatas:[],
           referenceGridOptions: {
             rowStyle: {
-              color: "#72879d"
+              color: "#72879d",
+              align: "center"
               // fontSize: "13.7px",
             },
             columnStyle: {
@@ -168,10 +199,12 @@ export default {
       },
       hideEntry()
       {
-          this.$modals.myModal.$hide();
+        this.formDatas=[];
+        this.$modals.myModal.$hide();
       },
       partsColumnDef()
       {
+        this.columnList=[{columnName:"Part Name",formName:"part_name"},{columnName:"Material Number",formName:"material_number"},{columnName:"Part Reliability Class",formName:"part_reliability_class"},{columnName:"Spared Attribute",formName:"spared_attribute"},{columnName:"Standard Cost",formName:"standard_cost"}];
          this.referenceColumnDefs = [
         {
           headerName: "Part Name",
@@ -384,6 +417,151 @@ export default {
         }
       ];
       },
+      ratioPONColumnDef()
+      {
+         this.referenceColumnDefs = [
+        {
+          headerName: "Product Family",
+          field: "product_family",
+          width: 250
+        },
+        {
+          headerName: "Number of Spares",
+          children:[{
+            headerName: "1",
+            field: "number_of_spares1",
+            width: 250
+          },
+          {
+            headerName: "2",
+            field: "number_of_spares2",
+            width: 250
+          },
+          {
+            headerName: "3",
+            field: "number_of_spares3",
+            width: 250
+          },
+          {
+            headerName: "4",
+            field: "number_of_spares4",
+            width: 250
+          },
+          {
+            headerName: "5",
+            field: "number_of_spares5",
+            width: 250
+          },
+          {
+            headerName: "6",
+            field: "number_of_spares6",
+            width: 250
+          },
+          {
+            headerName: "7",
+            field: "number_of_spares7",
+            width: 250
+          },
+          {
+            headerName: "8",
+            field: "number_of_spares8",
+            width: 250
+          },
+          {
+            headerName: "9",
+            field: "number_of_spares9",
+            width: 250
+          },
+          {
+            headerName: "10",
+            field: "number_of_spares10",
+            width: 250
+          }
+          ]
+        },
+        {
+          headerName: "Edit",
+          field: "editFlag",
+          width: 250,
+          cellRenderer: actionEditRenderer
+        },
+        {
+          headerName: "Delete",
+          field: "deleteFlag",
+          width: 250,
+          cellRenderer: actionDeleteRenderer
+        }
+      ];
+      },
+      addData()
+      {
+          if(this.fileType === 'parts')
+          {
+            
+            this.addParts();
+          }
+          else if(this.fileType === 'highspare')
+          {
+            
+            this.addHighSpare();
+          }
+          else if(this.fileType === 'node')
+          {
+           
+            this.addNode();
+          }
+          else if(this.fileType === 'depot')
+          {
+            
+            this.addDepot();
+          }
+          else if(this.fileType === 'minsomer')
+          {
+            
+            this.addMisnomer();
+          }
+          else{
+            
+            this.addRatioPON(this.fileType);
+          }
+
+      },
+      addParts()
+      {
+        let formData = new FormData();
+        for(let i = 0;i<this.columnList.length;i++)
+        {
+          formData.append(this.columnList[i].formName, this.formDatas[i]);
+        }
+      console.log("formdata ----->", formData.get("part_reliability_class"));
+      fetch(constant.APIURL + "api/v1/get_all_parts", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("Response from backend data ---->", data);
+            if (data.http_status_code === 200) {
+              this.routeToView(data);
+            } else {
+              swal("Hello world!");
+              
+              swal({
+                title: "Error",
+                text: data.msg,
+                icon: "error"
+              });
+              $(document).ready(function() {
+                $("#loader-2").hide();
+              });
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+      },
       getParts()
       {
         fetch(constant.APIURL + "api/v1/get_all_parts", {
@@ -532,6 +710,43 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
       },
+      getRatioPON(fileType)
+      {
+        console.log('file type asd',fileType);
+         fetch(constant.APIURL + "api/v1/get_all_ratio?pon_type="+fileType, {
+        method: "GET"
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data -getallrequest--->", data);
+            this.referenceList=data;
+            for (let i = 0; i < this.referenceList.length; i++) {
+              //console.log(this.partsAnalysisRequestList[i].analysis_name);
+              this.referenceRowData.push({
+                product_family: this.referenceList[i].product_family,
+                number_of_spares1: this.referenceList[i].number_of_spares1,
+                number_of_spares2: this.referenceList[i].number_of_spares2,
+                number_of_spares3: this.referenceList[i].number_of_spares2,
+                number_of_spares4: this.referenceList[i].number_of_spares4,
+                number_of_spares5: this.referenceList[i].number_of_spares5,
+                number_of_spares6: this.referenceList[i].number_of_spares6,
+                number_of_spares7: this.referenceList[i].number_of_spares7,
+                number_of_spares8: this.referenceList[i].number_of_spares8,
+                number_of_spares9: this.referenceList[i].number_of_spares9,
+                number_of_spares10: this.referenceList[i].number_of_spares10,
+                editFlag:this.referenceList[i].reliability_id,
+                deleteFlag:this.referenceList[i].reliability_id
+              });
+            }
+            
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+      },
+      
       OnRefReady(event) {
           var gridWidth = document.getElementById('referenceBox').offsetWidth;
 
@@ -559,7 +774,117 @@ export default {
 
             // fill out any available space to ensure there are no gaps
             event.api.sizeColumnsToFit();
-          }
+          },
+          onCellClicked(event) {
+            console.dir(event.colDef.field);
+            let requestId = event.value;
+            if(event.colDef.field === 'deleteFlag')
+            {
+              console.log(event.value);
+              if(this.fileType === 'parts')
+              {
+                let part_id=event.value;
+                fetch(constant.APIURL + "api/v1/get_all_parts?parts_id="+part_id, {
+                  method: "DELETE"
+                  })
+                  .then(response => {
+                    response.text().then(text => {
+                      const data = text && JSON.parse(text);
+                      console.log("data -getallrequest--->", data);
+                    });
+                  })
+                  .catch(handleError => {
+                    console.log(" Error Response ------->", handleError);
+                  });
+                this.getParts();
+              }
+              else if(this.fileType === 'highspare')
+              {
+                let high_spare_id=event.value;
+                fetch(constant.APIURL + "api/v1/get_all_high_spare?high_spare_id="+high_spare_id, {
+                  method: "DELETE"
+                  })
+                  .then(response => {
+                    response.text().then(text => {
+                      
+                      console.log("data -getallrequest--->", text);
+                    });
+                  })
+                  .catch(handleError => {
+                    console.log(" Error Response ------->", handleError);
+                  });
+                this.getHighSpare();
+              }
+              else if(this.fileType === 'node')
+              {
+               let node_id=event.value;
+                fetch(constant.APIURL + "api/v1/get_all_node?node_id="+node_id, {
+                  method: "DELETE"
+                  })
+                  .then(response => {
+                    response.text().then(text => {
+                      const data = text && JSON.parse(text);
+                      console.log("data -getallrequest--->", data);
+                    });
+                  })
+                  .catch(handleError => {
+                    console.log(" Error Response ------->", handleError);
+                  });
+                this.getNode();
+              }
+              else if(this.fileType === 'depot')
+              {
+                let depot_id=event.value;
+                fetch(constant.APIURL + "api/v1/get_all_depot?depot_id="+depot_id, {
+                  method: "DELETE"
+                  })
+                  .then(response => {
+                    response.text().then(text => {
+                      const data = text && JSON.parse(text);
+                      console.log("data -getallrequest--->", data);
+                    });
+                  })
+                  .catch(handleError => {
+                    console.log(" Error Response ------->", handleError);
+                  });
+                this.getDepot();
+              }
+              else if(this.fileType === 'minsomer')
+              {
+                let reference_tabel_id=event.value;
+                fetch(constant.APIURL + "api/v1/get_all_misnomer?reference_tabel_id="+reference_tabel_id, {
+                  method: "DELETE"
+                  })
+                  .then(response => {
+                    response.text().then(text => {
+                      const data = text && JSON.parse(text);
+                      console.log("data -getallrequest--->", data);
+                    });
+                  })
+                  .catch(handleError => {
+                    console.log(" Error Response ------->", handleError);
+                  });
+                this.getMisnomer();
+              }
+              else{
+                let reliability_id=event.value;
+                fetch(constant.APIURL + "api/v1/get_all_ratio?pon_type="+this.fileType+"&reliability_id="+reliability_id, {
+                  method: "DELETE"
+                  })
+                  .then(response => {
+                    response.text().then(text => {
+                      const data = text && JSON.parse(text);
+                      console.log("data -getallrequest--->", data);
+                    });
+                  })
+                  .catch(handleError => {
+                    console.log(" Error Response ------->", handleError);
+                  });
+                this.getRatioPON(this.fileType);
+              }
+            }
+          
+            }
   }
 };
 function actionEditRenderer(params) {
@@ -567,7 +892,7 @@ function actionEditRenderer(params) {
   let skills = [];
   
   skills.push(
-    '<i class="fas fa-edit"></i>'
+    '<i style="cursor:pointer" class="fas fa-edit"></i>'
   );
   
   return skills.join(" ");
@@ -577,7 +902,7 @@ function actionDeleteRenderer(params) {
   let skills = [];
   
   skills.push(
-    '<i class="fas fa-trash-alt"></i>'
+    '<i style="cursor:pointer" class="fas fa-trash-alt"></i>'
   );
   
   return skills.join(" ");
