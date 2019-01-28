@@ -44,6 +44,20 @@
           </div>
         </li>
         <hr>
+        <li class="nav-custom" style="cursor:pointer">
+          <div class="text-center" v-if="!diasableFlag" @click="reference()">
+            <i class="fas fa-file-alt" style="fontSize:20px"></i>
+            
+            <br>
+            <p class="upload-text">Reference Data</p>
+          </div>
+          <div class="text-center" v-if="diasableFlag" >
+            <i class="fas fa-file-alt" style="fontSize:20px"></i>
+            <br>
+            <p class="upload-text">Reference Data</p>
+          </div>
+        </li>
+        <hr>
       </ul>
     </nav>
   </div>
