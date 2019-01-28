@@ -14,26 +14,28 @@
         </div>
       </div>
       
-        <div class="shadow p-3 mb-5 bg-white rounded" >
+        <div class=" " >
     
     <vudal name="myModal">
   <div class="header">
     <i class="close icon"></i>
-    Title
+    {{this.title}}
   </div>
   <div class="content">
-    <div class="form-group">
-      <span v-for="(item,index) in columnList" :key="item.columnName">
+    <div class="form-group text-left" >
+      
+      <span v-for="(item) in columnList" :key="item.columnName">
 
           <div class="row" >
             <div class="col-lg-5">
-              <label>{{item.columnName}}</label>
+              <label style="{text-align}">{{item.columnName}}</label>
             </div>
             <div class="col-lg-6">
               <input
                 type="text"
                 class="form-control"
-                v-model="formDatas[index]"
+                v-model="item.value"
+                
               >
             </div>
           </div>
@@ -43,19 +45,23 @@
       
   </div>
   <div class="actions">
-    <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addData()">
-                    ADD
+    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addData()">
+                    Create
+                </button>
+    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="editData()">
+                    Update
                 </button>
                 <button
                 type="button"
                 class="btn btn-danger"
                 @click="hideEntry()"
-                v-tooltip.top.hover.focus="'Move to Analysis Dashboard'"
-              >Back</button>
+                v-tooltip.top.hover.focus="'Cancel the option'"
+              >Cancel</button>
   </div>
 </vudal> 
-
-
+<div class="float-left" style="paddingBottom:1%">
+</div>
+<label>{{title}}</label>
     <div class="float-right" style="paddingBottom:1%">
       <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
         <download-excel :data="referenceFileData" type="csv">
@@ -64,13 +70,21 @@
           Export
         </download-excel>
       </button>
+ 
+       &nbsp; &nbsp;
+   
+              
+                <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Add'" @click="addEntry()">
+                    
+                    <i class="fas fa-plus-square"></i>  &nbsp;Add
+                </button>
     </div>
    <br>
    <br>
-    <br>
+   
         <div id="referenceBox">
     <ag-grid-vue
-              style="width: 100%; height: 345px;"
+              style="width: 100%; height: 500px;"
               class="ag-theme-balham"
               :columnDefs="referenceColumnDefs"
               :rowData="referenceRowData"
@@ -79,21 +93,24 @@
               :enableSorting="true"
               :enableFilter="true"
               :groupHeaders="true"
-              rowSelection="multiple"
               pagination="true"
-              :paginationPageSize="10"
+              :paginationPageSize="15"
               :cellClicked="onCellClicked"
               :gridReady="OnRefReady"
               :gridSizeChanged="OnRefReady"
+              :enableCellChangeFlash="true"
 
             ></ag-grid-vue> 
             </div>
+            <br>
+   <br>
+    
             <div class="float-right" style="paddingBottom:1%">
               
-                <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addEntry()">
+                <!-- <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addEntry()">
                     Add
-                </button>
-                &nbsp; &nbsp;
+                </button> -->
+             
                 <button
                 type="button"
                 class="btn btn-danger"
@@ -103,7 +120,6 @@
             </div>
             <br>
             <br>
-            
             
         </div>
     </div>
@@ -155,7 +171,7 @@ export default {
       this.depotColumnDef();
       this.getDepot();
     }
-    else if(this.fileType === 'minsomer')
+    else if(this.fileType === 'misnomer')
     {
       this.misnomerColumnDef();
       this.getMisnomer();
@@ -178,6 +194,11 @@ export default {
           referenceList: [],
           columnList:[],
           formDatas:[],
+          editFlag:false,
+          addFlag:true,
+          gridApi: null,
+          title:"",
+          uniqueId:"",
           referenceGridOptions: {
             rowStyle: {
               color: "#72879d",
@@ -204,7 +225,12 @@ export default {
       },
       partsColumnDef()
       {
-        this.columnList=[{columnName:"Part Name",formName:"part_name"},{columnName:"Material Number",formName:"material_number"},{columnName:"Part Reliability Class",formName:"part_reliability_class"},{columnName:"Spared Attribute",formName:"spared_attribute"},{columnName:"Standard Cost",formName:"standard_cost"}];
+        this.title="Parts Details";
+        this.columnList=[{columnName:"Part Name",formName:"part_name",value:""},
+                        {columnName:"Material Number",formName:"material_number",value:""},
+                        {columnName:"Part Reliability Class",formName:"part_reliability_class",value:""},
+                        {columnName:"Spared Attribute",formName:"spared_attribute",value:""},
+                        {columnName:"Standard Cost",formName:"standard_cost",value:""}];
          this.referenceColumnDefs = [
         {
           headerName: "Part Name",
@@ -254,6 +280,9 @@ export default {
       },
        highSpareColumnDef()
       {
+        this.title="High Spare Details";
+        this.columnList=[{columnName:"Substitution PON",formName:"SubstitutionPON",value:""},
+                        {columnName:"Classic PON",formName:"ClassicPON",value:""}];
          this.referenceColumnDefs = [
         {
           headerName: "Classic PON",
@@ -281,6 +310,10 @@ export default {
       },
        nodeColumnDef()
       {
+        this.title="Node Details";
+        this.columnList=[{columnName:"Node Name",formName:"node_name",value:""},
+                        {columnName:"Node Depot Belongs",formName:"node_depot_belongs",value:""},
+                        {columnName:"End Customer Node Belongs",formName:"end_customer_node_belongs",value:""}];
          this.referenceColumnDefs = [
         {
           headerName: "Node Name",
@@ -313,6 +346,18 @@ export default {
       },
       depotColumnDef()
       {
+        this.title="Depot Details";
+        this.columnList=[{columnName:"Depot Name",formName:"depot_name",value:""},
+                        {columnName:"Partner",formName:"partner",value:""},
+                        {columnName:"City",formName:"city",value:""},
+                        {columnName:"State",formName:"state",value:""},
+                        {columnName:"Region",formName:"region",value:""},
+                        {columnName:"Partner Warehouse Code",formName:"partner_warehouse_code",value:""},
+                        {columnName:"Depot Address",formName:"depot_address",value:""},
+                        {columnName:"Contact",formName:"contact",value:""},
+                        {columnName:"Hub",formName:"hub",value:""},
+                        {columnName:"Latitude",formName:"lat",value:""},
+                        {columnName:"Longitude",formName:"long",value:""}];
          this.referenceColumnDefs = [
         {
           headerName: "Depot Name",
@@ -366,7 +411,7 @@ export default {
         },
         {
           headerName: "Latitude",
-          field: "hub",
+          field: "lat",
           width: 150,
           filter: "date"
         },
@@ -392,6 +437,9 @@ export default {
       },
        misnomerColumnDef()
       {
+        this.title="Misnomer Details";
+        this.columnList=[{columnName:"Correct PON",formName:"Correct_PON",value:""},
+                        {columnName:"Misnomer PON",formName:"Misnomer_PON",value:""}];
          this.referenceColumnDefs = [
         {
           headerName: "Correct PON",
@@ -419,6 +467,18 @@ export default {
       },
       ratioPONColumnDef()
       {
+        this.title="Ratio PON Details";
+        this.columnList=[{columnName:"Product Family",formName:"product_family",value:""},
+                        {columnName:"Number of Spares 1",formName:"number_of_spares_1",value:""},
+                        {columnName:"Number of Spares 2",formName:"number_of_spares_2",value:""},
+                        {columnName:"Number of Spares 3",formName:"number_of_spares_3",value:""},
+                        {columnName:"Number of Spares 4",formName:"number_of_spares_4",value:""},
+                        {columnName:"Number of Spares 5",formName:"number_of_spares_5",value:""},
+                        {columnName:"Number of Spares 6",formName:"number_of_spares_6",value:""},
+                        {columnName:"Number of Spares 7",formName:"number_of_spares_7",value:""},
+                        {columnName:"Number of Spares 8",formName:"number_of_spares_8",value:""},
+                        {columnName:"Number of Spares 9",formName:"number_of_spares_9",value:""},
+                        {columnName:"Number of Spares 10",formName:"number_of_spares_10",value:""}];
          this.referenceColumnDefs = [
         {
           headerName: "Product Family",
@@ -426,7 +486,7 @@ export default {
           width: 250
         },
         {
-          headerName: "Number of Spares",
+          headerName: "Number of Spares 1",
           children:[{
             headerName: "1",
             field: "number_of_spares1",
@@ -493,48 +553,105 @@ export default {
         }
       ];
       },
-      addData()
+      editData()
       {
-          if(this.fileType === 'parts')
+        let url; 
+        let formData = new FormData();
+        if(this.fileType === 'parts')
           {
-            
-            this.addParts();
+           // formData.append("parts_id",this.uniqueId);
+             url="api/v1/get_all_parts?parts_id="+this.uniqueId;
           }
           else if(this.fileType === 'highspare')
           {
-            
-            this.addHighSpare();
+            //formData.append("high_spare_id",this.uniqueId);
+           url="api/v1/get_all_high_spare?high_spare_id="+this.uniqueId;
           }
           else if(this.fileType === 'node')
           {
-           
-            this.addNode();
+            //formData.append("node_id",this.uniqueId);
+           url="api/v1/get_all_node?node_id="+this.uniqueId;
           }
           else if(this.fileType === 'depot')
           {
-            
-            this.addDepot();
+            //formData.append("depot_id",this.uniqueId);
+           url="api/v1/get_all_depot?depot_id="+this.uniqueId;
           }
-          else if(this.fileType === 'minsomer')
+          else if(this.fileType === 'misnomer')
           {
-            
-            this.addMisnomer();
+            //formData.append("reference_table_id",this.uniqueId);
+           url="api/v1/get_all_misnomer?reference_table_id="+this.uniqueId;
           }
           else{
-            
-            this.addRatioPON(this.fileType);
+            formData.append("reliability_id",this.uniqueId);
+           url="api/v1/get_all_ratio?pon_type="+this.fileType+"&reliability_id="+this.uniqueId;
           }
-
+        for(let i = 0;i<this.columnList.length;i++)
+        {
+          formData.append(this.columnList[i].formName, this.columnList[i].value);
+        }
+      console.dir("formdata ----->", formData);
+      fetch(constant.APIURL + url, {
+        method: "PATCH",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("Response from backend data ---->", data);
+            if (data.http_status_code === 200) {
+               swal({
+                title: "SUCCESS",
+                text: data.msg,
+                icon: "success"
+              });
+            } else {
+              swal({
+                title: "Error",
+                text: data.msg,
+                icon: "error"
+              });
+              
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
       },
-      addParts()
+      addData()
       {
+       let url; 
+        if(this.fileType === 'parts')
+          {
+             url="api/v1/get_all_parts";
+          }
+          else if(this.fileType === 'highspare')
+          {
+           url="api/v1/get_all_high_spare";
+          }
+          else if(this.fileType === 'node')
+          {
+           url="api/v1/get_all_node";
+          }
+          else if(this.fileType === 'depot')
+          {
+           url="api/v1/get_all_depot";
+          }
+          else if(this.fileType === 'misnomer')
+          {
+           url="api/v1/get_all_misnomer";
+          }
+          else{
+           url="api/v1/get_all_ratio?pon_type="+this.fileType;
+          }
         let formData = new FormData();
         for(let i = 0;i<this.columnList.length;i++)
         {
-          formData.append(this.columnList[i].formName, this.formDatas[i]);
+          formData.append(this.columnList[i].formName, this.columnList[i].value);
         }
-      console.log("formdata ----->", formData.get("part_reliability_class"));
-      fetch(constant.APIURL + "api/v1/get_all_parts", {
+      console.dir("formdata ----->", formData);
+      fetch(constant.APIURL + url, {
         method: "PUT",
         body: formData
       })
@@ -543,18 +660,18 @@ export default {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
             if (data.http_status_code === 200) {
-              this.routeToView(data);
+               swal({
+                title: "SUCCESS",
+                text: data.msg,
+                icon: "success"
+              });
             } else {
-              swal("Hello world!");
-              
               swal({
                 title: "Error",
                 text: data.msg,
                 icon: "error"
               });
-              $(document).ready(function() {
-                $("#loader-2").hide();
-              });
+              
             }
           });
         })
@@ -586,6 +703,7 @@ export default {
               });
             }
             
+            
           });
         })
         .catch(handleError => {
@@ -607,8 +725,8 @@ export default {
               this.referenceRowData.push({
                 ClassicPON: this.referenceList[i].ClassicPON,
                 SubstitutionPON: this.referenceList[i].SubstitutionPON,
-                editFlag:this.referenceList[i].high_spare_part_id,
-                deleteFlag:this.referenceList[i].high_spare_part_id
+                editFlag:this.referenceList[i].high_spare_id,
+                deleteFlag:this.referenceList[i].high_spare_id
               });
             }
             
@@ -697,10 +815,10 @@ export default {
             for (let i = 0; i < this.referenceList.length; i++) {
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
               this.referenceRowData.push({
-                CorrectPON: this.referenceList[i].CorrectPON,
-                MisnomerPON: this.referenceList[i].MisnomerPON,
-                editFlag:this.referenceList[i].reference_tabel_id,
-                deleteFlag:this.referenceList[i].reference_tabel_id
+                CorrectPON: this.referenceList[i].Correct_PON,
+                MisnomerPON: this.referenceList[i].Misnomer_PON,
+                editFlag:this.referenceList[i].reference_table_id,
+                deleteFlag:this.referenceList[i].reference_table_id
               });
             }
             
@@ -748,6 +866,8 @@ export default {
       },
       
       OnRefReady(event) {
+        console.log(event)
+        this.gridApi=event.api;
           var gridWidth = document.getElementById('referenceBox').offsetWidth;
 
             // keep track of which columns to hide/show
@@ -776,27 +896,45 @@ export default {
             event.api.sizeColumnsToFit();
           },
           onCellClicked(event) {
-            console.dir(event.colDef.field);
-            let requestId = event.value;
+            console.dir(event);
+            
             if(event.colDef.field === 'deleteFlag')
             {
               console.log(event.value);
               if(this.fileType === 'parts')
               {
-                let part_id=event.value;
-                fetch(constant.APIURL + "api/v1/get_all_parts?parts_id="+part_id, {
-                  method: "DELETE"
-                  })
-                  .then(response => {
-                    response.text().then(text => {
-                      const data = text && JSON.parse(text);
-                      console.log("data -getallrequest--->", data);
+              let part_id=event.value;
+              fetch(constant.APIURL + "api/v1/get_all_parts?parts_id="+part_id, {
+                method: "DELETE"
+                })
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
+                    
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getParts();
+                        }
                     });
-                  })
-                  .catch(handleError => {
-                    console.log(" Error Response ------->", handleError);
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
+                      
+                    }
                   });
-                this.getParts();
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
               }
               else if(this.fileType === 'highspare')
               {
@@ -807,13 +945,33 @@ export default {
                   .then(response => {
                     response.text().then(text => {
                       
-                      console.log("data -getallrequest--->", text);
+                     
+                      const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
+                    
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getHighSpare();
+                        }
+                    });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
+                    }
                     });
                   })
                   .catch(handleError => {
                     console.log(" Error Response ------->", handleError);
                   });
-                this.getHighSpare();
+                
               }
               else if(this.fileType === 'node')
               {
@@ -825,12 +983,31 @@ export default {
                     response.text().then(text => {
                       const data = text && JSON.parse(text);
                       console.log("data -getallrequest--->", data);
+                    
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getNode();
+                        }
+                    });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
+                      
+                    }
                     });
                   })
                   .catch(handleError => {
                     console.log(" Error Response ------->", handleError);
                   });
-                this.getNode();
+               
               }
               else if(this.fileType === 'depot')
               {
@@ -840,14 +1017,33 @@ export default {
                   })
                   .then(response => {
                     response.text().then(text => {
-                      const data = text && JSON.parse(text);
-                      console.log("data -getallrequest--->", data);
+                          const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
+                    
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getDepot();
+                        }
+                    });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
+                      
+                    }
                     });
                   })
                   .catch(handleError => {
                     console.log(" Error Response ------->", handleError);
                   });
-                this.getDepot();
+               
               }
               else if(this.fileType === 'minsomer')
               {
@@ -858,13 +1054,33 @@ export default {
                   .then(response => {
                     response.text().then(text => {
                       const data = text && JSON.parse(text);
-                      console.log("data -getallrequest--->", data);
+                        
+                    console.log("data -getallrequest--->", data);
+                    
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getMisnomer();
+                        }
+                    });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
+                      
+                    }
                     });
                   })
                   .catch(handleError => {
                     console.log(" Error Response ------->", handleError);
                   });
-                this.getMisnomer();
+                
               }
               else{
                 let reliability_id=event.value;
@@ -874,13 +1090,115 @@ export default {
                   .then(response => {
                     response.text().then(text => {
                       const data = text && JSON.parse(text);
-                      console.log("data -getallrequest--->", data);
+                       console.log("data -getallrequest--->", data);
+                    
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                           this.getRatioPON(this.fileType);
+                        }
+                    });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
+                      
+                    }
                     });
                   })
                   .catch(handleError => {
                     console.log(" Error Response ------->", handleError);
                   });
-                this.getRatioPON(this.fileType);
+               
+              }
+            }else if(event.colDef.field === 'editFlag'){
+              this.editFlag=true;
+              this.addFlag=false;
+              if(this.fileType === 'parts')
+              {
+                this.uniqueId=event.value;
+                this.columnList[0].value=event.data.part_name;
+                      this.columnList[1].value=event.data.material_number;
+                      this.columnList[2].value=event.data.part_reliability_class;
+                      this.columnList[3].value=event.data.spared_attribute;
+                      this.columnList[4].value=event.data.standard_cost;
+                
+                   this.$modals.myModal.$show();
+              }
+              else if(this.fileType === 'highspare')
+              {
+                this.uniqueId=event.value;
+                this.columnList[0].value=event.data.SubstitutionPON;
+                this.columnList[1].value=event.data.ClassicPON;
+                
+                  this.$modals.myModal.$show();
+              }
+              else if(this.fileType === 'node')
+              {
+                this.uniqueId=event.value;
+                this.columnList[0].value=event.data.node_name;
+                this.columnList[1].value=event.data.node_depot_belongs;
+                this.columnList[2].value=event.data.end_customer_node_belongs;
+                  this.$modals.myModal.$show();
+              }
+              else if(this.fileType === 'depot')
+              {
+
+                this.columnList[0].value=event.data.depot_name;
+                      this.columnList[1].value=event.data.partner;
+                      this.columnList[2].value=event.data.city;
+                      this.columnList[3].value=event.data.state;
+                      this.columnList[4].value=event.data.region;
+                      this.columnList[5].value=event.data.partner;
+                      this.columnList[6].value=event.data.depot_address;
+                      this.columnList[7].value=event.data.contact;
+                      this.columnList[8].value=event.data.hub;
+                      this.columnList[9].value=event.data.lat;
+                      this.columnList[10].value=event.data.long;
+                      this.uniqueId=event.value;
+                      
+                  this.$modals.myModal.$show();
+              }
+              else if(this.fileType === 'node')
+              {
+                this.uniqueId=event.value;
+                 this.columnList[0].value=event.data.node_name;
+                      this.columnList[1].value=event.data.node_depot_belongs;
+                      this.columnList[2].value=event.data.end_customer_node_belongs;
+                     
+                
+                  this.$modals.myModal.$show();
+              }
+              else if(this.fileType === 'misnomer')
+              {
+                this.uniqueId=event.value;
+                      this.columnList[0].value=event.data.CorrectPON;
+                      this.columnList[1].value=event.data.MisnomerPON;
+                
+                  this.$modals.myModal.$show();
+              }
+              else{
+                this.uniqueId=event.value;
+                this.columnList[0].value=event.data.product_family;
+                      this.columnList[1].value=event.data.number_of_spares1;
+                      this.columnList[2].value=event.data.number_of_spares2;
+                      this.columnList[3].value=event.data.number_of_spares3;
+                      this.columnList[4].value=event.data.number_of_spares4;
+                      this.columnList[5].value=event.data.number_of_spares5;
+                      this.columnList[6].value=event.data.number_of_spares6;
+                      this.columnList[7].value=event.data.number_of_spares7;
+                      this.columnList[8].value=event.data.number_of_spares8;
+                      this.columnList[9].value=event.data.number_of_spares9;
+                      this.columnList[10].value=event.data.number_of_spares10;
+                      
+                this.$modals.myModal.$show();
+                
               }
             }
           
@@ -913,5 +1231,9 @@ function actionDeleteRenderer(params) {
 .myBreadCrumb {
   margin-top: -2%;
   margin-bottom: 2%;
+}
+
+.labelStyle {
+ text-align: left;
 }
 </style>

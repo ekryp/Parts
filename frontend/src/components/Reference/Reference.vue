@@ -8,13 +8,13 @@
          <span style="font-size: 14px;">Reference</span>
        </p>
      </div>
-     <div class="shadow-lg p-3 mb-5 bg-white rounded">
-       <h5>Reference File Information</h5>
+     <div class="">
+       <h5>Reference File Information :</h5>
        <div class="form-group">
 
-         <div class="row" style="marginTop:2%">
+         <div class="row" style="marginTop:2%;font-size:17px">
            <div class="col-lg-3">
-               <label style="font-size:19px"> Part File :</label>
+               <label style="font-size:17px"> Part File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -46,9 +46,9 @@
          </div>
 
          
-          <div class="row" style="marginTop:2%">
+          <div class="row" style="marginTop:2%;font-size:17px">
            <div class="col-lg-3">
-               <label style="font-size:19px"> High Spare File :</label>
+               <label style="font-size:17px"> High Spare File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -79,9 +79,9 @@
            </div>
          </div>
 
-         <div class="row" style="marginTop:2%">
+         <div class="row" style="marginTop:2%;font-size:17px">
            <div class="col-lg-3">
-               <label style="font-size:19px"> Node File :</label>
+               <label style="font-size:17px"> Node File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -112,9 +112,9 @@
            </div>
          </div>
 
-         <div class="row" style="marginTop:2%">
+         <div class="row" style="marginTop:2%;font-size:17px">
            <div class="col-lg-3">
-               <label style="font-size:19px"> Depot File :</label>
+               <label style="font-size:17px"> Depot File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -145,9 +145,9 @@
            </div>
          </div> 
 
-         <div class="row" style="marginTop:2%">
+         <div class="row" style="marginTop:2%;font-size:17px">
            <div class="col-lg-3">
-               <label style="font-size:19px"> Minsomer File :</label>
+               <label style="font-size:17px"> Minsomer File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -174,13 +174,13 @@
            </div>
            <div class="col-lg-2">
              <button   type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
-             <button   type="button" class="btn btn-success" @click="routeToView('minsomer')" style="margin-left:10%">View</button>
+             <button   type="button" class="btn btn-success" @click="routeToView('misnomer')" style="margin-left:10%">View</button>
            </div>
          </div> 
 
-         <div class="row" style="marginTop:2%" >
+         <div class="row" style="marginTop:2%;font-size:17px" >
            <div class="col-lg-3">
-               <label style="font-size:19px"> Ratio of PON - 2Day File :</label>
+               <label style="font-size:17px"> Ratio of PON - 2Day File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -211,9 +211,9 @@
            </div>
          </div>
 
-         <div class="row" style="marginTop:2%" >
+         <div class="row" style="marginTop:2%;font-size:17px" >
            <div class="col-lg-3">
-               <label style="font-size:19px"> Ratio of PON - 7Day File :</label>
+               <label style="font-size:17px"> Ratio of PON - 7Day File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -244,9 +244,9 @@
            </div>
          </div>
 
-         <div class="row" style="marginTop:2%">
+         <div class="row" style="marginTop:2%;font-size:17px">
            <div class="col-lg-3">
-               <label style="font-size:19px"> Ratio of PON - 30Day File :</label>
+               <label style="font-size:17px"> Ratio of PON - 30Day File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">
@@ -277,9 +277,9 @@
             </div>
          </div> 
 
-         <div class="row" style="marginTop:2%">
+         <div class="row" style="marginTop:2%;font-size:17px">
            <div class="col-lg-3">
-               <label style="font-size:19px"> Ratio of PON - 60Day File :</label>
+               <label style="font-size:17px"> Ratio of PON - 60Day File </label>
            </div>
            <div class="col-lg-4">
              <div class="row">

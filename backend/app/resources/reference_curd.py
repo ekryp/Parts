@@ -33,12 +33,15 @@ class GetParts(Resource):
         part_reliability_class = args['part_reliability_class']
         part_name = args['part_name']
         spared_attribute = args['spared_attribute']
-        query = "update parts set material_number='{0}',part_name='{1}',part_reliability_class='{2}',spared_attribute={3} where part_id={4}".format(material_number,part_name,part_reliability_class,spared_attribute,parts_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        engine.execute(query)
-        part_cost_query ="update part_cost set standard_cost={0} where part_id={1}".format(standard_cost,parts_id)
-        engine.execute(part_cost_query)
-        return "{message: 'Edited Successfully'}"
+        try:
+            query = "update parts set material_number='{0}',part_name='{1}',part_reliability_class='{2}',spared_attribute={3} where part_id={4}".format(material_number,part_name,part_reliability_class,spared_attribute,parts_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            engine.execute(query)
+            part_cost_query ="update part_cost set standard_cost={0} where part_id={1}".format(standard_cost,parts_id)
+            engine.execute(part_cost_query)
+            return jsonify(msg="Parts Details Updated Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
     
     def put(self):
@@ -48,13 +51,17 @@ class GetParts(Resource):
         part_reliability_class = args['part_reliability_class']
         part_name = args['part_name']
         spared_attribute = args['spared_attribute']
-        query = "INSERT INTO parts (cust_id,material_number,part_name,"\
-                "part_reliability_class,spared_attribute) values ({0},{1},'{2}','{3}','{4}')".format(7,material_number,part_name,part_reliability_class,spared_attribute)
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        engine.execute(query)
-        part_cost_query="INSERT INTO part_cost (part_id,material_number,standard_cost) values ((SELECT part_id FROM parts where part_name='{0}'),{1},{2})".format(part_name,material_number,standard_cost)
-        engine.execute(part_cost_query)
-        return "{message: 'Inserted Successfully'}"
+        try:
+
+            query = "INSERT INTO parts (cust_id,material_number,part_name,"\
+                    "part_reliability_class,spared_attribute,part_number) values ({0},{1},'{2}','{3}','{4}',{5})".format(7,material_number,part_name,part_reliability_class,spared_attribute,0)
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            engine.execute(query)
+            part_cost_query="INSERT INTO part_cost (part_id,material_number,standard_cost) values ((SELECT part_id FROM parts where part_name='{0}'),{1},{2})".format(part_name,material_number,standard_cost)
+            engine.execute(part_cost_query)
+            return jsonify(msg="Inserted Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
 
     def get(self):
@@ -71,18 +78,24 @@ class GetParts(Resource):
         #Removes duplicate column names not column values
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
-    
+
+
+        
     def options(self):
             return
     
     def delete(self):
         args = self.reqparse.parse_args()
         parts_id = args['parts_id']
-        query = "delete from parts where part_id = {0}".format(parts_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        result=engine.execute(query)
-        print("result",str(result))
-        return "{message: 'Deleted Successfully'}"
+        try:
+
+            query = "delete from parts where part_id = {0}".format(parts_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            result=engine.execute(query)
+            print("result",str(result))
+            return jsonify(msg="Parts Details Deleted Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
 
     
 
@@ -104,23 +117,30 @@ class GetHighSpare(Resource):
         SubstitutionPON = args['SubstitutionPON']
         ClassicPON = args['ClassicPON']
         high_spare_id = args['high_spare_id']
-        query = "update high_spare set given_spare_part_id=(SELECT part_id FROM parts where part_name='{0}'),high_spare_part_id=(SELECT part_id FROM parts where part_name='{1}')  where high_spare_id = {2}".format(ClassicPON,SubstitutionPON,high_spare_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        engine.execute(query)
-        return "{message: 'Edited Successfully'}"
+        try:
+            query = "update high_spare set given_spare_part_id=(SELECT part_id FROM parts where part_name='{0}'),high_spare_part_id=(SELECT part_id FROM parts where part_name='{1}')  where high_spare_id = {2}".format(ClassicPON,SubstitutionPON,high_spare_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            engine.execute(query)
+            return jsonify(msg="High Spare Updated Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
 
     def put(self):
         args = self.reqparse.parse_args()
         ClassicPON = args['ClassicPON']
         SubstitutionPON = args['SubstitutionPON']
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        part_cost_query="Insert into high_spare (cust_id,given_spare_part_id,high_spare_part_id) values ({0},(SELECT part_id FROM parts where part_name='{1}'),(SELECT part_id FROM parts where part_name='{2}'))".format(7,ClassicPON,SubstitutionPON)
-        engine.execute(part_cost_query)
-        return "{message: 'Inserted Successfully'}"
+        try:
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            part_cost_query="Insert into high_spare (cust_id,given_spare_part_id,high_spare_part_id) values ({0},(SELECT part_id FROM parts where part_name='{1}'),(SELECT part_id FROM parts where part_name='{2}'))".format(7,ClassicPON,SubstitutionPON)
+            engine.execute(part_cost_query)
+            return jsonify(msg="Inserted High Spare Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
+
 
     def get(self):
-        query = "select t1.part_name as ClassicPON, t2.part_name as SubstitutionPON, t.given_spare_part_id, t.high_spare_part_id " \
+        query = "select t1.part_name as ClassicPON, t2.part_name as SubstitutionPON, t.given_spare_part_id, t.high_spare_id " \
                 "from high_spare t"\
                 " inner join parts t1 on t1.part_id = t.given_spare_part_id"\
                 " inner join parts t2 on t2.part_id = t.high_spare_part_id"
@@ -133,18 +153,25 @@ class GetHighSpare(Resource):
         #Removes duplicate column names not column values
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
+
+   
     
     def delete(self):
         args = self.reqparse.parse_args()
         high_spare_id = args['high_spare_id']
-        query = "delete from high_spare where high_spare_id = {0}".format(high_spare_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        result=engine.execute(query)
-        print("result",str(result))
-        #result = result.loc[:, ~result.columns.duplicated()]
-        #Removes duplicate column names not column values
-        
-        return "{message: 'Deleted Successfully'}"
+        try:
+
+            query = "delete from high_spare where high_spare_id = {0}".format(high_spare_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            result=engine.execute(query)
+            print("result",str(result))
+            #result = result.loc[:, ~result.columns.duplicated()]
+            #Removes duplicate column names not column values
+            
+            return jsonify(msg="Deleted High Spare Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
+
 
 
 class GetNode(Resource):
@@ -164,20 +191,26 @@ class GetNode(Resource):
         end_customer_node_belongs = args['end_customer_node_belongs']
         node_id = args['node_id']
         node_depot_belongs = args['node_depot_belongs']
-        query = "update node set node_name='{0}',end_customer_node_belongs='{1}',node_depot_belongs='{2}' where node_id={3}".format(node_name,end_customer_node_belongs,node_depot_belongs,node_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        engine.execute(query)
-        return "{message: 'Edited Successfully'}"
+        try:
+            query = "update node set node_name='{0}',end_customer_node_belongs='{1}',node_depot_belongs='{2}' where node_id={3}".format(node_name,end_customer_node_belongs,node_depot_belongs,node_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            engine.execute(query)
+            return jsonify(msg=" Node Details Updated Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
     def put(self):
         args = self.reqparse.parse_args()
         node_name = args['node_name']
         end_customer_node_belongs = args['end_customer_node_belongs']
         node_depot_belongs = args['node_depot_belongs']
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        query="insert into node (cust_id,node_name,end_customer_node_belongs,node_depot_belongs) values({0},'{1}','{2}','{3}')".format(7,node_name,end_customer_node_belongs,node_depot_belongs)
-        engine.execute(query)
-        return "{message: 'Inserted Successfully'}"
+        try:
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            query="insert into node (cust_id,node_name,end_customer_node_belongs,node_depot_belongs) values({0},'{1}','{2}','{3}')".format(7,node_name,end_customer_node_belongs,node_depot_belongs)
+            engine.execute(query)
+            return jsonify(msg="Inserted Node Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
     def get(self):
         query = "SELECT node.node_id,node.node_name,node.end_customer_node_belongs,node.node_depot_belongs FROM node"
@@ -191,17 +224,24 @@ class GetNode(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
+    
+
     def delete(self):
         args = self.reqparse.parse_args()
         node_id = args['node_id']
-        query = "delete from node where node_id = {0}".format(node_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        result=engine.execute(query)
-        print("result",str(result))
-        #result = result.loc[:, ~result.columns.duplicated()]
-        #Removes duplicate column names not column values
-        
-        return "{message: 'Deleted Successfully'}"
+        try:
+
+            query = "delete from node where node_id = {0}".format(node_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            result=engine.execute(query)
+            print("result",str(result))
+            #result = result.loc[:, ~result.columns.duplicated()]
+            #Removes duplicate column names not column values
+            
+            return jsonify(msg=" Node Details Deleted Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
+
 
     def options(self):
             return
@@ -240,11 +280,13 @@ class GetDepot(Resource):
         contact = args['contact']
         lat = args['lat']
         longitude = args['long']
-       
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        query = "insert into depot (cust_id,depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,`long`) values({0},'{1}','{2}','{3}','{4}','{5}','{6}',{7},'{8}','{9}','{10}','{11}','{12}')".format(7,depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,longitude)
-        engine.execute(query)
-        return "{message: 'Insert Successfully'}"
+        try:   
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            query = "insert into depot (cust_id,depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,`long`) values({0},'{1}','{2}','{3}','{4}','{5}','{6}',{7},'{8}','{9}','{10}','{11}','{12}')".format(7,depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,longitude)
+            engine.execute(query)
+            return jsonify(msg="Inserted Depot Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
     def patch(self):
         args = self.reqparse.parse_args()
@@ -261,11 +303,14 @@ class GetDepot(Resource):
         lat = args['lat']
         longitude = args['long']
         depot_id = args['depot_id']
-       
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        query = "update  depot set depot_name = '{0}',depot_address = '{1}',city ='{2}',state ='{3}',country ='{4}',region = '{5}',hub = {6},partner = '{7}',partner_warehouse_code = '{8}',contact ='{8}',lat ='{10}',`long` ='{11}' where depot_id ={12}".format(depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,longitude,depot_id)
-        engine.execute(query)
-        return "{message: 'Inserted Successfully'}"
+        try:
+
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            query = "update  depot set depot_name = '{0}',depot_address = '{1}',city ='{2}',state ='{3}',country ='{4}',region = '{5}',hub = {6},partner = '{7}',partner_warehouse_code = '{8}',contact ='{8}',lat ='{10}',`long` ='{11}' where depot_id ={12}".format(depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,longitude,depot_id)
+            engine.execute(query)
+            return jsonify(msg=" Depot Details Updated Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
     def get(self):
         query = "SELECT depot_id,depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,depot.long FROM depot"
@@ -277,20 +322,27 @@ class GetDepot(Resource):
         #Removes duplicate column names not column values
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
+
+    
     def options(self):
             return
 
     def delete(self):
         args = self.reqparse.parse_args()
         depot_id = args['depot_id']
-        query = "delete from depot where depot_id = {0}".format(depot_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        result=engine.execute(query)
-        print("result",str(result))
-        #result = result.loc[:, ~result.columns.duplicated()]
-        #Removes duplicate column names not column values
-        
-        return "{message: 'Deleted Successfully'}"
+        try:
+
+            query = "delete from depot where depot_id = {0}".format(depot_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            result=engine.execute(query)
+            print("result",str(result))
+            #result = result.loc[:, ~result.columns.duplicated()]
+            #Removes duplicate column names not column values
+            
+            return jsonify(msg=" Depot Details Deleted Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
+
 
 
 class GetMisnomer(Resource):
@@ -309,24 +361,30 @@ class GetMisnomer(Resource):
         Misnomer_PON = args['Misnomer_PON']
         Correct_PON = args['Correct_PON']
         reference_table_id = args['reference_table_id']
-        query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_id=(SELECT part_id FROM parts where part_name='{1}')  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        engine.execute(query)
-        return "{message: 'Edited Successfully'}"
-
+        try:
+            query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_id=(SELECT part_id FROM parts where part_name='{1}')  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            engine.execute(query)
+            return jsonify(msg="Misonomer Details Updated Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
     def put(self):
         args = self.reqparse.parse_args()
         Misnomer_PON = args['Misnomer_PON']
         Correct_PON = args['Correct_PON']
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        part_cost_query="Insert into misnomer_part_conversion (cust_id,misnomer_part_name,correct_part_id) values ({0},'{1}',(SELECT part_id FROM parts where part_name='{2}'))".format(7,Misnomer_PON,Correct_PON)
-        engine.execute(part_cost_query)
-        return "{message: 'Inserted Successfully'}"
+        try:       
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            query="Insert into misnomer_part_conversion (cust_id,misnomer_part_name,correct_part_id) values ({0},'{1}',(SELECT part_id FROM parts where part_name='{2}'))".format(7,Misnomer_PON,Correct_PON)
+            engine.execute(query)
+            return jsonify(msg="Inserted Misonomer Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
+
 
 
     def get(self):
-        query = "select t1.part_name as CorrectPON, t.misnomer_part_name as MisnomerPON, t.reference_table_id,t1.part_id "\
+        query = "select t1.part_name as Correct_PON, t.misnomer_part_name as Misnomer_PON, t.reference_table_id,t1.part_id "\
                 " from misnomer_part_conversion t"\
                 " inner join parts t1 on t1.part_id = t.correct_part_id"
         result = get_df_from_sql_query(
@@ -338,17 +396,22 @@ class GetMisnomer(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
+
     def delete(self):
         args = self.reqparse.parse_args()
         reference_table_id = args['reference_table_id']
-        query = "delete from misnomer_part_conversion where reference_table_id = {0}".format(reference_table_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        result=engine.execute(query)
-        print("result",str(result))
-        #result = result.loc[:, ~result.columns.duplicated()]
-        #Removes duplicate column names not column values
-        
-        return "{message: 'Deleted Successfully'}"
+        try:
+            query = "delete from misnomer_part_conversion where reference_table_id = {0}".format(reference_table_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            result=engine.execute(query)
+            print("result",str(result))
+            #result = result.loc[:, ~result.columns.duplicated()]
+            #Removes duplicate column names not column values
+            
+            return jsonify(msg="Deleted Misonomer Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
+
 
     def options(self):
             return
@@ -387,11 +450,14 @@ class GetRatio(Resource):
         number_of_spares_8 = args['number_of_spares_8']
         number_of_spares_9 = args['number_of_spares_9']
         number_of_spares_10 = args['number_of_spares_10']
-        
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        query="Insert into reliability_class (cust_id,replenish_time,product_family,`1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`,`10`) values({0},'{1}','{2}',{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})".format(7,pon_type,product_family,number_of_spares_1,number_of_spares_2,number_of_spares_3,number_of_spares_4,number_of_spares_5,number_of_spares_6,number_of_spares_7,number_of_spares_8,number_of_spares_9,number_of_spares_10)
-        engine.execute(query)
-        return "{message: 'Inserted Successfully'}"
+        try:
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            query="Insert into reliability_class (cust_id,replenish_time,product_family,`1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`,`10`) values({0},'{1}','{2}',{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})".format(7,pon_type,product_family,number_of_spares_1,number_of_spares_2,number_of_spares_3,number_of_spares_4,number_of_spares_5,number_of_spares_6,number_of_spares_7,number_of_spares_8,number_of_spares_9,number_of_spares_10)
+            engine.execute(query)
+            return jsonify(msg="Inserted Ratio PON Details Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
+
 
     def patch(self):
         args = self.reqparse.parse_args()
@@ -408,11 +474,14 @@ class GetRatio(Resource):
         number_of_spares_8 = args['number_of_spares_8']
         number_of_spares_9 = args['number_of_spares_9']
         number_of_spares_10 = args['number_of_spares_10']
-        
-        engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-        query="Update reliability_class set replenish_time='{0}',product_family='{1}',`1`={2},`2`={3},`3`={4},`4`={5},`5`={6},`6`={7},`7`={8},`8`={9},`9`={10},`10`={11} where reliability_id={12}".format(pon_type,product_family,number_of_spares_1,number_of_spares_2,number_of_spares_3,number_of_spares_4,number_of_spares_5,number_of_spares_6,number_of_spares_7,number_of_spares_8,number_of_spares_9,number_of_spares_10,reliability_id)
-        engine.execute(query)
-        return "{message: 'Updated Successfully'}"
+        try:
+
+            engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
+            query="Update reliability_class set replenish_time='{0}',product_family='{1}',`1`={2},`2`={3},`3`={4},`4`={5},`5`={6},`6`={7},`7`={8},`8`={9},`9`={10},`10`={11} where reliability_id={12}".format(pon_type,product_family,number_of_spares_1,number_of_spares_2,number_of_spares_3,number_of_spares_4,number_of_spares_5,number_of_spares_6,number_of_spares_7,number_of_spares_8,number_of_spares_9,number_of_spares_10,reliability_id)
+            engine.execute(query)
+            return jsonify(msg=" Ratio PON Details Updated Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
 
     
@@ -432,14 +501,18 @@ class GetRatio(Resource):
     def delete(self):
         args = self.reqparse.parse_args()
         reliability_id = args['reliability_id']
-        query = "delete from reliability_class where reliability_id = {0}".format(reliability_id)
-        engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
-        result=engine.execute(query)
-        print("result",str(result))
-        #result = result.loc[:, ~result.columns.duplicated()]
-        #Removes duplicate column names not column values
-        
-        return "{message: 'Deleted Successfully'}"
+        try:
+            
+            query = "delete from reliability_class where reliability_id = {0}".format(reliability_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+            result=engine.execute(query)
+            print("result",str(result))
+            #result = result.loc[:, ~result.columns.duplicated()]
+            #Removes duplicate column names not column values
+            
+            return jsonify(msg=" Ratio PON Details Deleted Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
 
         
     def options(self):
