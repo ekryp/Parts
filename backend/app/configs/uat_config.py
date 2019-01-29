@@ -32,9 +32,9 @@ class Configuration(BaseConfig):
     SERVER_NAME = None
     LOG_FILENAME = "pyservices_application.log"
     AUTH0_DOMAIN = "ekryp.auth0.com"
-    AUTH0_CLIENT_ID = "bMaDtUC3cScPcrex943NVOqhPHsK20mt"
-    AUTH0_CLIENT_SECRET_KEY = "PSuFfYPt6tK2ltj2sYiatgL_aSkzOEWOZrJJGUZ6X9w74xAelDTtCnrpWIzYJHPO"
-    AUTH0_API_AUDIENCE = "https://prod-services/api/v1/"
+    AUTH0_CLIENT_ID = "NJh7jJsES1ymojwuBodeZJCzT867UNiu"
+    AUTH0_CLIENT_SECRET_KEY = "sZXs4dsAOzJlnJgLVXEyHQ5XLZ4TP-zlNeUs54nZN1tRPFL-UsFmCZQC6FFHRXtr"
+    AUTH0_API_AUDIENCE = "https://prod-services.ekryp.com/api/v1/"
 
     DEBUG = True
     ECLIPSE_DATA_DB_URI = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/infinera_staging"

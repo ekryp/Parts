@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime
-
+from app.auth.authorization import requires_auth
 import pandas as pd
 from app import Configuration
 from app import app
@@ -18,6 +18,7 @@ from app.tasks import derive_table_creation
 
 class GetSparePartAnalysis(Resource):
 
+    @requires_auth
     def get(self):
         engine = create_engine(Configuration.INFINERA_DB_URL)
         query = "SELECT distinct(end_cust_name) FROM end_customer"
@@ -39,6 +40,7 @@ class GetSparePartAnalysis(Resource):
 
 class GetstepsAllUsers(Resource):
 
+    @requires_auth
     def get(self):
         query = "SELECT  *  FROM prospect_details as a " \
                 "right join prospect_status as b " \
@@ -67,6 +69,7 @@ class GetstepsforSpecificRequest(Resource):
         self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         super(GetstepsforSpecificRequest, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
@@ -99,6 +102,7 @@ class GetSummaryforSpecificRequest(Resource):
         self.reqparse.add_argument('toggle', type=str, required=True, location='args')
         super(GetSummaryforSpecificRequest, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
@@ -249,6 +253,7 @@ class GetGrossforSpecificRequest(Resource):
         self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         super(GetGrossforSpecificRequest, self).__init__()
 
+    @requires_auth
     def get(self):
 
         args = self.reqparse.parse_args()
@@ -274,6 +279,7 @@ class GetCurrentIB(Resource):
         self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         super(GetCurrentIB, self).__init__()
 
+    @requires_auth
     def get(self):
 
         args = self.reqparse.parse_args()
@@ -300,6 +306,7 @@ class GetCurrentInventory(Resource):
         self.reqparse.add_argument('toggle', type=str, required=True, location='args')
         super(GetCurrentInventory, self).__init__()
 
+    @requires_auth
     def get(self):
 
         args = self.reqparse.parse_args()
@@ -337,6 +344,7 @@ class GetCurrentNet(Resource):
         self.reqparse.add_argument('toggle', type=str, required=True, location='args')
         super(GetCurrentNet, self).__init__()
 
+    @requires_auth
     def get(self):
 
         args = self.reqparse.parse_args()
@@ -422,6 +430,7 @@ class GetCurrentNet(Resource):
 
 class GetDashboardRequestCount(Resource):
 
+    @requires_auth
     def get(self):
 
         def get_respective_counts():
@@ -463,6 +472,7 @@ class GetMainDashboardCount(Resource):
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
         super(GetMainDashboardCount, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         toggle = args['toggle']
@@ -558,6 +568,7 @@ class GetPieChart(Resource):
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
         super(GetPieChart, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         toggle = args['toggle']
@@ -621,6 +632,7 @@ class GetTopPons(Resource):
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
         super(GetTopPons, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         toggle = args['toggle']
@@ -661,6 +673,7 @@ class GetTopDepots(Resource):
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
         super(GetTopDepots, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         toggle = args['toggle']
@@ -700,6 +713,7 @@ class GetTopCustomer(Resource):
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
         super(GetTopCustomer, self).__init__()
 
+    @requires_auth
     def get(self):
 
         args = self.reqparse.parse_args()
@@ -739,6 +753,7 @@ class GetTopExtended(Resource):
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
         super(GetTopExtended, self).__init__()
 
+    @requires_auth
     def get(self):
 
         args = self.reqparse.parse_args()
@@ -782,7 +797,7 @@ class GetLatLon(Resource):
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
         super(GetLatLon, self).__init__()
 
-
+    @requires_auth
     def get(self):
 
         args = self.reqparse.parse_args()
@@ -825,6 +840,7 @@ class GetAnalysisName(Resource):
         self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         super(GetAnalysisName, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
@@ -845,6 +861,7 @@ class GetErrorRecords(Resource):
         self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
         super(GetErrorRecords, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
@@ -857,9 +874,6 @@ class GetErrorRecords(Resource):
 
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
-
-
-
 
 
 class FileFormatIssue(Exception):
@@ -880,6 +894,7 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('replenish_time', required=True, location='form')
         super(PostSparePartAnalysis, self).__init__()
 
+    @requires_auth
     def post(self):
 
         args = self.reqparse.parse_args()
@@ -1043,6 +1058,7 @@ class Reference(Resource):
         self.reqparse.add_argument('user_email_id', required=True, location='form')
         super(Reference, self).__init__()
 
+    @requires_auth
     def post(self):
         print('hitted successfully')
         args = self.reqparse.parse_args()
@@ -1097,13 +1113,11 @@ class Reference(Resource):
                 save_reference_record_db()
             else :
                 update_reference_record_db()
-           
-            
-           
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200)
         except:
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
+
 
 class GetReference(Resource):
 
@@ -1112,6 +1126,7 @@ class GetReference(Resource):
         self.reqparse.add_argument('user_email_id', type=str, required=True, help='id', location='args')
         super(GetReference, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         user_email_id = args['user_email_id']
@@ -1124,6 +1139,7 @@ class GetReference(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
+
 class DefaultReference(Resource):
 
     def __init__(self):
@@ -1132,6 +1148,7 @@ class DefaultReference(Resource):
         self.reqparse.add_argument('user_email_id')
         super(DefaultReference, self).__init__()
 
+    @requires_auth
     def post(self):
         args = self.reqparse.parse_args()
         reference_id = args['reference_id']
@@ -1159,6 +1176,7 @@ class DefaultReference(Resource):
         except:
             return jsonify(msg="Error in updating,Please try again", http_status_code=400)
 
+
 class GetReferenceById(Resource):
 
     def __init__(self):
@@ -1166,6 +1184,7 @@ class GetReferenceById(Resource):
         self.reqparse.add_argument('reference_id', type=int, required=True, help='id', location='args')
         super(GetReferenceById, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         reference_id = args['reference_id']

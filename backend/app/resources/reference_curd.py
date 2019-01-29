@@ -11,6 +11,8 @@ import pdb
 import os
 import json
 from app import Configuration
+from app.auth.authorization import requires_auth
+
 
 class GetParts(Resource):
     def __init__(self):
@@ -25,6 +27,7 @@ class GetParts(Resource):
         self.reqparse.add_argument('parts_id', type=int,required=False, help='parts_id', location='args')
         super(GetParts, self).__init__()
 
+    @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
         parts_id = args['parts_id']
@@ -43,7 +46,7 @@ class GetParts(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
-    
+    @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
         material_number = args['material_number']
@@ -63,7 +66,7 @@ class GetParts(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
-
+    @requires_auth
     def get(self):
         query = "select parts.part_id,parts.part_name,parts.material_number,"\
                 " part_cost.standard_cost,parts.part_number,"\
@@ -78,12 +81,11 @@ class GetParts(Resource):
         #Removes duplicate column names not column values
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
-
-
         
     def options(self):
             return
-    
+
+    @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
         parts_id = args['parts_id']
@@ -96,8 +98,6 @@ class GetParts(Resource):
             return jsonify(msg="Parts Details Deleted Successfully", http_status_code=200)
         except:
             return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
-
-    
 
 
 class GetHighSpare(Resource):
@@ -112,6 +112,7 @@ class GetHighSpare(Resource):
     def options(self):
             return
 
+    @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
         SubstitutionPON = args['SubstitutionPON']
@@ -125,7 +126,7 @@ class GetHighSpare(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
-
+    @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
         ClassicPON = args['ClassicPON']
@@ -138,7 +139,7 @@ class GetHighSpare(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
-
+    @requires_auth
     def get(self):
         query = "select t1.part_name as ClassicPON, t2.part_name as SubstitutionPON, t.given_spare_part_id, t.high_spare_id " \
                 "from high_spare t"\
@@ -154,8 +155,7 @@ class GetHighSpare(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
-   
-    
+    @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
         high_spare_id = args['high_spare_id']
@@ -173,7 +173,6 @@ class GetHighSpare(Resource):
             return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
 
 
-
 class GetNode(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -183,8 +182,7 @@ class GetNode(Resource):
         self.reqparse.add_argument('node_id', type=str,required=False, help='node_id', location='args')
         super(GetNode, self).__init__()
 
-
-    
+    @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
         node_name = args['node_name']
@@ -199,6 +197,7 @@ class GetNode(Resource):
         except:
             return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
+    @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
         node_name = args['node_name']
@@ -212,6 +211,7 @@ class GetNode(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
+    @requires_auth
     def get(self):
         query = "SELECT node.node_id,node.node_name,node.end_customer_node_belongs,node.node_depot_belongs FROM node"
 
@@ -224,8 +224,7 @@ class GetNode(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
-    
-
+    @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
         node_id = args['node_id']
@@ -241,7 +240,6 @@ class GetNode(Resource):
             return jsonify(msg=" Node Details Deleted Successfully", http_status_code=200)
         except:
             return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
-
 
     def options(self):
             return
@@ -266,6 +264,7 @@ class GetDepot(Resource):
         self.reqparse.add_argument('depot_id', type=str,required=False, help='depot_id', location='args')
         super(GetDepot, self).__init__()
 
+    @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
         depot_name = args['depot_name']
@@ -288,6 +287,7 @@ class GetDepot(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
+    @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
         depot_name = args['depot_name']
@@ -312,6 +312,7 @@ class GetDepot(Resource):
         except:
             return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
+    @requires_auth
     def get(self):
         query = "SELECT depot_id,depot_name,depot_address,city,state,country,region,hub,partner,partner_warehouse_code,contact,lat,depot.long FROM depot"
         result = get_df_from_sql_query(
@@ -323,10 +324,10 @@ class GetDepot(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
-    
     def options(self):
             return
 
+    @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
         depot_id = args['depot_id']
@@ -344,7 +345,6 @@ class GetDepot(Resource):
             return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
 
 
-
 class GetMisnomer(Resource):
 
     def __init__(self):
@@ -354,8 +354,7 @@ class GetMisnomer(Resource):
         self.reqparse.add_argument('reference_table_id', type=str,required=False, help='reference_table_id', location='args')
         super(GetMisnomer, self).__init__()
 
-
-    
+    @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
         Misnomer_PON = args['Misnomer_PON']
@@ -369,6 +368,7 @@ class GetMisnomer(Resource):
         except:
             return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
+    @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
         Misnomer_PON = args['Misnomer_PON']
@@ -381,8 +381,7 @@ class GetMisnomer(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
-
-
+    @requires_auth
     def get(self):
         query = "select t1.part_name as Correct_PON, t.misnomer_part_name as Misnomer_PON, t.reference_table_id,t1.part_id "\
                 " from misnomer_part_conversion t"\
@@ -396,7 +395,7 @@ class GetMisnomer(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
-
+    @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
         reference_table_id = args['reference_table_id']
@@ -434,8 +433,8 @@ class GetRatio(Resource):
         self.reqparse.add_argument('pon_type', type=str,required=True, help='pon_type', location='args')
         self.reqparse.add_argument('reliability_id', type=str,required=False, help='reliability_id', location='args')
         super(GetRatio, self).__init__()
-    
 
+    @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
         pon_type = args['pon_type']
@@ -458,7 +457,7 @@ class GetRatio(Resource):
         except:
             return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
 
-
+    @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
         pon_type = args['pon_type']
@@ -483,8 +482,7 @@ class GetRatio(Resource):
         except:
             return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
-
-    
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         pon_type = args['pon_type']
@@ -498,6 +496,7 @@ class GetRatio(Resource):
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
+    @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
         reliability_id = args['reliability_id']
@@ -514,6 +513,5 @@ class GetRatio(Resource):
         except:
             return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
 
-        
     def options(self):
             return

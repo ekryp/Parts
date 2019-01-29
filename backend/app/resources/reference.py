@@ -11,6 +11,7 @@ import pandas as pd
 import pdb
 import os
 from app.resources.infinera import FileFormatIssue
+from app.auth.authorization import requires_auth
 
 
 def check_part_file(part_file, extension):
@@ -48,6 +49,7 @@ class UploadParts(Resource):
         self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
         super(UploadParts, self).__init__()
 
+    @requires_auth
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
@@ -144,6 +146,7 @@ class UploadDepot(Resource):
         self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
         super(UploadDepot, self).__init__()
 
+    @requires_auth
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
@@ -212,6 +215,7 @@ class UploadNode(Resource):
         self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
         super(UploadNode, self).__init__()
 
+    @requires_auth
     def post(self):
 
         args = self.reqparse.parse_args()
@@ -281,6 +285,7 @@ class UploadHighSpare(Resource):
         self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
         super(UploadHighSpare, self).__init__()
 
+    @requires_auth
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
@@ -349,6 +354,7 @@ class UploadMisnomer(Resource):
         self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
         super(UploadMisnomer, self).__init__()
 
+    @requires_auth
     def post(self):
 
         args = self.reqparse.parse_args()
@@ -425,6 +431,7 @@ class UploadRatio(Resource):
         self.reqparse.add_argument('analysis_type', required=True, location='form')
         super(UploadRatio, self).__init__()
 
+    @requires_auth
     def post(self):
 
         args = self.reqparse.parse_args()
