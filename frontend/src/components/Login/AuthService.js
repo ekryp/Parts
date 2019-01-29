@@ -7,6 +7,7 @@ import * as constant from "../constant/constant";
 
 export default {
     auth0: new auth0.WebAuth({
+        audience: 'https://prod-services.ekryp.com/api/v1/',
         domain: 'ekryp.auth0.com',
         clientID: 'NJh7jJsES1ymojwuBodeZJCzT867UNiu',
         redirectUri: constant.APPURL + 'callback',
