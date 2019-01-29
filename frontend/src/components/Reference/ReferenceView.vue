@@ -1,10 +1,11 @@
 <template>
-  <div>
-    <headernav :loaderFlag="loaderFlag"/>
-    <side-nav/>
+    <div>
+        <headernav :loaderFlag="loaderFlag"/>
+        <side-nav/>
 
-    <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
-      <div>
+        <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
+      
+        <div>
         <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
             <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}</span>
@@ -12,120 +13,120 @@
           </p>
         </div>
       </div>
+      
+       
+    
+    <vudal name="myModal">
+  <div class="header">
+    <i class="close icon"></i>
+    {{this.title}}
+  </div>
+  <div class="content">
+    <div class="form-group text-left" >
+      
+      <span v-for="(item) in columnList" :key="item.columnName">
 
-      <div class>
-        <vudal name="myModal">
-          <div class="header">
-            <i class="close icon"></i>
-            {{this.title}}
-          </div>
-          <div class="content">
-            <div class="form-group text-left">
-              <span v-for="(item) in columnList" :key="item.columnName">
-                <div class="row">
-                  <div class="col-lg-5">
-                    <label style="{text-align}">{{item.columnName}}</label>
-                  </div>
-                  <div class="col-lg-6">
-                    <input
-                      type="text"
-                      class="form-control place-holder-css"
-                      v-model="item.value"
-                      :placeholder="item.placeHolder"
-                    >
-                  </div>
-                </div>
-                <br>
-              </span>
+          <div class="row" >
+            <div class="col-lg-5">
+              <label style="{text-align}">{{item.columnName}}</label>
+            </div>
+            <div class="col-lg-6">
+              <input
+                type="text"
+                class="form-control place-holder-css"
+                v-model="item.value"
+                :placeholder="item.placeHolder"
+              >
             </div>
           </div>
-          <div class="actions">
-            <button
-              v-if="addFlag"
-              type="button"
-              class="btn btn-success"
-              v-tooltip.top.hover.focus="'Click to Download'"
-              @click="addData()"
-            >Create</button>
-            <button
-              v-if="editFlag"
-              type="button"
-              class="btn btn-success"
-              v-tooltip.top.hover.focus="'Click to Download'"
-              @click="editData()"
-            >Update</button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="hideEntry()"
-              v-tooltip.top.hover.focus="'Cancel the option'"
-            >Cancel</button>
-          </div>
-        </vudal>
-        <div class="float-left" style="paddingBottom:1%"></div>
-        <label>{{title}}</label>
-        <div class="float-right" style="paddingBottom:1%">
-          <button
-            type="button"
-            class="btn btn-success"
-            v-tooltip.top.hover.focus="'Click to Download'"
-          >
-            <download-excel :data="referenceFileData" type="csv" :name="title+'.csv'">
-              <i class="fas fa-file-excel"></i>
-              &nbsp;
-              Export
-            </download-excel>
-          </button>
-          &nbsp; &nbsp;
-          <button
-            type="button"
-            class="btn btn-success"
-            v-tooltip.top.hover.focus="'Click to Add'"
-            @click="addEntry()"
-          >
-            <i class="fas fa-plus-square"></i> &nbsp;Add
-          </button>
+          <br>
+            </span>
         </div>
-        <br>
-        <br>
-
-        <div id="referenceBox">
-          <ag-grid-vue
-            style="width: 100%; height: 486px;"
-            class="ag-theme-balham"
-            :columnDefs="referenceColumnDefs"
-            :rowData="referenceRowData"
-            :gridOptions="referenceGridOptions"
-            :enableColResize="true"
-            :enableSorting="true"
-            :enableFilter="true"
-            :groupHeaders="true"
-            pagination="true"
-            :paginationPageSize="15"
-            :cellClicked="onCellClicked"
-            :gridReady="OnRefReady"
-            :gridSizeChanged="OnRefReady"
-          ></ag-grid-vue>
-        </div>
-        <br>
-        <br>
-
-        <div class="float-right" style="paddingBottom:1%">
-          <!-- <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addEntry()">
-                    Add
-          </button>-->
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="cancel()"
-            v-tooltip.top.hover.focus="'Move to Reference Page'"
-          >Back</button>
-        </div>
-        <br>
-        <br>
-      </div>
-    </div>
+      
   </div>
+  <div class="actions">
+    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addData()">
+                    Create
+                </button>
+    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="editData()">
+                    Update
+                </button>
+                <button
+                type="button"
+                class="btn btn-danger"
+                @click="hideEntry()"
+                v-tooltip.top.hover.focus="'Cancel the option'"
+              >Cancel</button>
+  </div>
+</vudal> 
+
+
+<div class="float-left" style="paddingBottom:1%">
+</div>
+<label>{{title}}</label>
+<div>
+    <div class="row " style="paddingLeft:86%">
+      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
+        <download-excel :data="referenceFileData" type="csv" :name="title+'.csv'">
+          <i class="fas fa-file-excel"></i>
+          &nbsp;
+          Export
+        </download-excel>
+      </button>
+ 
+       &nbsp; &nbsp;
+   
+              
+                <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Add'" @click="addEntry()">
+                    
+                    <i class="fas fa-plus-square"></i>  &nbsp;Add
+                </button>
+    
+    </div>
+  
+  
+    <br>
+        <div id="referenceBox" class="row">
+    <ag-grid-vue
+              style="width: 100%; height: 486px;"
+              class="ag-theme-balham"
+              :columnDefs="referenceColumnDefs"
+              :rowData="referenceRowData"
+              :gridOptions="referenceGridOptions"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              pagination="true"
+              :paginationPageSize="15"
+              :cellClicked="onCellClicked"
+              :gridReady="OnRefReady"
+              :gridSizeChanged="OnRefReady"
+              
+
+            ></ag-grid-vue> 
+            </div>
+            <br>
+    
+            <div class="float-right row" style="paddingBottom:1%">
+           
+                <!-- <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addEntry()">
+                    Add
+                </button> -->
+             
+                <button
+                type="button"
+                class="btn btn-danger"
+                @click="cancel()"
+                v-tooltip.top.hover.focus="'Move to Reference Page'"
+              >Back</button>
+            </div>
+</div>
+            
+        </div>
+    </div>
+
+
 </template>
 
 <script>
@@ -146,10 +147,12 @@ export default {
     Vudal
   },
 
+
   created() {
     this.fileType = this.$route.query.fileType;
     console.log("File Type ->", this.fileType);
     if (this.fileType === "parts") {
+
       this.partsColumnDef();
       this.getParts();
     } else if (this.fileType === "highspare") {
@@ -169,6 +172,7 @@ export default {
       this.getRatioPON(this.fileType);
     }
   },
+
 
   data() {
     return {
@@ -193,6 +197,7 @@ export default {
           align: "center"
           // fontSize: "13.7px",
         }
+
       }
     };
   },
@@ -774,6 +779,7 @@ export default {
             } else {
               this.getRatioPON(this.fileType);
             }
+            this.$modals.myModal.$hide();
           });
         })
         .catch(handleError => {
@@ -840,11 +846,13 @@ export default {
             } else {
               this.getRatioPON(this.fileType);
             }
+            this.$modals.myModal.$hide();
           });
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+
     },
     getParts() {
       this.loaderFlag = true;
@@ -855,7 +863,8 @@ export default {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
-      })
+
+        })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -883,8 +892,18 @@ export default {
                 spared_attribute: this.referenceList[i].spared_attribute,
                 standard_cost: this.referenceList[i].standard_cost
               });
+              this.referenceFileData.push({
+                material_number: this.referenceList[i].material_number,
+                part_name: this.referenceList[i].part_name,
+                part_number: this.referenceList[i].part_number,
+                part_reliability_class: this.referenceList[i].part_reliability_class,
+                spared_attribute: this.referenceList[i].spared_attribute,
+                standard_cost: this.referenceList[i].standard_cost
+              });
             }
+
             this.loaderFlag = false;
+
           });
         })
         .catch(handleError => {
@@ -917,8 +936,15 @@ export default {
                 ClassicPON: this.referenceList[i].ClassicPON,
                 SubstitutionPON: this.referenceList[i].SubstitutionPON
               });
+              this.referenceFileData.push({
+                ClassicPON: this.referenceList[i].ClassicPON,
+                SubstitutionPON: this.referenceList[i].SubstitutionPON
+                
+              });
             }
+
             this.loaderFlag = false;
+
           });
         })
         .catch(handleError => {
@@ -955,6 +981,11 @@ export default {
               this.referenceFileData.push({
                 end_customer_node_belongs: this.referenceList[i]
                   .end_customer_node_belongs,
+                node_depot_belongs: this.referenceList[i].node_depot_belongs,
+                node_name: this.referenceList[i].node_name
+              });
+              this.referenceFileData.push({
+                end_customer_node_belongs: this.referenceList[i].end_customer_node_belongs,
                 node_depot_belongs: this.referenceList[i].node_depot_belongs,
                 node_name: this.referenceList[i].node_name
               });
@@ -1014,8 +1045,25 @@ export default {
                 region: this.referenceList[i].region,
                 state: this.referenceList[i].state
               });
+              this.referenceFileData.push({
+                city: this.referenceList[i].city,
+                contact: this.referenceList[i].contact,
+                country: this.referenceList[i].country,
+                depot_address: this.referenceList[i].depot_address,
+                depot_name: this.referenceList[i].depot_name,
+                hub: this.referenceList[i].hub,
+                lat: this.referenceList[i].lat,
+                long: this.referenceList[i].long,
+                partner: this.referenceList[i].partner,
+                partner_warehouse_code: this.referenceList[i].partner_warehouse_code,
+                region: this.referenceList[i].region,
+                state: this.referenceList[i].state
+                
+              });
             }
+
             this.loaderFlag = false;
+
           });
         })
         .catch(handleError => {
@@ -1047,8 +1095,14 @@ export default {
                 CorrectPON: this.referenceList[i].Correct_PON,
                 MisnomerPON: this.referenceList[i].Misnomer_PON
               });
+              this.referenceFileData.push({
+                CorrectPON: this.referenceList[i].Correct_PON,
+                MisnomerPON: this.referenceList[i].Misnomer_PON
+              });
             }
+
             this.loaderFlag = false;
+
           });
         })
         .catch(handleError => {
@@ -1086,6 +1140,19 @@ export default {
                 number_of_spares10: this.referenceList[i].number_of_spares10,
                 editFlag: this.referenceList[i].reliability_id,
                 deleteFlag: this.referenceList[i].reliability_id
+              });
+              this.referenceFileData.push({
+                product_family: this.referenceList[i].product_family,
+                number_of_spares1: this.referenceList[i].number_of_spares1,
+                number_of_spares2: this.referenceList[i].number_of_spares2,
+                number_of_spares3: this.referenceList[i].number_of_spares2,
+                number_of_spares4: this.referenceList[i].number_of_spares4,
+                number_of_spares5: this.referenceList[i].number_of_spares5,
+                number_of_spares6: this.referenceList[i].number_of_spares6,
+                number_of_spares7: this.referenceList[i].number_of_spares7,
+                number_of_spares8: this.referenceList[i].number_of_spares8,
+                number_of_spares9: this.referenceList[i].number_of_spares9,
+                number_of_spares10: this.referenceList[i].number_of_spares10
               });
               this.referenceFileData.push({
                 product_family: this.referenceList[i].product_family,
@@ -1175,6 +1242,7 @@ export default {
                         icon: "success"
                       }).then(ok => {
                         if (ok) {
+                          this.referenceRowData=[];
                           this.getParts();
                         }
                       });
