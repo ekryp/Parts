@@ -10,7 +10,7 @@ from flask import Blueprint, Flask
 from flask_compress import Compress
 from flask_jwt import JWT
 from flask_restful import Api
-from flask_restful.utils import cors
+# from flask_restful.utils import cors
 
 from app.configs import Configuration
 from app.models.basemodel import db
@@ -20,6 +20,8 @@ from app.models.ekryp_user import User
 from app.resources.users import authenticate, identity
 # import flask_profiler
 from .cache import cache
+from flask_cors import CORS
+
 
 compress = Compress()
 
@@ -36,6 +38,7 @@ printable = set(string.printable)
 #from flask_uploads import UploadSet, configure_uploads, DATA
 from flask_uploads import configure_uploads
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 #from app.resources.partners import csvs
 from flask_uploads import UploadSet, DATA, DOCUMENTS, IMAGES, TEXT
 csvs = UploadSet('csv', DATA)
@@ -79,15 +82,15 @@ api = Api(
 )
 db = db
 
-api.decorators = [
-    cors.crossdomain(
-        origin='*',
-        methods=['GET', 'PUT', 'POST','DELETE', 'OPTIONS','PATCH'],
-        headers=['authorization', 'content-type'],
-        attach_to_all=True,
-        automatic_options=True
-        )
-    ]
+# api.decorators = [
+#     cors.crossdomain(
+#         origin='*',
+#         methods=['GET', 'PUT', 'POST','DELETE', 'OPTIONS','PATCH'],
+#         headers=['authorization', 'content-type'],
+#         attach_to_all=True,
+#         automatic_options=True
+#         )
+#     ]
 
 with app.app_context():
     for module in app.config.get('DB_MODELS_IMPORTS', list()):

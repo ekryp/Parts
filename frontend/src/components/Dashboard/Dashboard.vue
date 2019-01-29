@@ -314,7 +314,7 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
@@ -336,7 +336,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_top_pons?toggle=" + this.toggle, {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -357,7 +357,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_top_depots?toggle=" + this.toggle, {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -380,7 +380,7 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
@@ -399,7 +399,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_pie_chart?toggle=" + this.toggle, {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -419,7 +419,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_lat_lon?toggle=" + this.toggle, {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       }).then(response => {
         response.text().then(text => {

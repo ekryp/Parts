@@ -636,7 +636,7 @@ export default {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -688,7 +688,7 @@ export default {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -740,7 +740,7 @@ export default {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -792,7 +792,7 @@ export default {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -844,7 +844,7 @@ export default {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -923,7 +923,7 @@ export default {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {

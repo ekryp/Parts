@@ -207,7 +207,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_steps_all_users", {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -243,7 +243,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_dashboard_request_count", {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {

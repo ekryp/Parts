@@ -167,7 +167,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_top_extended?toggle=" + this.toggle, {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {

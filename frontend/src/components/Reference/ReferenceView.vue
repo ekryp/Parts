@@ -643,7 +643,7 @@ export default {
         method: "PATCH",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -693,7 +693,7 @@ export default {
         method: "PUT",
         body: formData,
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -723,7 +723,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_all_parts", {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -755,7 +755,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_all_high_spare", {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -785,7 +785,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_all_node", {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -814,7 +814,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_all_depot", {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -852,7 +852,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_all_misnomer", {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -880,7 +880,7 @@ export default {
       fetch(constant.APIURL + "api/v1/get_all_ratio?pon_type=" + fileType, {
         method: "GET",
         headers: {
-          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       })
         .then(response => {
@@ -954,7 +954,7 @@ export default {
             method: "DELETE",
             headers: {
               Authorization:
-                "Bearer" + localStorage.getItem("auth0_access_token")
+                "Bearer " + localStorage.getItem("auth0_access_token")
             }
           })
             .then(response => {
@@ -994,7 +994,7 @@ export default {
               method: "DELETE",
               headers: {
                 Authorization:
-                  "Bearer" + localStorage.getItem("auth0_access_token")
+                  "Bearer " + localStorage.getItem("auth0_access_token")
               }
             }
           )
@@ -1031,7 +1031,7 @@ export default {
             method: "DELETE",
             headers: {
               Authorization:
-                "Bearer" + localStorage.getItem("auth0_access_token")
+                "Bearer " + localStorage.getItem("auth0_access_token")
             }
           })
             .then(response => {
@@ -1067,7 +1067,7 @@ export default {
             method: "DELETE",
             headers: {
               Authorization:
-                "Bearer" + localStorage.getItem("auth0_access_token")
+                "Bearer " + localStorage.getItem("auth0_access_token")
             }
           })
             .then(response => {
@@ -1107,7 +1107,7 @@ export default {
               method: "DELETE",
               headers: {
                 Authorization:
-                  "Bearer" + localStorage.getItem("auth0_access_token")
+                  "Bearer " + localStorage.getItem("auth0_access_token")
               }
             }
           )
@@ -1151,7 +1151,7 @@ export default {
               method: "DELETE",
               headers: {
                 Authorization:
-                  "Bearer" + localStorage.getItem("auth0_access_token")
+                  "Bearer " + localStorage.getItem("auth0_access_token")
               }
             }
           )
