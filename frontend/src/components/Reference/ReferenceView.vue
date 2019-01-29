@@ -1,6 +1,6 @@
 <template>
   <div>
-    <headernav/>
+    <headernav :loaderFlag="loaderFlag"/>
     <side-nav/>
 
     <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
@@ -27,7 +27,12 @@
                     <label style="{text-align}">{{item.columnName}}</label>
                   </div>
                   <div class="col-lg-6">
-                    <input type="text" class="form-control" v-model="item.value">
+                    <input
+                      type="text"
+                      class="form-control place-holder-css"
+                      v-model="item.value"
+                      :placeholder="item.placeHolder"
+                    >
                   </div>
                 </div>
                 <br>
@@ -65,13 +70,12 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Download'"
           >
-            <download-excel :data="referenceFileData" type="csv">
+            <download-excel :data="referenceFileData" type="csv" :name="title+'.csv'">
               <i class="fas fa-file-excel"></i>
               &nbsp;
               Export
             </download-excel>
           </button>
-          
           &nbsp; &nbsp;
           <button
             type="button"
@@ -87,7 +91,7 @@
 
         <div id="referenceBox">
           <ag-grid-vue
-            style="width: 100%; height: 500px;"
+            style="width: 100%; height: 486px;"
             class="ag-theme-balham"
             :columnDefs="referenceColumnDefs"
             :rowData="referenceRowData"
@@ -101,7 +105,6 @@
             :cellClicked="onCellClicked"
             :gridReady="OnRefReady"
             :gridSizeChanged="OnRefReady"
-            :enableCellChangeFlash="true"
           ></ag-grid-vue>
         </div>
         <br>
@@ -183,15 +186,12 @@ export default {
       gridApi: null,
       title: "",
       uniqueId: "",
+      loaderFlag: false,
       referenceGridOptions: {
         rowStyle: {
           color: "#72879d",
           align: "center"
           // fontSize: "13.7px",
-        },
-        columnStyle: {
-          color: "#72879d"
-          // fontSize: "11.05px"
         }
       }
     };
@@ -207,23 +207,36 @@ export default {
     partsColumnDef() {
       this.title = "Parts Details";
       this.columnList = [
-        { columnName: "Part Name", formName: "part_name", value: "" },
+        {
+          columnName: "Part Name",
+          formName: "part_name",
+          value: "",
+          placeHolder: "AAM-B2"
+        },
         {
           columnName: "Material Number",
           formName: "material_number",
-          value: ""
+          value: "",
+          placeHolder: "1000009"
         },
         {
           columnName: "Part Reliability Class",
           formName: "part_reliability_class",
-          value: ""
+          value: "",
+          placeHolder: "AAM"
         },
         {
           columnName: "Spared Attribute",
           formName: "spared_attribute",
-          value: ""
+          value: "",
+          placeHolder: "1"
         },
-        { columnName: "Standard Cost", formName: "standard_cost", value: "" }
+        {
+          columnName: "Standard Cost",
+          formName: "standard_cost",
+          value: "",
+          placeHolder: "2108.94"
+        }
       ];
       this.referenceColumnDefs = [
         {
@@ -278,9 +291,15 @@ export default {
         {
           columnName: "Substitution PON",
           formName: "SubstitutionPON",
-          value: ""
+          value: "",
+          placeHolder: "AOFX-500-T4-1-C8"
         },
-        { columnName: "Classic PON", formName: "ClassicPON", value: "" }
+        {
+          columnName: "Classic PON",
+          formName: "ClassicPON",
+          value: "",
+          placeHolder: "AOFX-500-T4-1-C8"
+        }
       ];
       this.referenceColumnDefs = [
         {
@@ -310,16 +329,23 @@ export default {
     nodeColumnDef() {
       this.title = "Node Details";
       this.columnList = [
-        { columnName: "Node Name", formName: "node_name", value: "" },
+        {
+          columnName: "Node Name",
+          formName: "node_name",
+          value: "",
+          placeHolder: "Adjuntas_Flex_1"
+        },
         {
           columnName: "Node Depot Belongs",
           formName: "node_depot_belongs",
-          value: ""
+          value: "",
+          placeHolder: "MZTM"
         },
         {
           columnName: "End Customer Node Belongs",
           formName: "end_customer_node_belongs",
-          value: ""
+          value: "",
+          placeHolder: "Bestel"
         }
       ];
       this.referenceColumnDefs = [
@@ -355,21 +381,67 @@ export default {
     depotColumnDef() {
       this.title = "Depot Details";
       this.columnList = [
-        { columnName: "Depot Name", formName: "depot_name", value: "" },
-        { columnName: "Partner", formName: "partner", value: "" },
-        { columnName: "City", formName: "city", value: "" },
-        { columnName: "State", formName: "state", value: "" },
-        { columnName: "Region", formName: "region", value: "" },
+        {
+          columnName: "Depot Name",
+          formName: "depot_name",
+          value: "",
+          placeHolder: "BOTA"
+        },
+        {
+          columnName: "Partner",
+          formName: "partner",
+          value: "",
+          placeHolder: "Choice Logistics"
+        },
+        {
+          columnName: "City",
+          formName: "city",
+          value: "",
+          placeHolder: "Silverwater"
+        },
+        {
+          columnName: "State",
+          formName: "state",
+          value: "",
+          placeHolder: "NSW"
+        },
+        {
+          columnName: "Region",
+          formName: "region",
+          value: "",
+          placeHolder: "APACq"
+        },
         {
           columnName: "Partner Warehouse Code",
           formName: "partner_warehouse_code",
-          value: ""
+          value: "",
+          placeHolder: "Choice Logistics"
         },
-        { columnName: "Depot Address", formName: "depot_address", value: "" },
-        { columnName: "Contact", formName: "contact", value: "" },
-        { columnName: "Hub", formName: "hub", value: "" },
-        { columnName: "Latitude", formName: "lat", value: "" },
-        { columnName: "Longitude", formName: "long", value: "" }
+        {
+          columnName: "Depot Address",
+          formName: "depot_address",
+          value: "",
+          placeHolder: "129-137 Beaconsfield Street"
+        },
+        {
+          columnName: "Contact",
+          formName: "contact",
+          value: "",
+          placeHolder: "Choice Logistics"
+        },
+        { columnName: "Hub", formName: "hub", value: "", placeHolder: "1" },
+        {
+          columnName: "Latitude",
+          formName: "lat",
+          value: "",
+          placeHolder: "-33"
+        },
+        {
+          columnName: "Longitude",
+          formName: "long",
+          value: "",
+          placeHolder: "151"
+        }
       ];
       this.referenceColumnDefs = [
         {
@@ -451,8 +523,18 @@ export default {
     misnomerColumnDef() {
       this.title = "Misnomer Details";
       this.columnList = [
-        { columnName: "Correct PON", formName: "Correct_PON", value: "" },
-        { columnName: "Misnomer PON", formName: "Misnomer_PON", value: "" }
+        {
+          columnName: "Correct PON",
+          formName: "Correct_PON",
+          value: "",
+          placeHolder: "D-FANTRAY-B="
+        },
+        {
+          columnName: "Misnomer PON",
+          formName: "Misnomer_PON",
+          value: "",
+          placeHolder: "D-FANTRAY"
+        }
       ];
       this.referenceColumnDefs = [
         {
@@ -482,56 +564,71 @@ export default {
     ratioPONColumnDef() {
       this.title = "Ratio PON Details";
       this.columnList = [
-        { columnName: "Product Family", formName: "product_family", value: "" },
+        {
+          columnName: "Product Family",
+          formName: "product_family",
+          value: "",
+          placeHolder: "BMM"
+        },
         {
           columnName: "Number of Spares 1",
           formName: "number_of_spares_1",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 2",
           formName: "number_of_spares_2",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 3",
           formName: "number_of_spares_3",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 4",
           formName: "number_of_spares_4",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 5",
           formName: "number_of_spares_5",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 6",
           formName: "number_of_spares_6",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 7",
           formName: "number_of_spares_7",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 8",
           formName: "number_of_spares_8",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 9",
           formName: "number_of_spares_9",
-          value: ""
+          value: "",
+          placeHolder: "10"
         },
         {
           columnName: "Number of Spares 10",
           formName: "number_of_spares_10",
-          value: ""
+          value: "",
+          placeHolder: "10"
         }
       ];
       this.referenceColumnDefs = [
@@ -663,6 +760,20 @@ export default {
                 icon: "error"
               });
             }
+            this.$modals.myModal.$hide();
+            if (this.fileType === "parts") {
+              this.getParts();
+            } else if (this.fileType === "highspare") {
+              this.getHighSpare();
+            } else if (this.fileType === "node") {
+              this.getNode();
+            } else if (this.fileType === "depot") {
+              this.getDepot();
+            } else if (this.fileType === "misnomer") {
+              this.getMisnomer();
+            } else {
+              this.getRatioPON(this.fileType);
+            }
           });
         })
         .catch(handleError => {
@@ -670,6 +781,8 @@ export default {
         });
     },
     addData() {
+      this.$modals.myModal.$hide();
+      this.loaderFlag = true;
       let url;
       if (this.fileType === "parts") {
         url = "api/v1/get_all_parts";
@@ -713,6 +826,20 @@ export default {
                 icon: "error"
               });
             }
+
+            if (this.fileType === "parts") {
+              this.getParts();
+            } else if (this.fileType === "highspare") {
+              this.getHighSpare();
+            } else if (this.fileType === "node") {
+              this.getNode();
+            } else if (this.fileType === "depot") {
+              this.getDepot();
+            } else if (this.fileType === "misnomer") {
+              this.getMisnomer();
+            } else {
+              this.getRatioPON(this.fileType);
+            }
           });
         })
         .catch(handleError => {
@@ -720,6 +847,9 @@ export default {
         });
     },
     getParts() {
+      this.loaderFlag = true;
+      console.log("loader show");
+      this.referenceRowData = [];
       fetch(constant.APIURL + "api/v1/get_all_parts", {
         method: "GET",
         headers: {
@@ -744,7 +874,17 @@ export default {
                 editFlag: this.referenceList[i].part_id,
                 deleteFlag: this.referenceList[i].part_id
               });
+              this.referenceFileData.push({
+                material_number: this.referenceList[i].material_number,
+                part_name: this.referenceList[i].part_name,
+                part_number: this.referenceList[i].part_number,
+                part_reliability_class: this.referenceList[i]
+                  .part_reliability_class,
+                spared_attribute: this.referenceList[i].spared_attribute,
+                standard_cost: this.referenceList[i].standard_cost
+              });
             }
+            this.loaderFlag = false;
           });
         })
         .catch(handleError => {
@@ -752,6 +892,8 @@ export default {
         });
     },
     getHighSpare() {
+      this.loaderFlag = true;
+      this.referenceRowData = [];
       fetch(constant.APIURL + "api/v1/get_all_high_spare", {
         method: "GET",
         headers: {
@@ -771,7 +913,12 @@ export default {
                 editFlag: this.referenceList[i].high_spare_id,
                 deleteFlag: this.referenceList[i].high_spare_id
               });
+              this.referenceFileData.push({
+                ClassicPON: this.referenceList[i].ClassicPON,
+                SubstitutionPON: this.referenceList[i].SubstitutionPON
+              });
             }
+            this.loaderFlag = false;
           });
         })
         .catch(handleError => {
@@ -782,6 +929,8 @@ export default {
       router.push("/reference");
     },
     getNode() {
+      this.loaderFlag = true;
+      this.referenceRowData = [];
       fetch(constant.APIURL + "api/v1/get_all_node", {
         method: "GET",
         headers: {
@@ -803,7 +952,14 @@ export default {
                 editFlag: this.referenceList[i].node_id,
                 deleteFlag: this.referenceList[i].node_id
               });
+              this.referenceFileData.push({
+                end_customer_node_belongs: this.referenceList[i]
+                  .end_customer_node_belongs,
+                node_depot_belongs: this.referenceList[i].node_depot_belongs,
+                node_name: this.referenceList[i].node_name
+              });
             }
+            this.loaderFlag = false;
           });
         })
         .catch(handleError => {
@@ -811,6 +967,8 @@ export default {
         });
     },
     getDepot() {
+      this.referenceRowData = [];
+      this.loaderFlag = true;
       fetch(constant.APIURL + "api/v1/get_all_depot", {
         method: "GET",
         headers: {
@@ -841,7 +999,23 @@ export default {
                 editFlag: this.referenceList[i].depot_id,
                 deleteFlag: this.referenceList[i].depot_id
               });
+              this.referenceFileData.push({
+                city: this.referenceList[i].city,
+                contact: this.referenceList[i].contact,
+                country: this.referenceList[i].country,
+                depot_address: this.referenceList[i].depot_address,
+                depot_name: this.referenceList[i].depot_name,
+                hub: this.referenceList[i].hub,
+                lat: this.referenceList[i].lat,
+                long: this.referenceList[i].long,
+                partner: this.referenceList[i].partner,
+                partner_warehouse_code: this.referenceList[i]
+                  .partner_warehouse_code,
+                region: this.referenceList[i].region,
+                state: this.referenceList[i].state
+              });
             }
+            this.loaderFlag = false;
           });
         })
         .catch(handleError => {
@@ -849,6 +1023,7 @@ export default {
         });
     },
     getMisnomer() {
+      this.loaderFlag = true;
       fetch(constant.APIURL + "api/v1/get_all_misnomer", {
         method: "GET",
         headers: {
@@ -868,7 +1043,12 @@ export default {
                 editFlag: this.referenceList[i].reference_table_id,
                 deleteFlag: this.referenceList[i].reference_table_id
               });
+              this.referenceFileData.push({
+                CorrectPON: this.referenceList[i].Correct_PON,
+                MisnomerPON: this.referenceList[i].Misnomer_PON
+              });
             }
+            this.loaderFlag = false;
           });
         })
         .catch(handleError => {
@@ -876,6 +1056,8 @@ export default {
         });
     },
     getRatioPON(fileType) {
+      this.loaderFlag = true;
+      this.referenceRowData = [];
       console.log("file type asd", fileType);
       fetch(constant.APIURL + "api/v1/get_all_ratio?pon_type=" + fileType, {
         method: "GET",
@@ -905,7 +1087,21 @@ export default {
                 editFlag: this.referenceList[i].reliability_id,
                 deleteFlag: this.referenceList[i].reliability_id
               });
+              this.referenceFileData.push({
+                product_family: this.referenceList[i].product_family,
+                number_of_spares1: this.referenceList[i].number_of_spares1,
+                number_of_spares2: this.referenceList[i].number_of_spares2,
+                number_of_spares3: this.referenceList[i].number_of_spares2,
+                number_of_spares4: this.referenceList[i].number_of_spares4,
+                number_of_spares5: this.referenceList[i].number_of_spares5,
+                number_of_spares6: this.referenceList[i].number_of_spares6,
+                number_of_spares7: this.referenceList[i].number_of_spares7,
+                number_of_spares8: this.referenceList[i].number_of_spares8,
+                number_of_spares9: this.referenceList[i].number_of_spares9,
+                number_of_spares10: this.referenceList[i].number_of_spares10
+              });
             }
+            this.loaderFlag = false;
           });
         })
         .catch(handleError => {
@@ -950,238 +1146,297 @@ export default {
         console.log(event.value);
         if (this.fileType === "parts") {
           let part_id = event.value;
-          fetch(constant.APIURL + "api/v1/get_all_parts?parts_id=" + part_id, {
-            method: "DELETE",
-            headers: {
-              Authorization:
-                "Bearer " + localStorage.getItem("auth0_access_token")
-            }
-          })
-            .then(response => {
-              response.text().then(text => {
-                const data = text && JSON.parse(text);
-                console.log("data -getallrequest--->", data);
 
-                if (data.http_status_code === 200) {
-                  swal({
-                    title: "Success",
-                    text: data.msg,
-                    icon: "success"
-                  }).then(ok => {
-                    if (ok) {
-                      this.getParts();
+          swal({
+            title: "Info",
+            text: "Do You Want to Delete the Data ?",
+            icon: "info"
+          }).then(ok => {
+            if (ok) {
+              fetch(
+                constant.APIURL + "api/v1/get_all_parts?parts_id=" + part_id,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization:
+                      "Bearer " + localStorage.getItem("auth0_access_token")
+                  }
+                }
+              )
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
+
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getParts();
+                        }
+                      });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
                     }
                   });
-                } else {
-                  swal({
-                    title: "Error",
-                    text: data.msg,
-                    icon: "error"
-                  });
-                }
-              });
-            })
-            .catch(handleError => {
-              console.log(" Error Response ------->", handleError);
-            });
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
+            }
+          });
         } else if (this.fileType === "highspare") {
-          let high_spare_id = event.value;
-          fetch(
-            constant.APIURL +
-              "api/v1/get_all_high_spare?high_spare_id=" +
-              high_spare_id,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization:
-                  "Bearer " + localStorage.getItem("auth0_access_token")
-              }
-            }
-          )
-            .then(response => {
-              response.text().then(text => {
-                const data = text && JSON.parse(text);
-                console.log("data -getallrequest--->", data);
+          swal({
+            title: "Info",
+            text: "Do You Want to Delete the Data ?",
+            icon: "info"
+          }).then(ok => {
+            if (ok) {
+              let high_spare_id = event.value;
+              fetch(
+                constant.APIURL +
+                  "api/v1/get_all_high_spare?high_spare_id=" +
+                  high_spare_id,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization:
+                      "Bearer " + localStorage.getItem("auth0_access_token")
+                  }
+                }
+              )
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
 
-                if (data.http_status_code === 200) {
-                  swal({
-                    title: "Success",
-                    text: data.msg,
-                    icon: "success"
-                  }).then(ok => {
-                    if (ok) {
-                      this.getHighSpare();
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getHighSpare();
+                        }
+                      });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
                     }
                   });
-                } else {
-                  swal({
-                    title: "Error",
-                    text: data.msg,
-                    icon: "error"
-                  });
-                }
-              });
-            })
-            .catch(handleError => {
-              console.log(" Error Response ------->", handleError);
-            });
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
+            }
+          });
         } else if (this.fileType === "node") {
           let node_id = event.value;
-          fetch(constant.APIURL + "api/v1/get_all_node?node_id=" + node_id, {
-            method: "DELETE",
-            headers: {
-              Authorization:
-                "Bearer " + localStorage.getItem("auth0_access_token")
-            }
-          })
-            .then(response => {
-              response.text().then(text => {
-                const data = text && JSON.parse(text);
-                console.log("data -getallrequest--->", data);
 
-                if (data.http_status_code === 200) {
-                  swal({
-                    title: "Success",
-                    text: data.msg,
-                    icon: "success"
-                  }).then(ok => {
-                    if (ok) {
-                      this.getNode();
+          swal({
+            title: "Info",
+            text: "Do You Want to Delete the Data ?",
+            icon: "info"
+          }).then(ok => {
+            if (ok) {
+              fetch(
+                constant.APIURL + "api/v1/get_all_node?node_id=" + node_id,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization:
+                      "Bearer " + localStorage.getItem("auth0_access_token")
+                  }
+                }
+              )
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
+
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getNode();
+                        }
+                      });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
                     }
                   });
-                } else {
-                  swal({
-                    title: "Error",
-                    text: data.msg,
-                    icon: "error"
-                  });
-                }
-              });
-            })
-            .catch(handleError => {
-              console.log(" Error Response ------->", handleError);
-            });
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
+            }
+          });
         } else if (this.fileType === "depot") {
           let depot_id = event.value;
-          fetch(constant.APIURL + "api/v1/get_all_depot?depot_id=" + depot_id, {
-            method: "DELETE",
-            headers: {
-              Authorization:
-                "Bearer " + localStorage.getItem("auth0_access_token")
-            }
-          })
-            .then(response => {
-              response.text().then(text => {
-                const data = text && JSON.parse(text);
-                console.log("data -getallrequest--->", data);
+          swal({
+            title: "Info",
+            text: "Do You Want to Delete the Data ?",
+            icon: "info"
+          }).then(ok => {
+            if (ok) {
+              fetch(
+                constant.APIURL + "api/v1/get_all_depot?depot_id=" + depot_id,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization:
+                      "Bearer " + localStorage.getItem("auth0_access_token")
+                  }
+                }
+              )
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
 
-                if (data.http_status_code === 200) {
-                  swal({
-                    title: "Success",
-                    text: data.msg,
-                    icon: "success"
-                  }).then(ok => {
-                    if (ok) {
-                      this.getDepot();
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getDepot();
+                        }
+                      });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
                     }
                   });
-                } else {
-                  swal({
-                    title: "Error",
-                    text: data.msg,
-                    icon: "error"
-                  });
-                }
-              });
-            })
-            .catch(handleError => {
-              console.log(" Error Response ------->", handleError);
-            });
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
+            }
+          });
         } else if (this.fileType === "minsomer") {
           let reference_tabel_id = event.value;
-          fetch(
-            constant.APIURL +
-              "api/v1/get_all_misnomer?reference_tabel_id=" +
-              reference_tabel_id,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization:
-                  "Bearer " + localStorage.getItem("auth0_access_token")
-              }
-            }
-          )
-            .then(response => {
-              response.text().then(text => {
-                const data = text && JSON.parse(text);
+          swal({
+            title: "Info",
+            text: "Do You Want to Delete the Data ?",
+            icon: "info"
+          }).then(ok => {
+            if (ok) {
+              fetch(
+                constant.APIURL +
+                  "api/v1/get_all_misnomer?reference_tabel_id=" +
+                  reference_tabel_id,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization:
+                      "Bearer " + localStorage.getItem("auth0_access_token")
+                  }
+                }
+              )
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
 
-                console.log("data -getallrequest--->", data);
+                    console.log("data -getallrequest--->", data);
 
-                if (data.http_status_code === 200) {
-                  swal({
-                    title: "Success",
-                    text: data.msg,
-                    icon: "success"
-                  }).then(ok => {
-                    if (ok) {
-                      this.getMisnomer();
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getMisnomer();
+                        }
+                      });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
                     }
                   });
-                } else {
-                  swal({
-                    title: "Error",
-                    text: data.msg,
-                    icon: "error"
-                  });
-                }
-              });
-            })
-            .catch(handleError => {
-              console.log(" Error Response ------->", handleError);
-            });
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
+            }
+          });
         } else {
           let reliability_id = event.value;
-          fetch(
-            constant.APIURL +
-              "api/v1/get_all_ratio?pon_type=" +
-              this.fileType +
-              "&reliability_id=" +
-              reliability_id,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization:
-                  "Bearer " + localStorage.getItem("auth0_access_token")
-              }
-            }
-          )
-            .then(response => {
-              response.text().then(text => {
-                const data = text && JSON.parse(text);
-                console.log("data -getallrequest--->", data);
+          swal({
+            title: "Info",
+            text: "Do You Want to Delete the Data ?",
+            icon: "info"
+          }).then(ok => {
+            if (ok) {
+              fetch(
+                constant.APIURL +
+                  "api/v1/get_all_ratio?pon_type=" +
+                  this.fileType +
+                  "&reliability_id=" +
+                  reliability_id,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization:
+                      "Bearer " + localStorage.getItem("auth0_access_token")
+                  }
+                }
+              )
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
+                    console.log("data -getallrequest--->", data);
 
-                if (data.http_status_code === 200) {
-                  swal({
-                    title: "Success",
-                    text: data.msg,
-                    icon: "success"
-                  }).then(ok => {
-                    if (ok) {
-                      this.getRatioPON(this.fileType);
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getRatioPON(this.fileType);
+                        }
+                      });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
                     }
                   });
-                } else {
-                  swal({
-                    title: "Error",
-                    text: data.msg,
-                    icon: "error"
-                  });
-                }
-              });
-            })
-            .catch(handleError => {
-              console.log(" Error Response ------->", handleError);
-            });
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
+            }
+          });
         }
       } else if (event.colDef.field === "editFlag") {
         this.editFlag = true;
@@ -1275,6 +1530,11 @@ function actionDeleteRenderer(params) {
 .myBreadCrumb {
   margin-top: -2%;
   margin-bottom: 2%;
+}
+
+::placeholder {
+  opacity: 10;
+  font-weight: lighter;
 }
 
 .labelStyle {
