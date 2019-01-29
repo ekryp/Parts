@@ -1229,7 +1229,10 @@ export default {
           "api/v1/get_steps_specific_request?request_id=" +
           requestId,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -1271,7 +1274,10 @@ export default {
     },
     get_spare_part_analysis() {
       fetch(constant.APIURL + "api/v1/get_spare_part_analysis", {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -1312,7 +1318,10 @@ export default {
       console.log("formdata ----->", formData.get("analysis_name"));
       fetch(constant.APIURL + "api/v1/post_spare_part_analysis", {
         method: "POST",
-        body: formData
+        body: formData,
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {

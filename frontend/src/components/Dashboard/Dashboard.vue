@@ -4,12 +4,12 @@
     <side-nav/>
     <div class="custom-container" style="paddingTop: 3%">
       <div class="row-one">
-         <div class="myBreadCrumb">
+        <div class="myBreadCrumb">
           <p>
             <span style="font-size: 14px;">{{current}}</span>
           </p>
-        </div>  
-        
+        </div>
+
         <toggle-button
           style="margin-left:95% "
           :value="state"
@@ -228,9 +228,9 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import VueGeolocation from "vue-browser-geolocation";
 import * as constant from "../constant/constant";
 import GmapCluster from "vue2-google-maps/dist/components/cluster";
-import VTooltip from 'v-tooltip'
+import VTooltip from "v-tooltip";
 
-Vue.use(VTooltip)
+Vue.use(VTooltip);
 
 Vue.component("GmapCluster", GmapCluster);
 Vue.use(VueGeolocation);
@@ -303,12 +303,19 @@ export default {
     // This Method is to get data for Main Dash Borad Details
 
     getMainDashboardCount() {
+      console.log(
+        "local storage ----->",
+        localStorage.getItem("auth0_access_token")
+      );
       fetch(
         constant.APIURL +
           "api/v1/get_main_dashboard_count?toggle=" +
           this.toggle,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -327,7 +334,10 @@ export default {
 
     getTopPons() {
       fetch(constant.APIURL + "api/v1/get_top_pons?toggle=" + this.toggle, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -345,7 +355,10 @@ export default {
 
     getTopDepots() {
       fetch(constant.APIURL + "api/v1/get_top_depots?toggle=" + this.toggle, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -365,7 +378,10 @@ export default {
       fetch(
         constant.APIURL + "api/v1/get_top_customers?toggle=" + this.toggle,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -381,7 +397,10 @@ export default {
     },
     getPieChart() {
       fetch(constant.APIURL + "api/v1/get_pie_chart?toggle=" + this.toggle, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -398,7 +417,10 @@ export default {
     },
     getMapLocations(markers) {
       fetch(constant.APIURL + "api/v1/get_lat_lon?toggle=" + this.toggle, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       }).then(response => {
         response.text().then(text => {
           const data = text && JSON.parse(text);
@@ -517,9 +539,8 @@ export default {
   margin-bottom: 2%;
 }
 .vue-tooltip {
-    background-color: white;
-    color:#71869e;
-    
+  background-color: white;
+  color: #71869e;
 }
 </style>
 

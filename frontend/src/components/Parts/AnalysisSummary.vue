@@ -62,26 +62,25 @@
         </download-excel>
       </button>
     </div>
-   <br>
-   <br>
+    <br>
+    <br>
     <br>
     <ag-grid-vue
-              style="width: 100%; height: 345px;"
-              class="ag-theme-balham"
-              :columnDefs="summaryColumnDefs"
-              :rowData="summaryRowData"
-              :gridOptions="summaryGridOptions"
-              :enableColResize="true"
-              :enableSorting="true"
-              :enableFilter="true"
-              :groupHeaders="true"
-              rowSelection="multiple"
-              pagination="true"
-              :paginationPageSize="10"
-              :gridReady="OnReady"
-              :gridSizeChanged="OnReady"
-
-            ></ag-grid-vue> 
+      style="width: 100%; height: 345px;"
+      class="ag-theme-balham"
+      :columnDefs="summaryColumnDefs"
+      :rowData="summaryRowData"
+      :gridOptions="summaryGridOptions"
+      :enableColResize="true"
+      :enableSorting="true"
+      :enableFilter="true"
+      :groupHeaders="true"
+      rowSelection="multiple"
+      pagination="true"
+      :paginationPageSize="10"
+      :gridReady="OnReady"
+      :gridSizeChanged="OnReady"
+    ></ag-grid-vue>
   </div>
 </template>
 
@@ -114,7 +113,6 @@ export default {
     this.createAnalysisSummaryColumnDefs();
     this.get_request_analysis_summary_result(this.requestId);
     this.get_analysis_name(this.requestId);
-
   },
   computed: {},
   data() {
@@ -130,7 +128,7 @@ export default {
       rowData: null,
       summaryColumnDefs: null,
       summaryRowData: [],
-      summaryGridOptions:{
+      summaryGridOptions: {
         rowStyle: {
           color: "#72879d"
           // fontSize: "13.7px",
@@ -162,7 +160,10 @@ export default {
           "&toggle=" +
           this.toggle,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -184,7 +185,10 @@ export default {
           "&toggle=" +
           this.toggle,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -192,23 +196,25 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_dashboard_request_count-->", data);
             this.partsAnalysisSummaryReslut = data;
-            for (let i = 0; i < this.partsAnalysisSummaryReslut.length; i++) 
-            {
+            for (let i = 0; i < this.partsAnalysisSummaryReslut.length; i++) {
               this.summaryRowData.push({
-                  part_name: this.partsAnalysisSummaryReslut[i].part_name,
-                  depot_name: this.partsAnalysisSummaryReslut[i].depot_name,
-                  material_number: this.partsAnalysisSummaryReslut[i].material_number,
-                  ib_quantity: this.partsAnalysisSummaryReslut[i].ib_quantity,
-                  standard_cost: this.partsAnalysisSummaryReslut[i].standard_cost,
-                  gross_qty: this.partsAnalysisSummaryReslut[i].gross_qty,
-                  std_gross_cost: this.partsAnalysisSummaryReslut[i].std_gross_cost,
-                  net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
-                  net_std_cost: this.partsAnalysisSummaryReslut[i].net_std_cost,
-                  ext_spare_cost: this.partsAnalysisSummaryReslut[i].ext_spare_cost,
-                  spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
-                  spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
-                  high_spare: this.partsAnalysisSummaryReslut[i].high_spare
-                  });
+                part_name: this.partsAnalysisSummaryReslut[i].part_name,
+                depot_name: this.partsAnalysisSummaryReslut[i].depot_name,
+                material_number: this.partsAnalysisSummaryReslut[i]
+                  .material_number,
+                ib_quantity: this.partsAnalysisSummaryReslut[i].ib_quantity,
+                standard_cost: this.partsAnalysisSummaryReslut[i].standard_cost,
+                gross_qty: this.partsAnalysisSummaryReslut[i].gross_qty,
+                std_gross_cost: this.partsAnalysisSummaryReslut[i]
+                  .std_gross_cost,
+                net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
+                net_std_cost: this.partsAnalysisSummaryReslut[i].net_std_cost,
+                ext_spare_cost: this.partsAnalysisSummaryReslut[i]
+                  .ext_spare_cost,
+                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
+                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
+                high_spare: this.partsAnalysisSummaryReslut[i].high_spare
+              });
             }
           });
         })
@@ -216,8 +222,7 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    createAnalysisSummaryColumnDefs()
-    {
+    createAnalysisSummaryColumnDefs() {
       this.summaryColumnDefs = [
         {
           headerName: "Part Name",
@@ -245,46 +250,48 @@ export default {
           width: 150
         },
         {
-          headerName: 'Gross Requirement',
+          headerName: "Gross Requirement",
           children: [
             {
               headerName: "Quantity",
               field: "gross_qty",
-              width: 125,
+              width: 125
             },
             {
-                headerName: "Ext Standard Cost($)",
-                field: "std_gross_cost",
-                width: 120,
-            },
+              headerName: "Ext Standard Cost($)",
+              field: "std_gross_cost",
+              width: 120
+            }
           ]
-        },{
-          headerName: 'Net Requirement',
+        },
+        {
+          headerName: "Net Requirement",
           children: [
             {
               headerName: "Quantity",
               field: "net_qty",
-              width: 125,
+              width: 125
             },
             {
-                headerName: "Standard Cost($)",
-                field: "net_std_cost",
-                width: 120,
-            },
+              headerName: "Standard Cost($)",
+              field: "net_std_cost",
+              width: 120
+            }
           ]
-        },{
-          headerName: 'High Spare Requirement',
+        },
+        {
+          headerName: "High Spare Requirement",
           children: [
             {
               headerName: "Quantity",
               field: "high_spare",
-              width: 125,
+              width: 125
             },
             {
-                headerName: "Ext Standard Cost($)",
-                field: "ext_spare_cost",
-                width: 120,
-            },
+              headerName: "Ext Standard Cost($)",
+              field: "ext_spare_cost",
+              width: 120
+            }
           ]
         },
         {
@@ -293,47 +300,45 @@ export default {
           width: 250,
           cellRenderer: actionCellRenderer
         }
-        ];
-      },
-      OnReady(event) {
-       var gridWidth = document.getElementById('SummaryDiv').offsetWidth;
+      ];
+    },
+    OnReady(event) {
+      var gridWidth = document.getElementById("SummaryDiv").offsetWidth;
 
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
 
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
         }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
       }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    }
   }
 };
 function actionCellRenderer(params) {
-  let high_spare=params.value;
+  let high_spare = params.value;
   let skills = [];
   console.log(params);
-  if(high_spare === "1")
-  {
+  if (high_spare === "1") {
     skills.push('<input type="checkbox" name="hishspare" checked></i>');
-  }else
-  {
+  } else {
     skills.push('<input type="checkbox" name="hishspare"></i>');
   }
   return skills.join(" ");

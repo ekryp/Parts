@@ -99,7 +99,11 @@
                 v-tooltip.top.hover.focus="'Click to Toggle'"
                 @change="stateChange()"
               />
-              <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
+              <button
+                type="button"
+                class="btn btn-success"
+                v-tooltip.top.hover.focus="'Click to Download'"
+              >
                 <download-excel :data="currentInventory" type="csv">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
@@ -110,7 +114,7 @@
             <br>
             <br>
             <br>
-           <ag-grid-vue
+            <ag-grid-vue
               style="width: 100%; height: 345px;"
               class="ag-theme-balham"
               :columnDefs="currColumnDefs"
@@ -125,8 +129,7 @@
               :paginationPageSize="10"
               :gridReady="currOnReady"
               :gridSizeChanged="currOnReady"
-
-            ></ag-grid-vue> 
+            ></ag-grid-vue>
           </div>
         </div>
         <div
@@ -138,7 +141,11 @@
           <br>
           <div class="shadow p-3 mb-5 bg-white rounded" id="IbDiv">
             <div class="float-right">
-              <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
+              <button
+                type="button"
+                class="btn btn-success"
+                v-tooltip.top.hover.focus="'Click to Download'"
+              >
                 <download-excel :data="currentib" type="csv">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
@@ -164,7 +171,7 @@
                   <td>{{x.pon_quanity}}</td>
                 </tr>
               </tbody>
-            </table> -->
+            </table>-->
             <ag-grid-vue
               style="width: 100%; height: 345px;"
               class="ag-theme-balham"
@@ -180,8 +187,7 @@
               :paginationPageSize="10"
               :gridReady="ibOnReady"
               :gridSizeChanged="ibOnReady"
-            ></ag-grid-vue> 
-              
+            ></ag-grid-vue>
           </div>
         </div>
         <div
@@ -194,7 +200,11 @@
           <div class="shadow p-3 mb-5 bg-white rounded" id="GrossDiv">
             <div class="float-right">
               <button type="button" class="btn btn-success">
-                <download-excel :data="currentGross" type="csv" v-tooltip.top.hover.focus="'Click to Download'">
+                <download-excel
+                  :data="currentGross"
+                  type="csv"
+                  v-tooltip.top.hover.focus="'Click to Download'"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
@@ -204,7 +214,7 @@
             <br>
             <br>
             <br>
-           
+
             <ag-grid-vue
               style="width: 100%; height: 345px;"
               class="ag-theme-balham"
@@ -220,7 +230,6 @@
               :paginationPageSize="10"
               :gridReady="grossOnReady"
               :gridSizeChanged="grossOnReady"
-
             ></ag-grid-vue>
           </div>
         </div>
@@ -242,7 +251,11 @@
                 v-tooltip.top.hover.focus="'Click to Toggle'"
                 @change="stateChange()"
               />
-              <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
+              <button
+                type="button"
+                class="btn btn-success"
+                v-tooltip.top.hover.focus="'Click to Download'"
+              >
                 <download-excel :data="currentNet" type="csv">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
@@ -253,7 +266,7 @@
             <br>
             <br>
             <br>
-           <ag-grid-vue
+            <ag-grid-vue
               style="width: 100%; height: 345px;"
               class="ag-theme-balham"
               :columnDefs="netColumnDefs"
@@ -268,17 +281,10 @@
               :paginationPageSize="10"
               :gridReady="netOnReady"
               :gridSizeChanged="netOnReady"
-
-            ></ag-grid-vue> 
-              
+            ></ag-grid-vue>
           </div>
         </div>
-         <div
-          class="tab-pane fade"
-          id="nav-error"
-          role="tabpanel"
-          aria-labelledby="nav-error-tab"
-        >
+        <div class="tab-pane fade" id="nav-error" role="tabpanel" aria-labelledby="nav-error-tab">
           <br>
           <div class="shadow p-3 mb-5 bg-white rounded" id="ErrorDiv">
             <!-- <div class="float-right">
@@ -299,7 +305,7 @@
               </button>
             </div>
             <br>
-            <br> -->
+            <br>-->
             <br>
             <ag-grid-vue
               style="width: 100%; height: 345px;"
@@ -316,8 +322,7 @@
               :paginationPageSize="10"
               :gridReady="errorOnReady"
               :gridSizeChanged="errorOnReady"
-
-            ></ag-grid-vue> 
+            ></ag-grid-vue>
           </div>
         </div>
       </div>
@@ -334,7 +339,6 @@ import * as data from "./data.json";
 import Vue from "vue";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
-
 
 export default {
   name: "SpareDetails",
@@ -387,31 +391,31 @@ export default {
           color: "#72879d"
           // fontSize: "13.7px",
         }
-      },gridOptions1: {
+      },
+      gridOptions1: {
         rowStyle: {
           color: "#72879d"
           // fontSize: "13.7px",
         }
       },
-      gridOptions2:{
+      gridOptions2: {
         rowStyle: {
           color: "#72879d"
           // fontSize: "13.7px",
         }
       },
-      gridOptions3:{
+      gridOptions3: {
         rowStyle: {
           color: "#72879d"
           // fontSize: "13.7px",
         }
       },
-      ErrorGridOptions:{
+      ErrorGridOptions: {
         rowStyle: {
           color: "#72879d"
           // fontSize: "13.7px",
         }
       }
-       
     };
   },
   mounted() {
@@ -425,7 +429,7 @@ export default {
   methods: {
     stateChange() {
       this.state = !this.state;
-      
+
       if (this.state) {
         this.toggle = "reorder";
         this.get_current_net_specific_request(this.$route.query.id);
@@ -446,7 +450,10 @@ export default {
           "&toggle=" +
           this.toggle,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -457,13 +464,12 @@ export default {
               data
             );
             this.currentInventory = data;
-            for (let i = 0; i < this.currentInventory.length; i++) 
-            {
+            for (let i = 0; i < this.currentInventory.length; i++) {
               this.currRowData.push({
-                  part_name: this.currentInventory[i].part_name,
-                  depot_name: this.currentInventory[i].depot_name,
-                  curr_quantity: this.currentInventory[i].qty
-                  });
+                part_name: this.currentInventory[i].part_name,
+                depot_name: this.currentInventory[i].depot_name,
+                curr_quantity: this.currentInventory[i].qty
+              });
             }
           });
         })
@@ -477,7 +483,10 @@ export default {
           "api/v1/get_gross_specific_request?request_id=" +
           requestId,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -485,13 +494,12 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_gross_specific_request-->", data);
             this.currentGross = data;
-            for (let i = 0; i < this.currentGross.length; i++) 
-            {
+            for (let i = 0; i < this.currentGross.length; i++) {
               this.grossRowData.push({
-                  part_name: this.currentGross[i].part_name,
-                  depot_name: this.currentGross[i].depot_name,
-                  gross_quantity: this.currentGross[i].gross_qty
-                  });
+                part_name: this.currentGross[i].part_name,
+                depot_name: this.currentGross[i].depot_name,
+                gross_quantity: this.currentGross[i].gross_qty
+              });
             }
           });
         })
@@ -503,7 +511,10 @@ export default {
       fetch(
         constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -511,14 +522,13 @@ export default {
             const payload = text && JSON.parse(text);
             console.log("Get Error data ---->", payload);
             this.errorData = payload;
-             for (let i = 0; i < this.errorData.length; i++) 
-            {
+            for (let i = 0; i < this.errorData.length; i++) {
               this.errorRowData.push({
-                  part_name: this.errorData[i].PON,
-                  error_reason: this.errorData[i].error_reason,
-                  node_name: this.errorData[i].node_name,
-                  type: this.errorData[i].type
-                  });
+                part_name: this.errorData[i].PON,
+                error_reason: this.errorData[i].error_reason,
+                node_name: this.errorData[i].node_name,
+                type: this.errorData[i].type
+              });
             }
           });
         })
@@ -534,7 +544,10 @@ export default {
           "&toggle=" +
           this.toggle,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -542,13 +555,12 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_current_net_specific_request-->", data);
             this.currentNet = data;
-             for (let i = 0; i < this.currentNet.length; i++) 
-            {
+            for (let i = 0; i < this.currentNet.length; i++) {
               this.netRowData.push({
-                  part_name: this.currentNet[i].part_name,
-                  depot_name: this.currentNet[i].depot_name,
-                  net_quantity: this.currentNet[i].net_qty,
-                  });
+                part_name: this.currentNet[i].part_name,
+                depot_name: this.currentNet[i].depot_name,
+                net_quantity: this.currentNet[i].net_qty
+              });
             }
           });
         })
@@ -564,7 +576,10 @@ export default {
           "&toggle=" +
           this.toggle,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -572,13 +587,12 @@ export default {
             const data = text && JSON.parse(text);
             console.log("data -- get_current_ib_specific_request-->", data);
             this.currentib = data;
-            for (let i = 0; i < this.currentib.length; i++) 
-            {
+            for (let i = 0; i < this.currentib.length; i++) {
               this.ibRowData.push({
-                  node_depot_belongs: this.currentib[i].node_depot_belongs,
-                  pon_quanity: this.currentib[i].pon_quanity,
-                  product_ordering_name: this.currentib[i].product_ordering_name
-                  });
+                node_depot_belongs: this.currentib[i].node_depot_belongs,
+                pon_quanity: this.currentib[i].pon_quanity,
+                product_ordering_name: this.currentib[i].product_ordering_name
+              });
             }
           });
         })
@@ -646,8 +660,7 @@ export default {
         }
       ];
     },
-    createCurrColumnDefs()
-    {
+    createCurrColumnDefs() {
       this.currColumnDefs = [
         {
           headerName: "Part Name",
@@ -666,8 +679,7 @@ export default {
         }
       ];
     },
-    createErrorColumnDefs()
-    {
+    createErrorColumnDefs() {
       this.errorColumnDefs = [
         {
           headerName: "Part Name",
@@ -692,147 +704,146 @@ export default {
       ];
     },
     grossOnReady(event) {
-       var gridWidth = document.getElementById('GrossDiv').offsetWidth;
+      var gridWidth = document.getElementById("GrossDiv").offsetWidth;
 
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
 
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
         }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
-      },
-      netOnReady(event) {
-       var gridWidth = document.getElementById('NetDiv').offsetWidth;
-
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
-
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
-        }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
-      },
-      ibOnReady(event) {
-       var gridWidth = document.getElementById('IbDiv').offsetWidth;
-
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
-
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
-        }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
-      },
-      currOnReady(event) {
-       var gridWidth = document.getElementById('CurrDiv').offsetWidth;
-
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
-
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
-        }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
-      },
-      errorOnReady(event) {
-       var gridWidth = document.getElementById('ErrorDiv').offsetWidth;
-
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
-
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
-        }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
       }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    },
+    netOnReady(event) {
+      var gridWidth = document.getElementById("NetDiv").offsetWidth;
+
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
+
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
+        }
+      }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    },
+    ibOnReady(event) {
+      var gridWidth = document.getElementById("IbDiv").offsetWidth;
+
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
+
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
+        }
+      }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    },
+    currOnReady(event) {
+      var gridWidth = document.getElementById("CurrDiv").offsetWidth;
+
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
+
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
+        }
+      }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    },
+    errorOnReady(event) {
+      var gridWidth = document.getElementById("ErrorDiv").offsetWidth;
+
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
+
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
+        }
+      }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    }
   }
-  
 };
 </script>
 <style>
@@ -866,8 +877,7 @@ a {
   margin-bottom: 2%;
 }
 .vue-tooltip {
-    background-color: white;
-    color:#71869e;
-
+  background-color: white;
+  color: #71869e;
 }
 </style>

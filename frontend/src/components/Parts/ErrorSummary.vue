@@ -34,7 +34,6 @@
         >
           <br>
           <div class="shadow p-3 mb-5 bg-white rounded" id="ErrorDiv">
-          
             <div class="float-right" style="paddingBottom:1%"></div>
 
             <br>
@@ -53,8 +52,7 @@
               :paginationPageSize="10"
               :gridReady="errorOnReady"
               :gridSizeChanged="errorOnReady"
-
-            ></ag-grid-vue> 
+            ></ag-grid-vue>
           </div>
         </div>
       </div>
@@ -82,7 +80,6 @@ export default {
     this.requestId = this.$route.query.id;
     this.createErrorColumnDefs();
     this.get_error_records(this.$route.query.id);
-
   },
   data() {
     console.log("SpareDetails");
@@ -102,7 +99,7 @@ export default {
       current: "Error Summary",
       errorColumnDefs: null,
       errorRowData: [],
-      ErrorGridOptions:{
+      ErrorGridOptions: {
         rowStyle: {
           color: "#72879d"
           // fontSize: "13.7px",
@@ -122,12 +119,15 @@ export default {
     redirectToAnalysis() {
       router.push("/parts/analysis/dashboard");
     },
-    
+
     get_error_records(requestId) {
       fetch(
         constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+          }
         }
       )
         .then(response => {
@@ -135,14 +135,13 @@ export default {
             const payload = text && JSON.parse(text);
             console.log("Get Error data ---->", payload);
             this.errorData = payload;
-             for (let i = 0; i < this.errorData.length; i++) 
-            {
+            for (let i = 0; i < this.errorData.length; i++) {
               this.errorRowData.push({
-                  part_name: this.errorData[i].PON,
-                  error_reason: this.errorData[i].error_reason,
-                  node_name: this.errorData[i].node_name,
-                  type: this.errorData[i].type
-                  });
+                part_name: this.errorData[i].PON,
+                error_reason: this.errorData[i].error_reason,
+                node_name: this.errorData[i].node_name,
+                type: this.errorData[i].type
+              });
             }
           });
         })
@@ -150,9 +149,8 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    
-    createErrorColumnDefs()
-    {
+
+    createErrorColumnDefs() {
       this.errorColumnDefs = [
         {
           headerName: "Part Name",
@@ -176,36 +174,35 @@ export default {
         }
       ];
     },
-     errorOnReady(event) {
-       var gridWidth = document.getElementById('ErrorDiv').offsetWidth;
+    errorOnReady(event) {
+      var gridWidth = document.getElementById("ErrorDiv").offsetWidth;
 
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
 
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
         }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
       }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    }
   }
-  
 };
 </script>
 <style>

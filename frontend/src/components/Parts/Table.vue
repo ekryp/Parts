@@ -19,7 +19,11 @@
             </div>
             <div class="float-left">
               <button type="button" class="btn btn-success">
-                <download-excel :data="top_extended" type="csv" v-tooltip.top.hover.focus="'Click to Download'">
+                <download-excel
+                  :data="top_extended"
+                  type="csv"
+                  v-tooltip.top.hover.focus="'Click to Download'"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
@@ -161,7 +165,10 @@ export default {
     },
     getTopExtenededData() {
       fetch(constant.APIURL + "api/v1/get_top_extended?toggle=" + this.toggle, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -232,9 +239,8 @@ export default {
   cursor: pointer;
 }
 .vue-tooltip {
-    background-color: white;
-    color:#71869e;
-    
+  background-color: white;
+  color: #71869e;
 }
 </style>
 

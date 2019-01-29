@@ -118,7 +118,7 @@
               <div class="row">
                 <div class="col-lg-1" v-if="requestId === ''">
                   <label for="fileupload" class="file">
-                    <input type="file"  @change="handleFile" id="fileupload" style="display:none">
+                    <input type="file" @change="handleFile" id="fileupload" style="display:none">
                     <i class="fas fa-paperclip fa-2x"></i>
                   </label>
                 </div>
@@ -256,7 +256,7 @@ export default {
       errorData: [],
       uploading: false,
       resubmit: false,
-      diasableFlag:false
+      diasableFlag: false
     };
   },
   methods: {
@@ -337,7 +337,7 @@ export default {
       ) {
         if (this.dnafile !== "") {
           if (this.sapfile !== "") {
-            this.diasableFlag=true;
+            this.diasableFlag = true;
             this.uploading = true;
             this.diasableFlag = true;
             if (this.resubmit) {
@@ -380,7 +380,10 @@ export default {
     // API calls
     get_spare_part_analysis() {
       fetch(constant.APIURL + "api/v1/get_spare_part_analysis", {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -417,7 +420,10 @@ export default {
       console.log("formdata ----->", formData.get("analysis_name"));
       fetch(constant.APIURL + "api/v1/post_spare_part_analysis", {
         method: "POST",
-        body: formData
+        body: formData,
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -429,8 +435,8 @@ export default {
               swal("Hello world!");
               this.uploading = false;
               this.resubmit = true;
-              this.diasableFlag=false;
-              
+              this.diasableFlag = false;
+
               swal({
                 title: "Error",
                 text: data.msg,

@@ -4,7 +4,7 @@
     <side-nav menu="analysis"/>
     <div class="custom-container" style="paddingTop:7.57%">
       <div>
-        <div class="myBreadCrumb" >
+        <div class="myBreadCrumb">
           <p>
             <span style="font-size: 14px;">{{current}}</span>
           </p>
@@ -65,10 +65,19 @@
         </div>
       </div>
       <div class="float-right" style="marginTop:1%">
-        <button type="button" class="btn btn-success" @click="createAnalysis" v-tooltip.top.hover.focus="'Click to Create'">Create Analysis</button>
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="createAnalysis"
+          v-tooltip.top.hover.focus="'Click to Create'"
+        >Create Analysis</button>
       </div>
       <div class="float-left" style="marginTop:1%">
-        <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
+        <button
+          type="button"
+          class="btn btn-success"
+          v-tooltip.top.hover.focus="'Click to Download'"
+        >
           <download-excel :data="partsAnalysisRequestList" type="csv">
             <i class="fas fa-file-excel"></i>
             &nbsp;
@@ -77,7 +86,7 @@
         </button>
       </div>
 
-        <div class="" id="agbox" style="marginTop:7%">
+      <div class id="agbox" style="marginTop:7%">
         <div style="marginTop:0%">
           <div v-if="partsAnalysisRequestList.length !== 0">
             <ag-grid-vue
@@ -97,12 +106,10 @@
               :paginationPageSize="15"
               :gridReady="onReady"
               :gridSizeChanged="onReady"
-
             ></ag-grid-vue>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -198,14 +205,17 @@ export default {
     get_all_request_analysis() {
       console.log("working successfully");
       fetch(constant.APIURL + "api/v1/get_steps_all_users", {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
-            
+
             for (let i = 0; i < this.partsAnalysisRequestList.length; i++) {
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
               this.rowData.push({
@@ -218,8 +228,8 @@ export default {
                 )
                   .toDateString()
                   .substring(4),
-                completedFlag:
-                  this.partsAnalysisRequestList[i].analysis_request_id
+                completedFlag: this.partsAnalysisRequestList[i]
+                  .analysis_request_id
               });
             }
             this.exportCSV(data);
@@ -231,7 +241,10 @@ export default {
     },
     get_dashboard_request_count() {
       fetch(constant.APIURL + "api/v1/get_dashboard_request_count", {
-        method: "GET"
+        method: "GET",
+        headers: {
+          Authorization: "Bearer" + localStorage.getItem("auth0_access_token")
+        }
       })
         .then(response => {
           response.text().then(text => {
@@ -283,57 +296,51 @@ export default {
     onCellClicked(event) {
       console.dir(event);
       let requestId = event.value;
-      if(Number.isInteger(requestId))
-      {
+      if (Number.isInteger(requestId)) {
         router.push({
-        path: "/parts/analysis/view",
-        query: { id: requestId }
-      });
+          path: "/parts/analysis/view",
+          query: { id: requestId }
+        });
       }
-      },
+    },
     onReady(event) {
-       var gridWidth = document.getElementById('agbox').offsetWidth;
+      var gridWidth = document.getElementById("agbox").offsetWidth;
 
-        // keep track of which columns to hide/show
-        var columnsToShow = [];
-        var columnsToHide = [];
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
 
-        // iterate over all columns (visible or not) and work out
-        // now many columns can fit (based on their minWidth)
-        var totalColsWidth = 0;
-        var allColumns = event.columnApi.getAllColumns();
-        for (var i = 0; i < allColumns.length; i++) {
-            let column = allColumns[i];
-            totalColsWidth += column.getMinWidth();
-            if (totalColsWidth > gridWidth) {
-                columnsToHide.push(column.colId);
-            } else {
-                columnsToShow.push(column.colId);
-            }
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
         }
-
-        // show/hide columns based on current grid width
-        event.columnApi.setColumnsVisible(columnsToShow, true);
-        event.columnApi.setColumnsVisible(columnsToHide, false);
-
-        // fill out any available space to ensure there are no gaps
-        event.api.sizeColumnsToFit();
       }
 
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    }
   }
 };
 
 function actionCellRenderer(params) {
-  
   let skills = [];
-  
-  skills.push(
-    '<i style="cursor:pointer" class="far fa-eye"></i>'
-  );
-  
+
+  skills.push('<i style="cursor:pointer" class="far fa-eye"></i>');
+
   return skills.join(" ");
 }
- 
 </script>
 <style>
 .text-top {
@@ -349,8 +356,7 @@ function actionCellRenderer(params) {
   margin-bottom: 2%;
 }
 .vue-tooltip {
-    background-color: white;
-    color:#71869e;
-    
+  background-color: white;
+  color: #71869e;
 }
 </style>
