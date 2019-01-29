@@ -1,6 +1,6 @@
 <template>
   <div>
-    <headernav msg="Spare Part Analysis"/>
+    <headernav msg="Spare Part Analysis" :loaderFlag="loaderFlag"/>
     <side-nav menu="analysis"/>
     <div class="custom-container" style="paddingTop:3%">
       <!-- <div class="container"> -->
@@ -1133,7 +1133,8 @@ export default {
       current: "Analysis Update",
       show: false,
       label: "Loading...",
-      uploading: false
+      uploading: false,
+      loaderFlag:false
     };
   },
   methods: {
@@ -1254,14 +1255,10 @@ export default {
               window.intervalObj = setInterval(() => {
                 this.get_request_analysis_by_Id(this.requestId);
               }, 5000);
-              $(document).ready(function() {
-                $("#loader-2").show();
-              });
+              this.loaderFlag=true;
             } else {
               clearInterval(window.intervalObj);
-              $(document).ready(function() {
-                $("#loader-2").hide();
-              });
+              this.loaderFlag=false;
             }
           });
         })
@@ -1299,9 +1296,7 @@ export default {
     post_spare_part_analysis(data) {
       let formData = new FormData();
       console.log("loader show");
-      $(document).ready(function() {
-        $("#loader-2").show();
-      });
+      this.loaderFlag=true;
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);

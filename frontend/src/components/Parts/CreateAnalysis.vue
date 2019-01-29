@@ -1,6 +1,6 @@
 <template>
   <div>
-    <headernav msg="Spare Part Analysis"/>
+    <headernav msg="Spare Part Analysis" :loaderFlag="loaderFlag"/>
     <side-nav menu="analysis" :diasableFlag="diasableFlag"/>
     <div class="custom-container" style="paddingTop:3%">
       <!-- <div class="container"> -->
@@ -256,6 +256,7 @@ export default {
       errorData: [],
       uploading: false,
       resubmit: false,
+      loaderFlag:false,
       diasableFlag:false
     };
   },
@@ -326,7 +327,8 @@ export default {
         replensihTime: this.replensihTime,
         date: new Date(),
         dnafile: this.dnafile,
-        sapfile: this.sapfile
+        sapfile: this.sapfile,
+        
       };
 
       if (
@@ -404,9 +406,7 @@ export default {
       let formData = new FormData();
       console.log("loader show");
 
-      $(document).ready(function() {
-        $("#loader-2").show();
-      });
+      this.loaderFlag=true;
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
@@ -436,9 +436,7 @@ export default {
                 text: data.msg,
                 icon: "error"
               });
-              $(document).ready(function() {
-                $("#loader-2").hide();
-              });
+             this.loaderFlag=false;
             }
           });
         })

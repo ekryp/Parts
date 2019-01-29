@@ -2,7 +2,7 @@
   <div style="position:fixed;marginLeft:0%;width:100%;z-index:99999;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <img src="https://staging.ekryp.com/src/assets/ekryp.jpg" style="height:40px;width:100px">
-      <div class="loader" id="loader-2" style="margin-left:35%;">
+      <div class="loader" id="loader-2" style="margin-left:35%;" v-if="loaderFlag">
         <span></span>
         <span></span>
         <span></span>
@@ -51,12 +51,10 @@
 import router from "../../router";
 export default {
   name: "headernav",
-  props: ["msg"],
+  props: ["msg","loaderFlag"],
   created() {
     this.firstName = localStorage.getItem("first_name");
-    $(document).ready(function() {
-      $("#loader-2").hide();
-    });
+    
   },
   data() {
     console.log("header");

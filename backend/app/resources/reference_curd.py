@@ -379,7 +379,7 @@ class GetMisnomer(Resource):
             engine.execute(query)
             return jsonify(msg="Inserted Misonomer Details Successfully", http_status_code=200)
         except:
-            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
+            return jsonify(msg="The Part Mentioned is Not Availabe ,Please try again", http_status_code=400)
 
 
 
