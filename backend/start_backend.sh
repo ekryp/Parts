@@ -16,6 +16,14 @@ then
        echo "Backend Services not running & starting backend services,creating logs in backend_nohup.out file"
 fi
 
+kill -9 $(ps -eaf | grep -i gunicorn | grep -v 'grep' | awk '{print $2}') &> /dev/null
+
+if [ $? != 0 ]
+then
+       echo "Backend Services not running & starting backend services,creating logs in backend_nohup.out file"
+fi
+
+
 #start backend services
 nohup gunicorn app:app -w 4 --log-level debug -b 0.0.0.0:5000 --timeout 600 > backend.log&
 
