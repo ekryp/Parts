@@ -738,9 +738,26 @@ export default {
           "&reliability_id=" +
           this.uniqueId;
       }
+      let alertFlag=false;
+      let alertIndex;
+
+
       for (let i = 0; i < this.columnList.length; i++) {
         formData.append(this.columnList[i].formName, this.columnList[i].value);
+        if(this.columnList[i].value === "")
+        {
+          alertFlag=true;
+          alertIndex=i;
+        }
       }
+      if(alertFlag){
+      swal({
+          title: "Error",
+          text: "Please Fill the "+this.columnList[alertIndex].columnName,
+          icon: "error"
+        });
+        }
+        else{
       console.dir("formdata ----->", formData);
       fetch(constant.APIURL + url, {
         method: "PATCH",
@@ -786,10 +803,10 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+        }
     },
     addData() {
-      this.$modals.myModal.$hide();
-      this.loaderFlag = true;
+     
       let url;
       if (this.fileType === "parts") {
         url = "api/v1/get_all_parts";
@@ -804,18 +821,37 @@ export default {
       } else {
         url = "api/v1/get_all_ratio?pon_type=" + this.fileType;
       }
+      let alertFlag=false;
+      let alertIndex;
+
       let formData = new FormData();
+      
       for (let i = 0; i < this.columnList.length; i++) {
         formData.append(this.columnList[i].formName, this.columnList[i].value);
-      }
-      console.dir("formdata ----->", formData);
-      fetch(constant.APIURL + url, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        if(this.columnList[i].value === "")
+        {
+          alertFlag=true;
+          alertIndex=i;
         }
-      })
+      }
+      if(alertFlag){
+      swal({
+          title: "Error",
+          text: "Please Fill the "+this.columnList[alertIndex].columnName,
+          icon: "error"
+        });
+        }
+        else{
+           this.$modals.myModal.$hide();
+        this.loaderFlag = true;
+        console.dir("formdata ----->", formData);
+        fetch(constant.APIURL + url, {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -853,7 +889,7 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-
+      }
     },
     getParts() {
       this.loaderFlag = true;
@@ -1275,7 +1311,8 @@ export default {
           swal({
             title: "Info",
             text: "Do You Want to Delete the Data ?",
-            icon: "info"
+            icon: "info",
+            
           }).then(ok => {
             if (ok) {
               fetch(

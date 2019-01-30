@@ -2,7 +2,7 @@ from app import app
 from app import csvs, excel, mytext
 from flask import jsonify
 from flask import request
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exc
 from flask_restful import Resource
 from flask_restful import reqparse
 from app.utils.utils import get_df_from_sql_query
@@ -12,7 +12,6 @@ import os
 import json
 from app import Configuration
 from app.auth.authorization import requires_auth
-
 
 class GetParts(Resource):
     def __init__(self):
@@ -134,10 +133,11 @@ class GetHighSpare(Resource):
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
             part_cost_query="Insert into high_spare (cust_id,given_spare_part_id,high_spare_part_id) values ({0},(SELECT part_id FROM parts where part_name='{1}'),(SELECT part_id FROM parts where part_name='{2}'))".format(7,ClassicPON,SubstitutionPON)
+            print("part cost query ",part_cost_query)
             engine.execute(part_cost_query)
             return jsonify(msg="Inserted High Spare Details Successfully", http_status_code=200)
-        except:
-            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
+        except  exc.NoForeignKeysError:
+            return jsonify(msg="The Part Menioned is Not Availabe in Parts Table,Please try again", http_status_code=400)
 
     @requires_auth
     def get(self):
