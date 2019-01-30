@@ -278,7 +278,8 @@ def fetch_db(replenish_time):
     spared_sql = "SELECT part_name FROM parts where spared_attribute = 1;"
     spared_pons = read_data(spared_sql, connection)
 
-    high_spare_sql = "SELECT pt.part_name, given_spare_part_id, high_spare_part_id FROM high_spare, parts pt where given_spare_part_id = pt.part_id;"
+    high_spare_sql = "SELECT pt.part_name, hs.high_spare_part_name FROM high_spare hs, " \
+                     "parts pt where hs.part_name = pt.part_name;"
     highspares = read_data(high_spare_sql, connection)
 
     get_ratio_to_pon_sql = "SELECT * FROM reliability_class where replenish_time = '{0}'".format(replenish_time)
@@ -292,9 +293,8 @@ def fetch_db(replenish_time):
     get_parts_cost_sql = "SELECT * FROM `part_cost` pid, parts pt where  pt.material_number = pid.material_number;"
     parts_cost = read_data(get_parts_cost_sql, connection)
 
-    get_high_spares = "select pt1.part_name, pt2.part_name as high_spare from high_spare t " \
-                      "inner join parts pt1 on pt1.part_id = t.given_spare_part_id " \
-                      "inner join parts pt2 on pt2.part_id = t.high_spare_part_id;"
+    get_high_spares = "SELECT pt.part_name, hs.high_spare_part_name as high_spare  " \
+                      "FROM high_spare hs, parts pt where hs.part_name = pt.part_name"
     high_spares = read_data(get_high_spares, connection)
 
     get_depot_sql = "SELECT * FROM depot;"
@@ -426,6 +426,7 @@ def to_sql_end_customer_table(df):
 
 
 def to_sql_high_spare_table(df):
+    df.loc[:, 'cust_id'] = 7
     df.to_sql(name='high_spare', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into high_spare table")
 

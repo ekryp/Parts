@@ -704,30 +704,13 @@ def high_spare_table_creation(high_spare_file, extension):
 
     # Remove duplicate from dataframe
     high_spare_df.drop_duplicates(keep="first", inplace=True)
+    high_spare_df.rename(columns={'ClassicPON': 'part_name', 'SubstitutionPON': 'high_spare_part_name'}, inplace=True)
 
-    # Get all parts info first
-    parts_df = pd.read_sql_table(table_name='parts', con=engine)
-
-
-    # Get part_id for Classic & Substitution Parts
-
-    classic_PON_merge = pd.merge(high_spare_df, parts_df, left_on='ClassicPON', right_on='part_name', how='left')
-    classic_PON_merge = classic_PON_merge.rename(columns={'part_id': 'Given_Spare_Part_Id'})
-
-    classic_PON_merge = classic_PON_merge[['ClassicPON', 'SubstitutionPON', 'Given_Spare_Part_Id']]
-
-    Subsitution_PON_merge = pd.merge(classic_PON_merge, parts_df, left_on='SubstitutionPON', right_on='part_name', how='left')
-    Subsitution_PON_merge = Subsitution_PON_merge.rename(columns={'part_id': 'High_Spare_Part_Id'})
-    Subsitution_PON_merge = Subsitution_PON_merge[['Given_Spare_Part_Id', 'High_Spare_Part_Id', 'cust_id']]
-
-    #Subsitution_PON_merge.dropna(inplace=True)
-    
-    # delete high_spare  & append with new values
     query = "delete from high_spare"
     engine.execute(query)
 
     # high_spare table populated
-    to_sql_high_spare_table(Subsitution_PON_merge)
+    to_sql_high_spare_table(high_spare_df)
 
 
 @celery.task
