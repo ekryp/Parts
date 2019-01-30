@@ -137,6 +137,7 @@ import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
 import Vue from "vue";
 import Vudal from "vudal";
+import accounting from "../../utilies/accounting";
 
 export default {
   name: "ReferenceView",
@@ -237,10 +238,10 @@ export default {
           placeHolder: "1"
         },
         {
-          columnName: "Standard Cost",
+          columnName: "Standard Cost ($)",
           formName: "standard_cost",
           value: "",
-          placeHolder: "2108.94"
+          placeHolder: "2,108.94"
         }
       ];
       this.referenceColumnDefs = [
@@ -271,7 +272,7 @@ export default {
           filter: "date"
         },
         {
-          headerName: "Standard Cost",
+          headerName: "Standard Cost ($)",
           field: "standard_cost",
           width: 150,
           filter: "date"
@@ -879,7 +880,7 @@ export default {
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
-                standard_cost: this.referenceList[i].standard_cost,
+                standard_cost: accounting.formatMoney( this.referenceList[i].standard_cost),
                 editFlag: this.referenceList[i].part_id,
                 deleteFlag: this.referenceList[i].part_id
               });
@@ -892,14 +893,7 @@ export default {
                 spared_attribute: this.referenceList[i].spared_attribute,
                 standard_cost: this.referenceList[i].standard_cost
               });
-              this.referenceFileData.push({
-                material_number: this.referenceList[i].material_number,
-                part_name: this.referenceList[i].part_name,
-                part_number: this.referenceList[i].part_number,
-                part_reliability_class: this.referenceList[i].part_reliability_class,
-                spared_attribute: this.referenceList[i].spared_attribute,
-                standard_cost: this.referenceList[i].standard_cost
-              });
+              
             }
 
             this.loaderFlag = false;
@@ -936,11 +930,7 @@ export default {
                 ClassicPON: this.referenceList[i].ClassicPON,
                 SubstitutionPON: this.referenceList[i].SubstitutionPON
               });
-              this.referenceFileData.push({
-                ClassicPON: this.referenceList[i].ClassicPON,
-                SubstitutionPON: this.referenceList[i].SubstitutionPON
-                
-              });
+             
             }
 
             this.loaderFlag = false;
@@ -984,11 +974,7 @@ export default {
                 node_depot_belongs: this.referenceList[i].node_depot_belongs,
                 node_name: this.referenceList[i].node_name
               });
-              this.referenceFileData.push({
-                end_customer_node_belongs: this.referenceList[i].end_customer_node_belongs,
-                node_depot_belongs: this.referenceList[i].node_depot_belongs,
-                node_name: this.referenceList[i].node_name
-              });
+             
             }
             this.loaderFlag = false;
           });
@@ -1045,21 +1031,7 @@ export default {
                 region: this.referenceList[i].region,
                 state: this.referenceList[i].state
               });
-              this.referenceFileData.push({
-                city: this.referenceList[i].city,
-                contact: this.referenceList[i].contact,
-                country: this.referenceList[i].country,
-                depot_address: this.referenceList[i].depot_address,
-                depot_name: this.referenceList[i].depot_name,
-                hub: this.referenceList[i].hub,
-                lat: this.referenceList[i].lat,
-                long: this.referenceList[i].long,
-                partner: this.referenceList[i].partner,
-                partner_warehouse_code: this.referenceList[i].partner_warehouse_code,
-                region: this.referenceList[i].region,
-                state: this.referenceList[i].state
-                
-              });
+              
             }
 
             this.loaderFlag = false;
@@ -1154,19 +1126,7 @@ export default {
                 number_of_spares9: this.referenceList[i].number_of_spares9,
                 number_of_spares10: this.referenceList[i].number_of_spares10
               });
-              this.referenceFileData.push({
-                product_family: this.referenceList[i].product_family,
-                number_of_spares1: this.referenceList[i].number_of_spares1,
-                number_of_spares2: this.referenceList[i].number_of_spares2,
-                number_of_spares3: this.referenceList[i].number_of_spares2,
-                number_of_spares4: this.referenceList[i].number_of_spares4,
-                number_of_spares5: this.referenceList[i].number_of_spares5,
-                number_of_spares6: this.referenceList[i].number_of_spares6,
-                number_of_spares7: this.referenceList[i].number_of_spares7,
-                number_of_spares8: this.referenceList[i].number_of_spares8,
-                number_of_spares9: this.referenceList[i].number_of_spares9,
-                number_of_spares10: this.referenceList[i].number_of_spares10
-              });
+              
             }
             this.loaderFlag = false;
           });

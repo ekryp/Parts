@@ -611,7 +611,7 @@ export default {
       }
     },
     uploadPartsData() {
-      //console.log(localStorage.getItem('email_id'));
+      console.log(localStorage.getItem('email_id'));
       //let email_id = localStorage.getItem("email_id");
       let data = {
         partsFile: this.partsFile,
@@ -632,7 +632,8 @@ export default {
       let formData = new FormData();
       formData.append("parts_file", data.partsFile);
       formData.append("user_email_id", data.email_id);
-      fetch("http://10.138.1.3:5000/api/v1/post_parts", {
+      console.log("inside the da");
+      fetch(constant.APIURL+"api/v1/post_parts", {
         method: "POST",
         body: formData,
         headers: {
@@ -684,7 +685,7 @@ export default {
       let formData = new FormData();
       formData.append("high_spare_file", data.highSpareFile);
       formData.append("user_email_id", data.email_id);
-      fetch("http://10.138.1.3:5000/api/v1/post_high_spare", {
+      fetch(constant.APIURL+"api/v1/post_high_spare", {
         method: "POST",
         body: formData,
         headers: {
@@ -736,7 +737,7 @@ export default {
       let formData = new FormData();
       formData.append("node_file", data.nodeFile);
       formData.append("user_email_id", data.email_id);
-      fetch("http://10.138.1.3:5000/api/v1/post_node", {
+      fetch(constant.APIURL+"api/v1/post_node", {
         method: "POST",
         body: formData,
         headers: {
@@ -788,7 +789,7 @@ export default {
       let formData = new FormData();
       formData.append("misnomer_file", data.minsomerFile);
       formData.append("user_email_id", data.email_id);
-      fetch("http://10.138.1.3:5000/api/v1/post_misnomer", {
+      fetch(constant.APIURL+"api/v1/post_misnomer", {
         method: "POST",
         body: formData,
         headers: {
@@ -840,7 +841,7 @@ export default {
       let formData = new FormData();
       formData.append("depot_file", data.depotFile);
       formData.append("user_email_id", data.email_id);
-      fetch("http://10.138.1.3:5000/api/v1/post_depot", {
+      fetch(constant.APIURL+"api/v1/post_depot", {
         method: "POST",
         body: formData,
         headers: {
@@ -919,7 +920,7 @@ export default {
       formData.append("user_email_id", data.email_id);
       formData.append("analysis_type", data.analysis_type);
       console.log(data.ratio_file);
-      fetch("http://10.138.1.3:5000/api/v1/post_ratio", {
+      fetch(constant.APIURL+"api/v1/post_ratio", {
         method: "POST",
         body: formData,
         headers: {
