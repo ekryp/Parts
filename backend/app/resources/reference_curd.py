@@ -118,7 +118,7 @@ class GetHighSpare(Resource):
         ClassicPON = args['ClassicPON']
         high_spare_id = args['high_spare_id']
         try:
-            query = "update high_spare set given_spare_part_id=(SELECT part_id FROM parts where part_name='{0}'),high_spare_part_id=(SELECT part_id FROM parts where part_name='{1}')  where high_spare_id = {2}".format(ClassicPON,SubstitutionPON,high_spare_id)
+            query = "update high_spare set part_name='{0}',high_spare_part_name='{1}'  where high_spare_id = {2}".format(ClassicPON,SubstitutionPON,high_spare_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
             engine.execute(query)
             return jsonify(msg="High Spare Updated Details Successfully", http_status_code=200)
@@ -132,7 +132,7 @@ class GetHighSpare(Resource):
         SubstitutionPON = args['SubstitutionPON']
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-            part_cost_query="Insert into high_spare (cust_id,given_spare_part_id,high_spare_part_id) values ({0},(SELECT part_id FROM parts where part_name='{1}'),(SELECT part_id FROM parts where part_name='{2}'))".format(7,ClassicPON,SubstitutionPON)
+            part_cost_query="Insert into high_spare (cust_id,part_name,high_spare_part_name) values ({0},'{1}','{2}')".format(7,ClassicPON,SubstitutionPON)
             print("part cost query ",part_cost_query)
             engine.execute(part_cost_query)
             return jsonify(msg="Inserted High Spare Details Successfully", http_status_code=200)
@@ -141,10 +141,8 @@ class GetHighSpare(Resource):
 
     @requires_auth
     def get(self):
-        query = "select t1.part_name as ClassicPON, t2.part_name as SubstitutionPON, t.given_spare_part_id, t.high_spare_id " \
-                "from high_spare t"\
-                " inner join parts t1 on t1.part_id = t.given_spare_part_id"\
-                " inner join parts t2 on t2.part_id = t.high_spare_part_id"
+        query = "select part_name as ClassicPON, high_spare_part_name as SubstitutionPON, high_spare_id " \
+                "from high_spare "
 
         result = get_df_from_sql_query(
             query=query,
@@ -232,6 +230,7 @@ class GetNode(Resource):
 
             query = "delete from node where node_id = {0}".format(node_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
+
             result=engine.execute(query)
             print("result",str(result))
             #result = result.loc[:, ~result.columns.duplicated()]

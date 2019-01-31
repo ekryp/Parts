@@ -771,6 +771,10 @@ export default {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
             if (data.http_status_code === 200) {
+              for (let i = 0; i < this.columnList.length; i++) {
+                 this.columnList[i].value="";
+                
+              }
               swal({
                 title: "SUCCESS",
                 text: data.msg,
@@ -857,6 +861,10 @@ export default {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
             if (data.http_status_code === 200) {
+               for (let i = 0; i < this.columnList.length; i++) {
+                 this.columnList[i].value="";
+                
+              }
               swal({
                 title: "SUCCESS",
                 text: data.msg,
