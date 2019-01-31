@@ -1239,6 +1239,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Get requst Analysis data ---->", payload);
             let object = {
               sapfileName: payload[0].sap_file_name,
@@ -1279,6 +1283,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data ---->", data);
             this.partsAnalysis = data;
           });
@@ -1298,6 +1306,11 @@ export default {
         path: "/parts/analysis/error",
         query: { id: this.requestId }
       });
+    },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
     },
     post_spare_part_analysis(data) {
       let formData = new FormData();
@@ -1321,6 +1334,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             this.show = false;
           });

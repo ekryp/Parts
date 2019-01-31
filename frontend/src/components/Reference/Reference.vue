@@ -643,6 +643,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             if (data.http_status_code == 200) {
               swal({
@@ -695,6 +699,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             if (data.http_status_code == 200) {
               swal({
@@ -747,6 +755,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             if (data.http_status_code == 200) {
               swal({
@@ -799,6 +811,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             if (data.http_status_code == 200) {
               swal({
@@ -851,6 +867,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             if (data.http_status_code == 200) {
               swal({
@@ -914,6 +934,11 @@ export default {
         });
       }
     },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
+    },
     post_ratio_data(data) {
       let formData = new FormData();
       formData.append("ratio_file", data.ratio_file);
@@ -931,6 +956,10 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",

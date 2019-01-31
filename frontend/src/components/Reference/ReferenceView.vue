@@ -769,8 +769,13 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             if (data.http_status_code === 200) {
+              this.logout();
               for (let i = 0; i < this.columnList.length; i++) {
                  this.columnList[i].value="";
                 
@@ -860,6 +865,10 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             if (data.http_status_code === 200) {
                for (let i = 0; i < this.columnList.length; i++) {
                  this.columnList[i].value="";
@@ -913,6 +922,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -getallrequest--->", data);
             this.referenceList = data;
             for (let i = 0; i < this.referenceList.length; i++) {
@@ -960,6 +973,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -getallrequest--->", data);
             this.referenceList = data;
             for (let i = 0; i < this.referenceList.length; i++) {
@@ -1000,6 +1017,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -getallrequest--->", data);
             this.referenceList = data;
             for (let i = 0; i < this.referenceList.length; i++) {
@@ -1039,6 +1060,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -getallrequest--->", data);
             this.referenceList = data;
             for (let i = 0; i < this.referenceList.length; i++) {
@@ -1098,6 +1123,10 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             this.referenceList = data;
             for (let i = 0; i < this.referenceList.length; i++) {
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
@@ -1138,6 +1167,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -getallrequest--->", data);
             this.referenceList = data;
             for (let i = 0; i < this.referenceList.length; i++) {
@@ -1580,6 +1613,11 @@ export default {
           this.$modals.myModal.$show();
         }
       }
+    },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
     }
   }
 };

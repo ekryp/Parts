@@ -213,6 +213,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
 
@@ -239,6 +243,11 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
+    },
     get_dashboard_request_count() {
       fetch(constant.APIURL + "api/v1/get_dashboard_request_count", {
         method: "GET",
@@ -249,6 +258,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_dashboard_request_count-->", data);
             this.dashboard_request_count = data;
           });
@@ -257,6 +270,7 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    
     createColumnDefs() {
       this.columnDefs = [
         {

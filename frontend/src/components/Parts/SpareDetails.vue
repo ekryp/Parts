@@ -459,6 +459,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log(
               "data -- get_current_inventory_specific_request-->",
               data
@@ -492,6 +496,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_gross_specific_request-->", data);
             this.currentGross = data;
             for (let i = 0; i < this.currentGross.length; i++) {
@@ -520,6 +528,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Get Error data ---->", payload);
             this.errorData = payload;
             for (let i = 0; i < this.errorData.length; i++) {
@@ -553,6 +565,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_current_net_specific_request-->", data);
             this.currentNet = data;
             for (let i = 0; i < this.currentNet.length; i++) {
@@ -585,6 +601,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_current_ib_specific_request-->", data);
             this.currentib = data;
             for (let i = 0; i < this.currentib.length; i++) {
@@ -621,6 +641,11 @@ export default {
           width: 150
         }
       ];
+    },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
     },
     createNetColumnDefs() {
       this.netColumnDefs = [

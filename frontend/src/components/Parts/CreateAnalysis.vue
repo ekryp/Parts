@@ -391,6 +391,10 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data ---->", data);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             this.partsAnalysis = data;
           });
         })
@@ -428,6 +432,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Response from backend data ---->", data);
             if (data.http_status_code === 200) {
               this.routeToView(data);
@@ -449,6 +457,11 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+    },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
     }
   }
 };

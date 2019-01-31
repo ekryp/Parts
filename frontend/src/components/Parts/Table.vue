@@ -163,6 +163,11 @@ export default {
       this.midTable = "false";
       this.lastTable = "false";
     },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
+    },
     getTopExtenededData() {
       fetch(constant.APIURL + "api/v1/get_top_extended?toggle=" + this.toggle, {
         method: "GET",
@@ -173,6 +178,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_top_extended-->", data);
             this.top_extended = data;
             $(document).ready(function() {

@@ -170,6 +170,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_analysis_name-->", data);
             this.analysisName = data;
           });
@@ -195,6 +199,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_dashboard_request_count-->", data);
             this.partsAnalysisSummaryReslut = data;
             for (let i = 0; i < this.partsAnalysisSummaryReslut.length; i++) {
@@ -222,6 +230,11 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+    },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
     },
     createAnalysisSummaryColumnDefs() {
       this.summaryColumnDefs = [

@@ -321,6 +321,11 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_dashboard_request_count-->", data);
             this.dashboardData = data;
           });
@@ -342,6 +347,11 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- PONS Data-->", data);
             this.topPons = data;
           });
@@ -363,6 +373,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_dashboard_request_count-->", data);
             this.topDepots = data;
           });
@@ -387,6 +401,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- get_dashboard_request_count-->", data);
             this.topCustomer = data;
           });
@@ -405,6 +423,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("data -- getPieChart-->", data);
             piechart.series[0].data[0].y = data.critical_pon;
             piechart.series[0].data[1].y = data.non_critical_pon;
@@ -424,6 +446,10 @@ export default {
       }).then(response => {
         response.text().then(text => {
           const data = text && JSON.parse(text);
+          if(data.code === "token_expired")
+            {
+              this.logout();
+            }
           let promise = new Promise(function(resolve, reject) {
             var i;
 
@@ -476,6 +502,11 @@ export default {
         this.markers = [];
         this.getMapLocations(this.markers);
       }
+    },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
     }
   }
 };

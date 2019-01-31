@@ -133,6 +133,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
             console.log("Get Error data ---->", payload);
             this.errorData = payload;
             for (let i = 0; i < this.errorData.length; i++) {
@@ -149,7 +153,11 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
+    },
     createErrorColumnDefs() {
       this.errorColumnDefs = [
         {
