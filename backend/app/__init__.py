@@ -101,8 +101,8 @@ app.config['SECRET_KEY'] = 'secret'
 jwt = JWT(app, authenticate, identity)
 
 app.config.update(
-    CELERY_BROKER_URL='amqp://root1:root1@localhost:5672/demohost',
-    CELERY_RESULT_BACKEND='amqp://root1:root1@localhost:5672/demohost',
+    CELERY_BROKER_URL='amqp://rabbitmq:rabbitmq@rabbitmq:5672/demohost',
+    CELERY_RESULT_BACKEND='amqp://rabbitmq:rabbitmq@rabbitmq:5672/demohost',
     CELERYBEAT_SCHEDULER='app.tasks.sqlalchemy_scheduler:DatabaseScheduler',
     FILE_SAVE_NAME=fileSaveName,
     ALLOWED_EXTENSIONS=ALLOWED_EXTENSIONS
