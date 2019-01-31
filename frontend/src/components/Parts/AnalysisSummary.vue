@@ -95,6 +95,7 @@ import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
 import Tooltip from "vue-directive-tooltip";
 import "vue-directive-tooltip/css/index.css";
+import accounting from "../../utilies/accounting";
 Vue.use(Tooltip);
 
 Vue.use(Vue2Filters);
@@ -203,14 +204,14 @@ export default {
                 material_number: this.partsAnalysisSummaryReslut[i]
                   .material_number,
                 ib_quantity: this.partsAnalysisSummaryReslut[i].ib_quantity,
-                standard_cost: this.partsAnalysisSummaryReslut[i].standard_cost,
+                standard_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i].standard_cost),
                 gross_qty: this.partsAnalysisSummaryReslut[i].gross_qty,
-                std_gross_cost: this.partsAnalysisSummaryReslut[i]
-                  .std_gross_cost,
+                std_gross_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i]
+                  .std_gross_cost),
                 net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
-                net_std_cost: this.partsAnalysisSummaryReslut[i].net_std_cost,
-                ext_spare_cost: this.partsAnalysisSummaryReslut[i]
-                  .ext_spare_cost,
+                net_std_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i].net_std_cost),
+                ext_spare_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i]
+                  .ext_spare_cost),
                 spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
                 spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
                 high_spare: this.partsAnalysisSummaryReslut[i].high_spare

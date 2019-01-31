@@ -307,7 +307,7 @@ class UploadHighSpare(Resource):
         try:
             check_high_spare_file(high_spare_file, extension)
 
-            high_spare_table_creation(high_spare_file, extension)
+            # high_spare_table_creation(high_spare_file, extension)
             celery.send_task('app.tasks.high_spare_table_creation', [high_spare_file, extension])
             return jsonify(msg="High_Spare File Uploaded Successfully", http_status_code=200)
 
