@@ -1,0 +1,56 @@
+version: '3'
+services:
+  frontend:
+    build: ../frontend/
+    image: frontend
+    container_name: frontend
+    depends_on:
+     - backend
+    ports:
+     - 80:2323
+    restart: always
+  backend:
+    build: ../backend/
+    image: backend
+    container_name: backend
+    ports: 
+     - 5000:5000
+    links:
+      - rabbitmq:rabbitmq
+    restart: always
+#  worker:
+#    build: ../celery
+#    image: celery_worker
+#    container_name: celery_worker
+#    links:
+#     - rabbitmq:rabbitmq
+#    depends_on:
+#     - rabbitmq
+#    restart: always
+  rabbitmq:
+    image: rabbitmq:3.6.1-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+    restart: always
+    ports:
+      - 15672:15672
+      - 5672:5672
+  flower:
+    image: mher/flower
+    environment:
+      - AMQP_HOST=rabbitmq
+      - FLOWER_PORT=5555
+      - AMQP_USERNAME=rabbitmq
+      - AMQP_PASSWORD=rabbitmq
+      - AMQP_ADMIN_USERNAME=rabbitmq
+      - AMQP_ADMIN_PASSWORD=rabbitmq
+      - AMQP_ADMIN_HOST=rabbitmq
+    links:
+     - rabbitmq:rabbitmq
+    depends_on:
+     - rabbitmq
+    ports:
+     - 5555:5555
+    restart: always
+    command: flower --address=0.0.0.0 --port=5555 --broker=amqp://rabbitmq:rabbitmq@rabbitmq:5672/
