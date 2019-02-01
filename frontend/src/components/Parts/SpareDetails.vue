@@ -669,7 +669,7 @@ export default {
     createIbColumnDefs() {
       this.ibColumnDefs = [
         {
-          headerName: "Product Ordering Name",
+          headerName: "Node Depot Belongs",
           field: "node_depot_belongs",
           width: 250
         },
