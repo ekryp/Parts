@@ -38,7 +38,7 @@ class Configuration(BaseConfig):
 
     DEBUG = True
     ECLIPSE_DATA_DB_URI = "mysql+cymysql://root:admin@localhost/infinera_staging"
-    BASE_DIR = r'/Users/anup/eKryp/infinera/Parts-Analysis/data'
+    BASE_DIR = r'/data'
 
     net_depot = os.path.join(BASE_DIR, 'net_depot.csv')
     DNA_BOM = os.path.join(BASE_DIR, 'DNA_BOM_table.csv')
