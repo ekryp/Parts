@@ -37,7 +37,7 @@ class Configuration(BaseConfig):
     AUTH0_API_AUDIENCE = "https://prod-services.ekryp.com/api/v1/"
 
     DEBUG = True
-    ECLIPSE_DATA_DB_URI = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/infinera_staging"
+    ECLIPSE_DATA_DB_URI = "mysql+cymysql://root:admin@localhost/infinera_staging"
     BASE_DIR = r'/Users/anup/eKryp/infinera/Parts-Analysis/data'
 
     net_depot = os.path.join(BASE_DIR, 'net_depot.csv')
