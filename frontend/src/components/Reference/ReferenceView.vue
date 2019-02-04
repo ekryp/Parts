@@ -1112,6 +1112,7 @@ export default {
         });
     },
     getMisnomer() {
+      this.referenceRowData = [];
       this.loaderFlag = true;
       fetch(constant.APIURL + "api/v1/get_all_misnomer", {
         method: "GET",
@@ -1442,8 +1443,9 @@ export default {
                 });
             }
           });
-        } else if (this.fileType === "minsomer") {
-          let reference_tabel_id = event.value;
+        } else if (this.fileType === "misnomer") {
+          let reference_table_id = event.value;
+          
           swal({
             title: "Info",
             text: "Do You Want to Delete the Data ?",
@@ -1452,8 +1454,8 @@ export default {
             if (ok) {
               fetch(
                 constant.APIURL +
-                  "api/v1/get_all_misnomer?reference_tabel_id=" +
-                  reference_tabel_id,
+                  "api/v1/get_all_misnomer?reference_table_id=" +
+                  reference_table_id,
                 {
                   method: "DELETE",
                   headers: {
