@@ -42,9 +42,11 @@ export default {
                 localStorage.setItem('auth0_id_token', authResult.idToken)
                 localStorage.setItem('auth0_expires_at', expiresAt)
                 var profile = JSON.parse(response)
-                var allowed_custmors = profile.user_metadata.allowed_custmors
+                localStorage.setItem("authorization", profile.app_metadata.authorization.permissions)
+                var authorization = profile.app_metadata.authorization
+                console.log('groups',authorization.permissions);
                 localStorage.setItem('auth0_user_id', profile.user_id)
-                localStorage.setItem("allowed_custmors", JSON.stringify(allowed_custmors))
+                
                 if (profile.user_id.includes('samlp')) {
                     localStorage.setItem('email_id', profile.email_id)
                     localStorage.setItem('first_name', profile.first_name)
@@ -55,13 +57,13 @@ export default {
                     localStorage.setItem('email_id', profile.email)
                     localStorage.setItem('first_name', profile.given_name)
                     localStorage.setItem('last_name', profile.family_name)
-                    localStorage.setItem('cust_id', profile.user_metadata.cust_id)
+                   // localStorage.setItem('cust_id', profile.user_metadata.cust_id)
                     router.push('/dashboard')
                 } else {
                     localStorage.setItem('email_id', profile.email)
                     localStorage.setItem('first_name', profile.user_metadata.first_name)
                     localStorage.setItem('last_name', profile.user_metadata.last_name)
-                    localStorage.setItem('cust_id', profile.user_metadata.cust_id)
+                    //localStorage.setItem('cust_id', profile.user_metadata.cust_id)
                     router.push('/dashboard')
                 }
             })

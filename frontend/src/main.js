@@ -20,6 +20,18 @@ Vue.use(VTooltip)
 Vue.config.productionTip = false
 
 
+router.beforeEach((to, from, next) => {
+  next()
+  console.log(to.path);
+  if(localStorage.getItem("auth0_access_token"))
+  {
+  if ((to.path !== '/table')&&(to.path !== '/')&&(to.path !== '/login')&&(to.path !== '/logout')){
+   next('/dashboard')
+  } 
+  }
+  next()
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
