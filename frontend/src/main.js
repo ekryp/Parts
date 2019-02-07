@@ -23,12 +23,13 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   next()
   console.log(to.path);
-  var authorization=localStorage.getItem("authorization");
+  
+  if(localStorage.getItem("auth0_access_token"))
+  {
+    var authorization=localStorage.getItem("authorization");
   var groups=localStorage.getItem("groups");
   var permissions=authorization.split(',');
   var flag=true;
-  if(localStorage.getItem("auth0_access_token"))
-  {
   for(var i=0;i<permissions.length;i++)
   {
     if(permissions[i] === to.meta.permission)

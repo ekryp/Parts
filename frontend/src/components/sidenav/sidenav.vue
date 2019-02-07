@@ -66,6 +66,7 @@
 <script>
 
 import router from "../../router";
+import * as constant from "../constant/constant";
 export default {
   name: "SideNav",
   props: ["menu","diasableFlag"],
@@ -85,7 +86,7 @@ export default {
     var authorization=localStorage.getItem("authorization");
     var groups=localStorage.getItem("groups");
     var permissions=authorization.split(',');
-    
+    console.log(constant.PERMISSIONS[0]);
     if(groups !== 'infinera')
     {
       router.push("/");
@@ -93,10 +94,10 @@ export default {
     }
     for(var i=0;i<permissions.length;i++)
     {
-      if(permissions[i] === 'Dashboard')
+      if(permissions[i] === constant.PERMISSIONS[0])
      {
        this.dashboardFlag=true;
-     }else if(permissions[i] === 'CreateAnalysis')
+     }else if(permissions[i] === constant.PERMISSIONS[1])
      {
        this.createAnalysisFlag=true;
      }
