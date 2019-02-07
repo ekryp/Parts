@@ -44,6 +44,12 @@ export default {
                 var profile = JSON.parse(response)
                 localStorage.setItem("authorization", profile.app_metadata.authorization.permissions)
                 localStorage.setItem("groups", profile.app_metadata.authorization.groups)
+                if((groups !== 'infinera')||(authorization.length))
+                {
+                    localStorage.clear();
+                    router.push("/");
+                  
+                }
                 var authorization = profile.app_metadata.authorization
                 console.log('groups',authorization.permissions);
                 localStorage.setItem('auth0_user_id', profile.user_id)
