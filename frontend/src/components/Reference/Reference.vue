@@ -243,13 +243,13 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadCSV()">
+            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio2CSV()">
               <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
               <div class="float-left" style="marginTop:1%">
                 <i class="fa fa-download" aria-hidden="true"></i>
               </div>
               <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio.csv</span>
+                <span>Download Sample_Ratio_2Day.csv</span>
               </div>
               <!-- </download-excel>   -->
             </div>
@@ -290,13 +290,13 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadCSV()">
+            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio7CSV()">
               <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
               <div class="float-left" style="marginTop:1%">
                 <i class="fa fa-download" aria-hidden="true"></i>
               </div>
               <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio.csv</span>
+                <span>Download Sample_Ratio_7Day.csv</span>
               </div>
               <!-- </download-excel>   -->
             </div>
@@ -337,13 +337,13 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadCSV()">
+            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio30CSV()">
               <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
               <div class="float-left" style="marginTop:1%">
                 <i class="fa fa-download" aria-hidden="true"></i>
               </div>
               <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio.csv</span>
+                <span>Download Sample_Ratio_30Day.csv</span>
               </div>
               <!-- </download-excel>   -->
             </div>
@@ -384,13 +384,13 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadCSV()">
+            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio60CSV()">
               <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
               <div class="float-left" style="marginTop:1%">
                 <i class="fa fa-download" aria-hidden="true"></i>
               </div>
               <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio.csv</span>
+                <span>Download Sample_Ratio_60Day.csv</span>
               </div>
               <!-- </download-excel>   -->
             </div>
@@ -424,7 +424,10 @@ import * as highSpareData from "../../utilies/samplehighspare.json";
 import * as nodeData from "../../utilies/samplenode.json";
 import * as minsomerData from "../../utilies/sampleminsomer.json";
 import * as depotData from "../../utilies/sampledepot.json";
-import * as ratioData from "../../utilies/sampleratio.txt";
+import * as ratio2Data from "../../utilies/sampleratio2Day.txt";
+import * as ratio7Data from "../../utilies/sampleratio7Day.txt";
+import * as ratio30Data from "../../utilies/sampleratio30Day.txt";
+import * as ratio60Data from "../../utilies/sampleratio60Day.txt";
 
 import swal from "sweetalert";
 
@@ -456,12 +459,15 @@ export default {
       depotFilesList: depotData,
       ratio2File: "",
       ratio2FileName: "no file chosen",
-      ratioFilesList: ratioData,
+      ratio2FilesList: ratio2Data,
       ratio7File: "",
       ratio7FileName: "no file chosen",
+      ratio7FilesList: ratio7Data,
       ratio30File: "",
       ratio30FileName: "no file chosen",
+      ratio30FilesList: ratio30Data,
       ratio60File: "",
+      ratio60FilesList: ratio60Data,
       ratio60FileName: "no file chosen"
     };
   },
@@ -979,8 +985,8 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    downloadCSV() {
-      var fileContent = String(this.ratioFilesList);
+    downloadRatio2CSV() {
+      var fileContent = String(this.ratio2FilesList);
       var fileType = "csv";
 
       fileType = fileType || "csv";
@@ -989,7 +995,52 @@ export default {
       a.href = window.URL.createObjectURL(
         new Blob([fileContent], { type: blobType })
       );
-      a.download = "SampleRatio" + "." + fileType;
+      a.download = "SampleRatio2Day" + "." + fileType;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+    },
+    downloadRatio60CSV() {
+      var fileContent = String(this.ratio60FilesList);
+      var fileType = "csv";
+
+      fileType = fileType || "csv";
+      var blobType = "text/csv";
+      var a = document.createElement("a");
+      a.href = window.URL.createObjectURL(
+        new Blob([fileContent], { type: blobType })
+      );
+      a.download = "SampleRatio60Day" + "." + fileType;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+    },
+    downloadRatio7CSV() {
+      var fileContent = String(this.ratio7FilesList);
+      var fileType = "csv";
+
+      fileType = fileType || "csv";
+      var blobType = "text/csv";
+      var a = document.createElement("a");
+      a.href = window.URL.createObjectURL(
+        new Blob([fileContent], { type: blobType })
+      );
+      a.download = "SampleRatio7Day" + "." + fileType;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+    },
+    downloadRatio30CSV() {
+      var fileContent = String(this.ratio30FilesList);
+      var fileType = "csv";
+
+      fileType = fileType || "csv";
+      var blobType = "text/csv";
+      var a = document.createElement("a");
+      a.href = window.URL.createObjectURL(
+        new Blob([fileContent], { type: blobType })
+      );
+      a.download = "SampleRatio30Day" + "." + fileType;
       a.style.display = "none";
       document.body.appendChild(a);
       a.click();
