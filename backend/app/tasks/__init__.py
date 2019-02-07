@@ -728,18 +728,12 @@ def misnomer_table_creation(misnomer_file, extension):
     # Remove duplicate from dataframe
     misnomer_df.drop_duplicates(keep="first", inplace=True)
 
-    # Get all parts info first
-    parts_df = pd.read_sql_table(table_name='parts', con=engine)
-
-    misnomer = pd.merge(parts_df, misnomer_df, right_on='Correct PON', left_on='part_name', how='inner')
-    misnomer = misnomer[['Misnomer PON', 'part_id']]
-
     # delete high_spare  & append with new values
     query = "delete from `misnomer_part_conversion`"
     engine.execute(query)
 
     # high_spare table populated
-    to_sql_misnomer_table(misnomer)
+    to_sql_misnomer_table(misnomer_df)
 
 
 @celery.task

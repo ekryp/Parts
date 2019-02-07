@@ -262,7 +262,7 @@ def validate_depot(pon, analysis_date, analysis_id):
 def fetch_db(replenish_time):
     print('fetching data from db...')
     connection = Configuration.ECLIPSE_DATA_DB_URI
-    get_misnomer_sql = "SELECT mp.misnomer_part_name, pt.part_name FROM `misnomer_part_conversion` mp, `parts` pt where mp.correct_part_id = pt.part_id ;"
+    get_misnomer_sql = "SELECT mp.misnomer_part_name, pt.part_name FROM `misnomer_part_conversion` mp, `parts` pt where mp.correct_part_name = pt.part_name;"
     get_standard_cost = "select pt.part_name,pt.material_number,pid.standard_cost from parts pt " \
                         "left join `part_cost` pid on pt.part_id =pid.part_id where part_name != 'null'"
 
@@ -435,8 +435,7 @@ def to_sql_misnomer_table(df):
     df.loc[:, 'cust_id'] = 7
     df.rename(columns={
         'Misnomer PON': 'misnomer_part_name',
-        'part_id': 'correct_part_id',
-        # 'cust_id': 'eKryp_cust_id'
+        'Correct PON': 'correct_part_name',
         }, inplace=True
               )
     df.to_sql(name='misnomer_part_conversion', con=engine, index=False, if_exists='append', chunksize=1000)
