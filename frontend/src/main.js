@@ -23,12 +23,25 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   next()
   console.log(to.path);
+  var authorization=localStorage.getItem("authorization");
+  var groups=localStorage.getItem("groups");
+  var permissions=authorization.split(',');
+  var flag=true;
   if(localStorage.getItem("auth0_access_token"))
   {
-  if ((to.path !== '/table')&&(to.path !== '/')&&(to.path !== '/login')&&(to.path !== '/logout')){
-   next('/dashboard')
-  } 
+  for(var i=0;i<permissions.length;i++)
+  {
+    if(permissions[i] === to.meta.permission)
+   {
+     flag=false;
+     next()
+   }
   }
+  if(flag)
+  {
+    next('/')
+  }
+}
   next()
 })
 

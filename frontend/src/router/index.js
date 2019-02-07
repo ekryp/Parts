@@ -18,6 +18,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+  
   routes: [
     {
       path: '/',
@@ -35,11 +36,17 @@ export default new Router({
     }, {
       path: '/dashboard',
       name: 'Dashboard',
-      component: Dashboard
+      component: Dashboard,
+      meta: {
+        permission: 'Dashboard'
+      }
     }, {
       path: '/parts/analysis/create',
       name: 'CreateAnalysis',
-      component: CreateAnalysis
+      component: CreateAnalysis,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },{
       path: '/parts/analysis/view',
       name: 'PartsAnalysis',
@@ -61,7 +68,10 @@ export default new Router({
     {
       path: '/table',
       name: 'DynamicTable',
-      component: DynamicTable
+      component: DynamicTable,
+      meta: {
+        permission: 'Dashboard'
+      }
     },
     {
       path: '/reference',
@@ -79,4 +89,5 @@ export default new Router({
       component: ErrorSummary
     }
   ]
+  
 })

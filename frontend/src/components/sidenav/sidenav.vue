@@ -43,7 +43,7 @@
             <p class="upload-text">Create Analysis Request</p>
           </div>
         </li>
-        <hr v-if="createAnalysisFlag">
+        <hr v-if="referenceDataFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="referenceDataFlag">
           <div class="text-center" v-if="!diasableFlag" @click="reference()">
             <i class="fas fa-file-alt" style="fontSize:20px"></i>
@@ -83,12 +83,26 @@ export default {
   created()
   {
     var authorization=localStorage.getItem("authorization");
-    console.dir(authorization);
+    var groups=localStorage.getItem("groups");
+    var permissions=authorization.split(',');
     
-     if(authorization === 'Dashboard')
+    if(groups !== 'infinera')
+    {
+      router.push("/");
+      localStorage.clear();
+    }
+    for(var i=0;i<permissions.length;i++)
+    {
+      if(permissions[i] === 'Dashboard')
      {
        this.dashboardFlag=true;
+     }else if(permissions[i] === 'CreateAnalysis')
+     {
+       this.createAnalysisFlag=true;
      }
+
+    }
+     
   },
   beforeMount() {
     if (this.$props.menu === "analysis") {
