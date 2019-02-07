@@ -251,17 +251,20 @@ export default {
         {
           headerName: "Material",
           field: "material_number",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Install Base Quantity",
           field: "ib_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Standard Cost($)",
           field: "standard_cost",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Gross Requirement",
@@ -269,12 +272,14 @@ export default {
             {
               headerName: "Quantity",
               field: "gross_qty",
-              width: 125
+              width: 125,
+              cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "Ext Standard Cost($)",
               field: "std_gross_cost",
-              width: 120
+              width: 120,
+              cellStyle: {'text-align': 'right'}
             }
           ]
         },
@@ -284,12 +289,14 @@ export default {
             {
               headerName: "Quantity",
               field: "net_qty",
-              width: 125
+              width: 125,
+              cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "Standard Cost($)",
               field: "net_std_cost",
-              width: 120
+              width: 120,
+              cellStyle: {'text-align': 'right'}
             }
           ]
         },
@@ -299,12 +306,14 @@ export default {
             {
               headerName: "Quantity",
               field: "high_spare",
-              width: 125
+              width: 125,
+              cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "Ext Standard Cost($)",
               field: "ext_spare_cost",
-              width: 120
+              width: 120,
+              cellStyle: {'text-align': 'right'}
             }
           ]
         },

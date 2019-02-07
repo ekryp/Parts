@@ -111,7 +111,7 @@
                   <tbody>
                     <tr v-for="item in topPons" :key="item.id">
                       <td>{{item.part_name}}</td>
-                      <td>{{item.critical_pon_count}}</td>
+                      <td align="right">{{item.critical_pon_count}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -139,7 +139,7 @@
                   <tbody>
                     <tr v-for="item in topDepots" :key="item.id">
                       <td>{{item.depot_name}}</td>
-                      <td>{{item.critical_pon_count}}</td>
+                      <td align="right">{{item.critical_pon_count}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -167,7 +167,7 @@
                   <tbody>
                     <tr v-for="item in topCustomer" :key="item.id">
                       <td>{{item.customer_name}}</td>
-                      <td>{{item.critical_pon_count}}</td>
+                      <td align="right">{{item.critical_pon_count}}</td>
                     </tr>
                   </tbody>
                 </table>

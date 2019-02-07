@@ -638,7 +638,8 @@ export default {
         {
           headerName: "Gross Quantity",
           field: "gross_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },
@@ -662,7 +663,8 @@ export default {
         {
           headerName: "Net Quantity",
           field: "net_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },
@@ -681,7 +683,8 @@ export default {
         {
           headerName: "PON Quantity",
           field: "pon_quanity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },
@@ -700,7 +703,8 @@ export default {
         {
           headerName: "Reorder Point",
           field: "curr_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },

@@ -47,7 +47,7 @@
                   <td>{{item.customer_name}}</td>
                   <td>{{item.part_name}}</td>
                   <td>{{item.depot_name}}</td>
-                  <td>{{item.critical_pon_count}}</td>
+                  <td align="right">{{item.critical_pon_count}}</td>
                 </tr>
               </tbody>
             </table>

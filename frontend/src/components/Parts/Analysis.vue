@@ -1239,7 +1239,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
-            if(data.code === "token_expired")
+            if(payload.code === "token_expired")
             {
               this.logout();
             }

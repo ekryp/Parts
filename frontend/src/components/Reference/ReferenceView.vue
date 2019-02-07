@@ -253,12 +253,14 @@ export default {
         {
           headerName: "Material Number",
           field: "material_number",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Part Number",
           field: "part_number",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Part Reliability Class",
@@ -275,7 +277,8 @@ export default {
           headerName: "Standard Cost ($)",
           field: "standard_cost",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Edit",
@@ -504,13 +507,15 @@ export default {
           headerName: "Latitude",
           field: "lat",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Longitude",
           field: "long",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Edit",
@@ -649,52 +654,62 @@ export default {
             {
               headerName: "1",
               field: "number_of_spares1",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "2",
               field: "number_of_spares2",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "3",
               field: "number_of_spares3",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "4",
               field: "number_of_spares4",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "5",
               field: "number_of_spares5",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "6",
               field: "number_of_spares6",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "7",
               field: "number_of_spares7",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "8",
               field: "number_of_spares8",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "9",
               field: "number_of_spares9",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "10",
               field: "number_of_spares10",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             }
           ]
         },
