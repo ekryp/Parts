@@ -67,11 +67,11 @@
 <div>
     <div class="row " style="paddingLeft:86%">
       <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
-        <download-excel :data="referenceFileData" type="csv" :name="title+'.csv'">
+           <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'"  >
           <i class="fas fa-file-excel"></i>
           &nbsp;
           Export
-        </download-excel>
+           </DownloadExcel>
       </button>
  
        &nbsp; &nbsp;
@@ -138,6 +138,7 @@ import { AgGridVue } from "ag-grid-vue";
 import Vue from "vue";
 import Vudal from "vudal";
 import accounting from "../../utilies/accounting";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 
 export default {
   name: "ReferenceView",
@@ -145,7 +146,8 @@ export default {
     SideNav,
     headernav,
     AgGridVue,
-    Vudal
+    Vudal,
+    DownloadExcel
   },
 
 
