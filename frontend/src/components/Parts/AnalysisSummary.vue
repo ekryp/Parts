@@ -55,11 +55,11 @@
         @change="stateChange()"
       />
       <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
-        <download-excel :data="partsAnalysisSummaryReslut" type="csv">
+        <DownloadExcel :data="partsAnalysisSummaryReslut" type="csv" name="summary.csv" :columnHeaders="partsAnalysisSummaryTitle">
           <i class="fas fa-file-excel"></i>
           &nbsp;
           Export
-        </download-excel>
+        </DownloadExcel>
       </button>
     </div>
     <br>
@@ -88,6 +88,7 @@
 import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 import { mapActions, mapState } from "vuex";
 import Vue2Filters from "vue2-filters";
 import Vue from "vue";
@@ -105,7 +106,8 @@ export default {
   components: {
     SideNav,
     headernav,
-    AgGridVue
+    AgGridVue,
+    DownloadExcel
   },
   created() {
     console.log("props ----->", this.$props);
@@ -129,6 +131,8 @@ export default {
       rowData: null,
       summaryColumnDefs: null,
       summaryRowData: [],
+      partsAnalysisSummaryTitle:['Customer Name','Depot Name','Extended High Spare Cost','Gross Quantity',
+      'Has High Spare','IB Quantity','Material Number','Net Quantity','Net Standard Cost','Part Name','Quantity','High Spare Count','Standard Cost','Gross Standard Cost'],
       summaryGridOptions: {
         rowStyle: {
           color: "#72879d"
@@ -221,7 +225,7 @@ export default {
                 ext_spare_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i]
                   .ext_spare_cost),
                 spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
-                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
+                
                 high_spare: this.partsAnalysisSummaryReslut[i].high_spare
               });
             }
@@ -305,7 +309,7 @@ export default {
           children: [
             {
               headerName: "Quantity",
-              field: "high_spare",
+              field: "spare_count",
               width: 125,
               cellStyle: {'text-align': 'right'}
             },

@@ -45,10 +45,10 @@
       
   </div>
   <div class="actions">
-    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addData()">
+    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Create'" @click="addData()">
                     Create
                 </button>
-    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="editData()">
+    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Update'" @click="editData()">
                     Update
                 </button>
                 <button

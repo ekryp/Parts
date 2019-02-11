@@ -19,15 +19,12 @@
             </div>
             <div class="float-left">
               <button type="button" class="btn btn-success">
-                <download-excel
-                  :data="top_extended"
-                  type="csv"
-                  v-tooltip.top.hover.focus="'Click to Download'"
-                >
+                <DownloadExcel :data="top_extended" type="csv" name="ExtendedTable.csv"  :columnHeaders="top_extended_Title">
+                
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
@@ -65,12 +62,13 @@ import headernav from "@/components/header/header";
 import Multiselect from "vue-multiselect";
 import * as constant from "../constant/constant";
 //import * as data from "../../utilies/tabledata.json";
-
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 export default {
   name: "DynamicTable",
   components: {
     SideNav,
-    headernav
+    headernav,
+    DownloadExcel
   },
   created() {
     clearInterval(window.intervalObj);
@@ -90,7 +88,8 @@ export default {
       partName: "",
       customerName: "",
       toggle: "reorder",
-      state: true
+      state: true,
+      top_extended_Title:['Quantity','Customer','Depot','PON']
     };
   },
   methods: {
