@@ -89,8 +89,9 @@ export default {
     console.log(constant.PERMISSIONS[0]);
     if(groups !== 'infinera')
     {
-      router.push("/");
+      
       localStorage.clear();
+      router.push("/login");
     }
     for(var i=0;i<permissions.length;i++)
     {
