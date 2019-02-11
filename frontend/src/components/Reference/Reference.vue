@@ -34,14 +34,15 @@
               </div>
             </div>
             <div class="col-lg-3" style="cursor:pointer">
-              <download-excel :data="partsAnalysisRequestList" type="csv" name="Sample_Parts.csv">
+              <DownloadExcel :data="partsAnalysisRequestList" type="csv" name="Sample_Parts.csv"  >
+ 
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Parts.csv</span>
                 </div>
-              </download-excel>
+              </DownloadExcel>
             </div>
             <div class="col-lg-2">
               <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button>
@@ -77,14 +78,15 @@
               </div>
             </div>
             <div class="col-lg-3" style="cursor:pointer">
-              <download-excel :data="highSpareFilesList" type="csv" name="Sample_High_Spare.csv">
+             
+                <DownloadExcel :data="highSpareFilesList" type="csv" name="Sample_High_Spare.csv"  >
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_High_Spare.csv</span>
                 </div>
-              </download-excel>
+                </DownloadExcel>
             </div>
             <div class="col-lg-2">
               <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
@@ -115,14 +117,14 @@
               </div>
             </div>
             <div class="col-lg-3" style="cursor:pointer">
-              <download-excel :data="nodeFilesList" type="csv" name="Sample_Node.csv">
+              <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv"  >
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Node.csv</span>
                 </div>
-              </download-excel>
+              </DownloadExcel>
             </div>
             <div class="col-lg-2">
               <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
@@ -158,14 +160,14 @@
               </div>
             </div>
             <div class="col-lg-3" style="cursor:pointer">
-              <download-excel :data="depotFilesList" type="csv" name="Sample_Depot.csv">
+              <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv"  >
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Depot.csv</span>
                 </div>
-              </download-excel>
+              </DownloadExcel>
             </div>
             <div class="col-lg-2">
               <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
@@ -201,14 +203,14 @@
               </div>
             </div>
             <div class="col-lg-3" style="cursor:pointer">
-              <download-excel :data="minsomerFilesList" type="csv" name="Sample_Minsomer.csv">
-                <div class="float-left" style="marginTop:1%">
+               <DownloadExcel :data="minsomerFilesList" type="csv" name="Sample_Minsomer.csv"  >
+                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Minsomer.csv</span>
                 </div>
-              </download-excel>
+               </DownloadExcel>
             </div>
             <div class="col-lg-2">
               <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
@@ -428,6 +430,7 @@ import * as ratio2Data from "../../utilies/sampleratio2Day.txt";
 import * as ratio7Data from "../../utilies/sampleratio7Day.txt";
 import * as ratio30Data from "../../utilies/sampleratio30Day.txt";
 import * as ratio60Data from "../../utilies/sampleratio60Day.txt";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 
 import swal from "sweetalert";
 
@@ -435,7 +438,8 @@ export default {
   name: "Reference",
   components: {
     SideNav,
-    headernav
+    headernav,
+    DownloadExcel
   },
   created() {},
   data() {
