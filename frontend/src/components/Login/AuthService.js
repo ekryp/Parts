@@ -44,6 +44,7 @@ export default {
                 var profile = JSON.parse(response)
                 var allowed_custmors = profile.user_metadata.allowed_custmors
                 localStorage.setItem('auth0_user_id', profile.user_id)
+                localStorage.setItem('username', profile.username)
                 localStorage.setItem("allowed_custmors", JSON.stringify(allowed_custmors))
                 if (profile.user_id.includes('samlp')) {
                     localStorage.setItem('email_id', profile.email_id)
