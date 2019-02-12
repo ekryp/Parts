@@ -381,11 +381,11 @@ export default {
       errorData: [],
       grossColumnDefs: null,
       grossRowData: [],
-      grossTitle:['Depot Name','Gross Quantity','Part Name'],
+      grossTitle:['Part Name','Depot Name','Gross Quantity'],
       netColumnDefs: null,
       netRowData: [],
       ibColumnDefs: null,
-      ibTitle:['Node Depot Belongs','PON Quantity','Product Ordering Name'],
+      ibTitle:['Node Depot Belongs','Product Ordering Name','PON Quantity'],
       ibRowData: [],
       currColumnDefs: null,
       currRowData: [],
@@ -482,6 +482,7 @@ export default {
                 curr_quantity: this.currentInventory[i].qty
               });
             }
+            this.currentInventory=this.currRowData;
           });
         })
         .catch(handleError => {
@@ -516,6 +517,7 @@ export default {
                 gross_quantity: this.currentGross[i].gross_qty
               });
             }
+            this.currentGross = this.grossRowData;
           });
         })
         .catch(handleError => {
@@ -585,6 +587,7 @@ export default {
                 net_quantity: this.currentNet[i].net_qty
               });
             }
+            this.currentNet=this.netRowData;
           });
         })
         .catch(handleError => {
@@ -617,10 +620,12 @@ export default {
             for (let i = 0; i < this.currentib.length; i++) {
               this.ibRowData.push({
                 node_depot_belongs: this.currentib[i].node_depot_belongs,
-                pon_quanity: this.currentib[i].pon_quanity,
-                product_ordering_name: this.currentib[i].product_ordering_name
+                 product_ordering_name: this.currentib[i].product_ordering_name,
+                pon_quanity: this.currentib[i].pon_quanity
+               
               });
             }
+            this.currentib = this.ibRowData;
           });
         })
         .catch(handleError => {

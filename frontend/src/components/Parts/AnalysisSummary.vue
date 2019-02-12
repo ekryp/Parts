@@ -55,7 +55,7 @@
         @change="stateChange()"
       />
       <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
-        <DownloadExcel :data="partsAnalysisSummaryReslut" type="csv" name="summary.csv" :columnHeaders="partsAnalysisSummaryTitle">
+        <DownloadExcel :data="summaryRowData" type="csv" name="summary.csv" :columnHeaders="partsAnalysisSummaryTitle">
           <i class="fas fa-file-excel"></i>
           &nbsp;
           Export
@@ -131,8 +131,8 @@ export default {
       rowData: null,
       summaryColumnDefs: null,
       summaryRowData: [],
-      partsAnalysisSummaryTitle:['Customer Name','Depot Name','Extended High Spare Cost','Gross Quantity',
-      'Has High Spare','IB Quantity','Material Number','Net Quantity','Net Standard Cost','Part Name','Quantity','High Spare Count','Standard Cost','Gross Standard Cost'],
+      partsAnalysisSummaryTitle:['Part Name','Depot Name','Material Number','IB Quantity','Standard Cost','Gross Quantity','Extended Gross Cost',
+      'Net Quantity','Extended Net Cost','High Spare Count','Extended High Spare Cost','Has High Spare'],
       summaryGridOptions: {
         rowStyle: {
           color: "#72879d"
@@ -222,13 +222,14 @@ export default {
                   .std_gross_cost),
                 net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
                 net_std_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i].net_std_cost),
+                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
                 ext_spare_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i]
                   .ext_spare_cost),
-                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
                 
                 high_spare: this.partsAnalysisSummaryReslut[i].high_spare
               });
             }
+            this.partsAnalysisSummaryReslut=this.summaryRowData;
           });
         })
         .catch(handleError => {

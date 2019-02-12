@@ -19,7 +19,7 @@
             </div>
             <div class="float-left">
               <button type="button" class="btn btn-success">
-                <DownloadExcel :data="top_extended" type="csv" name="ExtendedTable.csv"  :columnHeaders="top_extended_Title">
+                <DownloadExcel :data="downloadData" type="csv" name="ExtendedTable.csv"  :columnHeaders="top_extended_Title">
                 
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
@@ -89,7 +89,8 @@ export default {
       customerName: "",
       toggle: "reorder",
       state: true,
-      top_extended_Title:['Quantity','Customer','Depot','PON']
+      top_extended_Title:['Customer','PON','Depot','Quantity'],
+      downloadData:[]
     };
   },
   methods: {
@@ -183,6 +184,14 @@ export default {
             }
             console.log("data -- get_top_extended-->", data);
             this.top_extended = data;
+            for (let i = 0; i < this.top_extended.length; i++) {
+              this.downloadData.push({
+                customer: this.top_extended[i].customer_name,
+                part_name:this.top_extended[i].part_name,
+                depot_name: this.top_extended[i].depot_name,
+                curr_quantity: this.top_extended[i].critical_pon_count
+              });
+            }
             $(document).ready(function() {
               $("#example").DataTable();
             });
