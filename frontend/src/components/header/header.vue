@@ -37,15 +37,7 @@
               <!-- <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>-->
               
-              <a v-if="username === 'admin'" class="dropdown-item" @click="logout()" style="cursor:pointer">
-               <i class="fas fa-user-edit"></i>&nbsp;Manage Previleages
-              </a>
-              <a  v-if="username === 'admin' " class="dropdown-item" @click="logout()" style="cursor:pointer">
-                <i class="fas fa-users-cog"></i>&nbsp;Manage User
-              </a>
-              <a class="dropdown-item" @click="logout()" style="cursor:pointer">
-                <i class="fas fa-key"></i>&nbsp;Change Password
-              </a>
+             
               <a class="dropdown-item" @click="logout()" style="cursor:pointer">
                 <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
               </a>
