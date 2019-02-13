@@ -284,7 +284,7 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # if the depot name is empty mark it with first occuring depot, set 0 to qty
 
     shared_depot = pd.merge(shared_depot, high_spares, left_on=['part_name'], right_on=['part_name'], how='left').merge(
-        sub, left_on=['part_name', 'depot_name'], right_on=['Material Description', 'Storage Location'])
+        sub, left_on=['part_name', 'depot_name'], right_on=['Material Description', 'Storage Location'], how='left')
 
     shared_depot = pd.merge(shared_depot, sub, left_on=['high_spare', 'depot_name'], right_on=['Material Description', 'Storage Location'], how='left')
     shared_depot = shared_depot.replace(np.nan, 0)
