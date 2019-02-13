@@ -55,7 +55,7 @@
         @change="stateChange()"
       />
       <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
-        <DownloadExcel :data="summaryRowData" type="csv" name="summary.csv" :columnHeaders="partsAnalysisSummaryTitle">
+        <DownloadExcel :data="partsAnalysisDownload" type="csv" name="summary.csv" :columnHeaders="partsAnalysisSummaryTitle">
           <i class="fas fa-file-excel"></i>
           &nbsp;
           Export
@@ -131,6 +131,7 @@ export default {
       rowData: null,
       summaryColumnDefs: null,
       summaryRowData: [],
+      partsAnalysisDownload:[],
       partsAnalysisSummaryTitle:['Part Name','Depot Name','Material Number','IB Quantity','Standard Cost','Gross Quantity','Extended Gross Cost',
       'Net Quantity','Extended Net Cost','High Spare Count','Extended High Spare Cost','Has High Spare'],
       summaryGridOptions: {
@@ -227,9 +228,30 @@ export default {
                   .ext_spare_cost),
                 
                 high_spare: this.partsAnalysisSummaryReslut[i].high_spare
+
+
               });
+                this.partsAnalysisDownload.push({
+                  part_name: this.partsAnalysisSummaryReslut[i].part_name,
+                  depot_name: this.partsAnalysisSummaryReslut[i].depot_name,
+                  material_number: this.partsAnalysisSummaryReslut[i]
+                  .material_number,
+                  ib_quantity: this.partsAnalysisSummaryReslut[i].ib_quantity,
+                  standard_cost:  this.partsAnalysisSummaryReslut[i].standard_cost,
+                  gross_qty: this.partsAnalysisSummaryReslut[i].gross_qty,
+                std_gross_cost:  this.partsAnalysisSummaryReslut[i]
+                  .std_gross_cost,
+                  net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
+                net_std_cost: this.partsAnalysisSummaryReslut[i].net_std_cost,
+                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
+                ext_spare_cost: this.partsAnalysisSummaryReslut[i]
+                  .ext_spare_cost,
+                
+                high_spare: this.partsAnalysisSummaryReslut[i].high_spare
+                });
             }
-            this.partsAnalysisSummaryReslut=this.summaryRowData;
+          
+           
           });
         })
         .catch(handleError => {
