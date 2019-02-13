@@ -45,10 +45,10 @@
       
   </div>
   <div class="actions">
-    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addData()">
+    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Create'" @click="addData()">
                     Create
                 </button>
-    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="editData()">
+    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Update'" @click="editData()">
                     Update
                 </button>
                 <button
@@ -67,11 +67,11 @@
 <div>
     <div class="row " style="paddingLeft:86%">
       <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
-        <download-excel :data="referenceFileData" type="csv" :name="title+'.csv'">
+           <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'"  >
           <i class="fas fa-file-excel"></i>
           &nbsp;
           Export
-        </download-excel>
+           </DownloadExcel>
       </button>
  
        &nbsp; &nbsp;
@@ -138,6 +138,7 @@ import { AgGridVue } from "ag-grid-vue";
 import Vue from "vue";
 import Vudal from "vudal";
 import accounting from "../../utilies/accounting";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 
 export default {
   name: "ReferenceView",
@@ -145,7 +146,8 @@ export default {
     SideNav,
     headernav,
     AgGridVue,
-    Vudal
+    Vudal,
+    DownloadExcel
   },
 
 
@@ -253,12 +255,14 @@ export default {
         {
           headerName: "Material Number",
           field: "material_number",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Part Number",
           field: "part_number",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Part Reliability Class",
@@ -275,7 +279,8 @@ export default {
           headerName: "Standard Cost ($)",
           field: "standard_cost",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Edit",
@@ -504,13 +509,15 @@ export default {
           headerName: "Latitude",
           field: "lat",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Longitude",
           field: "long",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Edit",
@@ -649,52 +656,62 @@ export default {
             {
               headerName: "1",
               field: "number_of_spares1",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "2",
               field: "number_of_spares2",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "3",
               field: "number_of_spares3",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "4",
               field: "number_of_spares4",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "5",
               field: "number_of_spares5",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "6",
               field: "number_of_spares6",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "7",
               field: "number_of_spares7",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "8",
               field: "number_of_spares8",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "9",
               field: "number_of_spares9",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "10",
               field: "number_of_spares10",
-              width: 250
+              width: 250,
+          cellStyle: {'text-align': 'right'}
             }
           ]
         },
@@ -1112,6 +1129,7 @@ export default {
         });
     },
     getMisnomer() {
+      this.referenceRowData = [];
       this.loaderFlag = true;
       fetch(constant.APIURL + "api/v1/get_all_misnomer", {
         method: "GET",
@@ -1442,8 +1460,9 @@ export default {
                 });
             }
           });
-        } else if (this.fileType === "minsomer") {
-          let reference_tabel_id = event.value;
+        } else if (this.fileType === "misnomer") {
+          let reference_table_id = event.value;
+          
           swal({
             title: "Info",
             text: "Do You Want to Delete the Data ?",
@@ -1452,8 +1471,8 @@ export default {
             if (ok) {
               fetch(
                 constant.APIURL +
-                  "api/v1/get_all_misnomer?reference_tabel_id=" +
-                  reference_tabel_id,
+                  "api/v1/get_all_misnomer?reference_table_id=" +
+                  reference_table_id,
                 {
                   method: "DELETE",
                   headers: {

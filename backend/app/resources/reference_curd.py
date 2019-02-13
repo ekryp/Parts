@@ -360,7 +360,7 @@ class GetMisnomer(Resource):
         Correct_PON = args['Correct_PON']
         reference_table_id = args['reference_table_id']
         try:
-            query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_id=(SELECT part_id FROM parts where part_name='{1}')  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
+            query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_name='{1}'  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
             engine.execute(query)
             return jsonify(msg="Misonomer Details Updated Successfully", http_status_code=200)
@@ -374,7 +374,7 @@ class GetMisnomer(Resource):
         Correct_PON = args['Correct_PON']
         try:       
             engine = create_engine(Configuration.INFINERA_DB_URL,echo=False)
-            query="Insert into misnomer_part_conversion (cust_id,misnomer_part_name,correct_part_id) values ({0},'{1}',(SELECT part_id FROM parts where part_name='{2}'))".format(7,Misnomer_PON,Correct_PON)
+            query="Insert into misnomer_part_conversion (cust_id,misnomer_part_name,correct_part_name) values ({0},'{1}','{2}')".format(7,Misnomer_PON,Correct_PON)
             engine.execute(query)
             return jsonify(msg="Inserted Misonomer Details Successfully", http_status_code=200)
         except:
@@ -382,9 +382,9 @@ class GetMisnomer(Resource):
 
     @requires_auth
     def get(self):
-        query = "select t1.part_name as Correct_PON, t.misnomer_part_name as Misnomer_PON, t.reference_table_id,t1.part_id "\
-                " from misnomer_part_conversion t"\
-                " inner join parts t1 on t1.part_id = t.correct_part_id"
+        query = "select correct_part_name as Correct_PON, misnomer_part_name as Misnomer_PON, reference_table_id "\
+                " from misnomer_part_conversion "
+               
         result = get_df_from_sql_query(
             query=query,
             db_connection_string=Configuration.INFINERA_DB_URL)
@@ -399,7 +399,9 @@ class GetMisnomer(Resource):
         args = self.reqparse.parse_args()
         reference_table_id = args['reference_table_id']
         try:
+            
             query = "delete from misnomer_part_conversion where reference_table_id = {0}".format(reference_table_id)
+            print("result",str(query))
             engine = create_engine(Configuration.INFINERA_DB_URL, echo=False)
             result=engine.execute(query)
             print("result",str(result))

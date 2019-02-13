@@ -55,11 +55,11 @@
         @change="stateChange()"
       />
       <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
-        <download-excel :data="partsAnalysisSummaryReslut" type="csv">
+        <DownloadExcel :data="summaryRowData" type="csv" name="summary.csv" :columnHeaders="partsAnalysisSummaryTitle">
           <i class="fas fa-file-excel"></i>
           &nbsp;
           Export
-        </download-excel>
+        </DownloadExcel>
       </button>
     </div>
     <br>
@@ -88,6 +88,7 @@
 import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 import { mapActions, mapState } from "vuex";
 import Vue2Filters from "vue2-filters";
 import Vue from "vue";
@@ -105,7 +106,8 @@ export default {
   components: {
     SideNav,
     headernav,
-    AgGridVue
+    AgGridVue,
+    DownloadExcel
   },
   created() {
     console.log("props ----->", this.$props);
@@ -129,6 +131,8 @@ export default {
       rowData: null,
       summaryColumnDefs: null,
       summaryRowData: [],
+      partsAnalysisSummaryTitle:['Part Name','Depot Name','Material Number','IB Quantity','Standard Cost','Gross Quantity','Extended Gross Cost',
+      'Net Quantity','Extended Net Cost','High Spare Count','Extended High Spare Cost','Has High Spare'],
       summaryGridOptions: {
         rowStyle: {
           color: "#72879d"
@@ -218,13 +222,14 @@ export default {
                   .std_gross_cost),
                 net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
                 net_std_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i].net_std_cost),
+                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
                 ext_spare_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i]
                   .ext_spare_cost),
-                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
-                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
+                
                 high_spare: this.partsAnalysisSummaryReslut[i].high_spare
               });
             }
+            this.partsAnalysisSummaryReslut=this.summaryRowData;
           });
         })
         .catch(handleError => {
@@ -251,17 +256,20 @@ export default {
         {
           headerName: "Material",
           field: "material_number",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Install Base Quantity",
           field: "ib_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Standard Cost($)",
           field: "standard_cost",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         },
         {
           headerName: "Gross Requirement",
@@ -269,12 +277,14 @@ export default {
             {
               headerName: "Quantity",
               field: "gross_qty",
-              width: 125
+              width: 125,
+              cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "Ext Standard Cost($)",
               field: "std_gross_cost",
-              width: 120
+              width: 120,
+              cellStyle: {'text-align': 'right'}
             }
           ]
         },
@@ -284,12 +294,14 @@ export default {
             {
               headerName: "Quantity",
               field: "net_qty",
-              width: 125
+              width: 125,
+              cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "Standard Cost($)",
               field: "net_std_cost",
-              width: 120
+              width: 120,
+              cellStyle: {'text-align': 'right'}
             }
           ]
         },
@@ -298,13 +310,15 @@ export default {
           children: [
             {
               headerName: "Quantity",
-              field: "high_spare",
-              width: 125
+              field: "spare_count",
+              width: 125,
+              cellStyle: {'text-align': 'right'}
             },
             {
               headerName: "Ext Standard Cost($)",
               field: "ext_spare_cost",
-              width: 120
+              width: 120,
+              cellStyle: {'text-align': 'right'}
             }
           ]
         },

@@ -19,15 +19,12 @@
             </div>
             <div class="float-left">
               <button type="button" class="btn btn-success">
-                <download-excel
-                  :data="top_extended"
-                  type="csv"
-                  v-tooltip.top.hover.focus="'Click to Download'"
-                >
+                <DownloadExcel :data="downloadData" type="csv" name="ExtendedTable.csv"  :columnHeaders="top_extended_Title">
+                
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
@@ -47,7 +44,7 @@
                   <td>{{item.customer_name}}</td>
                   <td>{{item.part_name}}</td>
                   <td>{{item.depot_name}}</td>
-                  <td>{{item.critical_pon_count}}</td>
+                  <td align="right">{{item.critical_pon_count}}</td>
                 </tr>
               </tbody>
             </table>
@@ -65,12 +62,13 @@ import headernav from "@/components/header/header";
 import Multiselect from "vue-multiselect";
 import * as constant from "../constant/constant";
 //import * as data from "../../utilies/tabledata.json";
-
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 export default {
   name: "DynamicTable",
   components: {
     SideNav,
-    headernav
+    headernav,
+    DownloadExcel
   },
   created() {
     clearInterval(window.intervalObj);
@@ -90,7 +88,9 @@ export default {
       partName: "",
       customerName: "",
       toggle: "reorder",
-      state: true
+      state: true,
+      top_extended_Title:['Customer','PON','Depot','Quantity'],
+      downloadData:[]
     };
   },
   methods: {
@@ -184,6 +184,14 @@ export default {
             }
             console.log("data -- get_top_extended-->", data);
             this.top_extended = data;
+            for (let i = 0; i < this.top_extended.length; i++) {
+              this.downloadData.push({
+                customer: this.top_extended[i].customer_name,
+                part_name:this.top_extended[i].part_name,
+                depot_name: this.top_extended[i].depot_name,
+                curr_quantity: this.top_extended[i].critical_pon_count
+              });
+            }
             $(document).ready(function() {
               $("#example").DataTable();
             });

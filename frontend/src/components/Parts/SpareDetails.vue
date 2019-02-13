@@ -104,11 +104,12 @@
                 class="btn btn-success"
                 v-tooltip.top.hover.focus="'Click to Download'"
               >
-                <download-excel :data="currentInventory" type="csv">
+              <DownloadExcel :data="currentInventory" type="csv" name="CurrentInventory.csv" :columnHeaders="currentInventoryTitle">
+                
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+              </DownloadExcel>
               </button>
             </div>
             <br>
@@ -146,11 +147,12 @@
                 class="btn btn-success"
                 v-tooltip.top.hover.focus="'Click to Download'"
               >
-                <download-excel :data="currentib" type="csv">
+               
+                  <DownloadExcel :data="currentib" type="csv" name="IbQuantity.csv" :columnHeaders="ibTitle">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+                  </DownloadExcel>
               </button>
             </div>
             <br>
@@ -200,15 +202,13 @@
           <div class="shadow p-3 mb-5 bg-white rounded" id="GrossDiv">
             <div class="float-right">
               <button type="button" class="btn btn-success">
-                <download-excel
-                  :data="currentGross"
-                  type="csv"
-                  v-tooltip.top.hover.focus="'Click to Download'"
-                >
+                
+                <DownloadExcel :data="currentGross" type="csv" name="GrossQuantity.csv" :columnHeaders="grossTitle">
+                 
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
@@ -256,11 +256,12 @@
                 class="btn btn-success"
                 v-tooltip.top.hover.focus="'Click to Download'"
               >
-                <download-excel :data="currentNet" type="csv">
+
+                  <DownloadExcel :data="currentNet" type="csv" name="NetQuantity.csv" :columnHeaders="netTitle">
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+                  </DownloadExcel>
               </button>
             </div>
             <br>
@@ -339,6 +340,7 @@ import * as data from "./data.json";
 import Vue from "vue";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 
 export default {
   name: "SpareDetails",
@@ -346,7 +348,8 @@ export default {
     SideNav,
     headernav,
     AnalysisSummary,
-    AgGridVue
+    AgGridVue,
+    DownloadExcel
   },
   created() {
     this.requestID = this.$route.query.id;
@@ -370,15 +373,19 @@ export default {
       state: true,
       toggle: "reorder",
       currentInventory: [],
+      currentInventoryTitle:['Part Name','Depot Name','Reorder Point'],
       currentGross: [],
       currentNet: [],
+      netTitle:['Part Name','Depot Name','Net Quantity'],
       currentib: [],
       errorData: [],
       grossColumnDefs: null,
       grossRowData: [],
+      grossTitle:['Part Name','Depot Name','Gross Quantity'],
       netColumnDefs: null,
       netRowData: [],
       ibColumnDefs: null,
+      ibTitle:['Node Depot Belongs','Product Ordering Name','PON Quantity'],
       ibRowData: [],
       currColumnDefs: null,
       currRowData: [],
@@ -475,6 +482,7 @@ export default {
                 curr_quantity: this.currentInventory[i].qty
               });
             }
+            this.currentInventory=this.currRowData;
           });
         })
         .catch(handleError => {
@@ -509,6 +517,7 @@ export default {
                 gross_quantity: this.currentGross[i].gross_qty
               });
             }
+            this.currentGross = this.grossRowData;
           });
         })
         .catch(handleError => {
@@ -578,6 +587,7 @@ export default {
                 net_quantity: this.currentNet[i].net_qty
               });
             }
+            this.currentNet=this.netRowData;
           });
         })
         .catch(handleError => {
@@ -610,10 +620,12 @@ export default {
             for (let i = 0; i < this.currentib.length; i++) {
               this.ibRowData.push({
                 node_depot_belongs: this.currentib[i].node_depot_belongs,
-                pon_quanity: this.currentib[i].pon_quanity,
-                product_ordering_name: this.currentib[i].product_ordering_name
+                 product_ordering_name: this.currentib[i].product_ordering_name,
+                pon_quanity: this.currentib[i].pon_quanity
+               
               });
             }
+            this.currentib = this.ibRowData;
           });
         })
         .catch(handleError => {
@@ -638,7 +650,8 @@ export default {
         {
           headerName: "Gross Quantity",
           field: "gross_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },
@@ -662,7 +675,8 @@ export default {
         {
           headerName: "Net Quantity",
           field: "net_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },
@@ -681,7 +695,8 @@ export default {
         {
           headerName: "PON Quantity",
           field: "pon_quanity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },
@@ -700,7 +715,8 @@ export default {
         {
           headerName: "Reorder Point",
           field: "curr_quantity",
-          width: 150
+          width: 150,
+          cellStyle: {'text-align': 'right'}
         }
       ];
     },
