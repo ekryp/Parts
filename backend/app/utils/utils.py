@@ -130,7 +130,7 @@ def get_last_day_of_the_quarter(date):
 
 
 def get_df_from_sql_query(query, db_connection_string):
-    engine = create_engine(db_connection_string, echo=False)
+    engine = create_engine(db_connection_string, connect_args=Configuration.ssl_args, echo=False)
     return pd.read_sql_query(query,engine)
 
 class AutoVivification(dict):

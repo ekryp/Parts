@@ -20,7 +20,7 @@ class GetSparePartAnalysis(Resource):
 
     @requires_auth
     def get(self):
-        engine = create_engine(Configuration.INFINERA_DB_URL)
+        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
         query = "SELECT distinct(end_cust_name) FROM end_customer"
         end_customer_name_df = pd.read_sql(query, engine)
         customer_names = end_customer_name_df['end_cust_name'].tolist()
@@ -434,7 +434,7 @@ class GetDashboardRequestCount(Resource):
     def get(self):
 
         def get_respective_counts():
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
             total_request_query = "select count(*) from analysis_request"
             total_request = engine.execute(total_request_query).fetchone()[0]
@@ -482,7 +482,7 @@ class GetMainDashboardCount(Resource):
         if toggle == 'reorder':
 
             def get_respective_counts():
-                engine = create_engine(Configuration.INFINERA_DB_URL)
+                engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
                 total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary where is_latest= "Y";'
                 total_customer = engine.execute(total_customer_query).fetchone()[0]
@@ -521,7 +521,7 @@ class GetMainDashboardCount(Resource):
 
         else:
             def get_respective_counts():
-                engine = create_engine(Configuration.INFINERA_DB_URL)
+                engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
                 total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary where is_latest= "Y";'
                 total_customer = engine.execute(total_customer_query).fetchone()[0]
@@ -578,7 +578,7 @@ class GetPieChart(Resource):
         if toggle == 'reorder':
 
             def get_respective_counts():
-                engine = create_engine(Configuration.INFINERA_DB_URL)
+                engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
                 non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
                                      'net_reorder_point = 0 and is_latest="Y"'
@@ -602,7 +602,7 @@ class GetPieChart(Resource):
         else:
 
             def get_respective_counts():
-                engine = create_engine(Configuration.INFINERA_DB_URL)
+                engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
                 non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
                                      'net_total_stock = 0 and is_latest="Y"'
@@ -907,7 +907,7 @@ class PostSparePartAnalysis(Resource):
 
         def save_analysis_record_db():
 
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
                     "current_inventory_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
@@ -919,7 +919,7 @@ class PostSparePartAnalysis(Resource):
             engine.execute(query)
 
         def get_analysis_id():
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = 'SELECT max(analysis_request_id) FROM analysis_request;'
             result = engine.execute(query).fetchone()
             return result[0]
@@ -1068,14 +1068,14 @@ class Reference(Resource):
        
         def update_reference_record_db():
             print('calling query')
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "UPDATE reference SET filename = '{0}', name= '{1}' WHERE id = {2}".format(reference_file,args['reference_name'],args['id'])
             print('query ---->',query)
             engine.execute(query)
 
         def save_reference_record_db():
             print('caling query')
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "INSERT INTO reference (name, version, isactive, " \
                     "filename, user_email_id,created_at,status) values ('{0}',{1},{2},'{3}','{4}'," \
                     "'{5}',{6})".format( args['reference_name'], reference_id+1,
@@ -1086,7 +1086,7 @@ class Reference(Resource):
 
         def get_refernce_id():
             print('calling query')
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = 'SELECT max(id) FROM reference;'
             result = engine.execute(query).fetchone()
             return result[0]
@@ -1161,7 +1161,7 @@ class DefaultReference(Resource):
             db_connection_string=Configuration.INFINERA_DB_URL)
             response = json.loads(result.to_json(orient="records", date_format='iso'))
             print('response ----->',response)
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
             for ref in response :
                 print('ref ---->',ref)

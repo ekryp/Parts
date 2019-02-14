@@ -13,7 +13,7 @@ class Configuration(BaseConfig):
 	
     AIRFLOW_DB_URL = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/ekryp_challenge"
 
-    INFINERA_DB_URL = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/infinera"
+    INFINERA_DB_URL = "mysql+cymysql://root:tang3456@35.197.23.168/infinera"
 
     DRUID_HOST='http://10.138.1.14:8090/druid/indexer/v1/task'
     MYSQL_USER="root"
@@ -37,8 +37,11 @@ class Configuration(BaseConfig):
     AUTH0_API_AUDIENCE = "https://prod-services.ekryp.com/api/v1/"
 
     DEBUG = True
-    ECLIPSE_DATA_DB_URI = "mysql+cymysql://ashish:Ekryp#1234@35.199.174.191/infinera"
+    ECLIPSE_DATA_DB_URI = "mysql+cymysql://root:tang3456@35.197.23.168/infinera"
     BASE_DIR = r'/data'
+
+    ssl_args = {'ssl': {'cert': '/data/client-cert.pem', 'key': '/data/client-key.pem',
+                        'ca': '/data/server-ca.pem'}}
 
     net_depot = os.path.join(BASE_DIR, 'net_depot.csv')
     DNA_BOM = os.path.join(BASE_DIR, 'DNA_BOM_table.csv')

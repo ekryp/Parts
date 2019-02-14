@@ -2,11 +2,11 @@ import pandas as pd
 from app import Configuration
 from sqlalchemy import create_engine
 
-engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
+engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
 
 
 def read_data(sql, con):
-    connection = create_engine(con)
+    connection = create_engine(con, connect_args=Configuration.ssl_args)
     return pd.read_sql(sql, con=connection)
 
 
@@ -78,7 +78,7 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     # For now it would be a current time
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     # df['analysis_request_time'] = analysis_date
-    engine = Configuration.ECLIPSE_DATA_DB_URI
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     # Hardcoded to 7  infinera
     #df['cust_id'] = 7
     # df.loc[:, 'analysis_request_time'] = analysis_date
@@ -122,7 +122,7 @@ def to_sql_current_inventory(table_name, df, analysis_date, analysis_id):
     # For now it would be a current time
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     #df['analysis_request_time'] = analysis_date
-    engine = Configuration.ECLIPSE_DATA_DB_URI
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     #df['cust_id'] = 7
     #df.loc[:, 'analysis_request_time'] = analysis_date
     df.loc[:, 'cust_id'] = 7
@@ -148,7 +148,7 @@ def to_sql_current_inventory(table_name, df, analysis_date, analysis_id):
 
 
 def to_sql_summarytable(table_name, df):
-    engine = Configuration.ECLIPSE_DATA_DB_URI
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'summary_table'] = 1
     # df['cust_id'] = 7
@@ -166,7 +166,7 @@ def to_sql_summarytable(table_name, df):
 
 def to_sql_error(table_name, df, invalid_reason, analysis_date, analysis_id):
 
-    engine = Configuration.ECLIPSE_DATA_DB_URI
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -194,7 +194,7 @@ def to_sql_error(table_name, df, invalid_reason, analysis_date, analysis_id):
 
 def process_error_pon(table_name, df, analysis_date, analysis_id):
 
-    engine = Configuration.ECLIPSE_DATA_DB_URI
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -304,7 +304,7 @@ def fetch_db(replenish_time):
 
 
 def get_end_customer_id_from_name():
-    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     query = "select (end_cust_id) from end_customer where end_cust_name='{}'".format("Centurylink")
     result = engine.execute(query).fetchone()
     return result[0]
@@ -323,8 +323,7 @@ def add_hnad(df,quantity):
 
 
 def to_sql_bom(table_name, df, analysis_date, analysis_id):
-
-    engine = Configuration.ECLIPSE_DATA_DB_URI
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -345,7 +344,7 @@ def to_sql_bom(table_name, df, analysis_date, analysis_id):
 
 
 def to_sql_mtbf(table_name, df, analysis_date, analysis_id):
-    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
     # analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -372,8 +371,7 @@ def read_sap_export_file(sap_file):
 
 
 def to_sql_current_ib(table_name, df, analysis_id):
-
-    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
+    engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     df.loc[:, 'request_id'] = analysis_id
     df.rename(columns={
         'Product Ordering Name': 'product_ordering_name',

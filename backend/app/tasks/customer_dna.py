@@ -6,7 +6,7 @@ from app import app
 from app import Configuration
 from app.tasks.common_functions import clean_pon_names, to_sql_customer_dna_record
 
-engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI)
+engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
 
 
 def check_file_validity(file):

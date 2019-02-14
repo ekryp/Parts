@@ -14,7 +14,7 @@ from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
 
-engine = create_engine(Configuration.INFINERA_DB_URL)
+engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 connection = Configuration.INFINERA_DB_URL
 
 class CustomException(Exception):
@@ -37,7 +37,7 @@ def make_celery(app):
 celery = make_celery(app)
 
 def add_prospect(email_id):
-    engine = create_engine(Configuration.INFINERA_DB_URL)
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     selectquery = "select prospects_id FROM prospect_details where prospects_email='{0}'".format(email_id)
     result = engine.execute(selectquery).fetchone()
     if result is not None:
@@ -50,7 +50,7 @@ def add_prospect(email_id):
 
 
 def update_prospect_step(prospects_id, step_id, analysis_date):
-    engine = create_engine(Configuration.INFINERA_DB_URL)
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     try:
         selectquery = "select * FROM prospect_status where analysis_request_time='{0}'" \
                       "and prospects_id={1}".format(analysis_date, prospects_id)
@@ -382,7 +382,7 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # Make previous records for customer as not latest is_latest='N'
     # & new records getting inserted are by default is_latest='Y'
 
-    engine = create_engine(Configuration.INFINERA_DB_URL)
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     query = "update summary set is_latest='N' where customer_name='{0}'".format(customer_name)
     print(query)
     engine.execute(query)
@@ -565,7 +565,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
     try:
         convert_headers_in_sap_file(sap_file)
         def set_request_status(status, analysis_id,msg):
-            engine = create_engine(Configuration.INFINERA_DB_URL)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "update analysis_request set requestStatus='{0}',failure_reason='{2}' " \
                 "where analysis_request_id = {1}".format(status, analysis_id,msg)
             print(query)
@@ -620,7 +620,7 @@ def part_table_creation(part_file, extension):
     to_sql_part_table(part_df[part_table_column])
 
     # To populate std_cost table,first get part_id with part_name
-    df = pd.read_sql_table(table_name='parts', con=create_engine(Configuration.ECLIPSE_DATA_DB_URI))
+    df = pd.read_sql_table(table_name='parts', con=create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args))
 
     # keep only required column in dataframe
     df = df[['part_id', 'part_name']]
