@@ -13,6 +13,7 @@ import Reference from '@/components/Reference/Reference'
 import ErrorSummary from '@/components/Parts/ErrorSummary'
 import CreateAnalysis from '@/components/Parts/CreateAnalysis'
 import ReferenceView from '@/components/Reference/ReferenceView'
+import UserRoleManagement from '@/components/ManageRoles/UserRoleManagement'
 
 Vue.use(Router)
 
@@ -87,6 +88,11 @@ export default new Router({
       path: '/parts/analysis/error',
       name: 'ErrorSummary',
       component: ErrorSummary
+    },
+    {
+      path: '/user',
+      name: 'UserRoleManagement',
+      component: UserRoleManagement
     }
   ]
   
