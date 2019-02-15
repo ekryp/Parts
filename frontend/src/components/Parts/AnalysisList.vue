@@ -232,11 +232,7 @@ export default {
                 analysis_type: this.partsAnalysisRequestList[i].analysis_type,
                 customer_name: this.partsAnalysisRequestList[i].customer_name,
                 requestStatus: this.partsAnalysisRequestList[i].requestStatus,
-                createdDate: new Date(
-                  this.partsAnalysisRequestList[i].created_at
-                )
-                  .toDateString()
-                  .substring(4),
+                createdDate: new Date(this.partsAnalysisRequestList[i].created_at),
                 completedFlag: this.partsAnalysisRequestList[i]
                   .analysis_request_id
               });
@@ -314,7 +310,8 @@ export default {
           headerName: "Created Date",
           field: "createdDate",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellRenderer: dateCellRenderer
         },
         {
           headerName: "Action",
@@ -364,6 +361,12 @@ export default {
     }
   }
 };
+function dateCellRenderer(params)
+{
+  var options = {  year: 'numeric', month: 'long', day: 'numeric' };
+let dateVal=params.value.toLocaleDateString("en-US", options);
+return dateVal;
+}
 
 function actionCellRenderer(params) {
   let skills = [];
