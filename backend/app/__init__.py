@@ -128,6 +128,8 @@ from app.resources.reference import UploadParts, UploadDepot, UploadNode, Upload
 
 from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer,GetRatio
 
+from app.resources.access_control import ResetPassword
+
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
 
@@ -172,6 +174,7 @@ api.add_resource(GetNode, '/get_all_node', endpoint='get_all_node')
 api.add_resource(GetDepot, '/get_all_depot', endpoint='get_all_depot')
 api.add_resource(GetMisnomer, '/get_all_misnomer', endpoint='get_all_misnomer')
 api.add_resource(GetRatio, '/get_all_ratio', endpoint='get_all_ratio')
+api.add_resource(ResetPassword, '/reset_password')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)
