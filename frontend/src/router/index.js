@@ -14,6 +14,7 @@ import ErrorSummary from '@/components/Parts/ErrorSummary'
 import CreateAnalysis from '@/components/Parts/CreateAnalysis'
 import ReferenceView from '@/components/Reference/ReferenceView'
 import UserRoleManagement from '@/components/ManageRoles/UserRoleManagement'
+import ChangePassword from '@/components/ManageRoles/ChangePassword'
 
 Vue.use(Router)
 
@@ -93,6 +94,11 @@ export default new Router({
       path: '/user',
       name: 'UserRoleManagement',
       component: UserRoleManagement
+    },
+    {
+      path: '/password',
+      name: 'ChangePassword',
+      component: ChangePassword
     }
   ]
   
