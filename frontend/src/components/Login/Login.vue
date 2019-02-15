@@ -12,6 +12,7 @@ export default {
   },
   mounted() {
     console.log("login data");
+    //localStorage.clear();
     AuthService.login(this);
   }
 };

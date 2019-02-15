@@ -43,6 +43,8 @@ export default {
                 localStorage.setItem('auth0_expires_at', expiresAt)
                 var profile = JSON.parse(response)
                 var allowed_custmors = profile.user_metadata.allowed_custmors
+                localStorage.setItem('authorization',profile.app_metadata.authorization.permissions)
+                localStorage.setItem('groups',profile.app_metadata.authorization.groups)
                 localStorage.setItem('auth0_user_id', profile.user_id)
                 localStorage.setItem('username', profile.username)
                 localStorage.setItem("allowed_custmors", JSON.stringify(allowed_custmors))

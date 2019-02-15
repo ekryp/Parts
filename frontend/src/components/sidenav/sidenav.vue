@@ -2,7 +2,7 @@
   <div class="container">
     <nav id="sidebar">
       <ul class="list-unstyled components">
-        <li class="active nav-custom" style="margin-top: 40px;cursor:pointer ">
+        <li class="active nav-custom" style="margin-top: 40px;cursor:pointer " v-if="dashboardFlag">
           <div class="text-center" v-if="!diasableFlag" @click="dashboard()">
             <i class="fas fa-home" style="fontSize:20px"></i>
             <br>
@@ -14,7 +14,7 @@
             <p class="upload-text">Dashboard</p>
           </div>
         </li>
-        <hr>
+        <hr v-if="analysisFlag">
         <!-- <li class="nav-custom" style="cursor:pointer">
           <div class="text-center" @click="reference()">
             <i class="fas fa-swatchbook" style="fontSize:20px"></i>
@@ -23,7 +23,7 @@
           </div>
         </li>
         <hr>-->
-        <li class="nav-custom" style="cursor:pointer">
+        <li class="nav-custom" style="cursor:pointer" v-if="analysisFlag">
           <div class="text-center" v-if="!diasableFlag" @click="parts_analysis()">
             <i class="fas fa-list-ul" style="fontSize:20px"></i>
             <br>
@@ -35,16 +35,16 @@
             <p class="upload-text">Analysis</p>
           </div>
         </li>
-        <hr>
-        <li class="nav-custom" style="cursor:pointer">
+        <hr v-if="createAnalysisFlag">
+        <li class="nav-custom" style="cursor:pointer" v-if="createAnalysisFlag">
           <div class="text-center" @click="createPartsRequest()">
             <i class="fas fa-plus" style="fontSize:20px"></i>
             <br>
             <p class="upload-text">Create Analysis Request</p>
           </div>
         </li>
-        <hr>
-        <li class="nav-custom" style="cursor:pointer">
+        <hr v-if="referenceDataFlag">
+        <li class="nav-custom" style="cursor:pointer" v-if="referenceDataFlag">
           <div class="text-center" v-if="!diasableFlag" @click="reference()">
             <i class="fas fa-file-alt" style="fontSize:20px"></i>
             
@@ -66,6 +66,7 @@
 <script>
 
 import router from "../../router";
+import * as constant from "../constant/constant";
 export default {
   name: "SideNav",
   props: ["menu","diasableFlag"],
@@ -73,8 +74,37 @@ export default {
     console.log("props", this.$props);
     return {
       partsClose: true,
-      showPartsChild: false
+      showPartsChild: false,
+      dashboardFlag: false,
+      analysisFlag: false,
+      createAnalysisFlag: false,
+      referenceDataFlag: false
     };
+  },
+  created()
+  {
+    var authorization=localStorage.getItem("authorization");
+    var groups=localStorage.getItem("groups");
+    var permissions=authorization.split(',');
+    console.log(constant.PERMISSIONS[0]);
+    if(groups !== 'infinera')
+    {
+      
+      localStorage.clear();
+      router.push("/login");
+    }
+    for(var i=0;i<permissions.length;i++)
+    {
+      if(permissions[i] === constant.PERMISSIONS[0])
+     {
+       this.dashboardFlag=true;
+     }else if(permissions[i] === constant.PERMISSIONS[1])
+     {
+       this.createAnalysisFlag=true;
+     }
+
+    }
+     
   },
   beforeMount() {
     if (this.$props.menu === "analysis") {
