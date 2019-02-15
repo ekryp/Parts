@@ -78,12 +78,11 @@
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Download'"
         >
-        
-            <DownloadExcel :data="partsAnalysisRequestDownload" type="csv" name="AnalysisList.csv"  :columnHeaders="partsAnalysisRequestListTitle">
+          <download-excel :data="partsAnalysisRequestList" type="csv">
             <i class="fas fa-file-excel"></i>
             &nbsp;
             Export
-            </DownloadExcel>
+          </download-excel>
         </button>
       </div>
 
@@ -117,7 +116,6 @@
 
 <script>
 import router from "../../router/";
-import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 import headernav from "@/components/header/header";
 import SideNav from "@/components/sidenav/sidenav";
 import Multiselect from "vue-multiselect";
@@ -135,8 +133,7 @@ export default {
     SideNav,
     Multiselect,
     headernav,
-    AgGridVue,
-    DownloadExcel
+    AgGridVue
   },
 
   created() {
@@ -159,9 +156,7 @@ export default {
         { name: "Requests In Progress" },
         { name: "Requests To Be Submitted" }
       ],
-      partsAnalysisRequestListTitle:['Analysis Name','Analysis Type','Customer Name','Status','Created Date'],
       partsAnalysisRequestList: [],
-      partsAnalysisRequestDownload:[],
       dashboard_request_count: "",
       current: "Analysis",
       columnDefs: null,
@@ -224,35 +219,25 @@ export default {
             }
             console.log("data -getallrequest--->", data);
             this.partsAnalysisRequestList = data;
-
+            
             for (let i = 0; i < this.partsAnalysisRequestList.length; i++) {
+              console.log(this.partsAnalysisRequestList[i].created_at);
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
               this.rowData.push({
                 analysis_name: this.partsAnalysisRequestList[i].analysis_name,
                 analysis_type: this.partsAnalysisRequestList[i].analysis_type,
                 customer_name: this.partsAnalysisRequestList[i].customer_name,
                 requestStatus: this.partsAnalysisRequestList[i].requestStatus,
+                
                 createdDate: new Date(
                   this.partsAnalysisRequestList[i].created_at
                 )
-                  .toDateString()
-                  .substring(4),
+                 
+                 ,
                 completedFlag: this.partsAnalysisRequestList[i]
                   .analysis_request_id
               });
-              this.partsAnalysisRequestDownload.push({
-                  analysis_name: this.partsAnalysisRequestList[i].analysis_name,
-                  analysis_type: this.partsAnalysisRequestList[i].analysis_type,
-                  customer_name: this.partsAnalysisRequestList[i].customer_name,
-                  requestStatus: this.partsAnalysisRequestList[i].requestStatus,
-                  createdDate: new Date(
-                    this.partsAnalysisRequestList[i].created_at
-                  )
-                    .toDateString()
-                    .substring(4)
-              });
             }
-            
             this.exportCSV(data);
           });
         })
@@ -314,7 +299,8 @@ export default {
           headerName: "Created Date",
           field: "createdDate",
           width: 150,
-          filter: "date"
+          filter: "date",
+          cellRenderer: dateCellRenderer
         },
         {
           headerName: "Action",
@@ -365,6 +351,13 @@ export default {
   }
 };
 
+function dateCellRenderer(params)
+{
+  var options = {  year: 'numeric', month: 'long', day: 'numeric' };
+let dateVal=params.value.toLocaleDateString("en-US", options);
+return dateVal;
+}
+
 function actionCellRenderer(params) {
   let skills = [];
 
@@ -391,3 +384,4 @@ function actionCellRenderer(params) {
   color: #71869e;
 }
 </style>
+
