@@ -1,7 +1,7 @@
 import urllib
 
 import requests
-from flask import request
+from flask import request, jsonify
 from flask import _app_ctx_stack
 import json
 from flask_restful import Resource, reqparse, marshal, fields, inputs
@@ -240,6 +240,38 @@ class Role(Resource):
         ext_url = Configuration.AUTH0_EXTERNAL_API + routes
         response = requests.put(ext_url, headers=headers, data=data)
         return response.json()
+
+    def options(self):
+        pass
+
+
+class Permission(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        super(Permission, self).__init__()
+
+    def get(self):
+        extension_access_token = get_extension_access_token()
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+        routes = 'permissions'
+        ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+        response = requests.get(ext_url, headers=headers)
+        all_applications_permissions = response.json().get('permissions')
+        permissions = []
+
+        def get_related_application_permission(all_applications_permissions):
+
+            for each_permission in all_applications_permissions:
+                if each_permission.get('applicationId') == Configuration.AUTH0_CLIENT_ID:
+                    permissions.append(each_permission)
+
+
+        get_related_application_permission(all_applications_permissions)
+
+        return jsonify(permissions=permissions, http_status_code=200)
 
     def options(self):
         pass
