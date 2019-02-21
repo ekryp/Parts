@@ -73,13 +73,17 @@ export default {
     },
     changePass()
     {
+      var isSocial=localStorage.getItem('isSocial');
+      console.log(isSocial);
+      if(!isSocial)
+      {
       var user_id=localStorage.getItem('user_id');
       let formData = new FormData();
       if(this.new_password === this.cnrf_password)
       {
         formData.append("user_id", user_id);
         formData.append("new_password", this.new_password);
-        console.log(localStorage.getItem('user_id'));
+        console.log(formData);
         fetch(constant.APIURL + "api/v1/reset_password", {
         method: "POST",
         body: formData,
@@ -112,7 +116,16 @@ export default {
             this.new_password="";
       }
     }
-    
+    else{
+      swal({
+              title: "Info",
+              text: "You logged in through social account ,We can't change your password",
+              icon: "error"
+            });
+            this.cnrf_password="";
+            this.new_password="";
+    }
+    }
   }
 };
 </script>

@@ -6,7 +6,7 @@
     <div class="custom-container" style="paddingTop: 6%">
     <div class="row col">
       <div class="col" align="center">
-      <h3>Role Management </h3>
+      <h3>User Management </h3>
       </div>
     </div>
     <br>
@@ -15,7 +15,7 @@
         <div class="col-lg-12">
           <div class=" p-3 mb-5 bg-white ">
               
-           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >Role</h5>
+           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >Users</h5>
             <br>
             
             <div class="row">
@@ -66,7 +66,7 @@ import * as constant from "../constant/constant";
 //import * as data from "../../utilies/tabledata.json";
 
 export default {
-  name: "UserRoleManagement",
+  name: "ManageUser",
   components: {
     SideNav,
     headernav
@@ -75,14 +75,12 @@ export default {
     clearInterval(window.intervalObj);
    
     this.getAllRoles();
-    this.getAllPermissions();
     
   },
   data() {
     
     return {
-    allRoles:[],
-    allPermissions:[]
+    allRoles:[]
     };
   },
   methods: {
@@ -108,48 +106,16 @@ export default {
             }
             console.log("data -- get_top_extended-->", data);
             //this.allRoles = data;
-            for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i < this.data.length; i++) {
               this.allRoles.push({
-                name: data[i].name,
-                description:data[i].description,
-                permissions: data[i].permissions
+                name: this.data[i].name,
+                description:this.data[i].description,
+                permissions: this.data[i].permissions
               });
             }
             $(document).ready(function() {
               $("#example").DataTable();
             });
-          });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
-    }
-    ,
-    getAllPermissions()
-    {
-      fetch(constant.APIURL + "api/v1/info/members/all-permissions" , {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
-        }
-      })
-        .then(response => {
-          response.text().then(text => {
-            const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
-              this.logout();
-            }
-            console.log("data -- get_top_extended-->", data);
-            //this.allRoles = data;
-            for (let i = 0; i < data.permissions.length; i++) {
-              this.allPermissions.push({
-                id: data.permissions[i]._id,
-                description:data.permissions[i].description,
-                name: data.permissions[i].name
-              });
-            }
-            console.log('new permission',this.allPermissions);
           });
         })
         .catch(handleError => {
