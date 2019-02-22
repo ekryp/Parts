@@ -130,7 +130,7 @@ from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,
 
 from app.resources.access_control import ResetPassword
 
-from app.auth.authorization import Role, Permission
+from app.auth.authorization import Role, Roles, Permission
 
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
@@ -179,6 +179,9 @@ api.add_resource(GetRatio, '/get_all_ratio', endpoint='get_all_ratio')
 api.add_resource(ResetPassword, '/reset_password')
 api.add_resource(Role, '/info/members/all-role', endpoint='get-roles')
 api.add_resource(Permission, '/info/members/all-permissions', endpoint='all-permissions')
+api.add_resource(Roles, '/info/members/create-role', endpoint='create-role')
+api.add_resource(Role, '/info/members/delete-role', endpoint='delete-role')
+api.add_resource(Role, '/info/members/modify-role', endpoint='modify-role')
 app.register_blueprint(api_blueprint)
 api.init_app(app)
 
