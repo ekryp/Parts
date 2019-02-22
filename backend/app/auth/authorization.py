@@ -4,7 +4,7 @@ import requests
 from flask import request, jsonify
 from flask import _app_ctx_stack
 import json
-from flask_restful import Resource, reqparse, marshal, fields, inputs
+from flask_restful import Resource, reqparse
 
 from jose import jwt
 from six.moves.urllib.request import urlopen
@@ -272,6 +272,135 @@ class Permission(Resource):
         get_related_application_permission(all_applications_permissions)
 
         return jsonify(permissions=permissions, http_status_code=200)
+
+    def options(self):
+        pass
+
+
+class Roles(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        super(Roles, self).__init__()
+
+    def post(self):
+
+        ''' Create a New Role Functionality '''
+
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('role_name', required=True, location='json')
+            self.parser.add_argument('role_description', required=True , location='json')
+            self.parser.add_argument('role_permission', required=True, location='json')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+        extension_access_token = get_extension_access_token()
+        permission_ids = []
+        permission_object = request.get_json().get('role_permission')
+
+        for each_permission in permission_object:
+            permission_ids.append(each_permission.get('_id'))
+
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+        data = {"name": args['role_name'], "description": args['role_description'],
+                "applicationType": "client", "applicationId": Configuration.AUTH0_CLIENT_ID,
+                "permissions": permission_ids}
+        data = json.dumps(data)
+        routes = 'roles'
+        ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+        response = requests.post(ext_url, headers=headers, data=data)
+        return response.json()
+
+    def options(self):
+        pass
+
+
+class Role(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        super(Role, self).__init__()
+
+    def put(self):
+        ''' Modify a role Functionality '''
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('role_description', required=True, location='json')
+            self.parser.add_argument('role_id', required=True, location='json')
+            self.parser.add_argument('role_description', required=True, location='json')
+            self.parser.add_argument('role_permission', required=True, location='json')
+            self.parser.add_argument('role_name', required=True, location='json')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+        permission_ids = []
+        permission_object = request.get_json().get('role_permission')
+        for each_permission in permission_object:
+            permission_ids.append(each_permission.get('_id'))
+        extension_access_token = get_extension_access_token()
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+        routes = 'roles' + '/' + args['role_id']
+        data = {"name": args['role_name'], "description": args['role_description'],
+                "applicationType": "client", "applicationId": Configuration.AUTH0_CLIENT_ID,
+                "permissions": permission_ids}
+        data = json.dumps(data)
+        ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+        response = requests.put(ext_url, headers=headers, data=data)
+        return response.json()
+
+    def delete(self):
+        ''' Delete a role Functionality '''
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('role_id', required=True, location='args')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+        extension_access_token = get_extension_access_token()
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+        role_id = args['role_id']
+        #check user assigned to that role,do not delete if user is attached to that role
+
+        def linked_user_to_role():
+            routes = 'roles'
+            ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+            response = requests.get(ext_url, headers=headers)
+            all_roles = response.json()['roles']  # Returns all roles across all applications
+            application_specific_role = []
+            for role in all_roles:
+                if Configuration.AUTH0_CLIENT_ID == role.get('applicationId'):
+                    application_specific_role.append(role)
+
+            for role in application_specific_role:
+                if role_id == role.get("_id"):
+                    if 'users' in role.keys():
+                        if len(role.get('users')) > 0:
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+        is_linked = linked_user_to_role()
+        if is_linked:
+            return jsonify(msg="Role Can'b be Deleted,As Users are assigned to role", http_status_code=400)
+        else:
+            routes = 'roles' + '/' + role_id
+            ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+            response = requests.delete(ext_url, headers=headers)
+            return jsonify(msg="Role Deleted", http_status_code=200)
 
     def options(self):
         pass
