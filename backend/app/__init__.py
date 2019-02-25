@@ -128,9 +128,9 @@ from app.resources.reference import UploadParts, UploadDepot, UploadNode, Upload
 
 from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer,GetRatio
 
-from app.resources.access_control import ResetPassword
+from app.resources.access_control import ResetPassword, Role
 
-from app.auth.authorization import Role, Roles, Permission
+from app.auth.authorization import Roles, Permission
 
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
