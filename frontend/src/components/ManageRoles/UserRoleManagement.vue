@@ -177,16 +177,20 @@ export default {
     },
     addRoleData()
     {
-        // let formData = new FormData();
-        // formData.append("role_name", this.roleName);
-        // formData.append("role_description", this.roleDescription);
-        // formData.append("role_permission", this.permissionValue);
-        // console.log(this.permissionValue);
+          let formData = new FormData();
+         formData.append("role_name", this.roleName);
+         formData.append("role_description", this.roleDescription);
+         formData.append("role_permission", JSON.stringify(this.permissionValue));
+      console.log(this.permissionValue);
          
-       
+        //  let roleDate={
+        //    role_name:this.roleName,
+        //    role_description:this.roleDescription,
+        //    role_permission:JSON.stringify(this.permissionValue)
+        //  }
         fetch(constant.APIURL + "api/v1/info/members/create-role", {
         method: "POST",
-        body: JSON.stringify(roleDate),
+        body: formData,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
@@ -198,8 +202,24 @@ export default {
             {
               this.logout();
             }
+            if (data.http_status_code === 200) {
+              
+              swal({
+                title: "SUCCESS",
+                text: data.msg,
+                icon: "success"
+              });
+            } else {
+              swal({
+                title: "Error",
+                text: "Role Creation Failed",
+                icon: "error"
+              });
+            }
             console.log("data -- response-->", data);
             this.permissionValue=[];
+            this.getAllRoles();
+            this.$modals.myModal.$hide();
           });
         })
         .catch(handleError => {
@@ -209,17 +229,16 @@ export default {
 
     editRoleData()
     {
-        let roleDate={
-          role_name:this.roleName,
-          role_id:this.roleId,
-          role_description:this.roleDescription,
-          role_permission:this.permissionValue
-        }
-       
-        console.log(roleDate);
+       let formData = new FormData();
+         formData.append("role_name", this.roleName);
+         formData.append("role_description", this.roleDescription);
+         formData.append("role_id",this.roleId);
+         formData.append("role_permission", JSON.stringify(this.permissionValue));
+      console.log(this.permissionValue);
+        
         fetch(constant.APIURL + "api/v1/info/members/modify-role", {
         method: "PUT",
-        body: JSON.stringify(roleDate),
+        body: formData,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
@@ -231,8 +250,24 @@ export default {
             {
               this.logout();
             }
+            if (data.http_status_code === 200) {
+              
+              swal({
+                title: "SUCCESS",
+                text: data.msg,
+                icon: "success"
+              });
+            } else {
+              swal({
+                title: "Error",
+                text: "Role Updation Failed",
+                icon: "error"
+              });
+            }
             console.log("data -- response-->", data);
             this.permissionValue=[];
+            this.getAllRoles();
+             this.$modals.myModal.$hide();
           });
         })
         .catch(handleError => {
@@ -320,6 +355,7 @@ console.log(role);
     },
     getAllRoles()
     {
+      this.allRoles=[];
       fetch(constant.APIURL + "api/v1/info/members/all-role" , {
         method: "GET",
         headers: {

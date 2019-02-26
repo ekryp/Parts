@@ -77,6 +77,7 @@ class Role(Resource):
 
     @requires_auth
     def post(self):
+        print(self)
         extension_access_token = get_extension_access_token()
         headers = {
             'Authorization': 'Bearer {0}'.format(extension_access_token),
@@ -152,17 +153,17 @@ class Role(Resource):
 
         def create_request_parser():
             self.parser = reqparse.RequestParser()
-            self.parser.add_argument('role_description', required=True, location='json')
-            self.parser.add_argument('role_id', required=True, location='json')
-            self.parser.add_argument('role_description', required=True, location='json')
-            self.parser.add_argument('role_permission', required=True, location='json')
-            self.parser.add_argument('role_name', required=True, location='json')
+            self.parser.add_argument('role_description', required=True, location='form')
+            self.parser.add_argument('role_id', required=True, location='form')
+            self.parser.add_argument('role_permission', required=True, location='form')
+            self.parser.add_argument('role_name', required=True, location='form')
             return self.parser
 
         create_request_parser()
         args = self.parser.parse_args()
         permission_ids = []
-        permission_object = request.get_json().get('role_permission')
+        permission_object = args['role_permission']
+        permission_object=json.loads(permission_object)
         for each_permission in permission_object:
             permission_ids.append(each_permission.get('_id'))
         extension_access_token = get_extension_access_token()
@@ -177,7 +178,8 @@ class Role(Resource):
         data = json.dumps(data)
         ext_url = Configuration.AUTH0_EXTERNAL_API + routes
         response = requests.put(ext_url, headers=headers, data=data)
-        return response.json()
+        
+        return jsonify(msg=" Role Details Updated Successfully", http_status_code=200)
 
     def options(self):
         pass
