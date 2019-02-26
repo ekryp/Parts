@@ -101,6 +101,12 @@ export default {
      }else if(permissions[i] === constant.PERMISSIONS[1])
      {
        this.createAnalysisFlag=true;
+     }else if(permissions[i] === constant.PERMISSIONS[2])
+     {
+       this.analysisFlag=true;
+     }else if( (permissions[i] === constant.PERMISSIONS[3])||(permissions[i] === constant.PERMISSIONS[4]))
+     {
+       this.referenceDataFlag=true;
      }
 
     }

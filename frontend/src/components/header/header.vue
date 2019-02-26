@@ -37,7 +37,12 @@
               <!-- <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>-->
               
-             
+              <a v-if="manageRoleFlag" class="dropdown-item" @click="redirectRole()" style="cursor:pointer">
+                <i class="fas fa-sign-out-alt"></i>&nbsp;Manage Role
+              </a> 
+              <a v-if="manageUserFlag" class="dropdown-item" @click="redirectUser()" style="cursor:pointer">
+                <i class="fas fa-sign-out-alt"></i>&nbsp;Manage User
+              </a>
               <a class="dropdown-item" @click="logout()" style="cursor:pointer">
                 <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
               </a>
@@ -52,23 +57,52 @@
 
 <script>
 import router from "../../router";
+import * as constant from "../constant/constant";
 export default {
   name: "headernav",
   props: ["msg","loaderFlag"],
   created() {
     this.firstName = localStorage.getItem("first_name");
     this.username=localStorage.getItem("username");
+      var authorization=localStorage.getItem("authorization");
+  
+    var permissions=authorization.split(',');
+   
+    
+    for(var i=0;i<permissions.length;i++)
+    {
+      if(permissions[i] === constant.PERMISSIONS[6])
+     {
+       console.log('hbhbhb');
+       this.manageRoleFlag=true;
+     }else if(permissions[i] === constant.PERMISSIONS[7])
+     {
+       this.manageUserFlag=true;
+     }
+
+    }
   },
   data() {
     console.log("header");
     return {
       firstName: "",
-      username:""
+      username:"",
+      manageRoleFlag:false,
+      manageUserFlag:false
     };
   },
+ 
   beforeMount() {},
   methods: {
-    logout() {
+     redirectUser()
+  {
+router.push("/user");
+  },
+   redirectRole()
+  {
+router.push("/role");
+  },
+  logout() {
       console.log("logout");
       router.push("/");
       localStorage.clear();

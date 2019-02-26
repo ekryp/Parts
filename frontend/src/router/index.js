@@ -53,20 +53,32 @@ export default new Router({
     },{
       path: '/parts/analysis/view',
       name: 'PartsAnalysis',
-      component: PartsAnalysis
+      component: PartsAnalysis,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },{
       path: '/parts/analysis/dashboard',
       name: 'PartsAnalysisList',
-      component: PartsAnalysisList
+      component: PartsAnalysisList,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     }, {
       path: '/parts/analysis/summary',
       name: 'PartsAnalysisSummary',
-      component: PartsAnalysisSummary
+      component: PartsAnalysisSummary,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },
     {
       path: '/parts/analysis',
       name: 'SpareDetails',
-      component: SpareDetails
+      component: SpareDetails,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },
     {
       path: '/table',
@@ -79,32 +91,50 @@ export default new Router({
     {
       path: '/reference',
       name: 'Reference',
-      component: Reference
+      component: Reference,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },
     {
       path: '/reference/view',
       name: 'ReferenceView',
-      component: ReferenceView
+      component: ReferenceView,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },
     {
       path: '/parts/analysis/error',
       name: 'ErrorSummary',
-      component: ErrorSummary
+      component: ErrorSummary,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },
     {
       path: '/role',
       name: 'UserRoleManagement',
-      component: UserRoleManagement
+      component: UserRoleManagement,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },
     {
       path: '/user',
       name: 'ManageUser',
-      component: ManageUser
+      component: ManageUser,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     },
     {
       path: '/password',
       name: 'ChangePassword',
-      component: ChangePassword
+      component: ChangePassword,
+      meta: {
+        permission: 'CreateAnalysis'
+      }
     }
   ]
   
