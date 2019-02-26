@@ -20,31 +20,31 @@ Vue.use(VTooltip)
 Vue.config.productionTip = false
 
 
-//  router.beforeEach((to, from, next) => {
-//    next()
-//    console.log(to.path);
+ router.beforeEach((to, from, next) => {
+   next()
+   console.log(to.path);
   
-//    if(localStorage.getItem("auth0_access_token"))
-//    {
-//      var authorization=localStorage.getItem("authorization");
-//    var groups=localStorage.getItem("groups");
-//    var permissions=authorization.split(',');
-//    var flag=true;
-//    for(var i=0;i<permissions.length;i++)
-//    {
-//      if(permissions[i] === to.meta.permission)
-//     {
-//       flag=false;
-//       next()
-//     }
-//    }
-//    if(flag)
-//    {
-//      next('/')
-//    }
-//  }
-//    next()
-//  })
+   if(localStorage.getItem("auth0_access_token"))
+   {
+     var authorization=localStorage.getItem("authorization");
+   var groups=localStorage.getItem("groups");
+   var permissions=authorization.split(',');
+   var flag=true;
+   for(var i=0;i<permissions.length;i++)
+   {
+     if(permissions[i] === to.meta.permission)
+    {
+      flag=false;
+      next()
+    }
+   }
+   if(flag)
+   {
+     next('/')
+   }
+ }
+   next()
+ })
 
 /* eslint-disable no-new */
 new Vue({

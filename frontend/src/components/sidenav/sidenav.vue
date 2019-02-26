@@ -78,21 +78,31 @@ export default {
       dashboardFlag: false,
       analysisFlag: false,
       createAnalysisFlag: false,
-      referenceDataFlag: false
+      referenceDataFlag: false,
+      groupFlag:false,
     };
   },
   created()
   {
     var authorization=localStorage.getItem("authorization");
     var groups=localStorage.getItem("groups");
+    var groupList=groups.split(',');
     var permissions=authorization.split(',');
     console.log(constant.PERMISSIONS[0]);
-    if(groups !== 'infinera')
+    for(var i=0;i<groupList.length;i++)
     {
-      
-      localStorage.clear();
-      router.push("/login");
+      console.log(groupList[i]);
+      if(groupList[i] === 'infinera')
+    {
+      this.groupFlag=true;
+     
     }
+    }
+    if(!this.groupFlag)
+     {
+        localStorage.clear();
+       router.push("/login");
+     }
     for(var i=0;i<permissions.length;i++)
     {
       if(permissions[i] === constant.PERMISSIONS[0])
