@@ -183,3 +183,72 @@ class Role(Resource):
 
     def options(self):
         pass
+
+
+class User(Resource):
+
+    def __init__(self):
+        super(User, self).__init__()
+
+    #@requires_auth
+    def get(self):
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            return self.parser
+        create_request_parser()
+        args = self.parser.parse_args()
+        extension_access_token = get_extension_access_token()
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+
+        routes = 'groups' + '/' + Configuration.AUTH0_INFINERA_GROUP_ID + '/' + 'members'
+        ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+        response = requests.get(ext_url, headers=headers)
+        users = []
+
+        for each_user in response.json().get('users'):
+            users_dict = {}
+            users_dict['email'] = each_user.get('email')
+            users_dict['user_id'] = each_user.get('user_id')
+            users.append(users_dict)
+
+        return users
+
+    def options(self):
+        pass
+
+
+class User_Role(Resource):
+
+    def __init__(self):
+        super(User_Role, self).__init__()
+
+    #@requires_auth
+    def get(self):
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('user_id', required=True, location='args')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+        extension_access_token = get_extension_access_token()
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+
+        routes = 'users' + '/' + args['user_id'] + '/' + 'roles'
+        ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+        response = requests.get(ext_url, headers=headers)
+        application_specific_role = []
+        for role in response.json():
+            if Configuration.AUTH0_CLIENT_ID == role.get('applicationId'):
+                application_specific_role.append(role)
+        return application_specific_role
+
+    def options(self):
+        pass
+

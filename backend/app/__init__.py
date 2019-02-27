@@ -128,7 +128,7 @@ from app.resources.reference import UploadParts, UploadDepot, UploadNode, Upload
 
 from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer,GetRatio
 
-from app.resources.access_control import ResetPassword, Role
+from app.resources.access_control import ResetPassword, Role, User, User_Role
 
 from app.auth.authorization import Roles, Permission
 
@@ -182,6 +182,8 @@ api.add_resource(Permission, '/info/members/all-permissions', endpoint='all-perm
 api.add_resource(Roles, '/info/members/create-role', endpoint='create-role')
 api.add_resource(Role, '/info/members/delete-role', endpoint='delete-role')
 api.add_resource(Role, '/info/members/modify-role', endpoint='modify-role')
+api.add_resource(User, '/info/members/get-all-user-by-group', endpoint='get-all-user-by-group')
+api.add_resource(User_Role, '/info/members/get-all-roles-by-user', endpoint='get-all-roles-by-user')
 app.register_blueprint(api_blueprint)
 api.init_app(app)
 

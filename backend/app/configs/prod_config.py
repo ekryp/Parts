@@ -36,6 +36,7 @@ class Configuration(BaseConfig):
     AUTH0_CLIENT_SECRET_KEY = "sZXs4dsAOzJlnJgLVXEyHQ5XLZ4TP-zlNeUs54nZN1tRPFL-UsFmCZQC6FFHRXtr"
     AUTH0_API_AUDIENCE = "https://prod-services.ekryp.com/api/v1/"
     AUTH0_MGMT_API = 'https://ekryp.auth0.com/api/v2/'
+    AUTH0_INFINERA_GROUP_ID = 'b84a112a-259b-46ec-afb4-4e4ca2c18250'
 
     DEBUG = True
     ECLIPSE_DATA_DB_URI = "mysql+cymysql://root:tang3456@35.197.23.168/infinera"
