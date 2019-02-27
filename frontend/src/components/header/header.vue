@@ -33,15 +33,18 @@
               <i class="fas fa-user"></i>
               &nbsp;{{firstName}}
             </a>
+
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <!-- <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>-->
-              
+              <a  v-if="changePasswordFlag" class="dropdown-item" @click="redirectChangePassword()" style="cursor:pointer">
+                <i class="fas fa-key"></i>&nbsp;Change password
+              </a> 
               <a v-if="manageRoleFlag" class="dropdown-item" @click="redirectRole()" style="cursor:pointer">
-                <i class="fas fa-sign-out-alt"></i>&nbsp;Manage Role
+                <i class="fas fa-users-cog"></i>&nbsp;Manage Role
               </a> 
               <a v-if="manageUserFlag" class="dropdown-item" @click="redirectUser()" style="cursor:pointer">
-                <i class="fas fa-sign-out-alt"></i>&nbsp;Manage User
+                <i class="fas fa-users"></i>&nbsp;Manage User
               </a>
               <a class="dropdown-item" @click="logout()" style="cursor:pointer">
                 <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
@@ -68,12 +71,17 @@ export default {
   
     var permissions=authorization.split(',');
    
+    var isSocial=localStorage.getItem('isSocial');
+    if(isSocial!== 'false')
+    {
+      
+      this.changePasswordFlag=false;
+    }
     
     for(var i=0;i<permissions.length;i++)
     {
       if(permissions[i] === constant.PERMISSIONS[6])
      {
-       console.log('hbhbhb');
        this.manageRoleFlag=true;
      }else if(permissions[i] === constant.PERMISSIONS[7])
      {
@@ -88,7 +96,8 @@ export default {
       firstName: "",
       username:"",
       manageRoleFlag:false,
-      manageUserFlag:false
+      manageUserFlag:false,
+      changePasswordFlag:true
     };
   },
  
@@ -101,6 +110,10 @@ router.push("/user");
    redirectRole()
   {
 router.push("/role");
+  },
+  redirectChangePassword()
+  {
+    router.push("/password");
   },
   logout() {
       console.log("logout");

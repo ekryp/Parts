@@ -55,21 +55,21 @@ export default new Router({
       name: 'PartsAnalysis',
       component: PartsAnalysis,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'ViewAnalysis'
       }
     },{
       path: '/parts/analysis/dashboard',
       name: 'PartsAnalysisList',
       component: PartsAnalysisList,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'ViewAnalysis'
       }
     }, {
       path: '/parts/analysis/summary',
       name: 'PartsAnalysisSummary',
       component: PartsAnalysisSummary,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'ViewAnalysisDetails'
       }
     },
     {
@@ -77,7 +77,7 @@ export default new Router({
       name: 'SpareDetails',
       component: SpareDetails,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'ViewAnalysisDetails  '
       }
     },
     {
@@ -93,7 +93,7 @@ export default new Router({
       name: 'Reference',
       component: Reference,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'UploadReference'
       }
     },
     {
@@ -101,7 +101,7 @@ export default new Router({
       name: 'ReferenceView',
       component: ReferenceView,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'EditReference'
       }
     },
     {
@@ -109,7 +109,7 @@ export default new Router({
       name: 'ErrorSummary',
       component: ErrorSummary,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'ViewAnalysisDetails'
       }
     },
     {
@@ -117,7 +117,7 @@ export default new Router({
       name: 'UserRoleManagement',
       component: UserRoleManagement,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'ManageRole'
       }
     },
     {
@@ -125,7 +125,7 @@ export default new Router({
       name: 'ManageUser',
       component: ManageUser,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'ManageUser'
       }
     },
     {
@@ -133,7 +133,7 @@ export default new Router({
       name: 'ChangePassword',
       component: ChangePassword,
       meta: {
-        permission: 'CreateAnalysis'
+        permission: 'Dashboard'
       }
     }
   ]

@@ -1175,7 +1175,7 @@ export default {
     getRatioPON(fileType) {
       this.loaderFlag = true;
       this.referenceRowData = [];
-      console.log("file type asd", fileType);
+      
       fetch(constant.APIURL + "api/v1/get_all_ratio?pon_type=" + fileType, {
         method: "GET",
         headers: {
