@@ -124,6 +124,7 @@ class Permission(Resource):
         self.reqparse = reqparse.RequestParser()
         super(Permission, self).__init__()
 
+    @requires_auth
     def get(self):
         extension_access_token = get_extension_access_token()
         headers = {
@@ -156,6 +157,7 @@ class Roles(Resource):
         self.reqparse = reqparse.RequestParser()
         super(Roles, self).__init__()
 
+    @requires_auth
     def post(self):
 
         ''' Create a New Role Functionality '''
@@ -189,6 +191,41 @@ class Roles(Resource):
         response = requests.post(ext_url, headers=headers, data=data)
         return jsonify(msg=" Role Created Successfully", http_status_code=200)
 
+    @requires_auth
+    def put(self):
+
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('checkedRoles', action='append', required=True, location='form')
+            self.parser.add_argument('userId', required=True, location='form')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+
+        extension_access_token = get_extension_access_token()
+        ext_url = "https://ekryp.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api/users/" + args['userId'] + "/roles"
+        roles = requests.get(ext_url, data=None, headers={'authorization': "Bearer " + extension_access_token})
+        rolesJson = roles.json()
+
+        existing_roles = []
+        for role in rolesJson:
+            existing_roles.append(role['_id'])
+
+        ext_url = "https://ekryp.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api/users/" + args['userId'] + "/roles"
+        delete_existing_roles = requests.delete(ext_url, json=existing_roles,
+                                                headers={'authorization': "Bearer " + extension_access_token})
+
+        ext_url = "https://ekryp.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api/users/" + args['userId'] + "/roles"
+        add_new_roles = requests.patch(ext_url, json=args['checkedRoles'],
+                                       headers={'authorization': "Bearer " + extension_access_token})
+
+        ext_url = "https://ekryp.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api/users/" + args['userId'] + "/roles"
+        roles = requests.get(ext_url, data=None, headers={'authorization': "Bearer " + extension_access_token})
+        updated_roles = roles.json()
+
+        return updated_roles
+
     def options(self):
         pass
 
@@ -199,6 +236,7 @@ class Role(Resource):
         self.reqparse = reqparse.RequestParser()
         super(Role, self).__init__()
 
+    @requires_auth
     def put(self):
         print('asdasd',self)
         ''' Modify a role Functionality '''
@@ -232,6 +270,7 @@ class Role(Resource):
         response = requests.put(ext_url, headers=headers, data=data)
         return response.json()
 
+    @requires_auth
     def delete(self):
         ''' Delete a role Functionality '''
         def create_request_parser():

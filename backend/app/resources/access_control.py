@@ -190,7 +190,7 @@ class User(Resource):
     def __init__(self):
         super(User, self).__init__()
 
-    #@requires_auth
+    @requires_auth
     def get(self):
         def create_request_parser():
             self.parser = reqparse.RequestParser()
@@ -225,7 +225,7 @@ class User_Role(Resource):
     def __init__(self):
         super(User_Role, self).__init__()
 
-    #@requires_auth
+    @requires_auth
     def get(self):
         def create_request_parser():
             self.parser = reqparse.RequestParser()

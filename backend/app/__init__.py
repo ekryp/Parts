@@ -184,6 +184,7 @@ api.add_resource(Role, '/info/members/delete-role', endpoint='delete-role')
 api.add_resource(Role, '/info/members/modify-role', endpoint='modify-role')
 api.add_resource(User, '/info/members/get-all-user-by-group', endpoint='get-all-user-by-group')
 api.add_resource(User_Role, '/info/members/get-all-roles-by-user', endpoint='get-all-roles-by-user')
+api.add_resource(Roles, '/info/members/update-roles', endpoint='update_role_for_particular_user')
 app.register_blueprint(api_blueprint)
 api.init_app(app)
 
