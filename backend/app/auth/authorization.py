@@ -161,7 +161,6 @@ class Roles(Resource):
     def post(self):
 
         ''' Create a New Role Functionality '''
-        print(self)
         def create_request_parser():
             self.parser = reqparse.RequestParser()
             self.parser.add_argument('role_name', required=True, location='form')
@@ -202,7 +201,6 @@ class Roles(Resource):
 
         create_request_parser()
         args = self.parser.parse_args()
-        print('adsads',args['checkedRoles'])
 
         extension_access_token = get_extension_access_token()
         ext_url = "https://ekryp.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api/users/" + args['userId'] + "/roles"

@@ -12,8 +12,8 @@ class ResetPassword(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('new_password', type=str, required=False, help='not Provided', location='json')
-        self.reqparse.add_argument('user_id', type=str, required=False, help='not Provided', location='json')
+        self.reqparse.add_argument('new_password', type=str, required=False, help='not Provided', location='form')
+        self.reqparse.add_argument('user_id', type=str, required=False, help='not Provided', location='form')
         super(ResetPassword, self).__init__()
 
     @requires_auth
