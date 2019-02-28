@@ -210,9 +210,12 @@ class User(Resource):
 
         for each_user in response.json().get('users'):
             users_dict = {}
-            users_dict['email'] = each_user.get('email')
-            users_dict['user_id'] = each_user.get('user_id')
-            users.append(users_dict)
+
+            # Auth0 bug It returns deleted users in group as well,to ignore we are adding below condition
+            if 'auth0|' not in each_user.get('email'):
+                users_dict['email'] = each_user.get('email')
+                users_dict['user_id'] = each_user.get('user_id')
+                users.append(users_dict)
 
         return users
 
