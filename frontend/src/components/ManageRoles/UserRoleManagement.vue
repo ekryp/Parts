@@ -1,6 +1,6 @@
 <template>
 <div>
-     <headernav msg="Dashboard"/>
+     <headernav msg="Dashboard" :loaderFlag="loaderFlag"/>
     <side-nav/>
      
 

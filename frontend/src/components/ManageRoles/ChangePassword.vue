@@ -27,9 +27,9 @@
                 <input class="col" type="password" id="psw" name="psw" v-model="cnrf_password"  required>
                 </div>
                 <br>
-                <input type="submit" value="Cancel" @click="changePass()" class="btn btn-success">
-                &nbsp&nbsp&nbsp&nbsp  
                 <input type="submit" value="Submit" @click="changePass()" class="btn btn-success">
+                &nbsp&nbsp&nbsp&nbsp  
+                <input type="submit" value="Cancel" @click="routeDashboard()" class="btn btn-danger">
               </div>
             </div>
         </div>
@@ -71,11 +71,15 @@ export default {
       router.push("/");
       localStorage.clear();
     },
+    routeDashboard(){
+      router.push("/");
+    },
     changePass()
     {
       var isSocial=localStorage.getItem('isSocial');
-      console.log(isSocial);
-      if(!isSocial)
+      if((this.new_password !== '' )&&(this.cnrf_password !== ''))
+      {
+      if(isSocial=='false')
       {
       var user_id=localStorage.getItem('user_id');
       let formData = new FormData();
@@ -124,6 +128,14 @@ export default {
             });
             this.cnrf_password="";
             this.new_password="";
+    }
+    }
+    else{
+       swal({
+              title: "Info",
+              text: "New Password and Confirm Password can't be empty",
+              icon: "error"
+            });
     }
     }
   }

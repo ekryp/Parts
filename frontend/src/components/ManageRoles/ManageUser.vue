@@ -1,6 +1,6 @@
 <template>
 <div>
-     <headernav msg="Dashboard"/>
+     <headernav msg="Dashboard" :loaderFlag="loaderFlag"/>
     <side-nav/>
      
 
@@ -151,6 +151,7 @@ export default {
     editFlag: false,
     addFlag: true,
     userId:'',
+    loaderFlag:false,
     permissionValue:[],
     options: [],
     user:{
@@ -424,6 +425,8 @@ console.log(user)
     ,
     getAllUsers()
     {
+      this.loaderFlag=true;
+      
       this.allusers=[];
       fetch(constant.APIURL + "api/v1/info/members/get-all-user-by-group" , {
         method: "GET",
@@ -441,6 +444,7 @@ console.log(user)
             console.log("data -- get_top_extended-->", data);
             //this.allRoles = data;
             for (let i = 0; i < data.length; i++) {
+              this.loaderFlag=true;
               let roles='';
               let role_ids=[];
               fetch(constant.APIURL + "api/v1/info/members/get-all-roles-by-user?user_id="+data[i].user_id , {
@@ -458,6 +462,7 @@ console.log(user)
           roles=roleData[0].name;
           role_ids.push(roleData[0]._id);
             for (let i = 1; i < roleData.length; i++) {
+              this.loaderFlag=true;
               roles=roles+','+roleData[i].name;
               role_ids.push(roleData[i]._id);
             }
@@ -469,6 +474,7 @@ console.log(user)
                 user_id:data[i].user_id,
                 role_ids:role_ids
               });   
+              this.loaderFlag=false;
               $(document).ready(function() {
               $("#example").DataTable();
             });    
@@ -478,7 +484,7 @@ console.log(user)
           console.log(" Error Response ------->", handleError);
         });
         console.log('okok',roles  );
-              
+               
               
             }
             
@@ -487,6 +493,7 @@ console.log(user)
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+            
     }
     
   }

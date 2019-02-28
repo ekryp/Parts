@@ -93,7 +93,6 @@ class GetParts(Resource):
             query = "delete from parts where part_id = {0}".format(parts_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             result=engine.execute(query)
-            print("result",str(result))
             return jsonify(msg="Parts Details Deleted Successfully", http_status_code=200)
         except:
             return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
@@ -133,7 +132,6 @@ class GetHighSpare(Resource):
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             part_cost_query="Insert into high_spare (cust_id,part_name,high_spare_part_name) values ({0},'{1}','{2}')".format(7,ClassicPON,SubstitutionPON)
-            print("part cost query ",part_cost_query)
             engine.execute(part_cost_query)
             return jsonify(msg="Inserted High Spare Details Successfully", http_status_code=200)
         except  exc.NoForeignKeysError:
@@ -162,7 +160,6 @@ class GetHighSpare(Resource):
             query = "delete from high_spare where high_spare_id = {0}".format(high_spare_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             result=engine.execute(query)
-            print("result",str(result))
             #result = result.loc[:, ~result.columns.duplicated()]
             #Removes duplicate column names not column values
             
@@ -232,7 +229,6 @@ class GetNode(Resource):
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
 
             result=engine.execute(query)
-            print("result",str(result))
             #result = result.loc[:, ~result.columns.duplicated()]
             #Removes duplicate column names not column values
             
@@ -335,7 +331,6 @@ class GetDepot(Resource):
             query = "delete from depot where depot_id = {0}".format(depot_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             result=engine.execute(query)
-            print("result",str(result))
             #result = result.loc[:, ~result.columns.duplicated()]
             #Removes duplicate column names not column values
             
@@ -401,10 +396,8 @@ class GetMisnomer(Resource):
         try:
             
             query = "delete from misnomer_part_conversion where reference_table_id = {0}".format(reference_table_id)
-            print("result",str(query))
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             result=engine.execute(query)
-            print("result",str(result))
             #result = result.loc[:, ~result.columns.duplicated()]
             #Removes duplicate column names not column values
             
@@ -506,7 +499,6 @@ class GetRatio(Resource):
             query = "delete from reliability_class where reliability_id = {0}".format(reliability_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             result=engine.execute(query)
-            print("result",str(result))
             #result = result.loc[:, ~result.columns.duplicated()]
             #Removes duplicate column names not column values
             
