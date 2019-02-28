@@ -202,7 +202,7 @@ class Roles(Resource):
 
         create_request_parser()
         args = self.parser.parse_args()
-        print('adsads',args['checkedRoles']);
+        print('adsads',args['checkedRoles'])
 
         extension_access_token = get_extension_access_token()
         ext_url = "https://ekryp.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api/users/" + args['userId'] + "/roles"
@@ -225,7 +225,7 @@ class Roles(Resource):
         roles = requests.get(ext_url, data=None, headers={'authorization': "Bearer " + extension_access_token})
         updated_roles = roles.json()
 
-        return updated_roles
+        return  jsonify(msg="Roles Updated Sucessfully", http_status_code=200)
 
     def options(self):
         pass
@@ -239,7 +239,6 @@ class Role(Resource):
 
     @requires_auth
     def put(self):
-        print('asdasd',self)
         ''' Modify a role Functionality '''
         def create_request_parser():
             self.parser = reqparse.RequestParser()

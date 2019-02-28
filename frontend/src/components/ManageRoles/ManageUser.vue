@@ -7,33 +7,47 @@
  <vudal name="myModal">
   <div class="header">
     <i class="close icon"></i>
-   <h4>Edit User</h4>
+   <h4 v-if="editFlag">Manage Roles</h4>
+   <h4 v-if="addFlag">Create User</h4>
   </div>
   <div class="content">
     <div class="form-group text-left" >
       
-      <div>
-        
+      <div v-if="editFlag">
                 <br>
                 <div class="row">
                 <label for="psw" class="col-lg-3">Permissions : </label>
-                
-  
                 </div>
                  <br>
-                 
                 <Multiselect v-model="permissionValue" tag-placeholder="Add this as new tag" placeholder="Search or add a Permission" label="role_name" 
-                track-by="role_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>
-               
+                track-by="role_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>  
+      </div>
+      <div v-if="addFlag">
+        <div class="row" >
+                <label class="col-lg-3" for="usrname">Username :</label>
+                <input class="col-lg-8"  type="text" id="usrname" v-model="user.username" >
+                </div>
+                <br>
+                <div class="row" >
+                <label class="col-lg-3" for="email">Email :</label>
+                <input class="col-lg-8"  type="text" id="email" v-model="user.email"  >
+                </div>
+                <br>
+                <div class="row" >
+                <label class="col-lg-3" for="password">Password :</label>
+                <input class="col-lg-8"  type="password" id="password" v-model="user.password" >
+                <div class="col-lg-3"></div>
+                <p style="font-size:13px"> *Password should contain atleast one special character and number</p>
+                </div>
       </div>
         </div>
       
   </div>
   <div class="actions">
-    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Create'" @click="addRoleData()">
+    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Create'" @click="addUser()">
                     Create
                 </button>
-    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Update'" @click="editRoleData()">
+    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Update'" @click="editUserRole()">
                     Update
                 </button>
                 <button
@@ -68,7 +82,7 @@
                 <div class="col-lg-12">
                    
                     
-                    <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">Add Role
+                    <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">Add User
                                     </button>
             <table id="example" class="table table-bordered col-lg-12" align="center"  style="fontSize:14px">
               <thead align="left">
@@ -138,7 +152,14 @@ export default {
     addFlag: true,
     userId:'',
     permissionValue:[],
-    options: []
+    options: [],
+    user:{
+      username:'',
+      password:'',
+      email:''
+    },
+    regPass:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+    reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
     };
   },
   methods: {
@@ -165,24 +186,24 @@ export default {
     console.log(this.options);
     this.$modals.myModal.$show();
     },
-    addRoleData()
+    addUser()
     {
-          let formData = new FormData();
-         formData.append("role_name", this.roleName);
-         formData.append("role_description", this.roleDescription);
-         formData.append("role_permission", JSON.stringify(this.permissionValue));
-      //console.log(this.permissionValue);
-         
-        //  let roleDate={
-        //    role_name:this.roleName,
-        //    role_description:this.roleDescription,
-        //    role_permission:JSON.stringify(this.permissionValue)
-        //  }
-        fetch(constant.APIURL + "api/v1/info/members/create-role", {
+      if(this.reg.test(this.user.email))
+      {
+      if(this.regPass.test(this.user.password))
+      {
+          let userDate={
+            email:this.user.email,
+            password:this.user.password,
+            username:this.user.username,
+            connection:'db-users'
+          }
+        fetch(constant.APIURL + "api/v1/info/members/create-user", {
         method: "POST",
-        body: formData,
+        body: JSON.stringify(userDate),
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token"),
+          'Content-Type':'application/json'
         }
       })
         .then(response => {
@@ -207,36 +228,55 @@ export default {
               });
             }
             console.log("data -- response-->", data);
-            this.permissionValue=[];
-            this.getAllRoles();
+            this.user.username='';
+            this.user.email='';
+            this.user.password='';
+            this.getAllUsers();
             this.$modals.myModal.$hide();
           });
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+        }else{
+
+           this.user.password='';
+          swal({
+                title: "Info",
+                text: "Password is too weak",
+                icon: "info"
+              });
+        }
+        }else{
+
+          this.user.email='';
+          swal({
+                title: "Info",
+                text: "Please Provide Valid Email-Id",
+                icon: "info"
+              });
+        }
+
     },
 
-    editRoleData()
+    editUserRole()
     {
-    //  console.log(this.permissionValue);
-    let checkedRoles=[];
+    
+    let formData = new FormData();
+         formData.append("userId", this.userId);
     for(var i=0;i<this.permissionValue.length;i++)
     {
-      checkedRoles.push(this.permissionValue[i].role_id);
+      formData.append("checkedRoles", this.permissionValue[i].role_id);
     }
-       let formData = new FormData();
-         formData.append("userId", this.userId);
-         formData.append("checkedRoles", checkedRoles);
+       
+        
          
-      console.log(this.permissionValue);
         
          fetch(constant.APIURL + "api/v1/info/members/update-roles", {
          method: "PUT",
          body: formData,
          headers: {
-           Authorization: "Bearer " + localStorage.getItem("auth0_access_token"),
-           'Content-Type': 'application/x-www-form-urlencoded'
+           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
          }
        })
          .then(response => {
@@ -262,7 +302,7 @@ export default {
              }
              console.log("data -- response-->", data);
              this.permissionValue=[];
-             
+             this.getAllUsers();
               this.$modals.myModal.$hide();
            });
          })
@@ -270,11 +310,9 @@ export default {
            console.log(" Error Response ------->", handleError);
          });
     },
-    deleteRole(role)
+    deleteRole(user)
     {
-console.log(role);
-       let roleId = role.role_id;
-          
+console.log(user)
           swal({
             title: "Info",
             text: "Do You Want to Delete the Role ?",
@@ -283,8 +321,8 @@ console.log(role);
             if (ok) {
               fetch(
                 constant.APIURL +
-                  "api/v1/info/members/delete-role?role_id=" +
-                  roleId,
+                  "api/v1/info/members/delete-user?user_id=" +
+                  user.user_id,
                 {
                   method: "DELETE",
                   headers: {
@@ -306,7 +344,7 @@ console.log(role);
                         icon: "success"
                       }).then(ok => {
                         if (ok) {
-                          this.getAllRoles();
+                         this.getAllUsers();
                         }
                       });
                     } else {
@@ -343,6 +381,9 @@ console.log(role);
     },
     hideEntry(){
       this.permissionValue=[];
+      this.user.username='';
+      this.user.password='';
+      this.user.email='';
     this.$modals.myModal.$hide();
     },
     showModal(){
@@ -383,6 +424,7 @@ console.log(role);
     ,
     getAllUsers()
     {
+      this.allusers=[];
       fetch(constant.APIURL + "api/v1/info/members/get-all-user-by-group" , {
         method: "GET",
         headers: {
@@ -426,7 +468,10 @@ console.log(role);
                 roles:roles,
                 user_id:data[i].user_id,
                 role_ids:role_ids
-                              });       
+              });   
+              $(document).ready(function() {
+              $("#example").DataTable();
+            });    
           });
         })
         .catch(handleError => {
@@ -436,6 +481,7 @@ console.log(role);
               
               
             }
+            
            });
         })
         .catch(handleError => {

@@ -278,7 +278,7 @@ class User(Resource):
         data = json.dumps(data)
         res = requests.patch(ext_url, headers=headers, data=data)
 
-        return response.json()
+        return jsonify(msg="User Created Successfully", http_status_code=200)
 
     @requires_auth
     def delete(self):

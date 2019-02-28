@@ -7,7 +7,8 @@
  <vudal name="myModal">
   <div class="header">
     <i class="close icon"></i>
-   <h4>Edit Role</h4>
+   <h4 v-if="addFlag">Create Role</h4>
+    <h4 v-if="editFlag">Edit Role</h4>
   </div>
   <div class="content">
     <div class="form-group text-left" >
