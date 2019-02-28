@@ -13,15 +13,7 @@
     <div class="form-group text-left" >
       
       <div>
-         <div class="row" align="">
-                <label class="col-lg-3" for="usrname">Name :</label>
-                <input class="col-lg-8"  type="text" id="usrname"   v-model="roleName">
-                </div>
-                <br>
-                <div class="row">
-                <label for="psw" class="col-lg-3">Description : </label>
-                <textarea class="col-lg-8"  id="psw" name="psw"  v-model="roleDescription" ></textarea>
-                </div>
+        
                 <br>
                 <div class="row">
                 <label for="psw" class="col-lg-3">Permissions : </label>
@@ -30,8 +22,8 @@
                 </div>
                  <br>
                  
-                <Multiselect v-model="permissionValue" tag-placeholder="Add this as new tag" placeholder="Search or add a Permission" label="name" 
-                track-by="_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>
+                <Multiselect v-model="permissionValue" tag-placeholder="Add this as new tag" placeholder="Search or add a Permission" label="role_name" 
+                track-by="role_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>
                
       </div>
         </div>
@@ -122,7 +114,7 @@ import * as constant from "../constant/constant";
 import Vudal from "vudal";
 
 export default {
-  name: "UserRoleManagement",
+  name: "ManageUser",
   components: {
     SideNav,
     headernav,
@@ -133,6 +125,7 @@ export default {
     clearInterval(window.intervalObj);
    
     this.getAllUsers();
+    this.getAllRoles();
     
     
   },
@@ -143,9 +136,7 @@ export default {
     allPermissions:[],
     editFlag: false,
     addFlag: true,
-    roleName:'',
-    roleId:'',
-    roleDescription:'',
+    userId:'',
     permissionValue:[],
     options: []
     };
@@ -171,8 +162,7 @@ export default {
     {
     this.editFlag=false;
     this.addFlag=true;
-    this.roleName='';
-    this.roleDescription='';
+    console.log(this.options);
     this.$modals.myModal.$show();
     },
     addRoleData()
@@ -181,7 +171,7 @@ export default {
          formData.append("role_name", this.roleName);
          formData.append("role_description", this.roleDescription);
          formData.append("role_permission", JSON.stringify(this.permissionValue));
-      console.log(this.permissionValue);
+      //console.log(this.permissionValue);
          
         //  let roleDate={
         //    role_name:this.roleName,
@@ -229,50 +219,56 @@ export default {
 
     editRoleData()
     {
+    //  console.log(this.permissionValue);
+    let checkedRoles=[];
+    for(var i=0;i<this.permissionValue.length;i++)
+    {
+      checkedRoles.push(this.permissionValue[i].role_id);
+    }
        let formData = new FormData();
-         formData.append("role_name", this.roleName);
-         formData.append("role_description", this.roleDescription);
-         formData.append("role_id",this.roleId);
-         formData.append("role_permission", JSON.stringify(this.permissionValue));
+         formData.append("userId", this.userId);
+         formData.append("checkedRoles", checkedRoles);
+         
       console.log(this.permissionValue);
         
-        fetch(constant.APIURL + "api/v1/info/members/modify-role", {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
-        }
-      })
-        .then(response => {
-          response.text().then(text => {
-            const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
-              this.logout();
-            }
-            if (data.http_status_code === 200) {
+         fetch(constant.APIURL + "api/v1/info/members/update-roles", {
+         method: "PUT",
+         body: formData,
+         headers: {
+           Authorization: "Bearer " + localStorage.getItem("auth0_access_token"),
+           'Content-Type': 'application/x-www-form-urlencoded'
+         }
+       })
+         .then(response => {
+           response.text().then(text => {
+             const data = text && JSON.parse(text);
+             if(data.code === "token_expired")
+             {
+               this.logout();
+             }
+             if (data.http_status_code === 200) {
               
-              swal({
-                title: "SUCCESS",
-                text: data.msg,
-                icon: "success"
-              });
-            } else {
-              swal({
-                title: "Error",
-                text: "Role Updation Failed",
-                icon: "error"
-              });
-            }
-            console.log("data -- response-->", data);
-            this.permissionValue=[];
-            this.getAllRoles();
-             this.$modals.myModal.$hide();
-          });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
+               swal({
+                 title: "SUCCESS",
+                 text: data.msg,
+                 icon: "success"
+               });
+             } else {
+               swal({
+                 title: "Error",
+                 text: "Role Updation Failed",
+                 icon: "error"
+               });
+             }
+             console.log("data -- response-->", data);
+             this.permissionValue=[];
+             
+              this.$modals.myModal.$hide();
+           });
+         })
+         .catch(handleError => {
+           console.log(" Error Response ------->", handleError);
+         });
     },
     deleteRole(role)
     {
@@ -328,17 +324,16 @@ console.log(role);
             }
           });
     },
-    showEditRole(role){
+    showEditRole(user){
       this.editFlag=true;
       this.addFlag=false;
-      this.roleName=role.role_name;
-      this.roleId=role.role_id;
-      this.roleDescription=role.role_description;
-      for(let i=0;i<role.role_permission.length;i++)
+      this.userId=user.user_id;
+     console.log(user);
+      for(let i=0;i<user.role_ids.length;i++)
       {
         for(let j=0;j<this.options.length;j++)
         {
-          if(role.role_permission[i] === this.options[j]._id)
+          if(user.role_ids[i] == this.options[j].role_id)
           {
             this.permissionValue.push(this.options[j]);
           }
@@ -372,16 +367,13 @@ console.log(role);
             console.log("data -- get_top_extended-->", data);
             //this.allRoles = data;
             for (let i = 0; i < data.length; i++) {
-              this.allRoles.push({
+              this.options.push({
                 role_name: data[i].name,
                 role_id:data[i]._id,
-                role_description:data[i].description,
-                role_permission: data[i].permissions
+                role_description:data[i].description
               });
             }
-            $(document).ready(function() {
-              $("#example").DataTable();
-            });
+          // this.options=this.allRoles;
           });
         })
         .catch(handleError => {
@@ -408,6 +400,7 @@ console.log(role);
             //this.allRoles = data;
             for (let i = 0; i < data.length; i++) {
               let roles='';
+              let role_ids=[];
               fetch(constant.APIURL + "api/v1/info/members/get-all-roles-by-user?user_id="+data[i].user_id , {
         method: "GET",
         headers: {
@@ -417,14 +410,22 @@ console.log(role);
         .then(response => {
           response.text().then(text => {
             const roleData = text && JSON.parse(text);
-            console.log("data -- get_top_extended-->", data);
+            if(roleData.length>0)
+            {
+
           roles=roleData[0].name;
+          role_ids.push(roleData[0]._id);
             for (let i = 1; i < roleData.length; i++) {
               roles=roles+','+roleData[i].name;
+              role_ids.push(roleData[i]._id);
+            }
             }   
+            console.log(role_ids);
             this.allusers.push({
                 email: data[i].email,
-                roles:roles
+                roles:roles,
+                user_id:data[i].user_id,
+                role_ids:role_ids
                               });       
           });
         })
