@@ -18,8 +18,7 @@ class ResetPassword(Resource):
 
     @requires_auth
     def post(self):
-        import pdb
-        pdb.set_trace()
+       
         args = self.reqparse.parse_args()
         non_interactive_client_id = Configuration.AUTH0_CLIENT_ID
         non_interactive_client_secret = Configuration.AUTH0_CLIENT_SECRET_KEY
@@ -77,7 +76,6 @@ class Role(Resource):
 
     @requires_auth
     def post(self):
-        print(self)
         extension_access_token = get_extension_access_token()
         headers = {
             'Authorization': 'Bearer {0}'.format(extension_access_token),

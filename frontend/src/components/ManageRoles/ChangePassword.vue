@@ -102,7 +102,20 @@ export default {
             {
               this.logout();
             }
-            console.log("data -- response-->", data);
+           if (data.http_status_code === 200) {
+              
+              swal({
+                title: "SUCCESS",
+                text: data.msg,
+                icon: "success"
+              });
+            } else {
+              swal({
+                title: "Error",
+                text: data.msg,
+                icon: "error"
+              });
+            }
             
           });
         })
