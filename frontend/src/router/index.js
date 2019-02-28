@@ -21,7 +21,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  
+
   routes: [
     {
       path: '/',
@@ -77,7 +77,7 @@ export default new Router({
       name: 'SpareDetails',
       component: SpareDetails,
       meta: {
-        permission: 'ViewAnalysisDetails  '
+        permission: 'ViewAnalysisDetails'
       }
     },
     {
@@ -137,5 +137,5 @@ export default new Router({
       }
     }
   ]
-  
+
 })
