@@ -277,6 +277,32 @@ class User(Resource):
 
         return response.json()
 
+    @requires_auth
+    def delete(self):
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('user_id', required=True, location='args')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+        non_interactive_client_id = Configuration.AUTH0_CLIENT_ID
+        non_interactive_client_secret = Configuration.AUTH0_CLIENT_SECRET_KEY
+
+        get_token = GetToken(Configuration.AUTH0_DOMAIN)
+        token = get_token.client_credentials(non_interactive_client_id,
+                                             non_interactive_client_secret,
+                                             'https://{}/api/v2/'.format(Configuration.AUTH0_DOMAIN))
+        mgmt_api_token = token['access_token']
+        routes = 'users' + '/' + args['user_id']
+        ext_url = Configuration.AUTH0_MGMT_API + routes
+        headers = {
+            'Authorization': 'Bearer {0}'.format(mgmt_api_token),
+            'content-type': 'application/json',
+        }
+        response = requests.delete(ext_url, headers=headers)
+        return jsonify(msg="User Deleted", http_status_code=200)
+
     def options(self):
         pass
 
