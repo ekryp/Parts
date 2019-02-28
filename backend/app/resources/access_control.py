@@ -12,14 +12,12 @@ class ResetPassword(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('new_password', type=str, required=False, help='not Provided', location='json')
-        self.reqparse.add_argument('user_id', type=str, required=False, help='not Provided', location='json')
+        self.reqparse.add_argument('new_password', type=str, required=False, help='not Provided', location='form')
+        self.reqparse.add_argument('user_id', type=str, required=False, help='not Provided', location='form')
         super(ResetPassword, self).__init__()
 
     @requires_auth
     def post(self):
-        import pdb
-        pdb.set_trace()
         args = self.reqparse.parse_args()
         non_interactive_client_id = Configuration.AUTH0_CLIENT_ID
         non_interactive_client_secret = Configuration.AUTH0_CLIENT_SECRET_KEY
@@ -77,7 +75,6 @@ class Role(Resource):
 
     @requires_auth
     def post(self):
-        print(self)
         extension_access_token = get_extension_access_token()
         headers = {
             'Authorization': 'Bearer {0}'.format(extension_access_token),
