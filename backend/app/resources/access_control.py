@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request
 from flask_restful import Resource
 from flask_restful import reqparse
 from app import Configuration
@@ -215,6 +215,67 @@ class User(Resource):
             users.append(users_dict)
 
         return users
+
+    @requires_auth
+    def post(self):
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('email', required=True, location='json')
+            self.parser.add_argument('connection', required=True, default='db-users', location='json')
+            self.parser.add_argument('password', required=True, location='json')
+            self.parser.add_argument('username', required=True, location='json')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+        data = request.get_json()
+        non_interactive_client_id = Configuration.AUTH0_CLIENT_ID
+        non_interactive_client_secret = Configuration.AUTH0_CLIENT_SECRET_KEY
+
+        get_token = GetToken(Configuration.AUTH0_DOMAIN)
+        token = get_token.client_credentials(non_interactive_client_id,
+                                             non_interactive_client_secret,
+                                             'https://{}/api/v2/'.format(Configuration.AUTH0_DOMAIN))
+        mgmt_api_token = token['access_token']
+        routes = 'users'
+        ext_url = Configuration.AUTH0_MGMT_API + routes
+
+        # Below Code is for mapping new user with group
+
+        group_name = Configuration.AUTH0_INFINERA_GROUP_NAME
+        data1 = {
+            "user_metadata": {
+                "first_name": request.get_json().get('username')
+            },
+            "app_metadata": {"authorization": {
+                    "groups": group_name,
+                    "roles": [],
+                "permissions": []
+                                            }
+            }
+        }
+        data.update(data1)
+        data = json.dumps(data)
+        headers = {
+            'Authorization': 'Bearer {0}'.format(mgmt_api_token),
+            'content-type': 'application/json',
+        }
+        # This Creates a new user
+        response = requests.post(ext_url, headers=headers, data=data)
+
+        group_id = Configuration.AUTH0_INFINERA_GROUP_ID
+        extension_access_token = get_extension_access_token()
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+        routes = 'groups' + '/' + group_id + '/' + 'members'
+        ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+        data = [response.json().get('user_id')]
+        data = json.dumps(data)
+        res = requests.patch(ext_url, headers=headers, data=data)
+
+        return response.json()
 
     def options(self):
         pass
