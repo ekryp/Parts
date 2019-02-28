@@ -17,18 +17,18 @@ services:
      - /home/infinera/Parts/data:/data
     ports: 
      - 5000:5000
+    depends_on:
+     - mailgun
     links:
       - rabbitmq:rabbitmq
     restart: always
-#  worker:
-#    build: ../celery
-#    image: celery_worker
-#    container_name: celery_worker
-#    links:
-#     - rabbitmq:rabbitmq
-#    depends_on:
-#     - rabbitmq
-#    restart: always
+  mailgun:
+    build: ../mailgun
+    image: mailgun
+    container_name: mailgun
+    ports:
+     - 5001:5001
+    restart: always
   rabbitmq:
     image: rabbitmq:3.6.1-management
     environment:
