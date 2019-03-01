@@ -205,15 +205,11 @@ class User(Resource):
         ext_url = Configuration.AUTH0_EXTERNAL_API + routes
         response = requests.get(ext_url, headers=headers)
         users = []
-
         for each_user in response.json().get('users'):
             users_dict = {}
-
-            # Auth0 bug It returns deleted users in group as well,to ignore we are adding below condition
-            if 'auth0|' not in each_user.get('email'):
-                users_dict['email'] = each_user.get('email')
-                users_dict['user_id'] = each_user.get('user_id')
-                users.append(users_dict)
+            users_dict['email'] = each_user.get('email')
+            users_dict['user_id'] = each_user.get('user_id')
+            users.append(users_dict)
 
         return users
 
@@ -302,6 +298,19 @@ class User(Resource):
             'content-type': 'application/json',
         }
         response = requests.delete(ext_url, headers=headers)
+
+        # Below Code removes mapping of group id with User.
+        group_id = Configuration.AUTH0_INFINERA_GROUP_ID
+        extension_access_token = get_extension_access_token()
+        headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+        }
+        routes = 'groups' + '/' + group_id + '/' + 'members'
+        ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+        data = [args['user_id']]
+        data = json.dumps(data)
+        res = requests.delete(ext_url, headers=headers, data=data)
         return jsonify(msg="User Deleted", http_status_code=200)
 
     def options(self):
