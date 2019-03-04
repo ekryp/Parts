@@ -21,6 +21,7 @@ services:
      - mailgun
     links:
       - rabbitmq:rabbitmq
+      - mailgun:mailgun
     restart: always
   mailgun:
     build: ../mailgun

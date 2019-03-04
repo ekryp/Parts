@@ -579,8 +579,10 @@ class Email(Resource):
 def sendEmailNotificatio(user_email_id,subject,message):
     print('calling email method')
     request = Email(senderEmailAddress="noreply@ekryp.com",recevierEmailAddress=user_email_id,emailSubject=subject,emailMessage=message)
-    print('JSON dic ----->',json.dumps(request.__dict__))
-    response = requests.post("http://35.230.35.43:5001/api/mail/send",data=json.dumps(request.__dict__))
+    dumps = json.dumps(request.__dict__)
+    jsondata = json.loads(dumps)
+    print('JSON dic ----->',jsondata)
+    response = requests.post("http://mailgun:5001/api/mail/send",json=jsondata)
     print('email response ----->',response.content)
 
 
@@ -588,7 +590,7 @@ def sendEmailNotificatio(user_email_id,subject,message):
 def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time):
    
     try:
-        # sendEmailNotificatio(user_email_id,"Infinera Analysis","Your Analysis Submitted Successfully..")
+        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your Analysis Submitted Successfully..")
         convert_headers_in_sap_file(sap_file)
         def set_request_status(status, analysis_id,msg):
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
