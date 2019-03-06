@@ -234,7 +234,9 @@ def remove_hub_depot(df, depot):
     # Make Pon quantity = 0 for PON in below list & their depot are not hub
     pon_list = ["DTC-ANSI-B=", "DTC-ETSI-B=", "OTC-ANSI-A=", "OTC-ETSI-A=", "XTC-2", "XTC-4",
                 "XTC-10", "XTC-2E", "MTC-9-B", "MTC-6", "MPC-6", "MTC-9", "MTC-ANSI="]
-    all_depots.loc[(all_depots['Product Ordering Name'].isin(pon_list)) & (all_depots['hub'] == 0), 'PON Quanity'] = 0
+    # Changed condition to all_depots['hub'] != 1 from all_depots['hub'] == 0 as depot_name in depot table has null values as well
+    # Hence we are only interested in non hub rows & all_depots['hub'] != 1 gives those rows
+    all_depots.loc[(all_depots['Product Ordering Name'].isin(pon_list)) & (all_depots['hub'] != 1), 'PON Quanity'] = 0
 
     # Keep only required columns
     all_depots = all_depots[['Product Ordering Name', 'node_depot_belongs', 'PON Quanity']]
