@@ -608,13 +608,13 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
         set_request_status('Completed', analysis_id, 'Success')
-        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+"Analysis Completed Successfully..")
+        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+" Analysis Completed Successfully..")
     except CustomException as e:
-        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+"Analysis Was Failed, Please check with Application!")
+        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
         set_request_status('Failed', analysis_id,e.msg)
 
     except Exception as e:
-        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+"Analysis Was Failed, Please check with Application!")
+        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
         print("SOME ERROR OCCURRED")
         print(150 * "*")
         print(str(e))
