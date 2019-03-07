@@ -121,7 +121,7 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
-    GetErrorRecords
+    GetErrorRecords, GetSummaryByPONforSpecificRequest
 
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
     UploadMisnomer, UploadRatio
@@ -150,6 +150,7 @@ api.add_resource(DefaultReference,'/reference/default',endpoint='/reference/defa
 api.add_resource(GetstepsAllUsers, '/get_steps_all_users', endpoint='get_steps_all_users')
 api.add_resource(GetstepsforSpecificRequest, '/get_steps_specific_request', endpoint='get_steps_specific_request')
 api.add_resource(GetSummaryforSpecificRequest, '/get_summary_specific_request', endpoint='get_summary_specific_request')
+api.add_resource(GetSummaryByPONforSpecificRequest, '/get_summary_by_pon_specific_request', endpoint='get_summary_by_pon_specific_request')
 api.add_resource(GetCurrentInventory, '/get_current_inventory_specific_request', endpoint='get_current_inventory_specific_request')
 api.add_resource(GetCurrentNet, '/get_current_net_specific_request', endpoint='get_current_net_specific_request')
 api.add_resource(GetCurrentIB, '/get_current_ib_specific_request', endpoint='get_current_ib_specific_request')
