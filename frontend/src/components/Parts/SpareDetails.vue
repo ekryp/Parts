@@ -23,6 +23,15 @@
             aria-controls="nav-summary"
             aria-selected="true"
           >Summary Result</a>
+           <a
+            class="nav-item nav-link "
+            id="nav-PONsummary-tab"
+            data-toggle="tab"
+            href="#nav-PONsummary"
+            role="tab"
+            aria-controls="nav-PONsummary"
+             aria-selected="true"
+          >Summary PON Result</a>
           <a
             class="nav-item nav-link"
             id="nav-home-tab"
@@ -79,6 +88,17 @@
         >
           <br>
           <AnalysisSummary :analysisId="requestID"/>
+        </div>
+
+        <div
+          class="tab-pane fade show"
+          id="nav-PONsummary"
+          role="tabpanel"
+          aria-labelledby="nav-PONsummary-tab"
+        >
+
+         <br>
+          <PONAnalysisSummary :analysisId="requestID"/>
         </div>
         <!-- current Inventory -->
         <div
@@ -336,6 +356,7 @@ import router from "../../router/";
 import SideNav from "@/components/sidenav/sidenav";
 import headernav from "@/components/header/header";
 import AnalysisSummary from "@/components/Parts/AnalysisSummary";
+import PONAnalysisSummary from "@/components/Parts/PONAnalysisSummary";
 import * as data from "./data.json";
 import Vue from "vue";
 import * as constant from "../constant/constant";
@@ -349,6 +370,7 @@ export default {
     headernav,
     AnalysisSummary,
     AgGridVue,
+    PONAnalysisSummary,
     DownloadExcel
   },
   created() {

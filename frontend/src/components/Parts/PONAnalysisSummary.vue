@@ -1,0 +1,372 @@
+<template>
+  <div class="shadow p-3 mb-5 bg-white rounded" id="PonSummaryDiv">
+    <br>
+  
+
+    <div class="float-right" style="paddingBottom:1%">
+      <toggle-button
+        :value="state"
+        :color="{checked: 'green', unchecked: 'green'}"
+        :sync="true"
+        cssColors:true
+        :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+        :width="80"
+        v-tooltip.top.hover.focus="'Click to Toggle'"
+        @change="stateChange()"
+      />
+      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
+        <DownloadExcel :data="partsAnalysisDownload" type="csv" name="PONsummary.csv" :columnHeaders="partsAnalysisSummaryTitle">
+          <i class="fas fa-file-excel"></i>
+          &nbsp;
+          Export
+        </DownloadExcel>
+      </button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <ag-grid-vue
+      style="width: 100%; height: 345px;"
+      class="ag-theme-balham"
+      :columnDefs="summaryColumnDefs"
+      :rowData="summaryRowData"
+      :gridOptions="summaryGridOptions"
+      :enableColResize="true"
+      :enableSorting="true"
+      :enableFilter="true"
+      :groupHeaders="true"
+      rowSelection="multiple"
+      pagination="true"
+      :paginationPageSize="10"
+      :gridReady="OnReady"
+      :gridSizeChanged="OnReady"
+    ></ag-grid-vue>
+  </div>
+</template>
+
+<script>
+import router from "../../router/";
+import SideNav from "@/components/sidenav/sidenav";
+import headernav from "@/components/header/header";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
+import { mapActions, mapState } from "vuex";
+import Vue2Filters from "vue2-filters";
+import Vue from "vue";
+import * as constant from "../constant/constant";
+import { AgGridVue } from "ag-grid-vue";
+import Tooltip from "vue-directive-tooltip";
+import "vue-directive-tooltip/css/index.css";
+import accounting from "../../utilies/accounting";
+Vue.use(Tooltip);
+
+Vue.use(Vue2Filters);
+export default {
+  name: "PONAnalysisSummary",
+  props: ["analysisId"],
+  components: {
+    SideNav,
+    headernav,
+    AgGridVue,
+    DownloadExcel
+  },
+  created() {
+    console.log("props ASD ----->", this.$props);
+    this.requestId = this.$props.analysisId;
+    this.dispId = `AR0000` + this.requestId;
+    this.createAnalysisSummaryColumnDefs();
+    this.get_request_analysis_summary_result(this.requestId);
+    //this.get_analysis_name(this.requestId);
+  },
+  computed: {},
+  data() {
+    console.log("PONAnalysisSummary", this.$store.state);
+    return {
+      requestId: "",
+      partsAnalysisSummaryReslut: [],
+      dispId: "",
+      analysisName: [],
+      toggle: "reorder",
+      state: true,
+      columnDefs: null,
+      rowData: null,
+      summaryColumnDefs: null,
+      summaryRowData: [],
+      partsAnalysisDownload:[],
+      partsAnalysisSummaryTitle:['Part Name','Material Number','IB Quantity','Standard Cost','Gross Quantity','Extended Gross Cost',
+      'Net Quantity','Extended Net Cost','High Spare Count','Extended High Spare Cost','Has High Spare'],
+      summaryGridOptions: {
+        rowStyle: {
+          color: "#72879d"
+          // fontSize: "13.7px",
+        }
+      }
+    };
+  },
+  methods: {
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",", ".");
+    },
+    stateChange() {
+      this.state = !this.state;
+      if (this.state) {
+        console.log(this.toggle);
+        this.toggle = "reorder";
+        this.get_request_analysis_summary_result(this.requestId);
+      } else {
+        this.toggle = "total_stock";
+        this.get_request_analysis_summary_result(this.requestId);
+      }
+    },
+    get_analysis_name(requestId) {
+      fetch(
+        constant.APIURL +
+          "api/v1/get_analysis_name?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
+            console.log("data -- get_analysis_name-->", data);
+            this.analysisName = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_request_analysis_summary_result(requestId) {
+        this.summaryRowData=[];
+        this.partsAnalysisDownload=[];
+      fetch(
+        constant.APIURL +
+          "api/v1/get_summary_by_pon_specific_request?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
+            console.log("data -- get_dashboard_request_count-->", data);
+            this.partsAnalysisSummaryReslut = data;
+            for (let i = 0; i < this.partsAnalysisSummaryReslut.length; i++) {
+              this.summaryRowData.push({
+                part_name: this.partsAnalysisSummaryReslut[i].part_name,
+                depot_name: this.partsAnalysisSummaryReslut[i].depot_name,
+                material_number: this.partsAnalysisSummaryReslut[i]
+                  .material_number,
+                ib_quantity: this.partsAnalysisSummaryReslut[i].ib_quantity,
+                standard_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i].standard_cost),
+                gross_qty: this.partsAnalysisSummaryReslut[i].gross_qty,
+                std_gross_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i]
+                  .std_gross_cost),
+                net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
+                net_std_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i].net_std_cost),
+                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
+                ext_spare_cost: accounting.formatMoney( this.partsAnalysisSummaryReslut[i]
+                  .ext_spare_cost),
+                
+                high_spare: this.partsAnalysisSummaryReslut[i].high_spare
+
+
+              });
+                this.partsAnalysisDownload.push({
+                  part_name: this.partsAnalysisSummaryReslut[i].part_name,
+                  material_number: this.partsAnalysisSummaryReslut[i]
+                  .material_number,
+                  ib_quantity: this.partsAnalysisSummaryReslut[i].ib_quantity,
+                  standard_cost:  this.partsAnalysisSummaryReslut[i].standard_cost,
+                  gross_qty: this.partsAnalysisSummaryReslut[i].gross_qty,
+                std_gross_cost:  this.partsAnalysisSummaryReslut[i]
+                  .std_gross_cost,
+                  net_qty: this.partsAnalysisSummaryReslut[i].net_qty,
+                net_std_cost: this.partsAnalysisSummaryReslut[i].net_std_cost,
+                spare_count: this.partsAnalysisSummaryReslut[i].spare_count,
+                ext_spare_cost: this.partsAnalysisSummaryReslut[i]
+                  .ext_spare_cost,
+                
+                high_spare: this.partsAnalysisSummaryReslut[i].high_spare
+                });
+            }
+          
+           
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    logout() {
+      console.log("logout");
+      router.push("/");
+      localStorage.clear();
+    },
+    createAnalysisSummaryColumnDefs() {
+      this.summaryColumnDefs = [
+        {
+          headerName: "Part Name",
+          field: "part_name",
+          width: 250
+        },
+        {
+          headerName: "Material",
+          field: "material_number",
+          width: 150,
+          cellStyle: {'text-align': 'right'}
+        },
+        {
+          headerName: "Install Base Quantity",
+          field: "ib_quantity",
+          width: 150,
+          cellStyle: {'text-align': 'right'}
+        },
+        {
+          headerName: "Standard Cost($)",
+          field: "standard_cost",
+          width: 150,
+          cellStyle: {'text-align': 'right'}
+        },
+        {
+          headerName: "Gross Requirement",
+          children: [
+            {
+              headerName: "Quantity",
+              field: "gross_qty",
+              width: 125,
+              cellStyle: {'text-align': 'right'}
+            },
+            {
+              headerName: "Ext Standard Cost($)",
+              field: "std_gross_cost",
+              width: 120,
+              cellStyle: {'text-align': 'right'}
+            }
+          ]
+        },
+        {
+          headerName: "Net Requirement",
+          children: [
+            {
+              headerName: "Quantity",
+              field: "net_qty",
+              width: 125,
+              cellStyle: {'text-align': 'right'}
+            },
+            {
+              headerName: "Standard Cost($)",
+              field: "net_std_cost",
+              width: 120,
+              cellStyle: {'text-align': 'right'}
+            }
+          ]
+        },
+        {
+          headerName: "High Spare Requirement",
+          children: [
+            {
+              headerName: "Quantity",
+              field: "spare_count",
+              width: 125,
+              cellStyle: {'text-align': 'right'}
+            },
+            {
+              headerName: "Ext Standard Cost($)",
+              field: "ext_spare_cost",
+              width: 120,
+              cellStyle: {'text-align': 'right'}
+            }
+          ]
+        },
+        {
+          headerName: "Has High Spare?",
+          field: "high_spare",
+          width: 250,
+          cellRenderer: actionCellRenderer
+        }
+      ];
+    },
+    OnReady(event) {
+      var gridWidth = document.getElementById("PonSummaryDiv").offsetWidth;
+
+      // keep track of which columns to hide/show
+      var columnsToShow = [];
+      var columnsToHide = [];
+
+      // iterate over all columns (visible or not) and work out
+      // now many columns can fit (based on their minWidth)
+      var totalColsWidth = 0;
+      var allColumns = event.columnApi.getAllColumns();
+      for (var i = 0; i < allColumns.length; i++) {
+        let column = allColumns[i];
+        totalColsWidth += column.getMinWidth();
+        if (totalColsWidth > gridWidth) {
+          columnsToHide.push(column.colId);
+        } else {
+          columnsToShow.push(column.colId);
+        }
+      }
+
+      // show/hide columns based on current grid width
+      event.columnApi.setColumnsVisible(columnsToShow, true);
+      event.columnApi.setColumnsVisible(columnsToHide, false);
+
+      // fill out any available space to ensure there are no gaps
+      event.api.sizeColumnsToFit();
+    }
+  }
+};
+function actionCellRenderer(params) {
+  let high_spare = params.value;
+  let skills = [];
+  console.log(params);
+  if (high_spare === "1") {
+    skills.push('<input type="checkbox" name="hishspare" checked></i>');
+  } else {
+    skills.push('<input type="checkbox" name="hishspare"></i>');
+  }
+  return skills.join(" ");
+}
+</script>
+<style>
+.center {
+  text-align: center;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #f5f5f5 !important;
+  opacity: 1;
+}
+.vue-tooltip {
+  background-color: white;
+  color: #71869e;
+}
+</style>
