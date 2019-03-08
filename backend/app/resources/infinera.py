@@ -1278,10 +1278,23 @@ class GetSummaryByPONforSpecificRequest(Resource):
 
             summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
             #summary_df['ext_spare_cost'] = summary_df['standard_cost'] * summary_df['spare_count']
-            summary_df = summary_df.groupby(['part_name', 'material_number','high_spare'])[
-                ['gross_qty', 'qty', 'spare_count', 'ext_spare_cost', 'net_qty', 'standard_cost',
+            summary_df = summary_df.groupby(['part_name', 'material_number','high_spare','standard_cost'])[
+                ['gross_qty', 'qty', 'spare_count', 'ext_spare_cost', 'net_qty',
                  'net_std_cost', 'ib_quantity', 'std_gross_cost']].sum()
+
+
             summary_df.reset_index(inplace=True)
+            # Get sum(ib_quantity) from install_base & group by pon_name
+            sum_ib_query_by_pon = 'SELECT product_ordering_name as part_name, sum(pon_quanity) as ib_quantity_from_install_base  FROM infinera.current_ib where ' \
+                                  'request_id={} group by product_ordering_name '.format(request_id)
+
+            sum_ib_query_by_pon_df = get_df_from_sql_query(
+                query=sum_ib_query_by_pon,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            summary_df = pd.merge(summary_df, sum_ib_query_by_pon_df, left_on=['part_name'], right_on=['part_name'], how='left')
+            summary_df = summary_df.drop(['ib_quantity'], 1)
+            summary_df.rename(columns={'ib_quantity_from_install_base': 'ib_quantity'}, inplace=True)
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
 
@@ -1349,10 +1362,24 @@ class GetSummaryByPONforSpecificRequest(Resource):
             summary_df['std_gross_cost'] = summary_df['standard_cost'] * summary_df['gross_qty']
             #summary_df['ext_spare_cost'] = summary_df['standard_cost'] * summary_df['spare_count']
             summary_df.sort_values(by=['net_qty'], ascending=False, inplace=True)
-            summary_df = summary_df.groupby(['part_name', 'material_number', 'high_spare'])[
-                ['gross_qty', 'qty', 'spare_count', 'ext_spare_cost', 'net_qty', 'standard_cost',
+            summary_df = summary_df.groupby(['part_name', 'material_number', 'high_spare', 'standard_cost'])[
+                ['gross_qty', 'qty', 'spare_count', 'ext_spare_cost', 'net_qty',
                  'net_std_cost', 'ib_quantity', 'std_gross_cost']].sum()
+
             summary_df.reset_index(inplace=True)
+            # Get sum(ib_quantity) from install_base & group by pon_name
+            sum_ib_query_by_pon = 'SELECT product_ordering_name as part_name, sum(pon_quanity) as ib_quantity_from_install_base FROM infinera.current_ib where ' \
+                                  'request_id={} group by product_ordering_name '.format(request_id)
+
+            sum_ib_query_by_pon_df = get_df_from_sql_query(
+                query=sum_ib_query_by_pon,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            summary_df = pd.merge(summary_df, sum_ib_query_by_pon_df, left_on=['part_name'],
+                                  right_on=['part_name'], how='left')
+
+            summary_df = summary_df.drop(['ib_quantity'], 1)
+            summary_df.rename(columns={'ib_quantity_from_install_base': 'ib_quantity'}, inplace=True)
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
 
