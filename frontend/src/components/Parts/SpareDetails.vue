@@ -82,7 +82,7 @@
       </nav>
       <div class="tab-content" id="nav-tabContent">
         <div
-          class="tab-pane fade show active"
+          class="tab-pane fade show "
           id="nav-summary"
           role="tabpanel"
           aria-labelledby="nav-summary-tab"
@@ -92,7 +92,7 @@
         </div>
 
         <div
-          class="tab-pane fade show"
+          class="tab-pane fade show active"
           id="nav-PONsummary"
           role="tabpanel"
           aria-labelledby="nav-PONsummary-tab"
