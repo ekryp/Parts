@@ -16,22 +16,23 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
             class="nav-item nav-link active"
-            id="nav-summary-tab"
-            data-toggle="tab"
-            href="#nav-summary"
-            role="tab"
-            aria-controls="nav-summary"
-            aria-selected="true"
-          >Summary Result</a>
-           <a
-            class="nav-item nav-link "
             id="nav-PONsummary-tab"
             data-toggle="tab"
             href="#nav-PONsummary"
             role="tab"
             aria-controls="nav-PONsummary"
              aria-selected="true"
-          >Summary PON Result</a>
+          >Summary</a>
+          <a
+            class="nav-item nav-link "
+            id="nav-summary-tab"
+            data-toggle="tab"
+            href="#nav-summary"
+            role="tab"
+            aria-controls="nav-summary"
+            aria-selected="true"
+          >Summary-PON/Depot</a>
+           
           <a
             class="nav-item nav-link"
             id="nav-home-tab"

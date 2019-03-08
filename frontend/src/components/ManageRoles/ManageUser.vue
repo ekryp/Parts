@@ -475,9 +475,7 @@ console.log(user)
                 role_ids:role_ids
               });   
               this.loaderFlag=false;
-              $(document).ready(function() {
-              $("#example").DataTable();
-            });    
+             
           });
         })
         .catch(handleError => {
