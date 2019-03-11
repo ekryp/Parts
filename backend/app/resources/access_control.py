@@ -6,6 +6,7 @@ from app.auth.authorization import requires_auth, get_extension_access_token
 from auth0.v3.authentication import GetToken
 import requests
 import json
+from app.tasks import sendEmailNotificatio
 
 
 class ResetPassword(Resource):
@@ -271,7 +272,11 @@ class User(Resource):
         data = [response.json().get('user_id')]
         data = json.dumps(data)
         res = requests.patch(ext_url, headers=headers, data=data)
-
+        subject = "Infinera Access"
+        message = "New User {0} created & password is {1}".format(request.get_json().get('username'),
+                                                                  request.get_json().get('password'))
+        to_email = request.get_json().get('email')
+        sendEmailNotificatio(to_email, subject, message)
         return jsonify(msg="User Created Successfully", http_status_code=200)
 
     @requires_auth
