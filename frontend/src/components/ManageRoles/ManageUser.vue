@@ -33,11 +33,35 @@
                 <input class="col-lg-8"  type="text" id="email" v-model="user.email"  >
                 </div>
                 <br>
-                <div class="row" >
+                <div class="row">
+                  <div class="col-lg-6"><p> Auto Generate Password</p></div>
+                   <div class="col-lg-1"></div>
+                  <div class="col-lg-1">
+                    <toggle-button
+                      :value="state"
+                      :color="{checked: 'green', unchecked: 'grey'}"
+                      :sync="true"
+                      cssColors:true
+                      :labels="{checked: 'On', unchecked: 'off'}"
+                      :width="80"
+                      v-tooltip.top.hover.focus="'Click to Toggle'"
+                      @change="stateChange()"
+                    /> </div>
+                   
+                    
+                 
+                </div>
+                <div class="row" v-if="!state">
                 <label class="col-lg-3" for="password">Password :</label>
-                <input class="col-lg-8"  type="password" id="password" v-model="user.password" >
+                <input class="col-lg-8"  type="text" id="password" v-model="user.password" >
                 <div class="col-lg-3"></div>
-                <p style="font-size:13px"> *Password should contain atleast one special character and number</p>
+                <p style="font-size:13px"> *Password should contain atleast one special character,number,<br>uppercase character and of length 8</p>
+                </div>
+                <br>
+                <div class="row" v-if="!state">
+                <label class="col-lg-3" for="password">Confirm Password :</label>
+                <input class="col-lg-8"  type="password" id="password" v-model="user.cnf_password" >
+                <div class="col-lg-3"></div>
                 </div>
       </div>
         </div>
@@ -95,16 +119,18 @@
               <tbody >
                 
                 <tr v-for="user in allusers" :key="user.name">
-                    <td >{{user.email}}</td>
-                    <td >{{user.roles}}</td>
-                    <td >
+                    <td scope="col">{{user.email}}</td>
+                    <td scope="col">{{user.roles}}</td>
+                    <td scope="col">
+                      <div class="row">
                         &nbsp&nbsp&nbsp&nbsp
                          <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
-                                            </button>&nbsp&nbsp
-                                            <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
-                                            </button>
+                          </button>&nbsp&nbsp
+                          <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
+                          </button>
+                      </div>
                     </td>
-                </tr>
+                </tr>   
                 
               </tbody>
             </table>
@@ -126,6 +152,7 @@ import Multiselect from "vue-multiselect";
 import * as constant from "../constant/constant";
 //import * as data from "../../utilies/tabledata.json";
 import Vudal from "vudal";
+import generator from "generate-password";
 
 export default {
   name: "ManageUser",
@@ -137,7 +164,8 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-   
+    
+     
     this.getAllUsers();
     this.getAllRoles();
     
@@ -154,10 +182,12 @@ export default {
     loaderFlag:false,
     permissionValue:[],
     options: [],
+    state:true,
     user:{
       username:'',
       password:'',
-      email:''
+      email:'',
+      cnf_password:''
     },
     regPass:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
@@ -165,6 +195,10 @@ export default {
   },
   methods: {
 
+    stateChange() {
+      this.state = !this.state;
+      
+    },
      addTag (newTag) {
       const tag = {
         name: newTag,
@@ -189,10 +223,23 @@ export default {
     },
     addUser()
     {
+    if(this.state)
+    {
+      var password = generator.generate({
+    length: 8,
+    numbers: true,
+    symbols: true
+      });
+      console.log('password',password);
+      this.user.password=password;
+    }
+    // if((this.user.password!==this.user.cnf_password)){
       if(this.reg.test(this.user.email))
       {
-      if(this.regPass.test(this.user.password))
+
+      if((this.regPass.test(this.user.password))||(this.state))
       {
+        
           let userDate={
             email:this.user.email,
             password:this.user.password,
@@ -232,6 +279,8 @@ export default {
             this.user.username='';
             this.user.email='';
             this.user.password='';
+            this.user.cnf_password='';
+            this.state=true;
             this.getAllUsers();
             this.$modals.myModal.$hide();
           });
@@ -240,13 +289,24 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
         }else{
-
-           this.user.password='';
-          swal({
-                title: "Info",
-                text: "Password is too weak",
-                icon: "info"
-              });
+          if(this.user.cnf_password !== this.user.password)
+              {
+                this.user.password='';
+                this.user.cnf_password='';
+                    swal({
+                          title: "Info",
+                          text: "Password Doesn't Match",
+                          icon: "info"
+                        });
+            }else{
+                    this.user.password='';
+                    this.user.cnf_password='';
+                    swal({
+                          title: "Info",
+                          text: "Password is too weak",
+                          icon: "info"
+                        });
+                  }
         }
         }else{
 
@@ -257,7 +317,10 @@ export default {
                 icon: "info"
               });
         }
-
+    
+    // else{
+     
+    // }
     },
 
     editUserRole()
@@ -384,7 +447,9 @@ console.log(user)
       this.permissionValue=[];
       this.user.username='';
       this.user.password='';
+      this.user.cnf_password='';
       this.user.email='';
+      this.state=true;
     this.$modals.myModal.$hide();
     },
     showModal(){

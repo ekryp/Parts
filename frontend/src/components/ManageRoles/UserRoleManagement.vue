@@ -90,14 +90,17 @@
               <tbody >
                 
                 <tr v-for="role in allRoles" :key="role.name">
-                    <td >{{role.role_name}}</td>
-                    <td >{{role.role_description}}</td>
-                    <td >
+                    <td  scope="col">{{role.role_name}}</td>
+                    <td  scope="col">{{role.role_description}}</td>
+                    <td  scope="col">
+                      <div class="row">
+                       
                         &nbsp&nbsp&nbsp&nbsp
                          <button class="btn btn-sm btn-primary" @click="showEditRole(role)">Edit
-                                            </button>&nbsp&nbsp
-                                            <button class="btn btn-sm btn-danger" @click="deleteRole(role)">Delete
-                                            </button>
+                          </button>&nbsp&nbsp    
+                          <button class="btn btn-sm btn-danger" @click="deleteRole(role)">Delete
+                          </button>
+                      </div>
                     </td>
                 </tr>
                 
