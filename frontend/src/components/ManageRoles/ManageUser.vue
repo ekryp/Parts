@@ -317,9 +317,9 @@ export default {
                   }
         
         }else{
+          this.user.password='';
           if(this.user.username==='')
           {
-            
           swal({
                 title: "Info",
                 text: "Please Enter the UserName",
