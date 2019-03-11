@@ -276,7 +276,12 @@ class User(Resource):
         message = "New User {0} created & password is {1}".format(request.get_json().get('username'),
                                                                   request.get_json().get('password'))
         to_email = request.get_json().get('email')
-        sendEmailNotificatio(to_email, subject, message)
+        try:
+            sendEmailNotificatio(to_email, subject, message)
+        except:
+            pass
+            # ignore error msg from mailgun
+
         return jsonify(msg="User Created Successfully", http_status_code=200)
 
     @requires_auth
