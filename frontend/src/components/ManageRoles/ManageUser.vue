@@ -251,7 +251,7 @@ export default {
       this.user.password=password;
     }
     // if((this.user.password!==this.user.cnf_password)){
-      if(this.reg.test(this.user.email))
+      if(this.reg.test(this.user.email)&&(this.user.username !== ''))
       {
 
       if((this.regPass.test(this.user.password))||(this.state))
@@ -317,13 +317,30 @@ export default {
                   }
         
         }else{
-
-          this.user.email='';
+          if(this.user.username==='')
+          {
+            
+          swal({
+                title: "Info",
+                text: "Please Enter the UserName",
+                icon: "info"
+              });
+          }else if(this.user.email==='')
+          {
+            
+          swal({
+                title: "Info",
+                text: "Please Enter the Email-Id",
+                icon: "info"
+              });
+          }else{
+            this.user.email='';
           swal({
                 title: "Info",
                 text: "Please Provide Valid Email-Id",
                 icon: "info"
               });
+          }
         }
     
     // else{

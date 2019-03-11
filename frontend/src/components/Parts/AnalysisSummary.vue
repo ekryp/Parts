@@ -188,6 +188,7 @@ export default {
         });
     },
     get_request_analysis_summary_result(requestId) {
+      this.summaryRowData=[];
       fetch(
         constant.APIURL +
           "api/v1/get_summary_specific_request?request_id=" +
