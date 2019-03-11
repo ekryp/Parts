@@ -123,11 +123,16 @@
                     <td scope="col">{{user.roles}}</td>
                     <td scope="col">
                       <div class="row">
-                        &nbsp&nbsp&nbsp&nbsp
+                        <div class="col">
+                       
                          <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
-                          </button>&nbsp&nbsp
+                          </button>
+                          </div>
+                          <div class="col">
+                          
                           <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
                           </button>
+                          </div>
                       </div>
                     </td>
                 </tr>   
