@@ -1,4 +1,5 @@
-From python:3.5
+FROM ubuntu:16.04
+FROM python:3.5
 COPY . /code/
 COPY entrypoint.sh /
 RUN mkdir /data
