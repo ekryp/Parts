@@ -24,13 +24,13 @@
       </div>
       <div v-if="addFlag">
         <div class="row" >
-                <label class="col-lg-3" for="usrname">Username :</label>
-                <input class="col-lg-8"  type="text" id="usrname" v-model="user.username" >
+                <label class="col-lg-3" for="usrname">Username * :</label>
+                <input class="col-lg-8"  type="text" id="usrname" v-model="user.username" placeholder="Enter the Username">
                 </div>
                 <br>
                 <div class="row" >
-                <label class="col-lg-3" for="email">Email :</label>
-                <input class="col-lg-8"  type="text" id="email" v-model="user.email"  >
+                <label class="col-lg-3" for="email">Email * :</label>
+                <input class="col-lg-8"  type="text" id="email" v-model="user.email" placeholder="Enter the E-mail" >
                 </div>
                 <br>
                 <div class="row">
@@ -52,15 +52,15 @@
                  
                 </div>
                 <div class="row" v-if="!state">
-                <label class="col-lg-3" for="password">Password :</label>
-                <input class="col-lg-8"  type="text" id="password" v-model="user.password" >
+                <label class="col-lg-3" for="password">Password * :</label>
+                <input class="col-lg-8"  type="text" id="password" v-model="user.password"  placeholder="Enter the Password">
                 <div class="col-lg-3"></div>
                 <p style="font-size:13px"> *Password should contain atleast one special character,number,<br>uppercase character and of length 8</p>
                 </div>
                 <br>
                 <div class="row" v-if="!state">
-                <label class="col-lg-3" for="password">Confirm Password :</label>
-                <input class="col-lg-8"  type="password" id="password" v-model="user.cnf_password" >
+                <label class="col-lg-3" for="password">Confirm Password * :</label>
+                <input class="col-lg-8"  type="password" id="password" v-model="user.cnf_password" @change="checkPassword()"  placeholder="Re-Enter the Password">
                 <div class="col-lg-3"></div>
                 </div>
       </div>
@@ -99,7 +99,7 @@
         <div class="col-lg-12">
           <div class=" p-3 mb-5 bg-white ">
               
-           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >Role</h5>
+           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >Users</h5>
             <br>
             
             <div class="row">
@@ -199,7 +199,19 @@ export default {
     };
   },
   methods: {
-
+    checkPassword()
+    {
+      if(this.user.cnf_password !== this.user.password)
+              {
+                this.user.password='';
+                this.user.cnf_password='';
+                    swal({
+                          title: "Info",
+                          text: "Password Doesn't Match",
+                          icon: "info"
+                        });
+            }
+    },
     stateChange() {
       this.state = !this.state;
       
@@ -294,16 +306,7 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
         }else{
-          if(this.user.cnf_password !== this.user.password)
-              {
-                this.user.password='';
-                this.user.cnf_password='';
-                    swal({
-                          title: "Info",
-                          text: "Password Doesn't Match",
-                          icon: "info"
-                        });
-            }else{
+          
                     this.user.password='';
                     this.user.cnf_password='';
                     swal({
@@ -312,7 +315,7 @@ export default {
                           icon: "info"
                         });
                   }
-        }
+        
         }else{
 
           this.user.email='';
