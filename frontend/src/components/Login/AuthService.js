@@ -66,8 +66,9 @@ export default {
                     router.push('/dashboard')
                 } else {
                     localStorage.setItem('email_id', profile.email)
-                    localStorage.setItem('first_name', profile.user_metadata.first_name)
-                    localStorage.setItem('last_name', profile.user_metadata.last_name)
+                    var first_name=profile.nickname.split('.');
+                    localStorage.setItem('first_name', first_name[0])
+                    //localStorage.setItem('last_name', profile.user_metadata.last_name)
                   //  localStorage.setItem('cust_id', profile.user_metadata.cust_id)
                     router.push('/dashboard')
                 }
