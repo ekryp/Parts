@@ -194,7 +194,7 @@ export default {
       email:'',
       cnf_password:''
     },
-    regPass:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+    regPass:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/,
     reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
     };
   },
@@ -245,7 +245,8 @@ export default {
       var password = generator.generate({
     length: 8,
     numbers: true,
-    symbols: true
+    symbols: true,
+    strict:true
       });
       console.log('password',password);
       this.user.password=password;
@@ -288,7 +289,7 @@ export default {
             } else {
               swal({
                 title: "Error",
-                text: "Role Creation Failed",
+                text: data.msg,
                 icon: "error"
               });
             }
