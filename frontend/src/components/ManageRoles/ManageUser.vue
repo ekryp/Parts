@@ -53,11 +53,14 @@
                 </div>
                 <div class="row" v-if="!state">
                 <label class="col-lg-3" for="password">Password * :</label>
-                <input class="col-lg-8"  type="text" id="password" v-model="user.password"  placeholder="Enter the Password">
+                <input class="col-lg-8"  type="password" id="password" v-model="user.password"  placeholder="Enter the Password">
                 <div class="col-lg-3"></div>
-                <p style="font-size:13px"> *Password should contain atleast one special character,number,<br>uppercase character and of length 8</p>
+                <p class="fontFix"> *Password Constraints
+                  <br>Allowed special characters (!@#$%^&*)
+                  <br>Lower case (a-z), upper case (A-Z) and numbers (0-9)
+                  <br>Length should be greater than 8 
+                </p>
                 </div>
-                <br>
                 <div class="row" v-if="!state">
                 <label class="col-lg-3" for="password">Confirm Password * :</label>
                 <input class="col-lg-8"  type="password" id="password" v-model="user.cnf_password" @change="checkPassword()"  placeholder="Re-Enter the Password">
@@ -194,7 +197,7 @@ export default {
       email:'',
       cnf_password:''
     },
-    regPass:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    regPass:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d@$!%*?&]{8,}$/,
     reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
     };
   },
@@ -252,14 +255,14 @@ export default {
       this.user.password=password;
     }
     // if((this.user.password!==this.user.cnf_password)){
-      if(this.reg.test(this.user.email)&&(this.user.username !== ''))
+      if(this.reg.test(this.user.email.trim())&&(this.user.username !== ''))
       {
 
       if((this.regPass.test(this.user.password))||(this.state))
       {
         
           let userDate={
-            email:this.user.email,
+            email:this.user.email.trim(),
             password:this.user.password,
             username:this.user.username,
             connection:'db-users'
@@ -589,5 +592,9 @@ console.log(user)
 };
 </script>
 <style>
+
+  .fontFix {
+   font-size:13px;
+  }
 
 </style>
