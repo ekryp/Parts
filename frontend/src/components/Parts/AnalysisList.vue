@@ -14,29 +14,50 @@
         <div class="col-lg-2 text-center">
           <span class="text-top">Total Analysis Request</span>
           <br>
+          <br>
+          <span class="count">{{dashboard_request_count.total_request}}</span>
+       
         </div>
         <div class="col-lg-2 text-center">
           <span class="text-top">Completed Request</span>
           <br>
+          <br>
+          <span class="count">{{dashboard_request_count.complete_request}}</span>
+        
         </div>
         <div class="col-lg-2 text-center">
           <span class="text-top">Completed Request with Error</span>
           <br>
+          
+          <span
+            class="count"
+            v-if="dashboard_request_count.failed_request > 0"
+            style="color:red"
+          >{{dashboard_request_count.failed_request}}</span>
+          <span
+            class="count"
+            v-if="dashboard_request_count.failed_request === 0"
+          >{{dashboard_request_count.failed_request}}</span>
+        
         </div>
         <div class="col-lg-2 text-center">
           <span class="text-top">Completed Request Successfully</span>
           <br>
+          <span class="count" style="color:green">{{dashboard_request_count.complete_request_succesfully}}</span>
         </div>
         <div class="col-lg-2 text-center">
           <span class="text-top">Requests In Progress</span>
           <br>
+          <br>
+          <span class="count">{{dashboard_request_count.incomplete_request}}</span>
         </div>
         <div class="col-lg-2 text-center">
           <span class="text-top">Requests To Be Submitted</span>
           <br>
+          <span class="count">{{dashboard_request_count.saved_request}}</span>
         </div>
       </div>
-      <div class="row" style="marginTop:0%" v-if="dashboard_request_count !== undefined">
+      <!-- <div class="row" style="marginTop:0%" v-if="dashboard_request_count !== undefined">
         <div class="col-lg-2 text-center">
           <span class="count">{{dashboard_request_count.total_request}}</span>
         </div>
@@ -63,7 +84,7 @@
         <div class="col-lg-2 text-center">
           <span class="count">{{dashboard_request_count.saved_request}}</span>
         </div>
-      </div>
+      </div> -->
       <div class="float-right" style="marginTop:1%">
         <button
           type="button"

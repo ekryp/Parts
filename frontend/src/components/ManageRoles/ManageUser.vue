@@ -23,21 +23,22 @@
                 track-by="role_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>  
       </div>
       <div v-if="addFlag">
-        <div class="row" >
-                <label class="col-lg-3" for="usrname">Username * :</label>
-                <input class="col-lg-8"  type="text" id="usrname" v-model="user.username" placeholder="Enter the Username">
+        <div class="row align" >
+        <label class="col-lg-5" for="usrname">Username * :</label>
+        <div class="col-lg-7" > 
+           <input class="form-control"  type="text" id="usrname" v-model="user.username" placeholder="Enter the Username">
+          </div>
+      </div>
+                <div class="row align" >
+                <label class="col-lg-5" for="email">Email * :</label>
+                <div class="col-lg-7" > 
+            <input  class="form-control" type="text" id="email" v-model="user.email" placeholder="Enter the E-mail" >
+          </div>
                 </div>
-                <br>
-                <div class="row" >
-                <label class="col-lg-3" for="email">Email * :</label>
-                <input class="col-lg-8"  type="text" id="email" v-model="user.email" placeholder="Enter the E-mail" >
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-lg-6"><p> Auto Generate Password</p></div>
-                   <div class="col-lg-1"></div>
-                  <div class="col-lg-1">
-                    <toggle-button
+                <div class="row align">
+                  <div class="col-lg-5"><p> Auto Generate Password</p></div>
+                  <div class="col-lg-7" > 
+           <toggle-button
                       :value="state"
                       :color="{checked: 'green', unchecked: 'grey'}"
                       :sync="true"
@@ -46,24 +47,29 @@
                       :width="80"
                       v-tooltip.top.hover.focus="'Click to Toggle'"
                       @change="stateChange()"
-                    /> </div>
-                   
-                    
-                 
+                    /> 
+          </div>
                 </div>
-                <div class="row" v-if="!state">
-                <label class="col-lg-3" for="password">Password * :</label>
-                <input class="col-lg-8"  type="password" id="password" v-model="user.password"  placeholder="Enter the Password">
-                <div class="col-lg-3"></div>
-                <p class="fontFix"> *Password Constraints
+                <div class="row align" v-if="!state">
+                <label class="col-lg-5" for="password">Password * :</label>
+                <div class="col-lg-7" > 
+            <input class="form-control" type="password" id="password" v-model="user.password"  placeholder="Enter the Password">
+          </div>
+             <div class="col-lg-5" >
+                  </div>
+                <div class="col-lg-7" style="margin-top:6px;">
+                     <p style="font-size: 11px;"> *Password Constraints
                   <br>Allowed special characters (!@#$%^&*)
                   <br>Lower case (a-z), upper case (A-Z) and numbers (0-9)
                   <br>Length should be greater than 8 
                 </p>
                 </div>
-                <div class="row" v-if="!state">
-                <label class="col-lg-3" for="password">Confirm Password * :</label>
-                <input class="col-lg-8"  type="password" id="password" v-model="user.cnf_password" @change="checkPassword()"  placeholder="Re-Enter the Password">
+                </div>
+                <div class="row align"  v-if="!state">
+                <label class="col-lg-5" for="password">Confirm Password * :</label>
+                 <div class="col-lg-7" > 
+           <input class="form-control"  type="password" id="password" v-model="user.cnf_password" @change="checkPassword()"  placeholder="Re-Enter the Password">
+          </div>
                 <div class="col-lg-3"></div>
                 </div>
       </div>
@@ -592,9 +598,16 @@ console.log(user)
 };
 </script>
 <style>
+/* @media all and (max-width: 720px) and (min-width: 600px) {
+    body{
+        font-size: 13px;
+    }
+} */
 
-  .fontFix {
-   font-size:13px;
-  }
+
+.align{
+
+  padding:6px;
+}
 
 </style>

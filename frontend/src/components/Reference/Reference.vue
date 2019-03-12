@@ -10,14 +10,20 @@
       </div>
       <div class>
         <h5>Reference File Information :</h5>
-        <div class="form-group">
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Part File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
+        <div >
+
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="table-responsive">
+                <table class="table" style="width:100%" >
+            
+            <tbody>
+            <tr>
+              <td >
+                <label >Part File</label>
+              </td>
+              <td >
+               
                   <label for="fileupload" class="file">
                     <input
                       type="file"
@@ -27,14 +33,13 @@
                     >
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{partsFileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer">
-              <DownloadExcel :data="partsAnalysisRequestList" type="csv" name="Sample_Parts.csv"  >
+                
+                  <span style="paddingLeft:7%;paddingTop:1%">{{partsFileName}}</span>
+                
+              
+              </td>
+              <td >
+                <DownloadExcel :data="partsAnalysisRequestList" type="csv" name="Sample_Parts.csv"  >
  
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
@@ -43,25 +48,23 @@
                   <span>Download Sample_Parts.csv</span>
                 </div>
               </DownloadExcel>
-            </div>
-            <div class="col-lg-2">
-              <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="routeToView('parts')"
-                style="margin-left:10%"
-              >View</button>
-            </div>
-          </div>
-
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">High Spare File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
+              </td>
+              <td >
+                <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="routeToView('parts')"
+                
+                >View</button>
+              </td>
+            </tr>
+            <tr>
+              <td >
+               <label>High Spare File</label>
+              </td>
+              <td >
+               
                   <label for="highSpareUpload" class="file">
                     <input
                       type="file"
@@ -71,14 +74,11 @@
                     >
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{highSpareFileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer">
-             
+                
+                  <span style="paddingLeft:7%;paddingTop:1%">{{highSpareFileName}}</span>
+              
+              </td>
+              <td >
                 <DownloadExcel :data="highSpareFilesList" type="csv" name="Sample_High_Spare.csv"  >
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
@@ -87,37 +87,33 @@
                   <span>Download Sample_High_Spare.csv</span>
                 </div>
                 </DownloadExcel>
-            </div>
-            <div class="col-lg-2">
-              <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
+              </td>
+              <td >
+                 <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('highspare')"
-                style="margin-left:10%"
+                
               >View</button>
-            </div>
-          </div>
-
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Node File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
-                  <label for="nodeUpload" class="file">
+              </td>
+            </tr>
+            <tr>
+              <td >
+               <label>Node File</label>
+              </td>
+              <td >
+               
+                 <label for="nodeUpload" class="file">
                     <input type="file" @change="nodeFileEvent" id="nodeUpload" style="display:none">
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{nodeFileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer">
-              <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv"  >
+                
+                  <span style="paddingLeft:7%;paddingTop:1%">{{nodeFileName}}</span>
+              
+              </td>
+              <td >
+               <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv"  >
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
@@ -125,42 +121,35 @@
                   <span>Download Sample_Node.csv</span>
                 </div>
               </DownloadExcel>
-            </div>
-            <div class="col-lg-2">
-              <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
+              </td>
+              <td >
+                 <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('node')"
-                style="margin-left:10%"
               >View</button>
-            </div>
-          </div>
-
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Depot File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
-                  <label for="depotUpload" class="file">
+              </td>
+            </tr>
+            <tr>
+              <td >
+               <label>Depot File</label>
+              </td>
+              <td >
+               <label for="depotUpload" class="file">
                     <input
                       type="file"
                       @change="depotFileEvent"
                       id="depotUpload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                  <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{depotFileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer">
-              <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv"  >
+                  <span style="paddingLeft:7%;paddingTop:1%">{{depotFileName}}</span>
+              
+              </td>
+              <td >
+                <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv"  >
                 <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
@@ -168,26 +157,23 @@
                   <span>Download Sample_Depot.csv</span>
                 </div>
               </DownloadExcel>
-            </div>
-            <div class="col-lg-2">
-              <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
+              </td>
+              <td >
+                <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('depot')"
-                style="margin-left:10%"
               >View</button>
-            </div>
-          </div>
+              </td>
+            </tr>
 
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Minsomer File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
-                  <label for="minsomerUpload" class="file">
+             <tr>
+              <td >
+               <label>Minsomer File</label>
+              </td>
+              <td >
+               <label for="minsomerUpload" class="file">
                     <input
                       type="file"
                       @change="minsomerFileEvent"
@@ -196,14 +182,11 @@
                     >
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{minsomerFileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer">
-               <DownloadExcel :data="minsomerFilesList" type="csv" name="Sample_Minsomer.csv"  >
+                  <span style="paddingLeft:7%;paddingTop:1%">{{minsomerFileName}}</span>
+              
+              </td>
+              <td >
+                <DownloadExcel :data="minsomerFilesList" type="csv" name="Sample_Minsomer.csv"  >
                  <div class="float-left" style="marginTop:1%">
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
@@ -211,26 +194,23 @@
                   <span>Download Sample_Minsomer.csv</span>
                 </div>
                </DownloadExcel>
-            </div>
-            <div class="col-lg-2">
+              </td>
+              <td >
               <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('misnomer')"
-                style="margin-left:10%"
               >View</button>
-            </div>
-          </div>
+              </td>
+            </tr>
 
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Ratio of PON - 2Day File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
-                  <label for="ratio2Upload" class="file">
+             <tr>
+              <td >
+               <label>Ratio of PON - 2Day File</label>
+              </td>
+              <td >
+              <label for="ratio2Upload" class="file">
                     <input
                       type="file"
                       @change="ratio2FileEvent"
@@ -239,23 +219,20 @@
                     >
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
+                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio2FileName}}</span>
+              
+              </td>
+              <td >
+               <div  style="cursor:pointer" @click="downloadRatio2CSV()">
+                  <div class="float-left" style="marginTop:1%">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </div>
+                  <div style="paddingLeft:7%;paddingTop:1%">
+                    <span>Download Sample_Ratio_2Day.csv</span>
+                  </div>
                 </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{ratio2FileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio2CSV()">
-              <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
-              <div class="float-left" style="marginTop:1%">
-                <i class="fa fa-download" aria-hidden="true"></i>
-              </div>
-              <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio_2Day.csv</span>
-              </div>
-              <!-- </download-excel>   -->
-            </div>
-            <div class="col-lg-2">
+              </td>
+              <td >
               <button
                 type="button"
                 class="btn btn-success"
@@ -265,19 +242,17 @@
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('Ratio of PON - 2Day')"
-                style="margin-left:10%"
               >View</button>
-            </div>
-          </div>
+              </td>
+            </tr>
 
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Ratio of PON - 7Day File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
-                  <label for="ratio7Upload" class="file">
+
+             <tr>
+              <td >
+               <label>Ratio of PON - 7Day File</label>
+              </td>
+              <td >
+               <label for="ratio7Upload" class="file">
                     <input
                       type="file"
                       @change="ratio7FileEvent"
@@ -286,45 +261,39 @@
                     >
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
+                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio7FileName}}</span>
+              
+              </td>
+              <td >
+               <div style="cursor:pointer" @click="downloadRatio7CSV()">
+                <div class="float-left" style="marginTop:1%">
+                  <i class="fa fa-download" aria-hidden="true"></i>
                 </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{ratio7FileName}}</span>
+                <div style="paddingLeft:7%;paddingTop:1%">
+                  <span>Download Sample_Ratio_7Day.csv</span>
                 </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio7CSV()">
-              <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
-              <div class="float-left" style="marginTop:1%">
-                <i class="fa fa-download" aria-hidden="true"></i>
-              </div>
-              <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio_7Day.csv</span>
-              </div>
-              <!-- </download-excel>   -->
-            </div>
-            <div class="col-lg-2">
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="uploadRatioData('Ratio of PON - 7Day')"
-              >Save</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="routeToView('Ratio of PON - 7Day')"
-                style="margin-left:10%"
-              >View</button>
-            </div>
-          </div>
+               </div>
+              </td>
+              <td >
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    @click="uploadRatioData('Ratio of PON - 7Day')"
+                  >Save</button>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    @click="routeToView('Ratio of PON - 7Day')"
+                  >View</button>
+              </td>
+            </tr>
 
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Ratio of PON - 30Day File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
-                  <label for="ratio30Upload" class="file">
+            <tr>
+              <td >
+               <label>Ratio of PON - 30Day File</label>
+              </td>
+              <td >
+               <label for="ratio30Upload" class="file">
                     <input
                       type="file"
                       @change="ratio30FileEvent"
@@ -333,24 +302,21 @@
                     >
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
+                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio30FileName}}</span>
+              
+              </td>
+              <td >
+                <div  style="cursor:pointer" @click="downloadRatio30CSV()">
+                  <div class="float-left" style="marginTop:1%">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </div>
+                  <div style="paddingLeft:7%;paddingTop:1%">
+                    <span>Download Sample_Ratio_30Day.csv</span>
+                  </div>
                 </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{ratio30FileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio30CSV()">
-              <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
-              <div class="float-left" style="marginTop:1%">
-                <i class="fa fa-download" aria-hidden="true"></i>
-              </div>
-              <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio_30Day.csv</span>
-              </div>
-              <!-- </download-excel>   -->
-            </div>
-            <div class="col-lg-2">
-              <button
+              </td>
+              <td >
+                <button
                 type="button"
                 class="btn btn-success"
                 @click="uploadRatioData('Ratio of PON - 30Day')"
@@ -359,19 +325,16 @@
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('Ratio of PON - 30Day')"
-                style="margin-left:10%"
               >View</button>
-            </div>
-          </div>
+              </td>
+            </tr>
 
-          <div class="row" style="marginTop:2%;font-size:17px">
-            <div class="col-lg-3">
-              <label style="font-size:17px">Ratio of PON - 60Day File</label>
-            </div>
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-1">
-                  <label for="ratio60Upload" class="file">
+            <tr>
+              <td >
+               <label>Ratio of PON - 60Day File</label>
+              </td>
+              <td >
+              <label for="ratio60Upload" class="file">
                     <input
                       type="file"
                       @change="ratio60FileEvent"
@@ -380,36 +343,39 @@
                     >
                     <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
                   </label>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%" class="col-lg-4">
-                  <span>{{ratio60FileName}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3" style="cursor:pointer" @click="downloadRatio60CSV()">
-              <!-- <download-excel :data="ratioFilesList" type="csv" name="Sample_Ratio.csv"> -->
+                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio60FileName}}</span>
+              
+              </td>
+              <td >
+                 <div  style="cursor:pointer" @click="downloadRatio60CSV()">
               <div class="float-left" style="marginTop:1%">
                 <i class="fa fa-download" aria-hidden="true"></i>
               </div>
               <div style="paddingLeft:7%;paddingTop:1%">
                 <span>Download Sample_Ratio_60Day.csv</span>
               </div>
-              <!-- </download-excel>   -->
             </div>
-            <div class="col-lg-2">
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="uploadRatioData('Ratio of PON - 60Day')"
-              >Save</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="routeToView('Ratio of PON - 60Day')"
-                style="margin-left:10%"
-              >View</button>
+              </td>
+              <td >
+                  <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="uploadRatioData('Ratio of PON - 60Day')"
+                >Save</button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="routeToView('Ratio of PON - 60Day')"
+                >View</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
             </div>
-          </div>
+            </div>
+          
+        </div>
+         
         </div>
       </div>
     </div>
