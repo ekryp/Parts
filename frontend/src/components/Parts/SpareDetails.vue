@@ -4,99 +4,14 @@
     <side-nav menu="analysis"/>
 
     <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
- <div>
-        <div class="myBreadCrumb" >
+      <div>
+        <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
             <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}</span>
             <span style="font-size: 14px;">{{current}}</span>
           </p>
         </div>
       </div>
-<div class=" row-one-local">
-        
-
-        <toggle-button
-          style="margin-left:95% "
-          :value="mainState"
-          :color="{checked: 'green', unchecked: 'green'}"
-          :sync="true"
-          :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-          :width="80"
-          v-tooltip.top.hover.focus="'Click to Toggle'"
-          @change="mainStateChange()"
-        />
-        <div class="row text-center">
-          <div class="col-lg-2">
-            <div class="row">
-              <div class="col-lg-10">
-                <span class="text-top">Total Customer</span>
-                <br>
-                <span class="text-middle">{{dashboardData.total_customer}}</span>
-              </div>
-              <div class="vertical"></div>
-            </div>
-          </div>
-          <div class="col-lg-2">
-            <div class="row">
-              <div class="col-lg-10">
-                <span class="text-top">Critical PONs</span>
-                <br>
-                <span class="text-middle" style="color:red">{{dashboardData.critical_pon}}</span>
-              </div>
-              <div class="vertical"></div>
-            </div>
-            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-          </div>
-          <div class="col-lg-2">
-            <div class="row">
-              <div class="col-lg-10">
-                <span class="text-top">Critical Customers</span>
-                <br>
-                <span class="text-middle" style="color:red">{{dashboardData.critical_customer}}</span>
-              </div>
-              <div class="vertical"></div>
-            </div>
-            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-          </div>
-          <div class="col-lg-2">
-            <div class="row">
-              <div class="col-lg-10">
-                <span class="text-top">Critical Depots</span>
-                <br>
-                <span class="text-middle" style="color:red">{{dashboardData.critical_depot}}</span>
-              </div>
-              <div class="vertical"></div>
-            </div>
-            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-          </div>
-          <div class="col-lg-2">
-            <div class="row">
-              <div class="col-lg-10">
-                <span class="text-top">Total PON types</span>
-                <br>
-                <span class="text-middle">{{dashboardData.total_pon_type}}</span>
-              </div>
-              <div class="vertical"></div>
-            </div>
-            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-          </div>
-          <div class="col-lg-2">
-            <div class="row">
-              <div class="col-lg-10">
-                <span class="text-top">Total Depots</span>
-                <br>
-                <span class="text-middle">{{dashboardData.total_depot}}</span>
-              </div>
-            </div>
-            <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
-          </div>
-        </div>
-      </div>
-
-
-<br>
-<br>
-     
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
@@ -466,7 +381,6 @@ export default {
     this.createGrossColumnDefs();
     this.createIbColumnDefs();
     this.createCurrColumnDefs();
-    this.getMainDashboardCount();
     this.createErrorColumnDefs();
     this.get_error_records(this.$route.query.id);
     this.get_current_inventory_specific_request(this.$route.query.id);
@@ -479,9 +393,7 @@ export default {
     return {
       requestID: "",
       data: data,
-      dashboardData: [],
       state: true,
-      mainState: true,
       toggle: "reorder",
       currentInventory: [],
       currentInventoryTitle:['Part Name','Depot Name','Reorder Point'],
@@ -495,7 +407,6 @@ export default {
       grossTitle:['Part Name','Depot Name','Gross Quantity'],
       netColumnDefs: null,
       netRowData: [],
-      mainToggle: "reorder",
       ibColumnDefs: null,
       ibTitle:['Node Depot Belongs','Product Ordering Name','PON Quantity'],
       ibRowData: [],
@@ -546,20 +457,6 @@ export default {
     });
   },
   methods: {
-    mainStateChange()
-    {
-      this.mainState = !this.mainState;
-      if (this.mainState) {
-        this.mainToggle = "reorder";
-        this.getMainDashboardCount();
-        
-      } else {
-        this.mainToggle = "total_stock";
-        this.getMainDashboardCount();
-        
-      }
-    
-    },
     stateChange() {
       this.state = !this.state;
 
@@ -1009,46 +906,11 @@ export default {
 
       // fill out any available space to ensure there are no gaps
       event.api.sizeColumnsToFit();
-    },
-     getMainDashboardCount() {
-      console.log(
-        "local storage ----->",
-        this.mainToggle
-      );
-      fetch(
-        constant.APIURL +
-          "api/v1/get_main_dashboard_count?toggle=" +
-          this.mainToggle,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
-          }
-        }
-      )
-        .then(response => {
-          response.text().then(text => {
-            const data = text && JSON.parse(text);
-            
-            if(data.code === "token_expired")
-            {
-              this.logout();
-            }
-            console.log("data -- get_dashboard_request_count-->", data);
-            this.dashboardData = data;
-          });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
-    },
+    }
   }
 };
 </script>
 <style>
-.row-one-local{
-  padding-top: 0% !important;
-}
 a {
   color: black;
   text-decoration: none;
