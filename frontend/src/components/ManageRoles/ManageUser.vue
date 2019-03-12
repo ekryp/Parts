@@ -197,7 +197,7 @@ export default {
       email:'',
       cnf_password:''
     },
-    regPass:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d@$!%*?&]{8,}$/,
+    regPass:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_])[A-Za-z\d@$!%*?&_]{8,}$/,
     reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
     };
   },
@@ -408,7 +408,7 @@ export default {
 console.log(user)
           swal({
             title: "Info",
-            text: "Do You Want to Delete the Role ?",
+            text: "Do You Want to Delete the User ?",
             icon: "info"
           }).then(ok => {
             if (ok) {
