@@ -260,6 +260,12 @@ class User(Resource):
         }
         # This Creates a new user
         response = requests.post(ext_url, headers=headers, data=data)
+        if response.status_code != 201:
+            # 201 means The user was created, other than 201 means exception occured
+            # sample error codes are
+            # 403	Insufficient scope, expected any of: create:users
+            # 409	The user already exists.
+            return jsonify(msg=response.json().get('message'), http_status_code=500)
 
         group_id = Configuration.AUTH0_INFINERA_GROUP_ID
         extension_access_token = get_extension_access_token()
