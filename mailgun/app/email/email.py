@@ -25,15 +25,15 @@ class MailGun(Resource):
         htmlFile = dir_path+'/EmailTemplate.html'
         content = open(htmlFile, "r").read()
         soup = BeautifulSoup(content)
-        target = soup.find_all(text=re.compile(r'message'))
+        target = soup.find_all(text=re.compile(r'ekrypmessage'))
         for v in target:
-            v.replace_with(v.replace('message',args['emailMessage']))
+            v.replace_with(v.replace('ekrypmessage',args['emailMessage']))
         response = requests.post("https://api.mailgun.net/v3/noreply.ekryp.com/messages",
                              auth=("api","key-06a2334ec7daa13d562564d303582d63"),
                              data={"from": args['senderEmailAddress'],
                                     "to": args['recevierEmailAddress'],
                                     "subject" :args['emailSubject'],
-                                    "html": content,
+                                    "html": soup,
                                     "subscribed": True})
         emailResponse = json.loads(response.content.decode("utf-8"))
         print(emailResponse)
