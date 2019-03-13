@@ -188,6 +188,12 @@ class Roles(Resource):
         routes = 'roles'
         ext_url = Configuration.AUTH0_EXTERNAL_API + routes
         response = requests.post(ext_url, headers=headers, data=data)
+        if response.status_code != 200:
+            # 200 means The role was created, other than 200 means exception occured
+            # sample error codes are
+            # 403	Insufficient scope, expected any of: create:role
+            # 400	The role already exists.
+            return jsonify(msg=response.json().get('message'), http_status_code=500)
         return jsonify(msg=" Role Created Successfully", http_status_code=200)
 
     @requires_auth
