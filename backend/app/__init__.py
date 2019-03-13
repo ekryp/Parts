@@ -121,7 +121,7 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
-    GetErrorRecords, GetSummaryByPONforSpecificRequest
+    GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard
 
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
     UploadMisnomer, UploadRatio
@@ -188,6 +188,7 @@ api.add_resource(User, '/info/members/create-user', endpoint='create-user')
 api.add_resource(User, '/info/members/delete-user', endpoint='delete-user')
 api.add_resource(User_Role, '/info/members/get-all-roles-by-user', endpoint='get-all-roles-by-user')
 api.add_resource(Roles, '/info/members/update-roles', endpoint='update_role_for_particular_user')
+api.add_resource(FilterMainDashboard, '/get_filter_main_dashboard', endpoint='get_filter_main_dashboard')
 app.register_blueprint(api_blueprint)
 api.init_app(app)
 
