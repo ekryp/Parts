@@ -705,19 +705,48 @@ class GetTopDepots(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
         super(GetTopDepots, self).__init__()
 
     @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
+        filter_query = ''
         toggle = args['toggle']
         print(toggle)
         # toggle is True by default meaning by default reorder
         # False means total_stock
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            filter_query = filter_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            filter_query = filter_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and depot_name in {0} ".format(tuple(args.get('depot_filter')))
+            filter_query = filter_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and depot_name in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            filter_query = filter_query + depot_filter
+
         if toggle == 'reorder':
-            query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   ' \
-                    'where (net_reorder_point >0) and is_latest="Y" group by depot_name order by ' \
-                    'critical_pon_count desc'
+            base_query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   ' \
+                    'where (net_reorder_point >0) and is_latest="Y" '
+
+            qroup_by_query = ' group by depot_name order by critical_pon_count desc'
+
+            query = base_query + filter_query + qroup_by_query
+            print(query)
 
             result = get_df_from_sql_query(
                 query=query,
@@ -728,9 +757,13 @@ class GetTopDepots(Resource):
 
         else:
 
-            query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   ' \
-                    'where (net_total_stock >0) and is_latest="Y" group by depot_name order by ' \
-                    'critical_pon_count desc'
+            base_query = 'select depot_name,count(part_name) as critical_pon_count FROM summary   ' \
+                    'where (net_total_stock >0) and is_latest="Y" '
+
+            qroup_by_query = ' group by depot_name order by critical_pon_count desc'
+
+            query = base_query + filter_query + qroup_by_query
+            print(query)
 
             result = get_df_from_sql_query(
                 query=query,
