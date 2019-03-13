@@ -13,6 +13,7 @@ from flask import request
 from flask_restful import Resource
 from flask_restful import reqparse
 from sqlalchemy import create_engine
+from app.tasks.common_functions import read_data
 from app.tasks import derive_table_creation
 
 
@@ -1382,6 +1383,25 @@ class GetSummaryByPONforSpecificRequest(Resource):
             summary_df.rename(columns={'ib_quantity_from_install_base': 'ib_quantity'}, inplace=True)
             response = json.loads(summary_df.to_json(orient="records", date_format='iso'))
             return response
+
+
+class FilterMainDashboard(Resource):
+
+    def get(self):
+
+        connection = Configuration.INFINERA_DB_URL
+        total_customer_query = 'SELECT distinct(customer_name) FROM summary where is_latest= "Y";'
+        total_customer_df = read_data(total_customer_query, connection)
+        total_customer = total_customer_df['customer_name'].tolist()
+
+        total_depot_query = 'SELECT distinct(depot_name) FROM summary where is_latest= "Y";'
+        total_depot_df = read_data(total_depot_query, connection)
+        total_depot = total_depot_df['depot_name'].tolist()
+        response = {
+            'customer_list': total_customer,
+            'depot_list': total_depot,
+        }
+        return response
 
 
 
