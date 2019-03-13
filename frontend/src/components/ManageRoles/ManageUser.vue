@@ -1,9 +1,13 @@
 <template>
 <div>
-     <headernav msg="Dashboard" :loaderFlag="loaderFlag"/>
+     <headernav msg="Dashboard" />
     <side-nav/>
      
-
+<Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+        
  <vudal name="myModal">
   <div class="header">
     <i class="close icon"></i>
@@ -12,7 +16,10 @@
   </div>
   <div class="content">
     <div class="form-group text-left" >
-      
+      <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
       <div v-if="editFlag">
                 <br>
                 <div class="row">
@@ -65,13 +72,17 @@
                 </p>
                 </div>
                 </div>
-                <div class="row align"  v-if="!state">
+          <div class="row align"  v-if="!state">
                 <label class="col-lg-5" for="password">Confirm Password * :</label>
-                 <div class="col-lg-7" > 
-           <input class="form-control"  type="password" id="password" v-model="user.cnf_password" @change="checkPassword()"  placeholder="Re-Enter the Password">
+            <div class="col-lg-7" > 
+              <input class="form-control"  type="password" id="password" v-model="user.cnf_password" @change="checkPassword()"  placeholder="Re-Enter the Password">
+            </div>
           </div>
-                <div class="col-lg-3"></div>
-                </div>
+           <div class="row align " v-if="errorMessage !==''">
+             <div class="col-lg-10 alert alert-danger" align="center">
+                <strong>Warning!</strong> &nbsp&nbsp&nbsp{{errorMessage}}
+             </div>
+          </div>
       </div>
         </div>
       
@@ -80,6 +91,7 @@
     <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Create'" @click="addUser()">
                     Create
                 </button>
+              
     <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Update'" @click="editUserRole()">
                     Update
                 </button>
@@ -117,7 +129,8 @@
                     
                     <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">Add User
                                     </button>
-            <table id="example" class="table table-bordered col-lg-12" align="center"  style="fontSize:14px">
+                                  <div class="table-responsive"> 
+                                      <table id="example" class="table  table-bordered" align="center"  style="fontSize:14px">
               <thead align="left">
                 <tr>
                   <th  scope="col">User</th>
@@ -133,14 +146,14 @@
                     <td scope="col">
                       <div class="row">
                         <div class="col">
-                       
-                         <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
-                          </button>
+                       <i @click="showEditRole(user)" class="fas fa-tasks" style="cursor:pointer"></i>
+                         <!-- <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
+                          </button> -->
                           </div>
                           <div class="col">
-                          
-                          <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
-                          </button>
+                            <i @click="deleteRole(user)" class="fas fa-trash-alt" style="cursor:pointer"></i>
+                          <!-- <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
+                          </button> -->
                           </div>
                       </div>
                     </td>
@@ -148,6 +161,8 @@
                 
               </tbody>
             </table>
+          </div>
+           
             </div>
             </div>
           </div>
@@ -167,6 +182,8 @@ import * as constant from "../constant/constant";
 //import * as data from "../../utilies/tabledata.json";
 import Vudal from "vudal";
 import generator from "generate-password";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: "ManageUser",
@@ -174,7 +191,8 @@ export default {
     SideNav,
     headernav,
     Vudal,
-    Multiselect
+    Multiselect,
+    Loading
   },
   created() {
     clearInterval(window.intervalObj);
@@ -188,7 +206,10 @@ export default {
   data() {
     
     return {
+    isLoading: false,
+    fullPage: true,
     allusers:[],
+    errorMessage:'',
     allPermissions:[],
     editFlag: false,
     addFlag: true,
@@ -242,6 +263,13 @@ export default {
     },
     showAddRole()
     {
+      this.permissionValue=[];
+      this.user.username='';
+      this.user.password='';
+      this.user.cnf_password='';
+      this.user.email='';
+      this.state=true;
+      this.errorMessage='';
     this.editFlag=false;
     this.addFlag=true;
     console.log(this.options);
@@ -249,6 +277,9 @@ export default {
     },
     addUser()
     {
+      
+       
+      this.isLoading=true;
     if(this.state)
     {
       var password = generator.generate({
@@ -282,6 +313,7 @@ export default {
         }
       })
         .then(response => {
+          
           response.text().then(text => {
             const data = text && JSON.parse(text);
             if(data.code === "token_expired")
@@ -289,27 +321,30 @@ export default {
               this.logout();
             }
             if (data.http_status_code === 200) {
-              
+              this.isLoading=false;
               swal({
                 title: "SUCCESS",
                 text: data.msg,
                 icon: "success"
+              }).then(ok => {
+                if (ok) {
+                  this.user.username='';
+                  this.user.email='';
+                  this.user.password='';
+                  this.user.cnf_password='';
+                  this.state=true;
+                  this.getAllUsers();
+                  this.$modals.myModal.$hide();
+                  }
               });
+              
             } else {
-              swal({
-                title: "Error",
-                text: data.msg,
-                icon: "error"
-              });
+              this.isLoading=false;
+               this.errorMessage= data.msg;
             }
             console.log("data -- response-->", data);
-            this.user.username='';
-            this.user.email='';
-            this.user.password='';
-            this.user.cnf_password='';
-            this.state=true;
-            this.getAllUsers();
-            this.$modals.myModal.$hide();
+            
+          
           });
         })
         .catch(handleError => {
@@ -360,6 +395,8 @@ export default {
 
     editUserRole()
     {
+      
+      this.isLoading=true;
     
     let formData = new FormData();
          formData.append("userId", this.userId);
@@ -386,23 +423,24 @@ export default {
                this.logout();
              }
              if (data.http_status_code === 200) {
-              
+              this.isLoading=false;
                swal({
                  title: "SUCCESS",
                  text: data.msg,
                  icon: "success"
-               });
+               }).then(ok => {
+                if (ok) {
+                  this.permissionValue=[];
+                  this.getAllUsers();
+                  this.$modals.myModal.$hide();
+                  }
+              });
              } else {
-               swal({
-                 title: "Error",
-                 text: "Role Updation Failed",
-                 icon: "error"
-               });
+                this.isLoading=false;
+               this.errorMessage= data.msg;
              }
              console.log("data -- response-->", data);
-             this.permissionValue=[];
-             this.getAllUsers();
-              this.$modals.myModal.$hide();
+             
            });
          })
          .catch(handleError => {
@@ -411,13 +449,16 @@ export default {
     },
     deleteRole(user)
     {
-console.log(user)
+
           swal({
             title: "Info",
             text: "Do You Want to Delete the User ?",
             icon: "info"
           }).then(ok => {
+           
+            
             if (ok) {
+               this.isLoading=true;
               fetch(
                 constant.APIURL +
                   "api/v1/info/members/delete-user?user_id=" +
@@ -435,8 +476,8 @@ console.log(user)
                     const data = text && JSON.parse(text);
 
                     console.log("data -getallrequest--->", data);
-
                     if (data.http_status_code === 200) {
+                       this.isLoading=false;
                       swal({
                         title: "Success",
                         text: data.msg,
@@ -525,8 +566,7 @@ console.log(user)
     ,
     getAllUsers()
     {
-      this.loaderFlag=true;
-      
+      this.isLoading=true;
       this.allusers=[];
       fetch(constant.APIURL + "api/v1/info/members/get-all-user-by-group" , {
         method: "GET",
@@ -574,7 +614,7 @@ console.log(user)
                 user_id:data[i].user_id,
                 role_ids:role_ids
               });   
-              this.loaderFlag=false;
+              this.isLoading=false;
              
           });
         })
