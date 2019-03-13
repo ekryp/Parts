@@ -43,7 +43,7 @@ class GetParts(Resource):
             engine.execute(part_cost_query)
             return jsonify(msg="Parts Details Updated Successfully", http_status_code=200)
         except:
-            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
+            return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
     @requires_auth
     def put(self):

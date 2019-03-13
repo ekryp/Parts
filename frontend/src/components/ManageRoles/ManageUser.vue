@@ -146,12 +146,12 @@
                     <td scope="col">
                       <div class="row">
                         <div class="col">
-                       <i @click="showEditRole(user)" class="fas fa-tasks" style="cursor:pointer"></i>
+                       <i @click="showEditRole(user)" class="fas fa-edit" style="cursor:pointer;color:#4481bb;"></i>
                          <!-- <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
                           </button> -->
                           </div>
                           <div class="col">
-                            <i @click="deleteRole(user)" class="fas fa-trash-alt" style="cursor:pointer"></i>
+                            <i @click="deleteRole(user)" class="fas fa-trash-alt" style="cursor:pointer;color:#de3341;"></i>
                           <!-- <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
                           </button> -->
                           </div>
@@ -184,6 +184,8 @@ import Vudal from "vudal";
 import generator from "generate-password";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+
+
 
 export default {
   name: "ManageUser",
@@ -449,7 +451,7 @@ export default {
     },
     deleteRole(user)
     {
-
+      
           swal({
             title: "Info",
             text: "Do You Want to Delete the User ?",

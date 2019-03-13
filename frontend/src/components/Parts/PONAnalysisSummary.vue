@@ -1,4 +1,11 @@
 <template>
+<div>
+<div>
+   <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+</div>
   <div class="shadow p-3 mb-5 bg-white rounded" id="PonSummaryDiv">
     <br>
   
@@ -42,6 +49,7 @@
       :gridSizeChanged="OnReady"
     ></ag-grid-vue>
   </div>
+</div>
 </template>
 
 <script>
@@ -56,6 +64,8 @@ import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
 import Tooltip from "vue-directive-tooltip";
 import "vue-directive-tooltip/css/index.css";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 import accounting from "../../utilies/accounting";
 Vue.use(Tooltip);
 
@@ -67,7 +77,8 @@ export default {
     SideNav,
     headernav,
     AgGridVue,
-    DownloadExcel
+    DownloadExcel,
+    Loading
   },
   created() {
     console.log("props ASD ----->", this.$props);
@@ -82,6 +93,8 @@ export default {
     console.log("PONAnalysisSummary", this.$store.state);
     return {
       requestId: "",
+      isLoading: false,
+      fullPage: true,
       partsAnalysisSummaryReslut: [],
       dispId: "",
       analysisName: [],
@@ -119,6 +132,7 @@ export default {
       }
     },
     get_analysis_name(requestId) {
+      this.isLoading=true;
       fetch(
         constant.APIURL +
           "api/v1/get_analysis_name?request_id=" +
@@ -141,6 +155,7 @@ export default {
             }
             console.log("data -- get_analysis_name-->", data);
             this.analysisName = data;
+            this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -149,6 +164,7 @@ export default {
     },
     get_request_analysis_summary_result(requestId) {
         this.summaryRowData=[];
+        this.isLoading=true;
         this.partsAnalysisDownload=[];
       fetch(
         constant.APIURL +
@@ -211,7 +227,7 @@ export default {
                 high_spare: this.partsAnalysisSummaryReslut[i].high_spare
                 });
             }
-          
+          this.isLoading=false;
            
           });
         })

@@ -1,7 +1,12 @@
 <template>
     <div>
-        <headernav :loaderFlag="loaderFlag"/>
+        <headernav />
         <side-nav/>
+
+        <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
 
         <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
       
@@ -22,6 +27,11 @@
     {{this.title}}
   </div>
   <div class="content">
+
+    <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
     <div class="form-group text-left" >
       
       <span v-for="(item) in columnList" :key="item.columnName">
@@ -41,6 +51,12 @@
           </div>
           <br>
             </span>
+            <br>
+            <div class="row align " v-if="errorMessage !==''">
+             <div class="col-lg-10 alert alert-danger" align="center">
+                <strong>Warning!</strong> &nbsp&nbsp&nbsp{{errorMessage}}
+             </div>
+          </div>
         </div>
       
   </div>
@@ -139,6 +155,8 @@ import Vue from "vue";
 import Vudal from "vudal";
 import accounting from "../../utilies/accounting";
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: "ReferenceView",
@@ -147,7 +165,8 @@ export default {
     headernav,
     AgGridVue,
     Vudal,
-    DownloadExcel
+    DownloadExcel,
+    Loading
   },
 
 
@@ -186,8 +205,11 @@ export default {
       referenceColumnDefs: null,
       referenceRowData: [],
       referenceList: [],
+      isLoading: false,
+      fullPage: true,
       columnList: [],
       formDatas: [],
+      errorMessage:'',
       editFlag: false,
       addFlag: true,
       gridApi: null,
@@ -206,6 +228,11 @@ export default {
   },
   methods: {
     addEntry() {
+      this.errorMessage='';
+      for(var i=0;i<this.columnList.length;i++)
+      {
+        this.columnList[i].value=null;
+      }
       this.$modals.myModal.$show();
     },
     hideEntry() {
@@ -731,6 +758,7 @@ export default {
     },
     editData() {
       let url;
+      this.errorMessage=false;
       let formData = new FormData();
       if (this.fileType === "parts") {
         // formData.append("parts_id",this.uniqueId);
@@ -748,6 +776,7 @@ export default {
         //formData.append("reference_table_id",this.uniqueId);
         url = "api/v1/get_all_misnomer?reference_table_id=" + this.uniqueId;
       } else {
+       
         formData.append("reliability_id", this.uniqueId);
         url =
           "api/v1/get_all_ratio?pon_type=" +
@@ -776,6 +805,7 @@ export default {
         }
         else{
       console.dir("formdata ----->", formData);
+       this.isLoading=true;
       fetch(constant.APIURL + url, {
         method: "PATCH",
         body: formData,
@@ -801,29 +831,29 @@ export default {
                 title: "SUCCESS",
                 text: data.msg,
                 icon: "success"
+              }).then(ok => {
+                if (ok) {
+                  if (this.fileType === "parts") {
+                    this.getParts();
+                  } else if (this.fileType === "highspare") {
+                    this.getHighSpare();
+                  } else if (this.fileType === "node") {
+                    this.getNode();
+                  } else if (this.fileType === "depot") {
+                    this.getDepot();
+                  } else if (this.fileType === "misnomer") {
+                    this.getMisnomer();
+                  } else {
+                    this.getRatioPON(this.fileType);
+                  }
+                  this.$modals.myModal.$hide();
+                  }
               });
             } else {
-              swal({
-                title: "Error",
-                text: data.msg,
-                icon: "error"
-              });
+              this.isLoading=false;
+               this.errorMessage= data.msg;
             }
-            this.$modals.myModal.$hide();
-            if (this.fileType === "parts") {
-              this.getParts();
-            } else if (this.fileType === "highspare") {
-              this.getHighSpare();
-            } else if (this.fileType === "node") {
-              this.getNode();
-            } else if (this.fileType === "depot") {
-              this.getDepot();
-            } else if (this.fileType === "misnomer") {
-              this.getMisnomer();
-            } else {
-              this.getRatioPON(this.fileType);
-            }
-            this.$modals.myModal.$hide();
+            
           });
         })
         .catch(handleError => {
@@ -833,6 +863,7 @@ export default {
     },
     addData() {
      
+    
       let url;
       if (this.fileType === "parts") {
         url = "api/v1/get_all_parts";
@@ -868,9 +899,10 @@ export default {
         });
         }
         else{
-           this.$modals.myModal.$hide();
-        this.loaderFlag = true;
+           
+       // this.loaderFlag = true;
         console.dir("formdata ----->", formData);
+         this.isLoading=true;
         fetch(constant.APIURL + url, {
           method: "PUT",
           body: formData,
@@ -889,35 +921,37 @@ export default {
             if (data.http_status_code === 200) {
                for (let i = 0; i < this.columnList.length; i++) {
                  this.columnList[i].value="";
-                
+                this.isLoading=false;
               }
               swal({
                 title: "SUCCESS",
                 text: data.msg,
                 icon: "success"
+               }).then(ok => {
+                if (ok) {
+                  this.$modals.myModal.$hide();
+                  if (this.fileType === "parts") {
+                        this.getParts();
+                      } else if (this.fileType === "highspare") {
+                        this.getHighSpare();
+                      } else if (this.fileType === "node") {
+                        this.getNode();
+                      } else if (this.fileType === "depot") {
+                        this.getDepot();
+                      } else if (this.fileType === "misnomer") {
+                        this.getMisnomer();
+                      } else {
+                        this.getRatioPON(this.fileType);
+                    }
+                  }
               });
             } else {
-              swal({
-                title: "Error",
-                text: data.msg,
-                icon: "error"
-              });
+              this.isLoading=false;
+               this.errorMessage= data.msg;
             }
 
-            if (this.fileType === "parts") {
-              this.getParts();
-            } else if (this.fileType === "highspare") {
-              this.getHighSpare();
-            } else if (this.fileType === "node") {
-              this.getNode();
-            } else if (this.fileType === "depot") {
-              this.getDepot();
-            } else if (this.fileType === "misnomer") {
-              this.getMisnomer();
-            } else {
-              this.getRatioPON(this.fileType);
-            }
-            this.$modals.myModal.$hide();
+            
+            
           });
         })
         .catch(handleError => {
@@ -926,7 +960,7 @@ export default {
       }
     },
     getParts() {
-      this.loaderFlag = true;
+      this.isLoading = true;
       console.log("loader show");
       this.referenceRowData = [];
       fetch(constant.APIURL + "api/v1/get_all_parts", {
@@ -970,7 +1004,7 @@ export default {
               
             }
 
-            this.loaderFlag = false;
+            this.isLoading = false;
 
           });
         })
@@ -979,7 +1013,7 @@ export default {
         });
     },
     getHighSpare() {
-      this.loaderFlag = true;
+      this.isLoading = true;
       this.referenceRowData = [];
       fetch(constant.APIURL + "api/v1/get_all_high_spare", {
         method: "GET",
@@ -1011,7 +1045,7 @@ export default {
              
             }
 
-            this.loaderFlag = false;
+            this.isLoading = false;
 
           });
         })
@@ -1023,7 +1057,7 @@ export default {
       router.push("/reference");
     },
     getNode() {
-      this.loaderFlag = true;
+      this.isLoading = true;
       this.referenceRowData = [];
       fetch(constant.APIURL + "api/v1/get_all_node", {
         method: "GET",
@@ -1058,7 +1092,7 @@ export default {
               });
              
             }
-            this.loaderFlag = false;
+            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -1067,7 +1101,7 @@ export default {
     },
     getDepot() {
       this.referenceRowData = [];
-      this.loaderFlag = true;
+      this.isLoading = true;
       fetch(constant.APIURL + "api/v1/get_all_depot", {
         method: "GET",
         headers: {
@@ -1120,7 +1154,7 @@ export default {
               
             }
 
-            this.loaderFlag = false;
+            this.isLoading = false;
 
           });
         })
@@ -1130,7 +1164,7 @@ export default {
     },
     getMisnomer() {
       this.referenceRowData = [];
-      this.loaderFlag = true;
+      this.isLoading = true;
       fetch(constant.APIURL + "api/v1/get_all_misnomer", {
         method: "GET",
         headers: {
@@ -1164,7 +1198,7 @@ export default {
               });
             }
 
-            this.loaderFlag = false;
+            this.isLoading = false;
 
           });
         })
@@ -1173,7 +1207,7 @@ export default {
         });
     },
     getRatioPON(fileType) {
-      this.loaderFlag = true;
+      this.isLoading = true;
       this.referenceRowData = [];
       
       fetch(constant.APIURL + "api/v1/get_all_ratio?pon_type=" + fileType, {
@@ -1223,7 +1257,7 @@ export default {
               });
               
             }
-            this.loaderFlag = false;
+            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -1275,6 +1309,7 @@ export default {
             icon: "info"
           }).then(ok => {
             if (ok) {
+              this.isLoading=true;
               fetch(
                 constant.APIURL + "api/v1/get_all_parts?parts_id=" + part_id,
                 {
@@ -1289,7 +1324,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-
+                    this.isLoading=false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1323,6 +1358,7 @@ export default {
           }).then(ok => {
             if (ok) {
               let high_spare_id = event.value;
+              this.isLoading=true;
               fetch(
                 constant.APIURL +
                   "api/v1/get_all_high_spare?high_spare_id=" +
@@ -1339,7 +1375,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-
+                    this.isLoading=false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1374,6 +1410,7 @@ export default {
             
           }).then(ok => {
             if (ok) {
+              this.isLoading=true;
               fetch(
                 constant.APIURL + "api/v1/get_all_node?node_id=" + node_id,
                 {
@@ -1388,7 +1425,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-
+                    this.isLoading=false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1421,7 +1458,9 @@ export default {
             icon: "info"
           }).then(ok => {
             if (ok) {
+              this.isLoading=true;
               fetch(
+                
                 constant.APIURL + "api/v1/get_all_depot?depot_id=" + depot_id,
                 {
                   method: "DELETE",
@@ -1435,8 +1474,9 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-
+                    this.isLoading=false;
                     if (data.http_status_code === 200) {
+
                       swal({
                         title: "Success",
                         text: data.msg,
@@ -1469,6 +1509,7 @@ export default {
             icon: "info"
           }).then(ok => {
             if (ok) {
+              this.isLoading=true;
               fetch(
                 constant.APIURL +
                   "api/v1/get_all_misnomer?reference_table_id=" +
@@ -1486,7 +1527,7 @@ export default {
                     const data = text && JSON.parse(text);
 
                     console.log("data -getallrequest--->", data);
-
+                    this.isLoading=false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1519,6 +1560,7 @@ export default {
             icon: "info"
           }).then(ok => {
             if (ok) {
+              this.isLoading=true;
               fetch(
                 constant.APIURL +
                   "api/v1/get_all_ratio?pon_type=" +
@@ -1537,7 +1579,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-
+                    this.isLoading=false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",

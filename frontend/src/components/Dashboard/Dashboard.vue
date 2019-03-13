@@ -10,6 +10,11 @@
           </p>
         </div>
 
+        <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+        
         <toggle-button
           style="margin-left:95% "
           :value="state"
@@ -229,6 +234,9 @@ import VueGeolocation from "vue-browser-geolocation";
 import * as constant from "../constant/constant";
 import GmapCluster from "vue2-google-maps/dist/components/cluster";
 import VTooltip from "v-tooltip";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 
 Vue.use(VTooltip);
 
@@ -245,7 +253,8 @@ export default {
   name: "Dashboard",
   components: {
     SideNav,
-    headernav
+    headernav,
+     Loading
   },
   mounted() {
     // this.chartone();
@@ -273,6 +282,8 @@ export default {
         center: { lat: 48.1667, lng: -100.1667 }
       },
       data: data,
+      isLoading: false,
+      fullPage: true,
       dashboardData: [],
       topPons: [],
       topDepots: [],
@@ -303,6 +314,7 @@ export default {
     // This Method is to get data for Main Dash Borad Details
 
     getMainDashboardCount() {
+      this.isLoading=true;
       console.log(
         "local storage ----->",
         localStorage.getItem("auth0_access_token")
@@ -319,6 +331,7 @@ export default {
         }
       )
         .then(response => {
+
           response.text().then(text => {
             const data = text && JSON.parse(text);
             
@@ -328,6 +341,7 @@ export default {
             }
             console.log("data -- get_dashboard_request_count-->", data);
             this.dashboardData = data;
+             this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -338,6 +352,7 @@ export default {
     // This Method is to get data for TOP PONS table
 
     getTopPons() {
+      this.isLoading=true;
       fetch(constant.APIURL + "api/v1/get_top_pons?toggle=" + this.toggle, {
         method: "GET",
         headers: {
@@ -354,6 +369,7 @@ export default {
             }
             console.log("data -- PONS Data-->", data);
             this.topPons = data;
+            this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -364,6 +380,7 @@ export default {
     // This Method is to get data for TOP DEPOTS table
 
     getTopDepots() {
+      this.isLoading=true;
       fetch(constant.APIURL + "api/v1/get_top_depots?toggle=" + this.toggle, {
         method: "GET",
         headers: {
@@ -379,6 +396,7 @@ export default {
             }
             console.log("data -- get_dashboard_request_count-->", data);
             this.topDepots = data;
+            this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -389,6 +407,7 @@ export default {
     // This Method is to get data for TOP CUSTOMER table
 
     getTopCustomer() {
+      this.isLoading=true;
       fetch(
         constant.APIURL + "api/v1/get_top_customers?toggle=" + this.toggle,
         {
@@ -408,12 +427,14 @@ export default {
             console.log("data -- get_dashboard_request_count-->", data);
             this.topCustomer = data;
           });
+          this.isLoading=false;
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
     },
     getPieChart() {
+      this.isLoading=true;
       fetch(constant.APIURL + "api/v1/get_pie_chart?toggle=" + this.toggle, {
         method: "GET",
         headers: {
@@ -432,12 +453,15 @@ export default {
             piechart.series[0].data[1].y = data.non_critical_pon;
             Highcharts.chart("container", piechart);
           });
+        this.isLoading=false;
         })
+        
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
     },
     getMapLocations(markers) {
+      this.isLoading=true;
       fetch(constant.APIURL + "api/v1/get_lat_lon?toggle=" + this.toggle, {
         method: "GET",
         headers: {
@@ -468,7 +492,7 @@ export default {
             return mapData;
           });
           promise.then(
-            mapData => alert("hi this is ", mapData), // shows "done!" after 1 second
+            mapData => {this.isLoading=false;}, // shows "done!" after 1 second
             error => alert(error) // doesn't run
           );
 

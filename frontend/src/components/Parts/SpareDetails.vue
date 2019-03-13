@@ -3,6 +3,11 @@
     <headernav msg="Spare Details"/>
     <side-nav menu="analysis"/>
 
+     <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+
     <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
       <div>
         <div class="myBreadCrumb" style="margin-bottom:1px">
@@ -363,6 +368,9 @@ import Vue from "vue";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 
 export default {
   name: "SpareDetails",
@@ -372,7 +380,8 @@ export default {
     AnalysisSummary,
     AgGridVue,
     PONAnalysisSummary,
-    DownloadExcel
+    DownloadExcel,
+    Loading
   },
   created() {
     this.requestID = this.$route.query.id;
@@ -394,6 +403,8 @@ export default {
       requestID: "",
       data: data,
       state: true,
+      isLoading: false,
+      fullPage: true,
       toggle: "reorder",
       currentInventory: [],
       currentInventoryTitle:['Part Name','Depot Name','Reorder Point'],
@@ -473,6 +484,7 @@ export default {
       }
     },
     get_current_inventory_specific_request(requestId) {
+      this.isLoading=true;
       fetch(
         constant.APIURL +
           "api/v1/get_current_inventory_specific_request?request_id=" +
@@ -505,6 +517,7 @@ export default {
                 curr_quantity: this.currentInventory[i].qty
               });
             }
+            this.isLoading=false;
             this.currentInventory=this.currRowData;
           });
         })
@@ -513,6 +526,7 @@ export default {
         });
     },
     get_gross_specific_request(requestId) {
+      this.isLoading=true;
       fetch(
         constant.APIURL +
           "api/v1/get_gross_specific_request?request_id=" +
@@ -540,6 +554,7 @@ export default {
                 gross_quantity: this.currentGross[i].gross_qty
               });
             }
+            this.isLoading=false;
             this.currentGross = this.grossRowData;
           });
         })
@@ -548,6 +563,7 @@ export default {
         });
     },
     get_error_records(requestId) {
+      this.isLoading=true;
       fetch(
         constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
         {
@@ -574,6 +590,7 @@ export default {
                 type: this.errorData[i].type
               });
             }
+            this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -581,6 +598,7 @@ export default {
         });
     },
     get_current_net_specific_request(requestId) {
+      this.isLoading=true;
       fetch(
         constant.APIURL +
           "api/v1/get_current_net_specific_request?request_id=" +
@@ -610,6 +628,7 @@ export default {
                 net_quantity: this.currentNet[i].net_qty
               });
             }
+            this.isLoading=false;
             this.currentNet=this.netRowData;
           });
         })
@@ -618,6 +637,7 @@ export default {
         });
     },
     get_current_ib_specific_request(requestId) {
+      this.isLoading=true;
       fetch(
         constant.APIURL +
           "api/v1/get_current_ib_specific_request?request_id=" +
@@ -648,6 +668,7 @@ export default {
                
               });
             }
+            this.isLoading=false;
             this.currentib = this.ibRowData;
           });
         })

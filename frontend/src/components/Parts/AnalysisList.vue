@@ -2,6 +2,11 @@
   <div>
     <headernav msg="Analysis Dashboard"/>
     <side-nav menu="analysis"/>
+    <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+
     <div class="custom-container" style="paddingTop:7.57%">
       <div>
         <div class="myBreadCrumb">
@@ -147,6 +152,8 @@ import Vue from "vue";
 import JsonExcel from "vue-json-excel";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 Vue.component("downloadExcel", JsonExcel);
 
@@ -157,7 +164,8 @@ export default {
     Multiselect,
     headernav,
     AgGridVue,
-    DownloadExcel
+    DownloadExcel,
+    Loading
   },
 
   created() {
@@ -172,6 +180,8 @@ export default {
   data() {
     console.log("Parts-AnalysisReqestList", this.$store.state);
     return {
+      isLoading: false,
+      fullPage: true,
       options: [
         { name: "Total Analysis Request" },
         { name: "Completed Request" },
@@ -229,6 +239,7 @@ export default {
 
     // API Calls
     get_all_request_analysis() {
+      this.isLoading=true;
       console.log("working successfully");
       fetch(constant.APIURL + "api/v1/get_steps_all_users", {
         method: "GET",
@@ -269,8 +280,7 @@ export default {
                     .substring(4)
               });
             }
-            
-            this.exportCSV(data);
+            this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -283,6 +293,7 @@ export default {
       localStorage.clear();
     },
     get_dashboard_request_count() {
+      this.isLoading=true;
       fetch(constant.APIURL + "api/v1/get_dashboard_request_count", {
         method: "GET",
         headers: {
@@ -296,6 +307,7 @@ export default {
             {
               this.logout();
             }
+            this.isLoading=false;
             console.log("data -- get_dashboard_request_count-->", data);
             this.dashboard_request_count = data;
           });

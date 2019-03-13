@@ -3,6 +3,10 @@
      <headernav msg="Dashboard" />
     <side-nav/>
      
+     <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
 
  <vudal name="myModal">
   <div class="header">
@@ -12,7 +16,13 @@
   </div>
   <div class="content">
     <div class="form-group text-left" >
-      
+
+      <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+
+
       <div>
          <div class="row" align="">
                 <label class="col-lg-3" for="usrname">Name :</label>
@@ -33,6 +43,13 @@
                  
                 <Multiselect v-model="permissionValue" tag-placeholder="Add this as new tag" placeholder="Search or add a Permission" label="name" 
                 track-by="_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>
+
+                <br>
+                 <div class="row" v-if="errorMessage !==''">
+                  <div class="col-lg-10 alert alert-danger" align="center">
+                      <strong>Warning!</strong> &nbsp&nbsp&nbsp{{errorMessage}}
+                  </div>
+                </div>
                
       </div>
         </div>
@@ -93,14 +110,21 @@
                     <td  scope="col">{{role.role_name}}</td>
                     <td  scope="col">{{role.role_description}}</td>
                     <td  scope="col">
-                      <div class="row">
-                       
-                        &nbsp&nbsp&nbsp&nbsp
-                         <button class="btn btn-sm btn-primary" @click="showEditRole(role)">Edit
-                          </button>&nbsp&nbsp    
-                          <button class="btn btn-sm btn-danger" @click="deleteRole(role)">Delete
-                          </button>
+
+
+                       <div class="row">
+                        <div class="col">
+                       <i @click="showEditRole(role)" class="fas fa-edit" style="cursor:pointer;color:#4481bb;"></i>
+                         <!-- <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
+                          </button> -->
+                          </div>
+                          <div class="col">
+                            <i @click="deleteRole(role)" class="fas fa-trash-alt" style="cursor:pointer;color:#de3341;"></i>
+                          <!-- <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
+                          </button> -->
+                          </div>
                       </div>
+                      
                     </td>
                 </tr>
                 
@@ -124,6 +148,9 @@ import Multiselect from "vue-multiselect";
 import * as constant from "../constant/constant";
 //import * as data from "../../utilies/tabledata.json";
 import Vudal from "vudal";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 
 export default {
   name: "UserRoleManagement",
@@ -131,7 +158,8 @@ export default {
     SideNav,
     headernav,
     Vudal,
-    Multiselect
+    Multiselect,
+    Loading
   },
   created() {
     clearInterval(window.intervalObj);
@@ -143,6 +171,9 @@ export default {
   data() {
     
     return {
+      errorMessage:'',
+    isLoading: false,
+    fullPage: true,
     allRoles:[],
     allPermissions:[],
     editFlag: false,
@@ -175,12 +206,14 @@ export default {
     {
     this.editFlag=false;
     this.addFlag=true;
+    this.permissionValue=[]
     this.roleName='';
     this.roleDescription='';
     this.$modals.myModal.$show();
     },
     addRoleData()
     {
+      this.isLoading=true;
           let formData = new FormData();
          formData.append("role_name", this.roleName);
          formData.append("role_description", this.roleDescription);
@@ -212,18 +245,20 @@ export default {
                 title: "SUCCESS",
                 text: data.msg,
                 icon: "success"
+             }).then(ok => {
+                if (ok) {
+                  this.isLoading=false;
+                  this.permissionValue=[];
+                     this.getAllRoles();
+                  this.$modals.myModal.$hide();
+                  }
               });
             } else {
-              swal({
-                title: "Error",
-                text: "Role Creation Failed",
-                icon: "error"
-              });
+               this.isLoading=false;
+               this.errorMessage= data.msg;
             }
             console.log("data -- response-->", data);
-            this.permissionValue=[];
-            this.getAllRoles();
-            this.$modals.myModal.$hide();
+           
           });
         })
         .catch(handleError => {
@@ -233,6 +268,7 @@ export default {
 
     editRoleData()
     {
+       this.isLoading=true;
        let formData = new FormData();
          formData.append("role_name", this.roleName);
          formData.append("role_description", this.roleDescription);
@@ -255,23 +291,24 @@ export default {
               this.logout();
             }
             if (data.http_status_code === 200) {
-              
+               this.isLoading=false;
               swal({
                 title: "SUCCESS",
                 text: data.msg,
                 icon: "success"
+             }).then(ok => {
+                if (ok) {
+                 this.permissionValue=[];
+                  this.getAllRoles();
+                  this.$modals.myModal.$hide();
+                  }
               });
             } else {
-              swal({
-                title: "Error",
-                text: "Role Updation Failed",
-                icon: "error"
-              });
+               this.isLoading=false;
+               this.errorMessage= data.msg;
             }
             console.log("data -- response-->", data);
-            this.permissionValue=[];
-            this.getAllRoles();
-             this.$modals.myModal.$hide();
+            
           });
         })
         .catch(handleError => {
@@ -280,7 +317,7 @@ export default {
     },
     deleteRole(role)
     {
-console.log(role);
+
        let roleId = role.role_id;
           
           swal({
@@ -289,6 +326,7 @@ console.log(role);
             icon: "info"
           }).then(ok => {
             if (ok) {
+               this.isLoading=true;
               fetch(
                 constant.APIURL +
                   "api/v1/info/members/delete-role?role_id=" +
@@ -314,6 +352,7 @@ console.log(role);
                         icon: "success"
                       }).then(ok => {
                         if (ok) {
+                           this.isLoading=false;
                           this.getAllRoles();
                         }
                       });
@@ -359,6 +398,7 @@ console.log(role);
     },
     getAllRoles()
     {
+       this.isLoading=true;
       this.allRoles=[];
       fetch(constant.APIURL + "api/v1/info/members/all-role" , {
         method: "GET",
@@ -383,6 +423,7 @@ console.log(role);
                 role_permission: data[i].permissions
               });
             }
+            this.isLoading=false;
             $(document).ready(function() {
               $("#example").DataTable();
             });

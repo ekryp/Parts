@@ -1,4 +1,12 @@
+
 <template>
+<div>
+<div>
+   <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+</div>
   <div class="shadow p-3 mb-5 bg-white rounded" id="SummaryDiv">
     <br>
     <div class="row" v-if="partsAnalysisSummaryReslut.length !== 0">
@@ -82,6 +90,8 @@
       :gridSizeChanged="OnReady"
     ></ag-grid-vue>
   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -97,6 +107,8 @@ import { AgGridVue } from "ag-grid-vue";
 import Tooltip from "vue-directive-tooltip";
 import "vue-directive-tooltip/css/index.css";
 import accounting from "../../utilies/accounting";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 Vue.use(Tooltip);
 
 Vue.use(Vue2Filters);
@@ -107,7 +119,8 @@ export default {
     SideNav,
     headernav,
     AgGridVue,
-    DownloadExcel
+    DownloadExcel,
+    Loading
   },
   created() {
     console.log("props ----->", this.$props);
@@ -122,6 +135,8 @@ export default {
     console.log("AnalysisSummary", this.$store.state);
     return {
       requestId: "",
+      isLoading: false,
+      fullPage: true,
       partsAnalysisSummaryReslut: [],
       dispId: "",
       analysisName: [],
@@ -188,6 +203,7 @@ export default {
         });
     },
     get_request_analysis_summary_result(requestId) {
+      this.isLoading=true;
       this.summaryRowData=[];
       fetch(
         constant.APIURL +
@@ -251,7 +267,7 @@ export default {
                 high_spare: this.partsAnalysisSummaryReslut[i].high_spare
                 });
             }
-          
+          this.isLoading=false
            
           });
         })
