@@ -4,12 +4,12 @@
       <ul class="list-unstyled components">
         <li class="active nav-custom" style="margin-top: 40px;cursor:pointer " v-if="dashboardFlag">
           <div class="text-center" v-if="!diasableFlag" @click="dashboard()">
-            <i class="fas fa-home" style="fontSize:20px"></i>
+            <i class="fas fa-home" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">Dashboard</p>
           </div>
           <div class="text-center" v-if="diasableFlag">
-            <i class="fas fa-home" style="fontSize:20px"></i>
+            <i class="fas fa-home" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">Dashboard</p>
           </div>
@@ -25,12 +25,12 @@
         <hr>-->
         <li class="nav-custom" style="cursor:pointer" v-if="analysisFlag">
           <div class="text-center" v-if="!diasableFlag" @click="parts_analysis()">
-            <i class="fas fa-list-ul" style="fontSize:20px"></i>
+            <i class="fas fa-list-ul" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">Analysis</p>
           </div>
           <div class="text-center" v-if="diasableFlag" >
-            <i class="fas fa-list-ul" style="fontSize:20px"></i>
+            <i class="fas fa-list-ul" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">Analysis</p>
           </div>
@@ -38,7 +38,7 @@
         <hr v-if="createAnalysisFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="createAnalysisFlag">
           <div class="text-center" @click="createPartsRequest()">
-            <i class="fas fa-plus" style="fontSize:20px"></i>
+            <i class="fas fa-plus" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">Create Analysis Request</p>
           </div>
@@ -46,13 +46,13 @@
         <hr v-if="referenceDataFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="referenceDataFlag">
           <div class="text-center" v-if="!diasableFlag" @click="reference()">
-            <i class="fas fa-file-alt" style="fontSize:20px"></i>
+            <i class="fas fa-file-alt" style="fontSize:2em"></i>
             
             <br>
             <p class="upload-text">Reference Data</p>
           </div>
           <div class="text-center" v-if="diasableFlag" >
-            <i class="fas fa-file-alt" style="fontSize:20px"></i>
+            <i class="fas fa-file-alt" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">Reference Data</p>
           </div>
@@ -166,7 +166,7 @@ export default {
 }
 
 #sidebar {
-  width: 70px;
+  width: 5%;
   position: fixed;
   top: 50px;
   left: 0;
