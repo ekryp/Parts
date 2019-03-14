@@ -16,6 +16,7 @@ import ReferenceView from '@/components/Reference/ReferenceView'
 import UserRoleManagement from '@/components/ManageRoles/UserRoleManagement'
 import ChangePassword from '@/components/ManageRoles/ChangePassword'
 import ManageUser from '@/components/ManageRoles/ManageUser'
+import SolutionScreen from '@/components/MockUp/SolutionScreen'
 
 Vue.use(Router)
 
@@ -132,6 +133,14 @@ export default new Router({
       path: '/password',
       name: 'ChangePassword',
       component: ChangePassword,
+      meta: {
+        permission: 'Dashboard'
+      }
+    },
+    {
+      path: '/solution',
+      name: 'SolutionScreen',
+      component: SolutionScreen,
       meta: {
         permission: 'Dashboard'
       }

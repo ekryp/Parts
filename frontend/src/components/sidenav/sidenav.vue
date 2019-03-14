@@ -58,6 +58,19 @@
           </div>
         </li>
         <hr>
+        <li class="nav-custom" style="cursor:pointer" v-if="referenceDataFlag">
+          <div class="text-center" v-if="!diasableFlag" @click="mockup()">
+            <i class=" fa fa-puzzle-piece" style="fontSize:2em"></i>
+            
+            <br>
+            <p class="upload-text">Mock Up</p>
+          </div>
+          <div class="text-center" v-if="diasableFlag" >
+            <i class="fa fa-puzzle-piece" style="fontSize:2em"></i>
+            <br>
+            <p class="upload-text">Mock Up</p>
+          </div>
+        </li>
       </ul>
     </nav>
   </div>
@@ -143,6 +156,9 @@ export default {
     },
     reference() {
       router.push("/reference");
+    },
+    mockup() {
+      router.push("/solution");
     }
   }
 };
