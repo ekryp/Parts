@@ -23,7 +23,9 @@ export default {
                 console.log('success')
                 // router.push('/dashboard')
             } else if (err) {
+                alert(err.errorDescription)
                 router.push('/')
+                //console.log(err)
                 console.log(err)
             }
         })
@@ -36,14 +38,14 @@ export default {
             }
         }).then(function (responseData) {
             responseData.text().then(response => {
-                
+
                 console.log('response ----->', JSON.parse(response))
                 let expiresAt = JSON.stringify(authResult.expiresIn)
                 localStorage.setItem('auth0_access_token', authResult.accessToken)
                 localStorage.setItem('auth0_id_token', authResult.idToken)
                 localStorage.setItem('auth0_expires_at', expiresAt)
                 var profile = JSON.parse(response)
-               
+
                 localStorage.setItem('isSocial',profile.identities[0].isSocial)
                 localStorage.setItem('user_id',profile.user_id)
                 //var allowed_custmors = profile.user_metadata.allowed_custmors
