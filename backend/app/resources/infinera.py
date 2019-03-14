@@ -567,6 +567,8 @@ class GetPieChart(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
         super(GetPieChart, self).__init__()
 
     @requires_auth
@@ -574,6 +576,30 @@ class GetPieChart(Resource):
         args = self.reqparse.parse_args()
         toggle = args['toggle']
         print(toggle)
+        filter_query = ''
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            filter_query = filter_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            filter_query = filter_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and depot_name in {0} ".format(tuple(args.get('depot_filter')))
+            filter_query = filter_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and depot_name in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            filter_query = filter_query + depot_filter
+
         # toggle is True by default meaning by default reorder
         # False means total_stock
         if toggle == 'reorder':
@@ -581,12 +607,22 @@ class GetPieChart(Resource):
             def get_respective_counts():
                 engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
-                non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
-                                     'net_reorder_point = 0 and is_latest="Y"'
+                non_critical_base_query = 'select  count((part_name))  FROM summary  where  ' \
+                                     'net_reorder_point = 0 and is_latest="Y" '
+
+                non_critical_pon_query = non_critical_base_query + filter_query
+
+                print(non_critical_pon_query)
+
                 non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
 
-                critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
-                          'net_reorder_point > 0 and is_latest="Y"'
+                critical_base_query ='select  count((part_name))  FROM summary   where  ' \
+                          'net_reorder_point > 0 and is_latest="Y" '
+
+                critical_pon_query = critical_base_query + filter_query
+
+                print(critical_pon_query)
+
                 critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
                 return non_critical_pon, critical_pon
@@ -605,12 +641,21 @@ class GetPieChart(Resource):
             def get_respective_counts():
                 engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
-                non_critical_pon_query = 'select  count((part_name))  FROM summary  where  ' \
-                                     'net_total_stock = 0 and is_latest="Y"'
+                non_critical_base_query = 'select  count((part_name))  FROM summary  where  ' \
+                                     'net_total_stock = 0 and is_latest="Y" '
+
+                non_critical_pon_query = non_critical_base_query + filter_query
+
+                print(non_critical_pon_query)
+
                 non_critical_pon = engine.execute(non_critical_pon_query).fetchone()[0]
 
-                critical_pon_query ='select  count((part_name))  FROM summary   where  ' \
-                          ' net_total_stock >0 and is_latest="Y"'
+                critical_base_query ='select  count((part_name))  FROM summary   where  ' \
+                          ' net_total_stock >0 and is_latest="Y" '
+
+                critical_pon_query = critical_base_query + filter_query
+
+                print(critical_pon_query)
 
                 critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
