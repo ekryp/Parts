@@ -471,13 +471,39 @@ class GetMainDashboardCount(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
         super(GetMainDashboardCount, self).__init__()
 
     @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         toggle = args['toggle']
+        filter_query = ''
         print(toggle)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            filter_query = filter_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            filter_query = filter_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and depot_name in {0} ".format(tuple(args.get('depot_filter')))
+            filter_query = filter_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and depot_name in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            filter_query = filter_query + depot_filter
+
         # toggle is True by default meaning by default reorder
         # False means total_stock
         if toggle == 'reorder':
@@ -485,25 +511,37 @@ class GetMainDashboardCount(Resource):
             def get_respective_counts():
                 engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
-                total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary where is_latest= "Y";'
+                total_customer_base_query = 'SELECT count(distinct(customer_name)) FROM summary where is_latest= "Y" '
+                total_customer_query = total_customer_base_query + filter_query
+                print(total_customer_query)
                 total_customer = engine.execute(total_customer_query).fetchone()[0]
 
-                total_pon_type_query = 'SELECT count(distinct(part_name))  FROM summary where is_latest= "Y";'
+                total_pon_type_base_query = 'SELECT count(distinct(part_name))  FROM summary where is_latest= "Y" '
+                total_pon_type_query = total_pon_type_base_query + filter_query
+                print(total_pon_type_query)
                 total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
 
-                total_depot_query = 'select  count(distinct(depot_name))  FROM summary where is_latest= "Y"'
+                total_depot_base_query = 'select  count(distinct(depot_name))  FROM summary where is_latest= "Y" '
+                total_depot_query = total_depot_base_query + filter_query
+                print(total_depot_query)
                 total_depot = engine.execute(total_depot_query).fetchone()[0]
 
-                critical_pon_query = 'select  count(distinct(part_name))  FROM summary where  ' \
-                                     'net_reorder_point >0 and is_latest= "Y"'
+                critical_pon_base_query = 'select  count(distinct(part_name))  FROM summary where  ' \
+                                     'net_reorder_point >0 and is_latest= "Y" '
+                critical_pon_query = critical_pon_base_query + filter_query
+                print(critical_pon_query)
                 critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
-                critical_customer_query = 'select  count(distinct(customer_name))  FROM summary where' \
-                                          '  net_reorder_point >0 and is_latest= "Y"'
+                critical_customer_base_query = 'select  count(distinct(customer_name))  FROM summary where' \
+                                          '  net_reorder_point >0 and is_latest= "Y" '
+                critical_customer_query = critical_customer_base_query + filter_query
+                print(critical_customer_query)
                 critical_customer = engine.execute(critical_customer_query).fetchone()[0]
 
-                critical_depot_query = 'select count(distinct(depot_name)) FROM summary ' \
-                                       'where  net_reorder_point >0 and is_latest= "Y"'
+                critical_depot_base_query = 'select count(distinct(depot_name)) FROM summary ' \
+                                       'where  net_reorder_point >0 and is_latest= "Y" '
+                critical_depot_query = critical_depot_base_query + filter_query
+                print(critical_depot_query)
                 critical_depot = engine.execute(critical_depot_query).fetchone()[0]
 
                 return total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot
@@ -524,25 +562,37 @@ class GetMainDashboardCount(Resource):
             def get_respective_counts():
                 engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
-                total_customer_query = 'SELECT count(distinct(customer_name)) FROM summary where is_latest= "Y";'
+                total_customer_base_query = 'SELECT count(distinct(customer_name)) FROM summary where is_latest= "Y" '
+                total_customer_query = total_customer_base_query + filter_query
+                print(total_customer_query)
                 total_customer = engine.execute(total_customer_query).fetchone()[0]
 
-                total_pon_type_query = 'SELECT count(distinct(part_name))  FROM summary where is_latest= "Y";'
+                total_pon_type_base_query = 'SELECT count(distinct(part_name))  FROM summary where is_latest= "Y" '
+                total_pon_type_query = total_pon_type_base_query + filter_query
+                print(total_pon_type_query)
                 total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
 
-                total_depot_query = 'select  count(distinct(depot_name))  FROM summary where is_latest= "Y"'
+                total_depot_base_query = 'select  count(distinct(depot_name))  FROM summary where is_latest= "Y" '
+                total_depot_query = total_depot_base_query + filter_query
+                print(total_depot_query)
                 total_depot = engine.execute(total_depot_query).fetchone()[0]
 
-                critical_pon_query = 'select  count(distinct(part_name))  FROM summary where  ' \
-                                     ' net_total_stock > 0 and is_latest= "Y";'
+                critical_pon_base_query = 'select  count(distinct(part_name))  FROM summary where  ' \
+                                     ' net_total_stock > 0 and is_latest= "Y" '
+                critical_pon_query = critical_pon_base_query + filter_query
+                print(critical_pon_query)
                 critical_pon = engine.execute(critical_pon_query).fetchone()[0]
 
-                critical_customer_query = 'select  count(distinct(customer_name))  FROM summary where' \
-                                          '  net_total_stock > 0 and is_latest= "Y";'
+                critical_customer_base_query = 'select  count(distinct(customer_name))  FROM summary where' \
+                                          '  net_total_stock > 0 and is_latest= "Y" '
+                critical_customer_query = critical_customer_base_query + filter_query
+                print(critical_customer_query)
                 critical_customer = engine.execute(critical_customer_query).fetchone()[0]
 
-                critical_depot_query = 'select count(distinct(depot_name)) FROM summary ' \
-                                       'where  net_total_stock > 0 and is_latest= "Y"'
+                critical_depot_base_query = 'select count(distinct(depot_name)) FROM summary ' \
+                                       'where  net_total_stock > 0 and is_latest= "Y" '
+                critical_depot_query = critical_depot_base_query + filter_query
+                print(critical_depot_query)
                 critical_depot = engine.execute(critical_depot_query).fetchone()[0]
 
                 return total_customer, critical_pon, critical_customer, critical_depot, total_pon_type, total_depot
