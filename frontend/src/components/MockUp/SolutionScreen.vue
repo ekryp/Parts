@@ -141,7 +141,7 @@
                 <tbody>
                   <tr>
                     <td
-                      class="in-progress"
+                      class="in-progress col"
                       @click="showSolution1()"
                       v-bind:style="{ backgroundColor: b1color }"
                     >Electrical</td>
@@ -149,7 +149,7 @@
                   </tr>
                   <tr>
                     <td
-                      class="in-progress"
+                      class="in-progress col"
                       @click="showSolution2()"
                       v-bind:style="{ backgroundColor: b2color }"
                     >Mechanical</td>
@@ -157,7 +157,7 @@
                   </tr>
                   <tr>
                     <td
-                      class="in-progress"
+                      class="in-progress col"
                       @click="showSolution3()"
                       v-bind:style="{ backgroundColor: b3color }"
                     >Software</td>
@@ -182,16 +182,16 @@
               <table class="table responsive">
                 <tbody>
                   <tr>
-                    <td>Replace part</td>
-                    <td>97%</td>
+                    <td class="col">Replace part</td>
+                    <td class="col">97%</td>
                   </tr>
                   <tr>
-                    <td>Reseated part</td>
-                    <td>92%</td>
+                    <td class="col">Reseated part</td>
+                    <td class="col">92%</td>
                   </tr>
                   <tr>
-                    <td>Upgraded firmware</td>
-                    <td>45%</td>
+                    <td class="col">Upgraded firmware</td>
+                    <td class="col">45%</td>
                   </tr>
                 </tbody>
               </table>
@@ -204,16 +204,16 @@
               <table class="table responsive">
                 <tbody>
                   <tr>
-                    <td>Replace part</td>
-                    <td>81%</td>
+                    <td class="col">Replace part</td>
+                    <td class="col">81%</td>
                   </tr>
                   <tr>
-                    <td>Reseated part</td>
-                    <td>82%</td>
+                    <td class="col">Reseated part</td>
+                    <td class="col">82%</td>
                   </tr>
                   <tr>
-                    <td>Upgraded firmware</td>
-                    <td>83%</td>
+                    <td class="col">Upgraded firmware</td>
+                    <td class="col">83%</td>
                   </tr>
                 </tbody>
               </table>
@@ -226,16 +226,16 @@
               <table class="table responsive">
                 <tbody>
                   <tr>
-                    <td>Replace part</td>
-                    <td>71%</td>
+                    <td class="col">Replace part</td>
+                    <td class="col">71%</td>
                   </tr>
                   <tr>
-                    <td>Reseated part</td>
-                    <td>72%</td>
+                    <td class="col">Reseated part</td>
+                    <td class="col">72%</td>
                   </tr>
                   <tr>
-                    <td>Upgraded firmware</td>
-                    <td>73%</td>
+                    <td class="col">Upgraded firmware</td>
+                    <td class="col">73%</td>
                   </tr>
                 </tbody>
               </table>
@@ -256,9 +256,6 @@
                 </div>
                 <div class="col" style="text-align: center">
                   <button type="button" class="btn btn-info" @click="showModal()">Release Notes 2</button>
-                </div>
-                <div class="col" style="text-align: center">
-                  <button type="button" class="btn btn-info" @click="showModal()">Release Notes 3</button>
                 </div>
               </div>
             </div>
