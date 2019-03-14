@@ -2,6 +2,23 @@
   <div>
     <headernav msg="Dashboard"/>
     <side-nav/>
+
+    <vudal name="myModal">
+      <div class="header">
+        <i class="close icon"></i>
+        <h4 v-if="releaseFlag">Release Notes</h4>
+        <h4 v-if="patchFlag">Patches</h4>
+      </div>
+      <div class="content">
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <br>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-danger" @click="hideModal()">OK</button>
+      </div>
+    </vudal>
+
     <div class="custom-container" style="paddingTop: 5%">
       <div class="myBreadCrumb" style="margin-bottom:1px;fontSize:0.875em">
         <p>
@@ -17,6 +34,7 @@
           <div class="row align">
             <div class="col-md-10">
               <textarea
+                v-model="problemDescription"
                 class="form-control"
                 rows="4"
                 id="email"
@@ -75,10 +93,17 @@
           <div class="row align float-right">
             <div class="col-md-10">
               <button
+                v-if="problemDescription !== ''"
                 type="button"
                 class="btn btn-success"
                 @click="onAnalyze()"
-                v-tooltip.top.hover.focus="'Move to Reference Page'"
+              >Analyze</button>
+              <button
+                v-if="problemDescription === ''"
+                type="button"
+                class="btn btn-success"
+                @click="onAnalyze()"
+                disabled
               >Analyze</button>
             </div>
           </div>
@@ -145,7 +170,10 @@
 
           <div class="row align">
             <div class="col-md-12">
-              <h5 align="center" v-if="problemFlag">Solution and Effectiveness</h5>
+              <h5
+                align="center"
+                v-if="problem1Flag || problem2Flag || problem3Flag"
+              >Solution and Effectiveness</h5>
             </div>
           </div>
           <div class="row align" v-if="problem1Flag">
@@ -155,11 +183,11 @@
                 <tbody>
                   <tr>
                     <td>Replace part</td>
-                    <td>87%</td>
+                    <td>97%</td>
                   </tr>
                   <tr>
                     <td>Reseated part</td>
-                    <td>82%</td>
+                    <td>92%</td>
                   </tr>
                   <tr>
                     <td>Upgraded firmware</td>
@@ -223,9 +251,15 @@
           <div class="row" v-if="problem1Flag || problem2Flag || problem3Flag">
             <div class="col-md-12">
               <div class="row">
-                <div class="col" style="text-align: center">Release Notes 1</div>
-                <div class="col" style="text-align: center">Release Notes 2</div>
-                <div class="col" style="text-align: center">Release Notes 3</div>
+                <div class="col" style="text-align: center">
+                  <button type="button" class="btn btn-info" @click="showModal()">Release Notes 1</button>
+                </div>
+                <div class="col" style="text-align: center">
+                  <button type="button" class="btn btn-info" @click="showModal()">Release Notes 2</button>
+                </div>
+                <div class="col" style="text-align: center">
+                  <button type="button" class="btn btn-info" @click="showModal()">Release Notes 3</button>
+                </div>
               </div>
             </div>
           </div>
@@ -239,9 +273,15 @@
           <div class="row" v-if="problem1Flag || problem2Flag || problem3Flag">
             <div class="col-md-12">
               <div class="row">
-                <div class="col" style="text-align: center">Patch 1</div>
-                <div class="col" style="text-align: center">Patch 2</div>
-                <div class="col" style="text-align: center">Patch 3</div>
+                <div class="col" style="text-align: center">
+                  <button type="button" class="btn btn-info" @click="showPatchModal()">Patch 1</button>
+                </div>
+                <div class="col" style="text-align: center">
+                  <button type="button" class="btn btn-info" @click="showPatchModal()">Patch 2</button>
+                </div>
+                <div class="col" style="text-align: center">
+                  <button type="button" class="btn btn-info" @click="showPatchModal()">Patch 3</button>
+                </div>
               </div>
             </div>
           </div>
@@ -259,6 +299,7 @@ import headernav from "@/components/header/header";
 
 import * as constant from "../constant/constant";
 import tagsinput from "vue-tagsinput";
+import Vudal from "vudal";
 
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 export default {
@@ -267,7 +308,8 @@ export default {
     SideNav,
     headernav,
     DownloadExcel,
-    tagsinput
+    tagsinput,
+    Vudal
   },
   created() {
     clearInterval(window.intervalObj);
@@ -282,6 +324,9 @@ export default {
       b1color: "",
       b2color: "",
       b3color: "",
+      releaseFlag: true,
+      patchFlag: false,
+      problemDescription: "",
       analyzeFlag: false,
       problem1Flag: false,
       problem2Flag: false,
@@ -317,6 +362,19 @@ export default {
     },
     onAnalyze() {
       this.analyzeFlag = true;
+    },
+    showModal() {
+      this.patchFlag = false;
+      this.releaseFlag = true;
+      this.$modals.myModal.$show();
+    },
+    showPatchModal() {
+      this.patchFlag = true;
+      this.releaseFlag = false;
+      this.$modals.myModal.$show();
+    },
+    hideModal() {
+      this.$modals.myModal.$hide();
     },
     showSolution1() {
       this.problem1Flag = true;
