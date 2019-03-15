@@ -1667,6 +1667,114 @@ class FilterMainDashboard(Resource):
         return response
 
 
+class GetAnalysisDashboardCount(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('toggle', type=str, required=False, location='args', default='reorder')
+        self.reqparse.add_argument('request_id', required=True, location='args')
+        super(GetAnalysisDashboardCount, self).__init__()
+
+    @requires_auth
+    def get(self):
+        args = self.reqparse.parse_args()
+        toggle = args['toggle']
+        request_id = args['request_id']
+        filter_query = ''
+        print(toggle)
+
+        # toggle is True by default meaning by default reorder
+        # False means total_stock
+        if toggle == 'reorder':
+
+            def get_respective_counts():
+                engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
+                total_pon_type_query = 'SELECT count(distinct(part_name)) FROM summary where request_id = {0}'.format(request_id)
+                print(total_pon_type_query)
+                total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
+
+                total_depot_query = 'select  count(distinct(depot_name))  FROM summary where request_id = {0}'.format(request_id)
+                print(total_depot_query)
+                total_depot = engine.execute(total_depot_query).fetchone()[0]
+
+                critical_pon_query = 'select  count(distinct(part_name))  FROM summary where  ' \
+                                     'net_reorder_point >0 and request_id = {0}'.format(request_id)
+                print(critical_pon_query)
+                critical_pon = engine.execute(critical_pon_query).fetchone()[0]
+
+                '''
+                
+                critical_customer_base_query = 'select  count(distinct(customer_name))  FROM summary where' \
+                                          '  net_reorder_point >0 and is_latest= "Y" '
+                critical_customer_query = critical_customer_base_query + filter_query
+                print(critical_customer_query)
+                critical_customer = engine.execute(critical_customer_query).fetchone()[0]
+                
+                '''
+
+                critical_depot_query = 'select count(distinct(depot_name)) FROM summary ' \
+                                       'where  net_reorder_point >0 ' \
+                                            'and request_id = {0}'.format(request_id)
+                print(critical_depot_query)
+                critical_depot = engine.execute(critical_depot_query).fetchone()[0]
+
+                return critical_pon, critical_depot, total_pon_type, total_depot
+
+            critical_pon, critical_depot, total_pon_type, total_depot = get_respective_counts()
+
+            response = {
+                'critical_pon': critical_pon,
+                'critical_depot': critical_depot,
+                'total_pon_type': total_pon_type,
+                'total_depot': total_depot
+            }
+            return response
+
+        else:
+            def get_respective_counts():
+                engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
+                total_pon_type_query = 'SELECT count(distinct(part_name))  FROM summary where ' \
+                                       'request_id ={0}'.format(request_id)
+                print(total_pon_type_query)
+                total_pon_type = engine.execute(total_pon_type_query).fetchone()[0]
+
+                total_depot_query = 'select  count(distinct(depot_name))  FROM summary where ' \
+                                    'request_id ={0}'.format(request_id)
+                print(total_depot_query)
+                total_depot = engine.execute(total_depot_query).fetchone()[0]
+
+                critical_pon_query = 'select  count(distinct(part_name))  FROM summary where  ' \
+                                     ' net_total_stock > 0 and request_id ={0}'.format(request_id)
+                print(critical_pon_query)
+                critical_pon = engine.execute(critical_pon_query).fetchone()[0]
+
+                '''
+                critical_customer_query = 'select  count(distinct(customer_name))  FROM summary where' \
+                                          '  net_total_stock > 0 and request_id ={0}'.format(request_id)
+
+                print(critical_customer_query)
+                critical_customer = engine.execute(critical_customer_query).fetchone()[0]
+                '''
+
+                critical_depot_query = 'select count(distinct(depot_name)) FROM summary ' \
+                                       'where  net_total_stock > 0 and request_id ={0}'.format(request_id)
+                print(critical_depot_query)
+                critical_depot = engine.execute(critical_depot_query).fetchone()[0]
+
+                return  critical_pon, critical_depot, total_pon_type, total_depot
+
+            critical_pon, critical_depot, total_pon_type, total_depot = get_respective_counts()
+
+            response = {
+                'critical_pon': critical_pon,
+                'critical_depot': critical_depot,
+                'total_pon_type': total_pon_type,
+                'total_depot': total_depot
+            }
+            return response
+
 
 
 
