@@ -124,27 +124,26 @@
                 type="button"
                 class="btn btn-success"
                 @click="onReserve()"
-                v-tooltip.top.hover.focus="'Move to Reference Page'"
               >Reserve</button>
             </div>
           </div>
 
           <div class="row align" v-if="analyzeFlag">
             <div class="col-md-12">
-              <h5 align="center">Potential Problem Areas</h5>
+              <h5 align="center">Potential Solutions</h5>
             </div>
           </div>
           <div class="row align" v-if="analyzeFlag">
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
-              <table class="table responsive">
+              <table class="table responsive ">
                 <tbody>
                   <tr>
                     <td
                       class="in-progress col"
                       @click="showSolution1()"
                       v-bind:style="{ backgroundColor: b1color }"
-                    >Electrical</td>
+                    >Matching Defects</td>
                     <td @click="showSolution()" v-bind:style="{ backgroundColor: b1color }">76%</td>
                   </tr>
                   <tr>
@@ -152,7 +151,7 @@
                       class="in-progress col"
                       @click="showSolution2()"
                       v-bind:style="{ backgroundColor: b2color }"
-                    >Mechanical</td>
+                    >FSB Tech Notes</td>
                     <td @click="showSolution()" v-bind:style="{ backgroundColor: b2color }">65%</td>
                   </tr>
                   <tr>
@@ -160,8 +159,24 @@
                       class="in-progress col"
                       @click="showSolution3()"
                       v-bind:style="{ backgroundColor: b3color }"
-                    >Software</td>
+                    >Wiki Links</td>
                     <td @click="showSolution()" v-bind:style="{ backgroundColor: b3color }">45%</td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="in-progress col"
+                      @click="showSolution4()"
+                      v-bind:style="{ backgroundColor: b4color }"
+                    >Configurations</td>
+                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b4color }">45%</td>
+                  </tr>
+                  <tr>
+                    <td
+                      class="in-progress col"
+                      @click="showSolution5()"
+                      v-bind:style="{ backgroundColor: b5color }"
+                    >TOI Area</td>
+                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b5color }">44%</td>
                   </tr>
                 </tbody>
               </table>
@@ -172,55 +187,87 @@
             <div class="col-md-12">
               <h5
                 align="center"
-                v-if="problem1Flag || problem2Flag || problem3Flag"
-              >Solution and Effectiveness</h5>
+                v-if="problem1Flag || problem2Flag "
+              >Solution Links</h5>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+              <h5 align="left" v-if="problem1Flag">Patches</h5>
+            </div>
+          </div>
+
           <div class="row align" v-if="problem1Flag">
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
-              <table class="table responsive">
+              <table class="table responsive table-hover">
                 <tbody>
                   <tr>
-                    <td class="col">Replace part</td>
-                    <td class="col">97%</td>
+                    <td 
+                    @click="showPatchModal()"
+                     v-bind:style="{ backgroundColor: p1color }"
+                    class="col in-progress">Patch 1</td>
+                    <td class="col in-progress"
+                    v-bind:style="{ backgroundColor: p1color }">97%</td>
                   </tr>
                   <tr>
-                    <td class="col">Reseated part</td>
-                    <td class="col">92%</td>
+                    <td class="col in-progress" 
+                    
+                    @click="showPatchModal()"
+                     v-bind:style="{ backgroundColor: p2color }">Patch 2</td>
+                    <td class="col in-progress"
+               
+                     v-bind:style="{ backgroundColor: p2color }">92%</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td class="col">Upgraded firmware</td>
                     <td class="col">45%</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+              <h5 align="left" v-if="problem2Flag">Release Notes</h5>
             </div>
           </div>
 
           <div class="row align" v-if="problem2Flag">
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
-              <table class="table responsive">
+              <table class="table responsive table-hover">
                 <tbody>
                   <tr>
-                    <td class="col">Replace part</td>
-                    <td class="col">81%</td>
+                    <td class="col in-progress" 
+                   
+                    @click="showModal()"
+                     v-bind:style="{ backgroundColor: rl1color }">Release Notes 1</td>
+                    <td class="col"
+                    v-bind:style="{ backgroundColor: rl1color }">81%</td>
                   </tr>
                   <tr>
-                    <td class="col">Reseated part</td>
-                    <td class="col">82%</td>
+                    <td class="col in-progress"
+                   
+                    @click="showModal()"
+                     v-bind:style="{ backgroundColor: rl2color }">Release Notes 2</td>
+                    <td class="col"
+                    v-bind:style="{ backgroundColor: rl2color }">82%</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td class="col">Upgraded firmware</td>
                     <td class="col">83%</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>
           </div>
 
-          <div class="row align" v-if="problem3Flag">
+         <!--  <div class="row align" v-if="problem3Flag">
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
               <table class="table responsive">
@@ -281,7 +328,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <br>
         </div>
       </div>
@@ -321,6 +368,12 @@ export default {
       b1color: "",
       b2color: "",
       b3color: "",
+      b4color: "",
+      b5color: "",
+      p1color: "",
+      p2color: "",
+      rl1color: "",
+      rl2color: "",
       releaseFlag: true,
       patchFlag: false,
       problemDescription: "",
@@ -380,6 +433,8 @@ export default {
       this.b1color = "#88e288";
       this.b2color = "";
       this.b3color = "";
+      this.b4color = "";
+      this.b5color = "";
     },
     showSolution2() {
       this.problem1Flag = false;
@@ -388,14 +443,74 @@ export default {
       this.b2color = "#88e288";
       this.b1color = "";
       this.b3color = "";
+      this.b4color = "";
+      this.b5color = "";
     },
     showSolution3() {
       this.problem3Flag = true;
       this.problem2Flag = false;
       this.problem1Flag = false;
       this.b3color = "#88e288";
+      this.b1color = "";
+      this.b2color = "";
+      this.b4color = "";
+      this.b5color = "";
+    },
+    showSolution4() {
+      this.problem3Flag = true;
+      this.problem2Flag = false;
+      this.problem1Flag = false;
+      this.b3color = "";
+      this.b2color = "";
+      this.b4color = "#88e288";
+      this.b5color = "";
+      this.b1color = "";
+    },
+    showSolution5() {
+      this.problem3Flag = true;
+      this.problem2Flag = false;
+      this.problem1Flag = false;
+      this.b3color = "";
       this.b2color = "";
       this.b1color = "";
+      this.b4color = "";
+      this.b5color = "#88e288"
+    },
+    ChangeColour(id)
+    {
+      if(id === '1')
+      {
+       this.p1color = "#88e288";
+       this.p2color="";
+      }
+      else if(id === '2')
+      {
+       this.p2color = "#88e288";
+       this.p1color="";
+      }
+    },
+    hideColour(id)
+    {
+      this.p1color = "";
+      this.p2color = "";
+    },
+    ChangeRlColour(id)
+    {
+      if(id === '1')
+      {
+       this.rl1color = "#88e288";
+       this.rl2color="";
+      }
+      else if(id === '2')
+      {
+       this.rl2color = "#88e288";
+       this.rl1color="";
+      }
+    },
+    hideRlColour(id)
+    {
+      this.rl1color = "";
+      this.rl2color = "";
     },
     handleChange(removeIndex, tag) {
       if (this.tags.length == removeIndex) {

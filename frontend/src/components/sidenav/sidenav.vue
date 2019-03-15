@@ -57,20 +57,21 @@
             <p class="upload-text">Reference Data</p>
           </div>
         </li>
-        <hr>
-        <li class="nav-custom" style="cursor:pointer" v-if="referenceDataFlag">
+        <hr v-if="solutionFlag">
+        <li class="nav-custom" style="cursor:pointer" v-if="solutionFlag">
           <div class="text-center" v-if="!diasableFlag" @click="mockup()">
             <i class=" fa fa-puzzle-piece" style="fontSize:2em"></i>
             
             <br>
-            <p class="upload-text">Mock Up</p>
+            <p class="upload-text">Solution Prediction</p>
           </div>
           <div class="text-center" v-if="diasableFlag" >
             <i class="fa fa-puzzle-piece" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Mock Up</p>
+            <p class="upload-text">Solution Prediction</p>
           </div>
         </li>
+        <hr>
       </ul>
     </nav>
   </div>
@@ -93,6 +94,7 @@ export default {
       createAnalysisFlag: false,
       referenceDataFlag: false,
       groupFlag:false,
+      solutionFlag:false
     };
   },
   created()
@@ -130,8 +132,10 @@ export default {
      }else if( (permissions[i] === constant.PERMISSIONS[3])||(permissions[i] === constant.PERMISSIONS[4]))
      {
        this.referenceDataFlag=true;
+     }else if(permissions[i] === constant.PERMISSIONS[8])
+     {
+       this.solutionFlag=true;
      }
-
     }
      
   },
