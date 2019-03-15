@@ -1,7 +1,12 @@
 <template>
   <div style="position:fixed;marginLeft:0%;width:100%;z-index:99999;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <img src="https://staging.ekryp.com/src/assets/ekryp.jpg" style="height:40px;width:100px">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <div class="row" style="width:10%;height:3%">
+        <div>
+    <img :src="image" style="height:1.5em;width:7.25em;marginLeft:1em"></div>
+     <div style="fontSize:0.5em;marginLeft:6.65em">    <p>  Powered by Ekryp</p>
+    </div>
+    </div>
       <div class="loader" id="loader-2" style="margin-left:35%;" v-if="loaderFlag">
         <span></span>
         <span></span>
@@ -61,10 +66,12 @@
 <script>
 import router from "../../router";
 import * as constant from "../constant/constant";
+const img = require("../../assets/InfineraLogo.png");
 export default {
   name: "headernav",
   props: ["msg","loaderFlag"],
   created() {
+    this.image=img;
     this.firstName = localStorage.getItem("first_name");
     this.username=localStorage.getItem("username");
       var authorization=localStorage.getItem("authorization");
@@ -95,6 +102,7 @@ export default {
     return {
       firstName: "",
       username:"",
+      image:'',
       manageRoleFlag:false,
       manageUserFlag:false,
       changePasswordFlag:true
@@ -125,7 +133,7 @@ router.push("/role");
 </script>
 <style>
 .dropdown-menu {
-  font-size: 12px !important;
+  font-size: 0.75em !important;
 }
 .bg-light {
   background-color: #ededed !important;
@@ -133,7 +141,7 @@ router.push("/role");
 .text {
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
   color: #72879d !important;
-  font-size: 25px;
+  font-size: 1.563em;
 }
 a {
   text-decoration: none;
@@ -145,15 +153,15 @@ a {
 }
 .main-wrap h1 {
   color: #fff;
-  margin-top: 50px;
-  margin-bottom: 100px;
+  margin-top: 3.125em;
+  margin-bottom: 2.25em;
 }
 .col-md-3 {
   display: block;
   float: left;
   margin: 1% 0 1% 1.6%;
   background-color: #eee;
-  padding: 50px 0;
+  padding: 3.125em 0;
 }
 
 .col:first-of-type {
@@ -164,7 +172,7 @@ a {
 
 .loader {
   width: 50;
-  height: 50px;
+  height: 3.125em;
   border-radius: 100%;
   position: center;
   margin: 0 auto;
@@ -174,11 +182,11 @@ a {
 
 #loader-2 span {
   display: inline-block;
-  width: 15px;
-  height: 15px;
+  width: 0.938em;
+  height: 0.938em;
   border-radius: 100%;
   background-color: #26b89a;
-  margin: 20px 10px;
+  margin: 1.25em 0.625em;
 }
 
 #loader-2 span:nth-child(1) {
