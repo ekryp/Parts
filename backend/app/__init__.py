@@ -121,7 +121,7 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
-    GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard
+    GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard, GetAnalysisDashboardCount
 
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
     UploadMisnomer, UploadRatio
@@ -159,6 +159,7 @@ api.add_resource(GetErrorRecords, '/get_error_records', endpoint='get_error_reco
 api.add_resource(GetDashboardRequestCount, '/get_dashboard_request_count', endpoint='get_dashboard_request_count')
 api.add_resource(GetGrossforSpecificRequest, '/get_gross_specific_request', endpoint='get_gross_specific_request')
 api.add_resource(GetMainDashboardCount, '/get_main_dashboard_count', endpoint='get_main_dashboard_count')
+api.add_resource(GetAnalysisDashboardCount, '/get_analysis_dashboard_count', endpoint='get_analysis_dashboard_count')
 api.add_resource(GetPieChart, '/get_pie_chart', endpoint='get_pie_chart')
 api.add_resource(GetTopPons, '/get_top_pons', endpoint='get_top_pons')
 api.add_resource(GetTopDepots, '/get_top_depots', endpoint='get_top_depots')
