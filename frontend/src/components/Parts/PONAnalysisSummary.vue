@@ -67,6 +67,7 @@ import "vue-directive-tooltip/css/index.css";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import accounting from "../../utilies/accounting";
+
 Vue.use(Tooltip);
 
 Vue.use(Vue2Filters);
@@ -125,11 +126,50 @@ export default {
       if (this.state) {
         console.log(this.toggle);
         this.toggle = "reorder";
+       // this.$parent.$options.methods.stateChangeFromChild(this.requestId,this.toggle );
+
+       this.get_analysis_dashboard_count(this.requestId);
         this.get_request_analysis_summary_result(this.requestId);
       } else {
         this.toggle = "total_stock";
+        this.get_analysis_dashboard_count(this.requestId);
+         //this.$parent.$options.methods.stateChangeFromChild(this.requestId,this.toggle );
         this.get_request_analysis_summary_result(this.requestId);
       }
+    },
+     get_analysis_dashboard_count(requestId)
+    {
+       //this.isLoading=true;
+       this.analysisDashboardCount=[];
+      fetch(
+        constant.APIURL +
+          "api/v1/get_analysis_dashboard_count?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
+            console.log("data -- Analysis Dashboard-->", data);
+            this.$parent.analysisDashboardCount = data;
+                    //this.isLoading=false;
+            
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
     },
     get_analysis_name(requestId) {
       this.isLoading=true;

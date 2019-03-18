@@ -16,7 +16,36 @@
             <span style="font-size: 14px;">{{current}}</span>
           </p>
         </div>
+
+        <div class="row">
+        
+        <div class="col-lg-3 text-center">
+          <span class="text-top">Total Depot</span>
+          <br>
+          
+          <span class="count">{{analysisDashboardCount.total_depot}}</span>
+        
+        </div>
+       
+        <div class="col-lg-3 text-center">
+          <span class="text-top">Critical Depot</span>
+          <br>
+          <span class="count" style="color:red">{{analysisDashboardCount.critical_depot}}</span> 
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="text-top">Total PON Type</span>
+          <br>
+          
+          <span class="count">{{analysisDashboardCount.total_pon_type}}</span> 
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="text-top">Critical PON</span>
+          <br>
+          <span class="count" style="color:red">{{analysisDashboardCount.critical_pon}}</span> 
+        </div>
       </div>
+      </div>
+      <br>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a
@@ -385,12 +414,13 @@ export default {
   },
   created() {
     this.requestID = this.$route.query.id;
-    console.log("requestId ---->", this.requestId);
+    console.log("requestId ---->", this.requestID);
     this.createNetColumnDefs();
     this.createGrossColumnDefs();
     this.createIbColumnDefs();
     this.createCurrColumnDefs();
     this.createErrorColumnDefs();
+    this.get_analysis_dashboard_count(this.$route.query.id);
     this.get_error_records(this.$route.query.id);
     this.get_current_inventory_specific_request(this.$route.query.id);
     this.get_gross_specific_request(this.$route.query.id);
@@ -425,6 +455,7 @@ export default {
       currRowData: [],
       errorColumnDefs: null,
       errorRowData: [],
+      analysisDashboardCount:[],
       postMenu: "Analysis >",
       current: "Analysis Summary",
       gridOptions: {
@@ -470,19 +501,38 @@ export default {
   methods: {
     stateChange() {
       this.state = !this.state;
-
+      
       if (this.state) {
         this.toggle = "reorder";
-        this.get_current_net_specific_request(this.$route.query.id);
-        this.get_current_inventory_specific_request(this.$route.query.id);
-        this.get_current_inventory_specific_request(this.$route.query.id);
+        this.get_analysis_dashboard_count(this.requestID);
+        this.get_current_net_specific_request(this.requestID);
+        this.get_current_inventory_specific_request(this.requestID);
+        this.get_current_inventory_specific_request(this.requestID);
       } else {
         this.toggle = "total_stock";
-        this.get_current_net_specific_request(this.$route.query.id);
-        this.get_current_inventory_specific_request(this.$route.query.id);
-        this.get_current_inventory_specific_request(this.$route.query.id);
+         this.get_analysis_dashboard_count(this.requestID);
+        this.get_current_net_specific_request(this.requestID);
+        this.get_current_inventory_specific_request(this.requestID);
+        this.get_current_inventory_specific_request(this.requestID);
       }
     },
+    // stateChangeFromChild(requestID,toggle) {
+      
+      
+     
+    //     this.toggle = toggle;
+    //     this.get_analysis_dashboard_count(requestID);
+    //     this.get_current_net_specific_request(requestID);
+    //     this.get_current_inventory_specific_request(requestID);
+    //     this.get_current_inventory_specific_request(requestID);
+    //   // } else {
+    //   //   this.toggle = "total_stock";
+    //   //    this.get_analysis_dashboard_count(requestID);
+    //   //   this.get_current_net_specific_request(requestID);
+    //   //   this.get_current_inventory_specific_request(requestID);
+    //   //   this.get_current_inventory_specific_request(requestID);
+    //   // }
+    // },
     get_current_inventory_specific_request(requestId) {
       this.isLoading=true;
       fetch(
@@ -630,6 +680,40 @@ export default {
             }
             this.isLoading=false;
             this.currentNet=this.netRowData;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    get_analysis_dashboard_count(requestId)
+    {
+       this.isLoading=true;
+       this.analysisDashboardCount=[];
+      fetch(
+        constant.APIURL +
+          "api/v1/get_analysis_dashboard_count?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
+            console.log("data -- Analysis Dashboard-->", data);
+            this.analysisDashboardCount = data;
+                    this.isLoading=false;
+            
           });
         })
         .catch(handleError => {
