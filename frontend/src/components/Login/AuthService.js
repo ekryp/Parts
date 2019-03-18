@@ -1,6 +1,9 @@
 import auth0 from 'auth0-js'
 import router from '../../router'
 import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios)
 import * as constant from "../constant/constant";
 
 
@@ -23,10 +26,19 @@ export default {
                 console.log('success')
                 // router.push('/dashboard')
             } else if (err) {
+                console.log(err)
+                var error_message = err.errorDescription.split(':')[0]
+                var error_email_id = err.errorDescription.split(':')[1]
+                console.log(error_message)
+                console.log(error_email_id)
+                axios.post('https://ekryp.auth0.com/dbconnections/change_password', {
+	                          "email" :error_email_id,
+	                          "connection" :"db-users"
+                          });
                 alert(err.errorDescription)
                 router.push('/')
                 //console.log(err)
-                console.log(err)
+
             }
         })
     },
