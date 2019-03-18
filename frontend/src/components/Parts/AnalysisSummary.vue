@@ -167,9 +167,12 @@ export default {
       if (this.state) {
         console.log(this.toggle);
         this.toggle = "reorder";
+        this.get_analysis_dashboard_count(this.requestId);
         this.get_request_analysis_summary_result(this.requestId);
       } else {
         this.toggle = "total_stock";
+        this.get_analysis_dashboard_count(this.$route.query.id);
+
         this.get_request_analysis_summary_result(this.requestId);
       }
     },
@@ -196,6 +199,40 @@ export default {
             }
             console.log("data -- get_analysis_name-->", data);
             this.analysisName = data;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+     get_analysis_dashboard_count(requestId)
+    {
+       //this.isLoading=true;
+       this.analysisDashboardCount=[];
+      fetch(
+        constant.APIURL +
+          "api/v1/get_analysis_dashboard_count?request_id=" +
+          requestId +
+          "&toggle=" +
+          this.toggle,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
+            console.log("data -- Analysis Dashboard-->", data);
+            this.$parent.analysisDashboardCount = data;
+                    //this.isLoading=false;
+            
           });
         })
         .catch(handleError => {

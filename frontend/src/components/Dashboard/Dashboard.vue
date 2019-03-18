@@ -10,6 +10,55 @@
           </p>
         </div>
 
+        <div class="row text-center">
+          <div class="col-lg-1" v-if="!filterFLag" @click="changeFilter()"> 
+          <i class="fas fa-filter fa-lg" style="color:green"></i>
+
+          </div>
+          <div class="col-lg-1" v-if="filterFLag"  @click="changeFilter()"> 
+          <i class="fas fa-times fa-lg" style="color:green"></i>
+          
+          </div>
+          <div class="col"></div>
+        </div>
+        <transition name="fade">
+          <div class="row" style="paddingTop:0.6em" v-if="filterFLag" >
+            
+              <div class="col-lg-12">
+                <div class="p-3 mb-3 bg-white shadow">
+                  <div class="row">
+                  <div class="col-lg-4">
+                    <div>
+                      Customer
+                    </div>
+                    <div style="paddingTop:0.5em"> 
+                      <Multiselect v-model="customerValue" tag-placeholder="Add this as new tag" placeholder="Search Customer"  label="name"
+                        track-by="name" :options="customerOptions" :multiple="true" :taggable="true" ></Multiselect>  
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div>
+                      Depot
+                    </div>
+                    <div style="paddingTop:0.5em"> 
+                      <Multiselect v-model="depotValue" tag-placeholder="Add this as new tag" placeholder="Search Depot"  label="name"
+                        track-by="name" :options="depotOptions" :multiple="true" :taggable="true" ></Multiselect> 
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div>
+                      Toggle
+                    </div>
+                    <div style="paddingTop:0.5em"> 
+                      <Multiselect v-model="toggleValue" tag-placeholder="Add this as new tag" placeholder="Search Depot"  label="name"
+                        track-by="name" :options="toggleOptions"  :taggable="true" ></Multiselect> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        </transition>
         <Loading :active="isLoading" 
         :can-cancel="false" 
         color=#15ba9a
@@ -236,6 +285,7 @@ import GmapCluster from "vue2-google-maps/dist/components/cluster";
 import VTooltip from "v-tooltip";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import Multiselect from "vue-multiselect";
 
 
 Vue.use(VTooltip);
@@ -254,7 +304,8 @@ export default {
   components: {
     SideNav,
     headernav,
-     Loading
+    Loading,
+    Multiselect
   },
   mounted() {
     // this.chartone();
@@ -273,6 +324,7 @@ export default {
     this.getTopDepots();
     this.getTopCustomer();
     this.getPieChart();
+    this.getFilterMainDashboard();
     this.getMapLocations(this.markers);
   },
   data() {
@@ -288,6 +340,13 @@ export default {
       topPons: [],
       topDepots: [],
       topCustomer: [],
+      customerValue:[],
+      customerOptions: [],
+      toggleValue:[],
+      toggleOptions:[{name:'total'},{name:'reorder'}],
+      depotValue:[],
+      depotOptions:[],
+      filterFLag:false,
       toggle: "reorder",
       state: true,
       markers: [],
@@ -503,6 +562,7 @@ export default {
     mapFunction() {
       map.setZoom(9);
     },
+    
 
     stateChange() {
       this.state = !this.state;
@@ -526,6 +586,44 @@ export default {
         this.markers = [];
         this.getMapLocations(this.markers);
       }
+    },
+    getFilterMainDashboard()
+    {
+        this.isLoading=true;
+      fetch(constant.APIURL + "api/v1/get_filter_main_dashboard", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        }
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if(data.code === "token_expired")
+            {
+              this.logout();
+            }
+            console.log("data -- filterdata-->", data);
+            for(var i=0;i<data.customer_list.length;i++)
+            {
+              this.customerOptions.push({name:data.customer_list[i]});
+            }
+            
+             for(var i=0;i<data.depot_list.length;i++)
+            {
+              this.depotOptions.push({name:data.depot_list[i]});
+            }
+          });
+        this.isLoading=false;
+        })
+        
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    changeFilter()
+    {
+      this.filterFLag=!this.filterFLag;
     },
     logout() {
       console.log("logout");
@@ -596,6 +694,17 @@ export default {
 .vue-tooltip {
   background-color: white;
   color: #71869e;
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in <2.1.8 */
+{
+    opacity: 0
 }
 </style>
 
