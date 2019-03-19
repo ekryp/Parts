@@ -31,7 +31,7 @@
                       id="fileupload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg "></i>
                   </label>
                 
                   <span style="paddingLeft:7%;paddingTop:1%">{{partsFileName}}</span>
@@ -42,7 +42,7 @@
                 <DownloadExcel :data="partsAnalysisRequestList" type="csv" name="Sample_Parts.csv"  >
  
                 <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Parts.csv</span>
@@ -56,7 +56,7 @@
                   type="button"
                   class="btn btn-success"
                   @click="routeToView('parts')"
-                
+                #afa0a0 ;color:#afa0a0;
                 >View</button> -->
                  &nbsp;
                 <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadPartsData()"></i>
@@ -77,7 +77,7 @@
                       id="highSpareUpload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                   </label>
                 
                   <span style="paddingLeft:7%;paddingTop:1%">{{highSpareFileName}}</span>
@@ -86,7 +86,7 @@
               <td >
                 <DownloadExcel :data="highSpareFilesList" type="csv" name="Sample_High_Spare.csv"  >
                 <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_High_Spare.csv</span>
@@ -115,7 +115,7 @@
                
                  <label for="nodeUpload" class="file">
                     <input type="file" @change="nodeFileEvent" id="nodeUpload" style="display:none">
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                   </label>
                 
                   <span style="paddingLeft:7%;paddingTop:1%">{{nodeFileName}}</span>
@@ -124,7 +124,7 @@
               <td >
                <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv"  >
                 <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Node.csv</span>
@@ -157,7 +157,7 @@
                       id="depotUpload"
                       style="display:none"
                     >
-                  <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                  <i style="cursor:pointer;color:#afa0a0;"  class="fas fa-paperclip fa-lg"></i>
                   </label>
                   <span style="paddingLeft:7%;paddingTop:1%">{{depotFileName}}</span>
               
@@ -165,7 +165,7 @@
               <td >
                 <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv"  >
                 <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Depot.csv</span>
@@ -198,7 +198,7 @@
                       id="minsomerUpload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                   </label>
                   <span style="paddingLeft:7%;paddingTop:1%">{{minsomerFileName}}</span>
               
@@ -206,7 +206,7 @@
               <td >
                 <DownloadExcel :data="minsomerFilesList" type="csv" name="Sample_Minsomer.csv"  >
                  <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Minsomer.csv</span>
@@ -240,7 +240,7 @@
                       id="ratio2Upload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                   </label>
                   <span style="paddingLeft:7%;paddingTop:1%">{{ratio2FileName}}</span>
               
@@ -248,7 +248,7 @@
               <td >
                <div  style="cursor:pointer" @click="downloadRatio2CSV()">
                   <div class="float-left" style="marginTop:1%">
-                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                   </div>
                   <div style="paddingLeft:7%;paddingTop:1%">
                     <span>Download Sample_Ratio_2Day.csv</span>
@@ -286,7 +286,7 @@
                       id="ratio7Upload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                   </label>
                   <span style="paddingLeft:7%;paddingTop:1%">{{ratio7FileName}}</span>
               
@@ -294,7 +294,7 @@
               <td >
                <div style="cursor:pointer" @click="downloadRatio7CSV()">
                 <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" aria-hidden="true"></i>
+                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                 </div>
                 <div style="paddingLeft:7%;paddingTop:1%">
                   <span>Download Sample_Ratio_7Day.csv</span>
@@ -331,7 +331,7 @@
                       id="ratio30Upload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                   </label>
                   <span style="paddingLeft:7%;paddingTop:1%">{{ratio30FileName}}</span>
               
@@ -339,7 +339,7 @@
               <td >
                 <div  style="cursor:pointer" @click="downloadRatio30CSV()">
                   <div class="float-left" style="marginTop:1%">
-                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                   </div>
                   <div style="paddingLeft:7%;paddingTop:1%">
                     <span>Download Sample_Ratio_30Day.csv</span>
@@ -376,7 +376,7 @@
                       id="ratio60Upload"
                       style="display:none"
                     >
-                    <i style="cursor:pointer" class="fas fa-paperclip fa-2x"></i>
+                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                   </label>
                   <span style="paddingLeft:7%;paddingTop:1%">{{ratio60FileName}}</span>
               
@@ -384,7 +384,7 @@
               <td >
                  <div  style="cursor:pointer" @click="downloadRatio60CSV()">
               <div class="float-left" style="marginTop:1%">
-                <i class="fa fa-download" aria-hidden="true"></i>
+                <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
               </div>
               <div style="paddingLeft:7%;paddingTop:1%">
                 <span>Download Sample_Ratio_60Day.csv</span>
