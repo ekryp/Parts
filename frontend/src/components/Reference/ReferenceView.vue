@@ -1685,14 +1685,14 @@ export default {
 function actionEditRenderer(params) {
   let skills = [];
 
-  skills.push('<i style="cursor:pointer" class="fas fa-edit"></i>');
+  skills.push('<i style="cursor:pointer;color:#4481bb;" class="fas fa-edit"></i>');
 
   return skills.join(" ");
 }
 function actionDeleteRenderer(params) {
   let skills = [];
 
-  skills.push('<i style="cursor:pointer" class="fas fa-trash-alt"></i>');
+  skills.push('<i style="cursor:pointer;color:#de3341;" class="fas fa-trash-alt"></i>');
 
   return skills.join(" ");
 }

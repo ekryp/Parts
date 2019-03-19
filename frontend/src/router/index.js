@@ -94,7 +94,7 @@ export default new Router({
       name: 'Reference',
       component: Reference,
       meta: {
-        permission: 'UploadReference'
+        permission: 'ViewReference'
       }
     },
     {
@@ -102,7 +102,7 @@ export default new Router({
       name: 'ReferenceView',
       component: ReferenceView,
       meta: {
-        permission: 'EditReference'
+        permission: 'ViewReference'
       }
     },
     {

@@ -9,7 +9,7 @@
         </p>
       </div>
       <div class>
-        <h5>Reference File Information :</h5>
+        <h5 style="font-size: 1.25em;">Reference File Information :</h5>
         <div >
 
         <div class="col-lg-12">
@@ -50,13 +50,18 @@
               </DownloadExcel>
               </td>
               <td >
-                <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button>
-                <button
+               
+                <!-- <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button> -->
+                <!-- <button
                   type="button"
                   class="btn btn-success"
                   @click="routeToView('parts')"
                 
-                >View</button>
+                >View</button> -->
+                 &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadPartsData()"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('parts')"></i>
               </td>
             </tr>
             <tr>
@@ -89,13 +94,17 @@
                 </DownloadExcel>
               </td>
               <td >
-                 <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
+                  &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadHighSpareData()"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('highspare')"></i>
+                 <!-- <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('highspare')"
                 
-              >View</button>
+              >View</button> -->
               </td>
             </tr>
             <tr>
@@ -123,12 +132,17 @@
               </DownloadExcel>
               </td>
               <td >
-                 <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
+
+                   &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadNodeData()"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('node')"></i>
+                 <!-- <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('node')"
-              >View</button>
+              >View</button> -->
               </td>
             </tr>
             <tr>
@@ -159,12 +173,16 @@
               </DownloadExcel>
               </td>
               <td >
-                <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
+                <!-- <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('depot')"
-              >View</button>
+              >View</button> -->
+                  &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;"  @click="uploadDepotData()"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('depot')"></i>
               </td>
             </tr>
 
@@ -196,12 +214,17 @@
                </DownloadExcel>
               </td>
               <td >
-              <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
+              <!-- <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('misnomer')"
-              >View</button>
+              >View</button> -->
+             
+                  &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadMinsomerData()"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('misnomer')"></i>
               </td>
             </tr>
 
@@ -233,7 +256,7 @@
                 </div>
               </td>
               <td >
-              <button
+              <!-- <button
                 type="button"
                 class="btn btn-success"
                 @click="uploadRatioData('Ratio of PON - 2Day')"
@@ -242,7 +265,11 @@
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('Ratio of PON - 2Day')"
-              >View</button>
+              >View</button> -->
+                  &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 2Day')"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 2Day')"></i>
               </td>
             </tr>
 
@@ -275,7 +302,7 @@
                </div>
               </td>
               <td >
-                <button
+                <!-- <button
                     type="button"
                     class="btn btn-success"
                     @click="uploadRatioData('Ratio of PON - 7Day')"
@@ -284,7 +311,11 @@
                     type="button"
                     class="btn btn-success"
                     @click="routeToView('Ratio of PON - 7Day')"
-                  >View</button>
+                  >View</button> -->
+                     &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 7Day')"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 7Day')"></i>
               </td>
             </tr>
 
@@ -316,7 +347,7 @@
                 </div>
               </td>
               <td >
-                <button
+                <!-- <button
                 type="button"
                 class="btn btn-success"
                 @click="uploadRatioData('Ratio of PON - 30Day')"
@@ -325,7 +356,11 @@
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('Ratio of PON - 30Day')"
-              >View</button>
+              >View</button> -->
+                 &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 30Day')"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 30Day')"></i>
               </td>
             </tr>
 
@@ -357,7 +392,7 @@
             </div>
               </td>
               <td >
-                  <button
+                  <!-- <button
                   type="button"
                   class="btn btn-success"
                   @click="uploadRatioData('Ratio of PON - 60Day')"
@@ -366,7 +401,11 @@
                   type="button"
                   class="btn btn-success"
                   @click="routeToView('Ratio of PON - 60Day')"
-                >View</button>
+                >View</button> -->
+                   &nbsp;
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 60Day')"></i>
+                &nbsp; &nbsp; &nbsp;
+                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 60Day')"></i>
               </td>
             </tr>
             </tbody>

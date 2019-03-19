@@ -72,7 +72,10 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
+    
+    this.filterParams = this.$route.query.filterParams;
     this.getTopExtenededData();
+    console.log('filter params',this.filterParams);
   },
   data() {
     console.log("dashboard", this.data);
@@ -85,6 +88,7 @@ export default {
       customer: null,
       parts: null,
       depots: null,
+      filterParams:"",
       partName: "",
       customerName: "",
       toggle: "reorder",
@@ -169,7 +173,7 @@ export default {
       localStorage.clear();
     },
     getTopExtenededData() {
-      fetch(constant.APIURL + "api/v1/get_top_extended?toggle=" + this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_top_extended?toggle=" + this.toggle+this.filterParams, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")

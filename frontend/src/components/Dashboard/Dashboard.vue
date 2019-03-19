@@ -12,11 +12,11 @@
 
         <div class="row text-center">
           <div class="col-lg-1" v-if="!filterFLag" @click="changeFilter()"> 
-          <i class="fas fa-filter fa-lg" style="color:green"></i>
+          <i class="fas fa-filter fa-lg" style="color:#169f85"></i>
 
           </div>
           <div class="col-lg-1" v-if="filterFLag"  @click="changeFilter()"> 
-          <i class="fas fa-times fa-lg" style="color:green"></i>
+          <i class="fas fa-times fa-lg" style="color:#169f85"></i>
           
           </div>
           <div class="col"></div>
@@ -25,35 +25,91 @@
           <div class="row" style="paddingTop:0.6em" v-if="filterFLag" >
             
               <div class="col-lg-12">
-                <div class="p-3 mb-3 bg-white shadow">
+                <div class="p-3 mb-3 bg-white ">
                   <div class="row">
                   <div class="col-lg-4">
-                    <div>
-                      Customer
+                    <div class="row">
+                      <div class="col-lg-2">
+                        Customer
+                      </div>
+                      <div class="col" align="right">
+                        <button
+                        style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('customer')"
+                        >  <i class="fas fa-check-circle"></i> &nbsp;All</button>
+                      
+                      
+                        <button
+                          style="fontSize:1vw;"
+                            type="button"
+                            class="all-success"
+                            @click="clearAll('customer')"
+                          > <i class="fas fa-minus-circle"></i> &nbsp; Clear</button>
+                        </div>
+                      
                     </div>
                     <div style="paddingTop:0.5em"> 
                       <Multiselect v-model="customerValue" tag-placeholder="Add this as new tag" placeholder="Search Customer"  label="name"
-                        track-by="name" :options="customerOptions" :multiple="true" :taggable="true" ></Multiselect>  
+                        track-by="name" :options="customerOptions" :close-on-select="false" :multiple="true" 
+                        :clear-on-select="false" :hide-selected="true" :taggable="true" ></Multiselect>  
                     </div>
                   </div>
                   <div class="col-lg-4">
-                    <div>
-                      Depot
+                   <div class="row">
+                      <div class="col-lg-2">
+                        Depot
+                      </div>
+                      <div class="col" align="right">
+                        <button
+                        style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('depot')"
+                        >  <i class="fas fa-check-circle"></i> &nbsp;All</button>
+                      
+                      
+                        <button
+                          style="fontSize:1vw;"
+                            type="button"
+                            class="all-success"
+                            @click="clearAll('depot')"
+                          > <i class="fas fa-minus-circle"></i> &nbsp; Clear</button>
+                        </div>
+                      
                     </div>
                     <div style="paddingTop:0.5em"> 
                       <Multiselect v-model="depotValue" tag-placeholder="Add this as new tag" placeholder="Search Depot"  label="name"
-                        track-by="name" :options="depotOptions" :multiple="true" :taggable="true" ></Multiselect> 
+                        track-by="name" :options="depotOptions" :multiple="true" :taggable="true"
+                        :clear-on-select="false" :close-on-select="false" :hide-selected="true"  ></Multiselect> 
                     </div>
                   </div>
                   <div class="col-lg-4">
-                    <div>
-                      Toggle
-                    </div>
-                    <div style="paddingTop:0.5em"> 
-                      <Multiselect v-model="toggleValue" tag-placeholder="Add this as new tag" placeholder="Search Depot"  label="name"
-                        track-by="name" :options="toggleOptions"  :taggable="true" ></Multiselect> 
+                    <div align="right">                    
+                    <toggle-button
+                      :value="state"
+                      :color="{checked: '#169f85', unchecked: '#169f85'}"
+                      :sync="true"
+                      :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                      :width="80"
+                      v-tooltip.top.hover.focus="'Click to Toggle'"
+                      @change="applyFilter()"
+                    />
                     </div>
                   </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-11"></div>
+                  <div class="col-lg-1">
+                     <button
+                     style="fontSize:1vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="applyFilter()"
+                    >  <i class="far fa-chart-bar"></i> &nbsp;Run</button>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -64,20 +120,11 @@
         color=#15ba9a
         :is-full-page="fullPage"></Loading>
         
-        <toggle-button
-          style="margin-left:95% "
-          :value="state"
-          :color="{checked: 'green', unchecked: 'green'}"
-          :sync="true"
-          :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-          :width="80"
-          v-tooltip.top.hover.focus="'Click to Toggle'"
-          @change="stateChange()"
-        />
+       
         <div class="row text-center">
-          <div class="col-lg-2">
+          <div class="col-2">
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <span class="text-top">Total Customer</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_customer}}</span>
@@ -85,9 +132,9 @@
               <div class="vertical"></div>
             </div>
           </div>
-          <div class="col-lg-2">
+          <div class="col-2">
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <span class="text-top">Critical PONs</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_pon}}</span>
@@ -96,9 +143,9 @@
             </div>
             <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
           </div>
-          <div class="col-lg-2">
+          <div class="col-2">
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <span class="text-top">Critical Customers</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_customer}}</span>
@@ -107,9 +154,9 @@
             </div>
             <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
           </div>
-          <div class="col-lg-2">
+          <div class="col-2">
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <span class="text-top">Critical Depots</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_depot}}</span>
@@ -118,9 +165,9 @@
             </div>
             <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
           </div>
-          <div class="col-lg-2">
+          <div class="col-2">
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <span class="text-top">Total PON types</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_pon_type}}</span>
@@ -129,9 +176,9 @@
             </div>
             <!-- <span class="text-bottom">+76.00 Mar-Apr</span> -->
           </div>
-          <div class="col-lg-2">
+          <div class="col-2">
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <span class="text-top">Total Depots</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_depot}}</span>
@@ -350,6 +397,7 @@ export default {
       toggle: "reorder",
       state: true,
       markers: [],
+      filterURL:"",
       icon: {
         url: require("../../assets/mapicon.png") // url
       },
@@ -367,7 +415,11 @@ export default {
     //   Highcharts.chart("container2", linechart);
     // },
     routeTable() {
-      router.push("/table");
+      router.push({
+        path: "/table",
+        query: { filterParams: this.filterURL }
+      });
+     
     },
 
     // This Method is to get data for Main Dash Borad Details
@@ -381,7 +433,7 @@ export default {
       fetch(
         constant.APIURL +
           "api/v1/get_main_dashboard_count?toggle=" +
-          this.toggle,
+          this.toggle+this.filterURL,
         {
           method: "GET",
           headers: {
@@ -412,7 +464,7 @@ export default {
 
     getTopPons() {
       this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_top_pons?toggle=" + this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_top_pons?toggle=" + this.toggle+this.filterURL, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -440,7 +492,7 @@ export default {
 
     getTopDepots() {
       this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_top_depots?toggle=" + this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_top_depots?toggle=" + this.toggle+this.filterURL, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -468,7 +520,7 @@ export default {
     getTopCustomer() {
       this.isLoading=true;
       fetch(
-        constant.APIURL + "api/v1/get_top_customers?toggle=" + this.toggle,
+        constant.APIURL + "api/v1/get_top_customers?toggle=" + this.toggle+this.filterURL,
         {
           method: "GET",
           headers: {
@@ -494,7 +546,7 @@ export default {
     },
     getPieChart() {
       this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_pie_chart?toggle=" + this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_pie_chart?toggle=" + this.toggle+this.filterURL, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -521,7 +573,7 @@ export default {
     },
     getMapLocations(markers) {
       this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_lat_lon?toggle=" + this.toggle, {
+      fetch(constant.APIURL + "api/v1/get_lat_lon?toggle=" + this.toggle+this.filterURL, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -587,6 +639,22 @@ export default {
         this.getMapLocations(this.markers);
       }
     },
+    clearAll(param)
+    {
+       if(param === 'customer'){
+        this.customerValue=[];
+      }else if(param === 'depot'){
+        this.depotValue=[];
+      }
+    },
+    selectAll(param)
+    {
+      if(param === 'customer'){
+        this.customerValue=this.customerOptions;
+      }else if(param === 'depot'){
+        this.depotValue=this.depotOptions;
+      }
+    },
     getFilterMainDashboard()
     {
         this.isLoading=true;
@@ -621,9 +689,31 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    
     changeFilter()
     {
       this.filterFLag=!this.filterFLag;
+    },
+    applyFilter()
+    {
+      this.filterURL="";
+      for(var i=0;i<this.customerValue.length;i++)
+      {
+        this.filterURL=this.filterURL+`&customer_filter=`+this.customerValue[i].name;
+      }
+
+       for(var i=0;i<this.depotValue.length;i++)
+      {
+        this.filterURL=this.filterURL+`&depot_filter=`+this.depotValue[i].name;
+      }
+      this.getMainDashboardCount();
+        this.getPieChart();
+        this.getTopDepots();
+        this.getTopCustomer();
+        this.getTopPons();
+        this.markers = [];
+        this.getMapLocations(this.markers);
+      console.log(this.filterURL);
     },
     logout() {
       console.log("logout");
@@ -706,6 +796,24 @@ export default {
 {
     opacity: 0
 }
+
+.all-success {
+  font-size: 0.63em !important;
+  color: #169f85;
+  letter-spacing: 0.063em;
+  
+  border: 0.125em solid #169f85;
+  border-radius: 2.500em;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.all-success:hover {
+  color: #FFF;
+  background:#169f85;
+  border: 2px solid #169f85;
+}
+
 </style>
 
 

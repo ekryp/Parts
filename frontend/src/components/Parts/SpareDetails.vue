@@ -19,7 +19,7 @@
 
         <div class="row">
         
-        <div class="col-lg-3 text-center">
+        <div class="col-3 text-center">
           <span class="text-top">Total Depot</span>
           <br>
           
@@ -27,18 +27,18 @@
         
         </div>
        
-        <div class="col-lg-3 text-center">
+        <div class="col-3 text-center">
           <span class="text-top">Critical Depot</span>
           <br>
           <span class="count" style="color:red">{{analysisDashboardCount.critical_depot}}</span> 
         </div>
-        <div class="col-lg-3 text-center">
+        <div class="col-3 text-center">
           <span class="text-top">Total PON Type</span>
           <br>
           
           <span class="count">{{analysisDashboardCount.total_pon_type}}</span> 
         </div>
-        <div class="col-lg-3 text-center">
+        <div class="col-3 text-center">
           <span class="text-top">Critical PON</span>
           <br>
           <span class="count" style="color:red">{{analysisDashboardCount.critical_pon}}</span> 
