@@ -151,6 +151,16 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     # 5.9 Process Error Records - Compare Valid PON against
 
     sap_inventory = read_sap_export_file(sap_file)
+    # keep same all_valid columns before merge
+    all_valid_columns = all_valid.columns
+
+    # keep only valid rows which are present in sap_inventory, but sap might have multiple entries due to reorder & total stock for one part_name
+    all_valid = pd.merge(all_valid, sap_inventory, left_on=['Product Ordering Name'], right_on=['Material Description = Part Name'], how='left')
+
+    all_valid = all_valid[all_valid['Standard Cost'].notnull()]
+    all_valid = all_valid[all_valid_columns]
+    all_valid = all_valid.drop_duplicates()
+
     to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
 
     update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
