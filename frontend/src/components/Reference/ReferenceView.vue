@@ -82,21 +82,21 @@
 <label>{{title}}</label>
 <div>
     <div class="row " style="paddingLeft:86%">
-      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
+      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Add'" @click="addEntry()" v-if="editReferenceFlag">
+                    
+                    <i class="fas fa-plus-square"></i>  &nbsp;Add
+                </button>
+ 
+       &nbsp; &nbsp;
+    <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
            <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'"  >
           <i class="fas fa-file-excel"></i>
           &nbsp;
           Export
            </DownloadExcel>
       </button>
- 
-       &nbsp; &nbsp;
-   
               
-                <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Add'" @click="addEntry()">
-                    
-                    <i class="fas fa-plus-square"></i>  &nbsp;Add
-                </button>
+               
     
     </div>
   
@@ -173,6 +173,7 @@ export default {
   created() {
     this.fileType = this.$route.query.fileType;
     console.log("File Type ->", this.fileType);
+    this.editReferenceFlag=localStorage.getItem('editFlag');
     if (this.fileType === "parts") {
 
       this.partsColumnDef();
@@ -216,6 +217,7 @@ export default {
       title: "",
       uniqueId: "",
       loaderFlag: false,
+      editReferenceFlag: false,
       referenceGridOptions: {
         rowStyle: {
           color: "#72879d",
@@ -308,20 +310,23 @@ export default {
           width: 150,
           filter: "date",
           cellStyle: {'text-align': 'right'}
-        },
-        {
+        }
+      ];
+       if(this.editReferenceFlag)
+      {
+      this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
           cellRenderer: actionEditRenderer
-        },
-        {
+        });
+        this.referenceColumnDefs.push({
           headerName: "Delete",
           field: "deleteFlag",
           width: 250,
           cellRenderer: actionDeleteRenderer
-        }
-      ];
+        });
+      }
     },
     highSpareColumnDef() {
       this.title = "High Spare Details";
@@ -349,20 +354,23 @@ export default {
           headerName: "Substitution PON",
           field: "SubstitutionPON",
           width: 150
-        },
-        {
+        }
+      ];
+       if(this.editReferenceFlag)
+      {
+      this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
           cellRenderer: actionEditRenderer
-        },
-        {
+        });
+        this.referenceColumnDefs.push({
           headerName: "Delete",
           field: "deleteFlag",
           width: 250,
           cellRenderer: actionDeleteRenderer
-        }
-      ];
+        });
+      }
     },
     nodeColumnDef() {
       this.title = "Node Details";
@@ -401,20 +409,23 @@ export default {
           headerName: "End Customer Node Belongs",
           field: "end_customer_node_belongs",
           width: 150
-        },
-        {
+        }
+      ];
+       if(this.editReferenceFlag)
+      {
+      this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
           cellRenderer: actionEditRenderer
-        },
-        {
+        });
+        this.referenceColumnDefs.push({
           headerName: "Delete",
           field: "deleteFlag",
           width: 250,
           cellRenderer: actionDeleteRenderer
-        }
-      ];
+        });
+      }
     },
     depotColumnDef() {
       this.title = "Depot Details";
@@ -545,20 +556,23 @@ export default {
           width: 150,
           filter: "date",
           cellStyle: {'text-align': 'right'}
-        },
-        {
+        }
+      ];
+       if(this.editReferenceFlag)
+      {
+      this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
           cellRenderer: actionEditRenderer
-        },
-        {
+        });
+        this.referenceColumnDefs.push({
           headerName: "Delete",
           field: "deleteFlag",
           width: 250,
           cellRenderer: actionDeleteRenderer
-        }
-      ];
+        });
+      }
     },
     misnomerColumnDef() {
       this.title = "Misnomer Details";
@@ -586,20 +600,23 @@ export default {
           headerName: "Misnomer PON",
           field: "MisnomerPON",
           width: 150
-        },
-        {
+        }
+      ];
+       if(this.editReferenceFlag)
+      {
+      this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
           cellRenderer: actionEditRenderer
-        },
-        {
+        });
+        this.referenceColumnDefs.push({
           headerName: "Delete",
           field: "deleteFlag",
           width: 250,
           cellRenderer: actionDeleteRenderer
-        }
-      ];
+        });
+      }
     },
     ratioPONColumnDef() {
       this.title = "Ratio PON Details";
@@ -741,20 +758,23 @@ export default {
           cellStyle: {'text-align': 'right'}
             }
           ]
-        },
-        {
+        }
+      ];
+       if(this.editReferenceFlag)
+      {
+      this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
           cellRenderer: actionEditRenderer
-        },
-        {
+        });
+        this.referenceColumnDefs.push({
           headerName: "Delete",
           field: "deleteFlag",
           width: 250,
           cellRenderer: actionDeleteRenderer
-        }
-      ];
+        });
+      }
     },
     editData() {
       let url;

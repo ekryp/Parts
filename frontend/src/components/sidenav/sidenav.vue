@@ -136,6 +136,9 @@ export default {
      {
        this.solutionFlag=true;
      }
+     if(permissions[i] === 'EditReference'){
+       localStorage.setItem('editFlag',true);
+     }
     }
      
   },

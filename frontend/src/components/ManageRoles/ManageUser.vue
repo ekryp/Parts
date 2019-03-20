@@ -26,8 +26,8 @@
                 <label for="psw" class="col-lg-3">Permissions : </label>
                 </div>
                  <br>
-                <Multiselect v-model="permissionValue" tag-placeholder="Add this as new tag" placeholder="Search or add a Permission" label="role_name" 
-                track-by="role_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>  
+                <Multiselect v-model="permissionValue" tag-placeholder="Add this as new tag" placeholder="Search  a Permission" label="role_name" 
+                track-by="role_id" :options="options" :multiple="true"  :close-on-select="false" :clear-on-select="false" :hide-selected="true"></Multiselect>  
       </div>
       <div v-if="addFlag">
         <div class="row align" >

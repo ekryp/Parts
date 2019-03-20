@@ -42,7 +42,7 @@
                  <br>
                  
                 <Multiselect v-model="permissionValue" tag-placeholder="Add this as new tag" placeholder="Search or add a Permission" label="name" 
-                track-by="_id" :options="options" :multiple="true" :taggable="true" @tag="addTag"></Multiselect>
+                track-by="_id" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true"></Multiselect>
 
                 <br>
                  <div class="row" v-if="errorMessage !==''">

@@ -59,7 +59,7 @@
                 #afa0a0 ;color:#afa0a0;
                 >View</button> -->
                  &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadPartsData()"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadPartsData()" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('parts')"></i>
               </td>
@@ -95,7 +95,7 @@
               </td>
               <td >
                   &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadHighSpareData()"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadHighSpareData()" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('highspare')"></i>
                  <!-- <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
@@ -134,7 +134,7 @@
               <td >
 
                    &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadNodeData()"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadNodeData()" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('node')"></i>
                  <!-- <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
@@ -180,7 +180,7 @@
                 @click="routeToView('depot')"
               >View</button> -->
                   &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;"  @click="uploadDepotData()"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;"  @click="uploadDepotData()" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('depot')"></i>
               </td>
@@ -222,7 +222,7 @@
               >View</button> -->
              
                   &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadMinsomerData()"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadMinsomerData()" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('misnomer')"></i>
               </td>
@@ -267,7 +267,7 @@
                 @click="routeToView('Ratio of PON - 2Day')"
               >View</button> -->
                   &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 2Day')"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 2Day')" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 2Day')"></i>
               </td>
@@ -313,7 +313,7 @@
                     @click="routeToView('Ratio of PON - 7Day')"
                   >View</button> -->
                      &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 7Day')"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 7Day')" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 7Day')"></i>
               </td>
@@ -358,7 +358,7 @@
                 @click="routeToView('Ratio of PON - 30Day')"
               >View</button> -->
                  &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 30Day')"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 30Day')" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 30Day')"></i>
               </td>
@@ -403,7 +403,7 @@
                   @click="routeToView('Ratio of PON - 60Day')"
                 >View</button> -->
                    &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 60Day')"></i>
+                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 60Day')" v-if="editFlag"></i>
                 &nbsp; &nbsp; &nbsp;
                  <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 60Day')"></i>
               </td>
@@ -446,7 +446,9 @@ export default {
     headernav,
     DownloadExcel
   },
-  created() {},
+  created() {
+      this.editFlag=localStorage.getItem('editFlag');
+  },
   data() {
     console.log("home");
     return {
@@ -477,7 +479,8 @@ export default {
       ratio30FilesList: ratio30Data,
       ratio60File: "",
       ratio60FilesList: ratio60Data,
-      ratio60FileName: "no file chosen"
+      ratio60FileName: "no file chosen",
+      editFlag: false
     };
   },
   methods: {
