@@ -11,118 +11,132 @@
         </div>
 
         <div class="row text-center">
-          <div class="col-lg-1" v-if="!filterFLag" @click="changeFilter()" align="left"> 
-          <i class="fas fa-filter fa-lg" style="color:#169f85"></i>
+          <div class="col-lg-1" v-if="!filterFLag" @click="changeFilter()" align="left">
+            <i class="fas fa-filter fa-lg" style="color:#169f85"></i>
+          </div>
+          <div class="col-lg-1" v-if="filterFLag" @click="changeFilter()" align="left">
+            <i class="fas fa-times fa-lg" style="color:#169f85"></i>
+          </div>
 
-          </div>
-          <div class="col-lg-1" v-if="filterFLag"  @click="changeFilter()" align="left"> 
-          <i class="fas fa-times fa-lg" style="color:#169f85"></i>
-          
-          </div>
-         
           <div class="col"></div>
         </div>
-         <br>
+        <br>
         <transition name="fade">
-          <div class="row" style="paddingTop:0.6em" v-if="filterFLag" >
-            
-              <div class="col-lg-12">
-                <div class="p-3 mb-3 bg-white ">
-                  <div class="row">
+          <div class="row" style="paddingTop:0.6em" v-if="filterFLag">
+            <div class="col-lg-12">
+              <div class="p-3 mb-3 bg-white">
+                <div class="row">
                   <div class="col-lg-4">
                     <div class="row">
-                      <div class="col-lg-2">
-                        Customer
-                      </div>
+                      <div class="col-lg-2">Customer</div>
                       <div class="col" align="right">
                         <button
-                        style="fontSize:1vw;"
+                          style="fontSize:1vw;"
                           type="button"
                           class="all-success"
                           @click="selectAll('customer')"
-                        >  <i class="fas fa-check-circle"></i> &nbsp;All</button>
-                      
-                      
+                        >
+                          <i class="fas fa-check-circle"></i> &nbsp;All
+                        </button>
+
                         <button
                           style="fontSize:1vw;"
-                            type="button"
-                            class="all-success"
-                            @click="clearAll('customer')"
-                          > <i class="fas fa-minus-circle"></i> &nbsp; Clear</button>
-                        </div>
-                      
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('customer')"
+                        >
+                          <i class="fas fa-minus-circle"></i> &nbsp; Clear
+                        </button>
+                      </div>
                     </div>
-                    <div style="paddingTop:0.5em"> 
-                      <Multiselect v-model="customerValue" tag-placeholder="Add this as new tag" placeholder="Search Customer"  label="name"
-                        track-by="name" :options="customerOptions" :close-on-select="false" :multiple="true" 
-                        :clear-on-select="false" :hide-selected="true" :taggable="true" ></Multiselect>  
+                    <div style="paddingTop:0.5em">
+                      <Multiselect
+                        v-model="customerValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Customer"
+                        label="name"
+                        track-by="name"
+                        :options="customerOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
                     </div>
                   </div>
                   <div class="col-lg-4">
-                   <div class="row">
-                      <div class="col-lg-2">
-                        Depot
-                      </div>
+                    <div class="row">
+                      <div class="col-lg-2">Depot</div>
                       <div class="col" align="right">
                         <button
-                        style="fontSize:1vw;"
+                          style="fontSize:1vw;"
                           type="button"
                           class="all-success"
                           @click="selectAll('depot')"
-                        >  <i class="fas fa-check-circle"></i> &nbsp;All</button>
-                      
-                      
+                        >
+                          <i class="fas fa-check-circle"></i> &nbsp;All
+                        </button>
+
                         <button
                           style="fontSize:1vw;"
-                            type="button"
-                            class="all-success"
-                            @click="clearAll('depot')"
-                          > <i class="fas fa-minus-circle"></i> &nbsp; Clear</button>
-                        </div>
-                      
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('depot')"
+                        >
+                          <i class="fas fa-minus-circle"></i> &nbsp; Clear
+                        </button>
+                      </div>
                     </div>
-                    <div style="paddingTop:0.5em"> 
-                      <Multiselect v-model="depotValue" tag-placeholder="Add this as new tag" placeholder="Search Depot"  label="name"
-                        track-by="name" :options="depotOptions" :multiple="true" :taggable="true"
-                        :clear-on-select="false" :close-on-select="false" :hide-selected="true"  ></Multiselect> 
+                    <div style="paddingTop:0.5em">
+                      <Multiselect
+                        v-model="depotValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Depot"
+                        label="name"
+                        track-by="name"
+                        :options="depotOptions"
+                        :multiple="true"
+                        :taggable="true"
+                        :clear-on-select="false"
+                        :close-on-select="false"
+                        :hide-selected="true"
+                      ></Multiselect>
                     </div>
                   </div>
                   <div class="col-lg-4">
-                    <div align="right">                    
-                    <toggle-button
-                      :value="state"
-                      :color="{checked: '#169f85', unchecked: '#169f85'}"
-                      :sync="true"
-                      :labels="{checked: 'ReOrder', unchecked: 'Total'}"
-                      :width="80"
-                      v-tooltip.top.hover.focus="'Click to Toggle'"
-                      @change="applyFilter()"
-                    />
+                    <div align="right">
+                      <toggle-button
+                        :value="state"
+                        :color="{checked: '#169f85', unchecked: '#169f85'}"
+                        :sync="true"
+                        :labels="{checked: 'ReOrder', unchecked: 'Total'}"
+                        :width="80"
+                        v-tooltip.top.hover.focus="'Click to Toggle'"
+                        @change="stateChange()"
+                      />
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-11"></div>
                   <div class="col-lg-1">
-                     <button
-                     style="fontSize:1vw;"
+                    <button
+                      style="fontSize:1vw;"
                       type="button"
                       class="btn btn-success btn-block"
                       @click="applyFilter()"
-                    >  <i class="far fa-chart-bar"></i> &nbsp;Run</button>
+                    >
+                      <i class="far fa-chart-bar"></i> &nbsp;Run
+                    </button>
                   </div>
-
                 </div>
               </div>
             </div>
-          </div> 
+          </div>
         </transition>
-        <Loading :active="isLoading" 
-        :can-cancel="false" 
-        color=#15ba9a
-        :is-full-page="fullPage"></Loading>
-        
-       
+        <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
+
         <div class="row text-center">
           <div class="col-2">
             <div class="row">
@@ -332,10 +346,9 @@ import VueGeolocation from "vue-browser-geolocation";
 import * as constant from "../constant/constant";
 import GmapCluster from "vue2-google-maps/dist/components/cluster";
 import VTooltip from "v-tooltip";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 import Multiselect from "vue-multiselect";
-
 
 Vue.use(VTooltip);
 
@@ -389,17 +402,17 @@ export default {
       topPons: [],
       topDepots: [],
       topCustomer: [],
-      customerValue:[],
+      customerValue: [],
       customerOptions: [],
-      toggleValue:[],
-      toggleOptions:[{name:'total'},{name:'reorder'}],
-      depotValue:[],
-      depotOptions:[],
-      filterFLag:false,
+      toggleValue: [],
+      toggleOptions: [{ name: "total" }, { name: "reorder" }],
+      depotValue: [],
+      depotOptions: [],
+      filterFLag: false,
       toggle: "reorder",
       state: true,
       markers: [],
-      filterURL:"",
+      filterURL: "",
       icon: {
         url: require("../../assets/mapicon.png") // url
       },
@@ -421,13 +434,12 @@ export default {
         path: "/table",
         query: { filterParams: this.filterURL }
       });
-     
     },
 
     // This Method is to get data for Main Dash Borad Details
 
     getMainDashboardCount() {
-      this.isLoading=true;
+      this.isLoading = true;
       console.log(
         "local storage ----->",
         localStorage.getItem("auth0_access_token")
@@ -435,26 +447,26 @@ export default {
       fetch(
         constant.APIURL +
           "api/v1/get_main_dashboard_count?toggle=" +
-          this.toggle+this.filterURL,
+          this.toggle +
+          this.filterURL,
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
-
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            
-            if(data.code === "token_expired")
-            {
+
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- get_dashboard_request_count-->", data);
             this.dashboardData = data;
-             this.isLoading=false;
+            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -465,24 +477,30 @@ export default {
     // This Method is to get data for TOP PONS table
 
     getTopPons() {
-      this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_top_pons?toggle=" + this.toggle+this.filterURL, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      // this.isLoading=true;
+      fetch(
+        constant.APIURL +
+          "api/v1/get_top_pons?toggle=" +
+          this.toggle +
+          this.filterURL,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      })
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            
-            if(data.code === "token_expired")
-            {
+
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- PONS Data-->", data);
             this.topPons = data;
-            this.isLoading=false;
+            // this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -493,23 +511,29 @@ export default {
     // This Method is to get data for TOP DEPOTS table
 
     getTopDepots() {
-      this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_top_depots?toggle=" + this.toggle+this.filterURL, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      //  this.isLoading=true;
+      fetch(
+        constant.APIURL +
+          "api/v1/get_top_depots?toggle=" +
+          this.toggle +
+          this.filterURL,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      })
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- get_dashboard_request_count-->", data);
             this.topDepots = data;
-            this.isLoading=false;
+            // this.isLoading=false;
           });
         })
         .catch(handleError => {
@@ -520,45 +544,54 @@ export default {
     // This Method is to get data for TOP CUSTOMER table
 
     getTopCustomer() {
-      this.isLoading=true;
+      // this.isLoading=true;
       fetch(
-        constant.APIURL + "api/v1/get_top_customers?toggle=" + this.toggle+this.filterURL,
+        constant.APIURL +
+          "api/v1/get_top_customers?toggle=" +
+          this.toggle +
+          this.filterURL,
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- get_dashboard_request_count-->", data);
             this.topCustomer = data;
           });
-          this.isLoading=false;
+          // this.isLoading=false;
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
     },
     getPieChart() {
-      this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_pie_chart?toggle=" + this.toggle+this.filterURL, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      //  this.isLoading=true;
+      fetch(
+        constant.APIURL +
+          "api/v1/get_pie_chart?toggle=" +
+          this.toggle +
+          this.filterURL,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      })
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- getPieChart-->", data);
@@ -566,27 +599,33 @@ export default {
             piechart.series[0].data[1].y = data.non_critical_pon;
             Highcharts.chart("container", piechart);
           });
-        this.isLoading=false;
+          // this.isLoading=false;
         })
-        
+
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
     },
     getMapLocations(markers) {
-      this.isLoading=true;
-      fetch(constant.APIURL + "api/v1/get_lat_lon?toggle=" + this.toggle+this.filterURL, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      // this.isLoading=true;
+      fetch(
+        constant.APIURL +
+          "api/v1/get_lat_lon?toggle=" +
+          this.toggle +
+          this.filterURL,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      }).then(response => {
+      ).then(response => {
         response.text().then(text => {
           const data = text && JSON.parse(text);
-          if(data.code === "token_expired")
-            {
-              this.logout();
-            }
+          if (data.code === "token_expired") {
+            this.logout();
+          }
           let promise = new Promise(function(resolve, reject) {
             var i;
 
@@ -605,7 +644,7 @@ export default {
             return mapData;
           });
           promise.then(
-            mapData => {this.isLoading=false;}, // shows "done!" after 1 second
+            mapData => {}, // shows "done!" after 1 second
             error => alert(error) // doesn't run
           );
 
@@ -616,7 +655,6 @@ export default {
     mapFunction() {
       map.setZoom(9);
     },
-    
 
     stateChange() {
       this.state = !this.state;
@@ -641,25 +679,22 @@ export default {
         this.getMapLocations(this.markers);
       }
     },
-    clearAll(param)
-    {
-       if(param === 'customer'){
-        this.customerValue=[];
-      }else if(param === 'depot'){
-        this.depotValue=[];
+    clearAll(param) {
+      if (param === "customer") {
+        this.customerValue = [];
+      } else if (param === "depot") {
+        this.depotValue = [];
       }
     },
-    selectAll(param)
-    {
-      if(param === 'customer'){
-        this.customerValue=this.customerOptions;
-      }else if(param === 'depot'){
-        this.depotValue=this.depotOptions;
+    selectAll(param) {
+      if (param === "customer") {
+        this.customerValue = this.customerOptions;
+      } else if (param === "depot") {
+        this.depotValue = this.depotOptions;
       }
     },
-    getFilterMainDashboard()
-    {
-        this.isLoading=true;
+    getFilterMainDashboard() {
+      //this.isLoading = true;
       fetch(constant.APIURL + "api/v1/get_filter_main_dashboard", {
         method: "GET",
         headers: {
@@ -669,52 +704,47 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- filterdata-->", data);
-            for(var i=0;i<data.customer_list.length;i++)
-            {
-              this.customerOptions.push({name:data.customer_list[i]});
+            for (var i = 0; i < data.customer_list.length; i++) {
+              this.customerOptions.push({ name: data.customer_list[i] });
             }
-            
-             for(var i=0;i<data.depot_list.length;i++)
-            {
-              this.depotOptions.push({name:data.depot_list[i]});
+
+            for (var i = 0; i < data.depot_list.length; i++) {
+              this.depotOptions.push({ name: data.depot_list[i] });
             }
           });
-        this.isLoading=false;
+          // this.isLoading = false;
         })
-        
+
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
     },
-    
-    changeFilter()
-    {
-      this.filterFLag=!this.filterFLag;
+
+    changeFilter() {
+      this.filterFLag = !this.filterFLag;
     },
-    applyFilter()
-    {
-      this.filterURL="";
-      for(var i=0;i<this.customerValue.length;i++)
-      {
-        this.filterURL=this.filterURL+`&customer_filter=`+this.customerValue[i].name;
+    applyFilter() {
+      this.filterURL = "";
+      for (var i = 0; i < this.customerValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&customer_filter=` + this.customerValue[i].name;
       }
 
-       for(var i=0;i<this.depotValue.length;i++)
-      {
-        this.filterURL=this.filterURL+`&depot_filter=`+this.depotValue[i].name;
+      for (var i = 0; i < this.depotValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&depot_filter=` + this.depotValue[i].name;
       }
       this.getMainDashboardCount();
-        this.getPieChart();
-        this.getTopDepots();
-        this.getTopCustomer();
-        this.getTopPons();
-        this.markers = [];
-        this.getMapLocations(this.markers);
+      this.getPieChart();
+      this.getTopDepots();
+      this.getTopCustomer();
+      this.getTopPons();
+      this.markers = [];
+      this.getMapLocations(this.markers);
       console.log(this.filterURL);
     },
     logout() {
@@ -789,33 +819,32 @@ export default {
 }
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .5s
+  transition: opacity 0.5s;
 }
 
 .fade-enter,
 .fade-leave-to
 /* .fade-leave-active in <2.1.8 */
-{
-    opacity: 0
+ {
+  opacity: 0;
 }
 
 .all-success {
   font-size: 0.63em !important;
   color: #169f85;
   letter-spacing: 0.063em;
-  
+
   border: 0.125em solid #169f85;
-  border-radius: 2.500em;
+  border-radius: 2.5em;
   background: transparent;
   transition: all 0.3s ease 0s;
 }
 
 .all-success:hover {
-  color: #FFF;
-  background:#169f85;
+  color: #fff;
+  background: #169f85;
   border: 2px solid #169f85;
 }
-
 </style>
 
 
