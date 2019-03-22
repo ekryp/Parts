@@ -3,10 +3,7 @@
     <headernav msg="Spare Details"/>
     <side-nav menu="analysis"/>
 
-     <Loading :active="isLoading" 
-        :can-cancel="false" 
-        color=#15ba9a
-        :is-full-page="fullPage"></Loading>
+    <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
 
     <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
       <div>
@@ -18,32 +15,30 @@
         </div>
 
         <div class="row">
-        
-        <div class="col-3 text-center">
-          <span class="text-top">Total Depot</span>
-          <br>
-          
-          <span class="count">{{analysisDashboardCount.total_depot}}</span>
-        
+          <div class="col-3 text-center">
+            <span class="text-top">Total Depot</span>
+            <br>
+
+            <span class="count">{{analysisDashboardCount.total_depot}}</span>
+          </div>
+
+          <div class="col-3 text-center">
+            <span class="text-top">Critical Depot</span>
+            <br>
+            <span class="count" style="color:red">{{analysisDashboardCount.critical_depot}}</span>
+          </div>
+          <div class="col-3 text-center">
+            <span class="text-top">Total PON Type</span>
+            <br>
+
+            <span class="count">{{analysisDashboardCount.total_pon_type}}</span>
+          </div>
+          <div class="col-3 text-center">
+            <span class="text-top">Critical PON</span>
+            <br>
+            <span class="count" style="color:red">{{analysisDashboardCount.critical_pon}}</span>
+          </div>
         </div>
-       
-        <div class="col-3 text-center">
-          <span class="text-top">Critical Depot</span>
-          <br>
-          <span class="count" style="color:red">{{analysisDashboardCount.critical_depot}}</span> 
-        </div>
-        <div class="col-3 text-center">
-          <span class="text-top">Total PON Type</span>
-          <br>
-          
-          <span class="count">{{analysisDashboardCount.total_pon_type}}</span> 
-        </div>
-        <div class="col-3 text-center">
-          <span class="text-top">Critical PON</span>
-          <br>
-          <span class="count" style="color:red">{{analysisDashboardCount.critical_pon}}</span> 
-        </div>
-      </div>
       </div>
       <br>
       <nav>
@@ -55,10 +50,10 @@
             href="#nav-PONsummary"
             role="tab"
             aria-controls="nav-PONsummary"
-             aria-selected="true"
+            aria-selected="true"
           >Summary</a>
           <a
-            class="nav-item nav-link "
+            class="nav-item nav-link"
             id="nav-summary-tab"
             data-toggle="tab"
             href="#nav-summary"
@@ -66,7 +61,7 @@
             aria-controls="nav-summary"
             aria-selected="true"
           >Summary-PON/Depot</a>
-           
+
           <a
             class="nav-item nav-link"
             id="nav-home-tab"
@@ -116,7 +111,7 @@
       </nav>
       <div class="tab-content" id="nav-tabContent">
         <div
-          class="tab-pane fade show "
+          class="tab-pane fade show"
           id="nav-summary"
           role="tabpanel"
           aria-labelledby="nav-summary-tab"
@@ -131,8 +126,7 @@
           role="tabpanel"
           aria-labelledby="nav-PONsummary-tab"
         >
-
-         <br>
+          <br>
           <PONAnalysisSummary :analysisId="requestID"/>
         </div>
         <!-- current Inventory -->
@@ -159,12 +153,16 @@
                 class="btn btn-success"
                 v-tooltip.top.hover.focus="'Click to Download'"
               >
-              <DownloadExcel :data="currentInventory" type="csv" name="CurrentInventory.csv" :columnHeaders="currentInventoryTitle">
-                
+                <DownloadExcel
+                  :data="currentInventory"
+                  type="csv"
+                  name="CurrentInventory.csv"
+                  :columnHeaders="currentInventoryTitle"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-              </DownloadExcel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
@@ -202,12 +200,16 @@
                 class="btn btn-success"
                 v-tooltip.top.hover.focus="'Click to Download'"
               >
-               
-                  <DownloadExcel :data="currentib" type="csv" name="IbQuantity.csv" :columnHeaders="ibTitle">
+                <DownloadExcel
+                  :data="currentib"
+                  type="csv"
+                  name="IbQuantity.csv"
+                  :columnHeaders="ibTitle"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                  </DownloadExcel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
@@ -257,9 +259,12 @@
           <div class="shadow p-3 mb-5 bg-white rounded" id="GrossDiv">
             <div class="float-right">
               <button type="button" class="btn btn-success">
-                
-                <DownloadExcel :data="currentGross" type="csv" name="GrossQuantity.csv" :columnHeaders="grossTitle">
-                 
+                <DownloadExcel
+                  :data="currentGross"
+                  type="csv"
+                  name="GrossQuantity.csv"
+                  :columnHeaders="grossTitle"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
@@ -311,12 +316,16 @@
                 class="btn btn-success"
                 v-tooltip.top.hover.focus="'Click to Download'"
               >
-
-                  <DownloadExcel :data="currentNet" type="csv" name="NetQuantity.csv" :columnHeaders="netTitle">
+                <DownloadExcel
+                  :data="currentNet"
+                  type="csv"
+                  name="NetQuantity.csv"
+                  :columnHeaders="netTitle"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                  </DownloadExcel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
@@ -382,6 +391,15 @@
           </div>
         </div>
       </div>
+      <div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom font-small blue">
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+          <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+      </div>
     </div>
   </div>
 </template>
@@ -397,9 +415,8 @@ import Vue from "vue";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
-
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   name: "SpareDetails",
@@ -437,25 +454,25 @@ export default {
       fullPage: true,
       toggle: "reorder",
       currentInventory: [],
-      currentInventoryTitle:['Part Name','Depot Name','Reorder Point'],
+      currentInventoryTitle: ["Part Name", "Depot Name", "Reorder Point"],
       currentGross: [],
       currentNet: [],
-      netTitle:['Part Name','Depot Name','Net Quantity'],
+      netTitle: ["Part Name", "Depot Name", "Net Quantity"],
       currentib: [],
       errorData: [],
       grossColumnDefs: null,
       grossRowData: [],
-      grossTitle:['Part Name','Depot Name','Gross Quantity'],
+      grossTitle: ["Part Name", "Depot Name", "Gross Quantity"],
       netColumnDefs: null,
       netRowData: [],
       ibColumnDefs: null,
-      ibTitle:['Node Depot Belongs','Product Ordering Name','PON Quantity'],
+      ibTitle: ["Node Depot Belongs", "Product Ordering Name", "PON Quantity"],
       ibRowData: [],
       currColumnDefs: null,
       currRowData: [],
       errorColumnDefs: null,
       errorRowData: [],
-      analysisDashboardCount:[],
+      analysisDashboardCount: [],
       postMenu: "Analysis >",
       current: "Analysis Summary",
       gridOptions: {
@@ -501,7 +518,7 @@ export default {
   methods: {
     stateChange() {
       this.state = !this.state;
-      
+
       if (this.state) {
         this.toggle = "reorder";
         this.get_analysis_dashboard_count(this.requestID);
@@ -510,16 +527,14 @@ export default {
         this.get_current_inventory_specific_request(this.requestID);
       } else {
         this.toggle = "total_stock";
-         this.get_analysis_dashboard_count(this.requestID);
+        this.get_analysis_dashboard_count(this.requestID);
         this.get_current_net_specific_request(this.requestID);
         this.get_current_inventory_specific_request(this.requestID);
         this.get_current_inventory_specific_request(this.requestID);
       }
     },
     // stateChangeFromChild(requestID,toggle) {
-      
-      
-     
+
     //     this.toggle = toggle;
     //     this.get_analysis_dashboard_count(requestID);
     //     this.get_current_net_specific_request(requestID);
@@ -534,7 +549,7 @@ export default {
     //   // }
     // },
     get_current_inventory_specific_request(requestId) {
-      this.isLoading=true;
+      this.isLoading = true;
       fetch(
         constant.APIURL +
           "api/v1/get_current_inventory_specific_request?request_id=" +
@@ -544,15 +559,15 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log(
@@ -567,8 +582,8 @@ export default {
                 curr_quantity: this.currentInventory[i].qty
               });
             }
-            this.isLoading=false;
-            this.currentInventory=this.currRowData;
+            this.isLoading = false;
+            this.currentInventory = this.currRowData;
           });
         })
         .catch(handleError => {
@@ -576,7 +591,7 @@ export default {
         });
     },
     get_gross_specific_request(requestId) {
-      this.isLoading=true;
+      this.isLoading = true;
       fetch(
         constant.APIURL +
           "api/v1/get_gross_specific_request?request_id=" +
@@ -584,15 +599,15 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- get_gross_specific_request-->", data);
@@ -604,7 +619,7 @@ export default {
                 gross_quantity: this.currentGross[i].gross_qty
               });
             }
-            this.isLoading=false;
+            this.isLoading = false;
             this.currentGross = this.grossRowData;
           });
         })
@@ -613,21 +628,21 @@ export default {
         });
     },
     get_error_records(requestId) {
-      this.isLoading=true;
+      this.isLoading = true;
       fetch(
         constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Get Error data ---->", payload);
@@ -640,7 +655,7 @@ export default {
                 type: this.errorData[i].type
               });
             }
-            this.isLoading=false;
+            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -648,7 +663,7 @@ export default {
         });
     },
     get_current_net_specific_request(requestId) {
-      this.isLoading=true;
+      this.isLoading = true;
       fetch(
         constant.APIURL +
           "api/v1/get_current_net_specific_request?request_id=" +
@@ -658,15 +673,15 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- get_current_net_specific_request-->", data);
@@ -678,18 +693,17 @@ export default {
                 net_quantity: this.currentNet[i].net_qty
               });
             }
-            this.isLoading=false;
-            this.currentNet=this.netRowData;
+            this.isLoading = false;
+            this.currentNet = this.netRowData;
           });
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
     },
-    get_analysis_dashboard_count(requestId)
-    {
-       this.isLoading=true;
-       this.analysisDashboardCount=[];
+    get_analysis_dashboard_count(requestId) {
+      this.isLoading = true;
+      this.analysisDashboardCount = [];
       fetch(
         constant.APIURL +
           "api/v1/get_analysis_dashboard_count?request_id=" +
@@ -699,21 +713,20 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- Analysis Dashboard-->", data);
             this.analysisDashboardCount = data;
-                    this.isLoading=false;
-            
+            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -721,7 +734,7 @@ export default {
         });
     },
     get_current_ib_specific_request(requestId) {
-      this.isLoading=true;
+      this.isLoading = true;
       fetch(
         constant.APIURL +
           "api/v1/get_current_ib_specific_request?request_id=" +
@@ -731,15 +744,15 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- get_current_ib_specific_request-->", data);
@@ -747,12 +760,11 @@ export default {
             for (let i = 0; i < this.currentib.length; i++) {
               this.ibRowData.push({
                 node_depot_belongs: this.currentib[i].node_depot_belongs,
-                 product_ordering_name: this.currentib[i].product_ordering_name,
+                product_ordering_name: this.currentib[i].product_ordering_name,
                 pon_quanity: this.currentib[i].pon_quanity
-               
               });
             }
-            this.isLoading=false;
+            this.isLoading = false;
             this.currentib = this.ibRowData;
           });
         })
@@ -779,7 +791,7 @@ export default {
           headerName: "Gross Quantity",
           field: "gross_quantity",
           width: 150,
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         }
       ];
     },
@@ -804,7 +816,7 @@ export default {
           headerName: "Net Quantity",
           field: "net_quantity",
           width: 150,
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         }
       ];
     },
@@ -824,7 +836,7 @@ export default {
           headerName: "PON Quantity",
           field: "pon_quanity",
           width: 150,
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         }
       ];
     },
@@ -844,7 +856,7 @@ export default {
           headerName: "Reorder Point",
           field: "curr_quantity",
           width: 150,
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         }
       ];
     },

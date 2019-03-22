@@ -120,11 +120,7 @@
               <i class="fas fa-dot-circle" style="color:#d62828f7" v-if="!showGreen"></i>
             </div>
             <div class="col-md-4">
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="onReserve()"
-              >Reserve</button>
+              <button type="button" class="btn btn-success" @click="onReserve()">Reserve</button>
             </div>
           </div>
 
@@ -136,7 +132,7 @@
           <div class="row align" v-if="analyzeFlag">
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
-              <table class="table responsive ">
+              <table class="table responsive">
                 <tbody>
                   <tr>
                     <td
@@ -185,10 +181,7 @@
 
           <div class="row align">
             <div class="col-md-12">
-              <h5
-                align="center"
-                v-if="problem1Flag || problem2Flag "
-              >Solution Links</h5>
+              <h5 align="center" v-if="problem1Flag || problem2Flag ">Solution Links</h5>
             </div>
           </div>
 
@@ -205,26 +198,25 @@
               <table class="table responsive table-hover">
                 <tbody>
                   <tr>
-                    <td 
-                    @click="showPatchModal()"
-                     v-bind:style="{ backgroundColor: p1color }"
-                    class="col in-progress">Patch 1</td>
-                    <td class="col in-progress"
-                    v-bind:style="{ backgroundColor: p1color }">97%</td>
+                    <td
+                      @click="showPatchModal()"
+                      v-bind:style="{ backgroundColor: p1color }"
+                      class="col in-progress"
+                    >Patch 1</td>
+                    <td class="col in-progress" v-bind:style="{ backgroundColor: p1color }">97%</td>
                   </tr>
                   <tr>
-                    <td class="col in-progress" 
-                    
-                    @click="showPatchModal()"
-                     v-bind:style="{ backgroundColor: p2color }">Patch 2</td>
-                    <td class="col in-progress"
-               
-                     v-bind:style="{ backgroundColor: p2color }">92%</td>
+                    <td
+                      class="col in-progress"
+                      @click="showPatchModal()"
+                      v-bind:style="{ backgroundColor: p2color }"
+                    >Patch 2</td>
+                    <td class="col in-progress" v-bind:style="{ backgroundColor: p2color }">92%</td>
                   </tr>
                   <!-- <tr>
                     <td class="col">Upgraded firmware</td>
                     <td class="col">45%</td>
-                  </tr> -->
+                  </tr>-->
                 </tbody>
               </table>
             </div>
@@ -243,31 +235,31 @@
               <table class="table responsive table-hover">
                 <tbody>
                   <tr>
-                    <td class="col in-progress" 
-                   
-                    @click="showModal()"
-                     v-bind:style="{ backgroundColor: rl1color }">Release Notes 1</td>
-                    <td class="col"
-                    v-bind:style="{ backgroundColor: rl1color }">81%</td>
+                    <td
+                      class="col in-progress"
+                      @click="showModal()"
+                      v-bind:style="{ backgroundColor: rl1color }"
+                    >Release Notes 1</td>
+                    <td class="col" v-bind:style="{ backgroundColor: rl1color }">81%</td>
                   </tr>
                   <tr>
-                    <td class="col in-progress"
-                   
-                    @click="showModal()"
-                     v-bind:style="{ backgroundColor: rl2color }">Release Notes 2</td>
-                    <td class="col"
-                    v-bind:style="{ backgroundColor: rl2color }">82%</td>
+                    <td
+                      class="col in-progress"
+                      @click="showModal()"
+                      v-bind:style="{ backgroundColor: rl2color }"
+                    >Release Notes 2</td>
+                    <td class="col" v-bind:style="{ backgroundColor: rl2color }">82%</td>
                   </tr>
                   <!-- <tr>
                     <td class="col">Upgraded firmware</td>
                     <td class="col">83%</td>
-                  </tr> -->
+                  </tr>-->
                 </tbody>
               </table>
             </div>
           </div>
 
-         <!--  <div class="row align" v-if="problem3Flag">
+          <!--  <div class="row align" v-if="problem3Flag">
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
               <table class="table responsive">
@@ -328,9 +320,18 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>-->
           <br>
         </div>
+      </div>
+      <div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom font-small blue">
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+          <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
       </div>
     </div>
   </div>
@@ -474,41 +475,31 @@ export default {
       this.b2color = "";
       this.b1color = "";
       this.b4color = "";
-      this.b5color = "#88e288"
+      this.b5color = "#88e288";
     },
-    ChangeColour(id)
-    {
-      if(id === '1')
-      {
-       this.p1color = "#88e288";
-       this.p2color="";
-      }
-      else if(id === '2')
-      {
-       this.p2color = "#88e288";
-       this.p1color="";
+    ChangeColour(id) {
+      if (id === "1") {
+        this.p1color = "#88e288";
+        this.p2color = "";
+      } else if (id === "2") {
+        this.p2color = "#88e288";
+        this.p1color = "";
       }
     },
-    hideColour(id)
-    {
+    hideColour(id) {
       this.p1color = "";
       this.p2color = "";
     },
-    ChangeRlColour(id)
-    {
-      if(id === '1')
-      {
-       this.rl1color = "#88e288";
-       this.rl2color="";
-      }
-      else if(id === '2')
-      {
-       this.rl2color = "#88e288";
-       this.rl1color="";
+    ChangeRlColour(id) {
+      if (id === "1") {
+        this.rl1color = "#88e288";
+        this.rl2color = "";
+      } else if (id === "2") {
+        this.rl2color = "#88e288";
+        this.rl1color = "";
       }
     },
-    hideRlColour(id)
-    {
+    hideRlColour(id) {
       this.rl1color = "";
       this.rl2color = "";
     },

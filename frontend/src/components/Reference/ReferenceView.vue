@@ -1,16 +1,12 @@
 <template>
-    <div>
-        <headernav />
-        <side-nav/>
+  <div>
+    <headernav/>
+    <side-nav/>
 
-        <Loading :active="isLoading" 
-        :can-cancel="false" 
-        color=#15ba9a
-        :is-full-page="fullPage"></Loading>
+    <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
 
-        <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
-      
-        <div>
+    <div class="custom-container" style="padding:3%; paddingTop:7.57%;marginLeft:4%">
+      <div>
         <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
             <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}</span>
@@ -18,131 +14,136 @@
           </p>
         </div>
       </div>
-      
-       
-    
-    <vudal name="myModal">
-  <div class="header">
-    <i class="close icon"></i>
-    {{this.title}}
-  </div>
-  <div class="content">
 
-    <Loading :active="isLoading" 
-        :can-cancel="false" 
-        color=#15ba9a
-        :is-full-page="fullPage"></Loading>
-    <div class="form-group text-left" >
-      
-      <span v-for="(item) in columnList" :key="item.columnName">
-
-          <div class="row" >
-            <div class="col-lg-5">
-              <label style="{text-align}">{{item.columnName}}</label>
-            </div>
-            <div class="col-lg-6">
-              <input
-                type="text"
-                class="form-control place-holder-css"
-                v-model="item.value"
-                :placeholder="item.placeHolder"
-              >
-            </div>
-          </div>
-          <br>
+      <vudal name="myModal">
+        <div class="header">
+          <i class="close icon"></i>
+          {{this.title}}
+        </div>
+        <div class="content">
+          <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
+          <div class="form-group text-left">
+            <span v-for="(item) in columnList" :key="item.columnName">
+              <div class="row">
+                <div class="col-lg-5">
+                  <label style="{text-align}">{{item.columnName}}</label>
+                </div>
+                <div class="col-lg-6">
+                  <input
+                    type="text"
+                    class="form-control place-holder-css"
+                    v-model="item.value"
+                    :placeholder="item.placeHolder"
+                  >
+                </div>
+              </div>
+              <br>
             </span>
             <br>
-            <div class="row align " v-if="errorMessage !==''">
-             <div class="col-lg-10 alert alert-danger" align="center">
-                <strong>Warning!</strong> &nbsp&nbsp&nbsp{{errorMessage}}
-             </div>
+            <div class="row align" v-if="errorMessage !==''">
+              <div class="col-lg-10 alert alert-danger" align="center">
+                <strong>Warning!</strong>
+                &nbsp&nbsp&nbsp{{errorMessage}}
+              </div>
+            </div>
           </div>
         </div>
-      
-  </div>
-  <div class="actions">
-    <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Create'" @click="addData()">
-                    Create
-                </button>
-    <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Update'" @click="editData()">
-                    Update
-                </button>
-                <button
-                type="button"
-                class="btn btn-danger"
-                @click="hideEntry()"
-                v-tooltip.top.hover.focus="'Cancel the option'"
-              >Cancel</button>
-  </div>
-</vudal> 
-
-
-<div class="float-left" style="paddingBottom:1%">
-</div>
-<label>{{title}}</label>
-<div>
-    <div class="row " style="paddingLeft:86%">
-      <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Add'" @click="addEntry()" v-if="editReferenceFlag">
-                    
-                    <i class="fas fa-plus-square"></i>  &nbsp;Add
-                </button>
- 
-       &nbsp; &nbsp;
-    <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'">
-           <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'"  >
-          <i class="fas fa-file-excel"></i>
-          &nbsp;
-          Export
-           </DownloadExcel>
-      </button>
-              
-               
-    
-    </div>
-  
-  
-    <br>
-        <div id="referenceBox" class="row">
-    <ag-grid-vue
-              style="width: 100%; height: 486px;"
-              class="ag-theme-balham"
-              :columnDefs="referenceColumnDefs"
-              :rowData="referenceRowData"
-              :gridOptions="referenceGridOptions"
-              :enableColResize="true"
-              :enableSorting="true"
-              :enableFilter="true"
-              :groupHeaders="true"
-              pagination="true"
-              :paginationPageSize="15"
-              :cellClicked="onCellClicked"
-              :gridReady="OnRefReady"
-              :gridSizeChanged="OnRefReady"
-              
-
-            ></ag-grid-vue> 
-            </div>
-            <br>
-    
-            <div class="float-right row" style="paddingBottom:1%">
-           
-                <!-- <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addEntry()">
-                    Add
-                </button> -->
-             
-                <button
-                type="button"
-                class="btn btn-danger"
-                @click="cancel()"
-                v-tooltip.top.hover.focus="'Move to Reference Page'"
-              >Back</button>
-            </div>
-</div>
-            
+        <div class="actions">
+          <button
+            v-if="addFlag"
+            type="button"
+            class="btn btn-success"
+            v-tooltip.top.hover.focus="'Click to Create'"
+            @click="addData()"
+          >Create</button>
+          <button
+            v-if="editFlag"
+            type="button"
+            class="btn btn-success"
+            v-tooltip.top.hover.focus="'Click to Update'"
+            @click="editData()"
+          >Update</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            @click="hideEntry()"
+            v-tooltip.top.hover.focus="'Cancel the option'"
+          >Cancel</button>
         </div>
+      </vudal>
+
+      <div class="float-left" style="paddingBottom:1%"></div>
+      <label>{{title}}</label>
+      <div>
+        <div class="row" style="paddingLeft:86%">
+          <button
+            type="button"
+            class="btn btn-success"
+            v-tooltip.top.hover.focus="'Click to Add'"
+            @click="addEntry()"
+            v-if="editReferenceFlag"
+          >
+            <i class="fas fa-plus-square"></i> &nbsp;Add
+          </button>
+          &nbsp; &nbsp;
+          <button
+            type="button"
+            class="btn btn-success"
+            v-tooltip.top.hover.focus="'Click to Download'"
+          >
+            <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
+              <i class="fas fa-file-excel"></i>
+              &nbsp;
+              Export
+            </DownloadExcel>
+          </button>
+        </div>
+
+        <br>
+        <div id="referenceBox" class="row">
+          <ag-grid-vue
+            style="width: 100%; height: 486px;"
+            class="ag-theme-balham"
+            :columnDefs="referenceColumnDefs"
+            :rowData="referenceRowData"
+            :gridOptions="referenceGridOptions"
+            :enableColResize="true"
+            :enableSorting="true"
+            :enableFilter="true"
+            :groupHeaders="true"
+            pagination="true"
+            :paginationPageSize="15"
+            :cellClicked="onCellClicked"
+            :gridReady="OnRefReady"
+            :gridSizeChanged="OnRefReady"
+          ></ag-grid-vue>
+        </div>
+        <br>
+
+        <div class="float-right row" style="paddingBottom:1%">
+          <!-- <button type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Download'" @click="addEntry()">
+                    Add
+          </button>-->
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            @click="cancel()"
+            v-tooltip.top.hover.focus="'Move to Reference Page'"
+          >Back</button>
+        </div>
+      </div>
+      <div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom font-small blue">
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+          <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+      </div>
     </div>
-
-
+  </div>
 </template>
 
 <script>
@@ -155,8 +156,8 @@ import Vue from "vue";
 import Vudal from "vudal";
 import accounting from "../../utilies/accounting";
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   name: "ReferenceView",
@@ -169,13 +170,11 @@ export default {
     Loading
   },
 
-
   created() {
     this.fileType = this.$route.query.fileType;
     console.log("File Type ->", this.fileType);
-    this.editReferenceFlag=localStorage.getItem('editFlag');
+    this.editReferenceFlag = localStorage.getItem("editFlag");
     if (this.fileType === "parts") {
-
       this.partsColumnDef();
       this.getParts();
     } else if (this.fileType === "highspare") {
@@ -196,7 +195,6 @@ export default {
     }
   },
 
-
   data() {
     return {
       postMenu: "Reference >",
@@ -210,7 +208,7 @@ export default {
       fullPage: true,
       columnList: [],
       formDatas: [],
-      errorMessage:'',
+      errorMessage: "",
       editFlag: false,
       addFlag: true,
       gridApi: null,
@@ -224,16 +222,14 @@ export default {
           align: "center"
           // fontSize: "13.7px",
         }
-
       }
     };
   },
   methods: {
     addEntry() {
-      this.errorMessage='';
-      for(var i=0;i<this.columnList.length;i++)
-      {
-        this.columnList[i].value=null;
+      this.errorMessage = "";
+      for (var i = 0; i < this.columnList.length; i++) {
+        this.columnList[i].value = null;
       }
       this.$modals.myModal.$show();
     },
@@ -285,13 +281,13 @@ export default {
           headerName: "Material Number",
           field: "material_number",
           width: 150,
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         },
         {
           headerName: "Part Number",
           field: "part_number",
           width: 150,
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         },
         {
           headerName: "Part Reliability Class",
@@ -309,12 +305,11 @@ export default {
           field: "standard_cost",
           width: 150,
           filter: "date",
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         }
       ];
-       if(this.editReferenceFlag)
-      {
-      this.referenceColumnDefs.push({
+      if (this.editReferenceFlag) {
+        this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
@@ -356,9 +351,8 @@ export default {
           width: 150
         }
       ];
-       if(this.editReferenceFlag)
-      {
-      this.referenceColumnDefs.push({
+      if (this.editReferenceFlag) {
+        this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
@@ -411,9 +405,8 @@ export default {
           width: 150
         }
       ];
-       if(this.editReferenceFlag)
-      {
-      this.referenceColumnDefs.push({
+      if (this.editReferenceFlag) {
+        this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
@@ -548,19 +541,18 @@ export default {
           field: "lat",
           width: 150,
           filter: "date",
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         },
         {
           headerName: "Longitude",
           field: "long",
           width: 150,
           filter: "date",
-          cellStyle: {'text-align': 'right'}
+          cellStyle: { "text-align": "right" }
         }
       ];
-       if(this.editReferenceFlag)
-      {
-      this.referenceColumnDefs.push({
+      if (this.editReferenceFlag) {
+        this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
@@ -602,9 +594,8 @@ export default {
           width: 150
         }
       ];
-       if(this.editReferenceFlag)
-      {
-      this.referenceColumnDefs.push({
+      if (this.editReferenceFlag) {
+        this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
@@ -701,68 +692,67 @@ export default {
               headerName: "1",
               field: "number_of_spares1",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "2",
               field: "number_of_spares2",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "3",
               field: "number_of_spares3",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "4",
               field: "number_of_spares4",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "5",
               field: "number_of_spares5",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "6",
               field: "number_of_spares6",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "7",
               field: "number_of_spares7",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "8",
               field: "number_of_spares8",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "9",
               field: "number_of_spares9",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             },
             {
               headerName: "10",
               field: "number_of_spares10",
               width: 250,
-          cellStyle: {'text-align': 'right'}
+              cellStyle: { "text-align": "right" }
             }
           ]
         }
       ];
-       if(this.editReferenceFlag)
-      {
-      this.referenceColumnDefs.push({
+      if (this.editReferenceFlag) {
+        this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
           width: 250,
@@ -778,7 +768,7 @@ export default {
     },
     editData() {
       let url;
-      this.errorMessage=false;
+      this.errorMessage = false;
       let formData = new FormData();
       if (this.fileType === "parts") {
         // formData.append("parts_id",this.uniqueId);
@@ -796,7 +786,6 @@ export default {
         //formData.append("reference_table_id",this.uniqueId);
         url = "api/v1/get_all_misnomer?reference_table_id=" + this.uniqueId;
       } else {
-       
         formData.append("reliability_id", this.uniqueId);
         url =
           "api/v1/get_all_ratio?pon_type=" +
@@ -804,86 +793,79 @@ export default {
           "&reliability_id=" +
           this.uniqueId;
       }
-      let alertFlag=false;
+      let alertFlag = false;
       let alertIndex;
-
 
       for (let i = 0; i < this.columnList.length; i++) {
         formData.append(this.columnList[i].formName, this.columnList[i].value);
-        if(this.columnList[i].value === "")
-        {
-          alertFlag=true;
-          alertIndex=i;
+        if (this.columnList[i].value === "") {
+          alertFlag = true;
+          alertIndex = i;
         }
       }
-      if(alertFlag){
-      swal({
+      if (alertFlag) {
+        swal({
           title: "Error",
-          text: "Please Fill the "+this.columnList[alertIndex].columnName,
+          text: "Please Fill the " + this.columnList[alertIndex].columnName,
           icon: "error"
         });
-        }
-        else{
-      console.dir("formdata ----->", formData);
-       this.isLoading=true;
-      fetch(constant.APIURL + url, {
-        method: "PATCH",
-        body: formData,
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
-        }
-      })
-        .then(response => {
-          response.text().then(text => {
-            const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
-              this.logout();
-            }
-            console.log("Response from backend data ---->", data);
-            if (data.http_status_code === 200) {
-              this.logout();
-              for (let i = 0; i < this.columnList.length; i++) {
-                 this.columnList[i].value="";
-                
-              }
-              swal({
-                title: "SUCCESS",
-                text: data.msg,
-                icon: "success"
-              }).then(ok => {
-                if (ok) {
-                  if (this.fileType === "parts") {
-                    this.getParts();
-                  } else if (this.fileType === "highspare") {
-                    this.getHighSpare();
-                  } else if (this.fileType === "node") {
-                    this.getNode();
-                  } else if (this.fileType === "depot") {
-                    this.getDepot();
-                  } else if (this.fileType === "misnomer") {
-                    this.getMisnomer();
-                  } else {
-                    this.getRatioPON(this.fileType);
-                  }
-                  this.$modals.myModal.$hide();
-                  }
-              });
-            } else {
-              this.isLoading=false;
-               this.errorMessage= data.msg;
-            }
-            
-          });
+      } else {
+        console.dir("formdata ----->", formData);
+        this.isLoading = true;
+        fetch(constant.APIURL + url, {
+          method: "PATCH",
+          body: formData,
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
-        }
+          .then(response => {
+            response.text().then(text => {
+              const data = text && JSON.parse(text);
+              if (data.code === "token_expired") {
+                this.logout();
+              }
+              console.log("Response from backend data ---->", data);
+              if (data.http_status_code === 200) {
+                this.logout();
+                for (let i = 0; i < this.columnList.length; i++) {
+                  this.columnList[i].value = "";
+                }
+                swal({
+                  title: "SUCCESS",
+                  text: data.msg,
+                  icon: "success"
+                }).then(ok => {
+                  if (ok) {
+                    if (this.fileType === "parts") {
+                      this.getParts();
+                    } else if (this.fileType === "highspare") {
+                      this.getHighSpare();
+                    } else if (this.fileType === "node") {
+                      this.getNode();
+                    } else if (this.fileType === "depot") {
+                      this.getDepot();
+                    } else if (this.fileType === "misnomer") {
+                      this.getMisnomer();
+                    } else {
+                      this.getRatioPON(this.fileType);
+                    }
+                    this.$modals.myModal.$hide();
+                  }
+                });
+              } else {
+                this.isLoading = false;
+                this.errorMessage = data.msg;
+              }
+            });
+          })
+          .catch(handleError => {
+            console.log(" Error Response ------->", handleError);
+          });
+      }
     },
     addData() {
-     
-    
       let url;
       if (this.fileType === "parts") {
         url = "api/v1/get_all_parts";
@@ -898,85 +880,79 @@ export default {
       } else {
         url = "api/v1/get_all_ratio?pon_type=" + this.fileType;
       }
-      let alertFlag=false;
+      let alertFlag = false;
       let alertIndex;
 
       let formData = new FormData();
-      
+
       for (let i = 0; i < this.columnList.length; i++) {
         formData.append(this.columnList[i].formName, this.columnList[i].value);
-        if(this.columnList[i].value === "")
-        {
-          alertFlag=true;
-          alertIndex=i;
+        if (this.columnList[i].value === "") {
+          alertFlag = true;
+          alertIndex = i;
         }
       }
-      if(alertFlag){
-      swal({
+      if (alertFlag) {
+        swal({
           title: "Error",
-          text: "Please Fill the "+this.columnList[alertIndex].columnName,
+          text: "Please Fill the " + this.columnList[alertIndex].columnName,
           icon: "error"
         });
-        }
-        else{
-           
-       // this.loaderFlag = true;
+      } else {
+        // this.loaderFlag = true;
         console.dir("formdata ----->", formData);
-         this.isLoading=true;
+        this.isLoading = true;
         fetch(constant.APIURL + url, {
           method: "PUT",
           body: formData,
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         })
-        .then(response => {
-          response.text().then(text => {
-            const data = text && JSON.parse(text);
-            console.log("Response from backend data ---->", data);
-            if(data.code === "token_expired")
-            {
-              this.logout();
-            }
-            if (data.http_status_code === 200) {
-               for (let i = 0; i < this.columnList.length; i++) {
-                 this.columnList[i].value="";
-                this.isLoading=false;
+          .then(response => {
+            response.text().then(text => {
+              const data = text && JSON.parse(text);
+              console.log("Response from backend data ---->", data);
+              if (data.code === "token_expired") {
+                this.logout();
               }
-              swal({
-                title: "SUCCESS",
-                text: data.msg,
-                icon: "success"
-               }).then(ok => {
-                if (ok) {
-                  this.$modals.myModal.$hide();
-                  if (this.fileType === "parts") {
-                        this.getParts();
-                      } else if (this.fileType === "highspare") {
-                        this.getHighSpare();
-                      } else if (this.fileType === "node") {
-                        this.getNode();
-                      } else if (this.fileType === "depot") {
-                        this.getDepot();
-                      } else if (this.fileType === "misnomer") {
-                        this.getMisnomer();
-                      } else {
-                        this.getRatioPON(this.fileType);
+              if (data.http_status_code === 200) {
+                for (let i = 0; i < this.columnList.length; i++) {
+                  this.columnList[i].value = "";
+                  this.isLoading = false;
+                }
+                swal({
+                  title: "SUCCESS",
+                  text: data.msg,
+                  icon: "success"
+                }).then(ok => {
+                  if (ok) {
+                    this.$modals.myModal.$hide();
+                    if (this.fileType === "parts") {
+                      this.getParts();
+                    } else if (this.fileType === "highspare") {
+                      this.getHighSpare();
+                    } else if (this.fileType === "node") {
+                      this.getNode();
+                    } else if (this.fileType === "depot") {
+                      this.getDepot();
+                    } else if (this.fileType === "misnomer") {
+                      this.getMisnomer();
+                    } else {
+                      this.getRatioPON(this.fileType);
                     }
                   }
-              });
-            } else {
-              this.isLoading=false;
-               this.errorMessage= data.msg;
-            }
-
-            
-            
+                });
+              } else {
+                this.isLoading = false;
+                this.errorMessage = data.msg;
+              }
+            });
+          })
+          .catch(handleError => {
+            console.log(" Error Response ------->", handleError);
           });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
       }
     },
     getParts() {
@@ -988,13 +964,11 @@ export default {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
-
-        })
+      })
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -getallrequest--->", data);
@@ -1008,7 +982,9 @@ export default {
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
-                standard_cost: accounting.formatMoney( this.referenceList[i].standard_cost),
+                standard_cost: accounting.formatMoney(
+                  this.referenceList[i].standard_cost
+                ),
                 editFlag: this.referenceList[i].part_id,
                 deleteFlag: this.referenceList[i].part_id
               });
@@ -1021,11 +997,9 @@ export default {
                 spared_attribute: this.referenceList[i].spared_attribute,
                 standard_cost: this.referenceList[i].standard_cost
               });
-              
             }
 
             this.isLoading = false;
-
           });
         })
         .catch(handleError => {
@@ -1044,8 +1018,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -getallrequest--->", data);
@@ -1062,11 +1035,9 @@ export default {
                 ClassicPON: this.referenceList[i].ClassicPON,
                 SubstitutionPON: this.referenceList[i].SubstitutionPON
               });
-             
             }
 
             this.isLoading = false;
-
           });
         })
         .catch(handleError => {
@@ -1088,8 +1059,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -getallrequest--->", data);
@@ -1110,7 +1080,6 @@ export default {
                 node_depot_belongs: this.referenceList[i].node_depot_belongs,
                 node_name: this.referenceList[i].node_name
               });
-             
             }
             this.isLoading = false;
           });
@@ -1131,8 +1100,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -getallrequest--->", data);
@@ -1171,11 +1139,9 @@ export default {
                 region: this.referenceList[i].region,
                 state: this.referenceList[i].state
               });
-              
             }
 
             this.isLoading = false;
-
           });
         })
         .catch(handleError => {
@@ -1195,8 +1161,7 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data -getallrequest--->", data);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             this.referenceList = data;
@@ -1219,7 +1184,6 @@ export default {
             }
 
             this.isLoading = false;
-
           });
         })
         .catch(handleError => {
@@ -1229,7 +1193,7 @@ export default {
     getRatioPON(fileType) {
       this.isLoading = true;
       this.referenceRowData = [];
-      
+
       fetch(constant.APIURL + "api/v1/get_all_ratio?pon_type=" + fileType, {
         method: "GET",
         headers: {
@@ -1239,8 +1203,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -getallrequest--->", data);
@@ -1275,7 +1238,6 @@ export default {
                 number_of_spares9: this.referenceList[i].number_of_spares9,
                 number_of_spares10: this.referenceList[i].number_of_spares10
               });
-              
             }
             this.isLoading = false;
           });
@@ -1329,7 +1291,7 @@ export default {
             icon: "info"
           }).then(ok => {
             if (ok) {
-              this.isLoading=true;
+              this.isLoading = true;
               fetch(
                 constant.APIURL + "api/v1/get_all_parts?parts_id=" + part_id,
                 {
@@ -1344,7 +1306,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-                    this.isLoading=false;
+                    this.isLoading = false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1352,7 +1314,7 @@ export default {
                         icon: "success"
                       }).then(ok => {
                         if (ok) {
-                          this.referenceRowData=[];
+                          this.referenceRowData = [];
                           this.getParts();
                         }
                       });
@@ -1378,7 +1340,7 @@ export default {
           }).then(ok => {
             if (ok) {
               let high_spare_id = event.value;
-              this.isLoading=true;
+              this.isLoading = true;
               fetch(
                 constant.APIURL +
                   "api/v1/get_all_high_spare?high_spare_id=" +
@@ -1395,7 +1357,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-                    this.isLoading=false;
+                    this.isLoading = false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1426,11 +1388,10 @@ export default {
           swal({
             title: "Info",
             text: "Do You Want to Delete the Data ?",
-            icon: "info",
-            
+            icon: "info"
           }).then(ok => {
             if (ok) {
-              this.isLoading=true;
+              this.isLoading = true;
               fetch(
                 constant.APIURL + "api/v1/get_all_node?node_id=" + node_id,
                 {
@@ -1445,7 +1406,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-                    this.isLoading=false;
+                    this.isLoading = false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1478,9 +1439,8 @@ export default {
             icon: "info"
           }).then(ok => {
             if (ok) {
-              this.isLoading=true;
+              this.isLoading = true;
               fetch(
-                
                 constant.APIURL + "api/v1/get_all_depot?depot_id=" + depot_id,
                 {
                   method: "DELETE",
@@ -1494,9 +1454,8 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-                    this.isLoading=false;
+                    this.isLoading = false;
                     if (data.http_status_code === 200) {
-
                       swal({
                         title: "Success",
                         text: data.msg,
@@ -1522,14 +1481,14 @@ export default {
           });
         } else if (this.fileType === "misnomer") {
           let reference_table_id = event.value;
-          
+
           swal({
             title: "Info",
             text: "Do You Want to Delete the Data ?",
             icon: "info"
           }).then(ok => {
             if (ok) {
-              this.isLoading=true;
+              this.isLoading = true;
               fetch(
                 constant.APIURL +
                   "api/v1/get_all_misnomer?reference_table_id=" +
@@ -1547,7 +1506,7 @@ export default {
                     const data = text && JSON.parse(text);
 
                     console.log("data -getallrequest--->", data);
-                    this.isLoading=false;
+                    this.isLoading = false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1580,7 +1539,7 @@ export default {
             icon: "info"
           }).then(ok => {
             if (ok) {
-              this.isLoading=true;
+              this.isLoading = true;
               fetch(
                 constant.APIURL +
                   "api/v1/get_all_ratio?pon_type=" +
@@ -1599,7 +1558,7 @@ export default {
                   response.text().then(text => {
                     const data = text && JSON.parse(text);
                     console.log("data -getallrequest--->", data);
-                    this.isLoading=false;
+                    this.isLoading = false;
                     if (data.http_status_code === 200) {
                       swal({
                         title: "Success",
@@ -1705,14 +1664,18 @@ export default {
 function actionEditRenderer(params) {
   let skills = [];
 
-  skills.push('<i style="cursor:pointer;color:#4481bb;" class="fas fa-edit"></i>');
+  skills.push(
+    '<i style="cursor:pointer;color:#4481bb;" class="fas fa-edit"></i>'
+  );
 
   return skills.join(" ");
 }
 function actionDeleteRenderer(params) {
   let skills = [];
 
-  skills.push('<i style="cursor:pointer;color:#de3341;" class="fas fa-trash-alt"></i>');
+  skills.push(
+    '<i style="cursor:pointer;color:#de3341;" class="fas fa-trash-alt"></i>'
+  );
 
   return skills.join(" ");
 }

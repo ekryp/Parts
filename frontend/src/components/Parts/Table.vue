@@ -19,8 +19,12 @@
             </div>
             <div class="float-left">
               <button type="button" class="btn btn-success">
-                <DownloadExcel :data="downloadData" type="csv" name="ExtendedTable.csv"  :columnHeaders="top_extended_Title">
-                
+                <DownloadExcel
+                  :data="downloadData"
+                  type="csv"
+                  name="ExtendedTable.csv"
+                  :columnHeaders="top_extended_Title"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
@@ -51,6 +55,15 @@
           </div>
         </div>
       </div>
+      <div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom font-small blue">
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+          <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+      </div>
     </div>
   </div>
 </template>
@@ -72,10 +85,10 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    
+
     this.filterParams = this.$route.query.filterParams;
     this.getTopExtenededData();
-    console.log('filter params',this.filterParams);
+    console.log("filter params", this.filterParams);
   },
   data() {
     console.log("dashboard", this.data);
@@ -88,13 +101,13 @@ export default {
       customer: null,
       parts: null,
       depots: null,
-      filterParams:"",
+      filterParams: "",
       partName: "",
       customerName: "",
       toggle: "reorder",
       state: true,
-      top_extended_Title:['Customer','PON','Depot','Quantity'],
-      downloadData:[]
+      top_extended_Title: ["Customer", "PON", "Depot", "Quantity"],
+      downloadData: []
     };
   },
   methods: {
@@ -173,17 +186,23 @@ export default {
       localStorage.clear();
     },
     getTopExtenededData() {
-      fetch(constant.APIURL + "api/v1/get_top_extended?toggle=" + this.toggle+this.filterParams, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      fetch(
+        constant.APIURL +
+          "api/v1/get_top_extended?toggle=" +
+          this.toggle +
+          this.filterParams,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      })
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -- get_top_extended-->", data);
@@ -191,7 +210,7 @@ export default {
             for (let i = 0; i < this.top_extended.length; i++) {
               this.downloadData.push({
                 customer: this.top_extended[i].customer_name,
-                part_name:this.top_extended[i].part_name,
+                part_name: this.top_extended[i].part_name,
                 depot_name: this.top_extended[i].depot_name,
                 curr_quantity: this.top_extended[i].critical_pon_count
               });
