@@ -3,10 +3,9 @@
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
       <div class="row" style="width:10%;height:3%">
         <div>
-    <img :src="image" style="height:1.5em;width:7.25em;marginLeft:1em"></div>
-     <div style="fontSize:0.5em;marginLeft:6.65em">    <p>  Powered by Ekryp</p>
-    </div>
-    </div>
+          <img :src="image" style="height:1.5em;width:7.25em;marginLeft:1em">
+        </div>
+      </div>
       <div class="loader" id="loader-2" style="margin-left:35%;" v-if="loaderFlag">
         <span></span>
         <span></span>
@@ -42,19 +41,33 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <!-- <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>-->
-              <a  v-if="changePasswordFlag" class="dropdown-item" @click="redirectChangePassword()" style="cursor:pointer">
+              <a
+                v-if="changePasswordFlag"
+                class="dropdown-item"
+                @click="redirectChangePassword()"
+                style="cursor:pointer"
+              >
                 <i class="fas fa-key"></i>&nbsp;Change password
-              </a> 
-              <a v-if="manageRoleFlag" class="dropdown-item" @click="redirectRole()" style="cursor:pointer">
+              </a>
+              <a
+                v-if="manageRoleFlag"
+                class="dropdown-item"
+                @click="redirectRole()"
+                style="cursor:pointer"
+              >
                 <i class="fas fa-users-cog"></i>&nbsp;Manage Role
-              </a> 
-              <a v-if="manageUserFlag" class="dropdown-item" @click="redirectUser()" style="cursor:pointer">
+              </a>
+              <a
+                v-if="manageUserFlag"
+                class="dropdown-item"
+                @click="redirectUser()"
+                style="cursor:pointer"
+              >
                 <i class="fas fa-users"></i>&nbsp;Manage User
               </a>
               <a class="dropdown-item" @click="logout()" style="cursor:pointer">
                 <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
               </a>
-              
             </div>
           </li>
         </ul>
@@ -69,61 +82,52 @@ import * as constant from "../constant/constant";
 const img = require("../../assets/InfineraLogo.png");
 export default {
   name: "headernav",
-  props: ["msg","loaderFlag"],
+  props: ["msg", "loaderFlag"],
   created() {
-    this.image=img;
+    this.image = img;
     this.firstName = localStorage.getItem("first_name");
-    this.username=localStorage.getItem("username");
-      var authorization=localStorage.getItem("authorization");
-  
-    var permissions=authorization.split(',');
-   
-    var isSocial=localStorage.getItem('isSocial');
-    if(isSocial!== 'false')
-    {
-      
-      this.changePasswordFlag=false;
-    }
-    
-    for(var i=0;i<permissions.length;i++)
-    {
-      if(permissions[i] === constant.PERMISSIONS[6])
-     {
-       this.manageRoleFlag=true;
-     }else if(permissions[i] === constant.PERMISSIONS[7])
-     {
-       this.manageUserFlag=true;
-     }
+    this.username = localStorage.getItem("username");
+    var authorization = localStorage.getItem("authorization");
 
+    var permissions = authorization.split(",");
+
+    var isSocial = localStorage.getItem("isSocial");
+    if (isSocial !== "false") {
+      this.changePasswordFlag = false;
+    }
+
+    for (var i = 0; i < permissions.length; i++) {
+      if (permissions[i] === constant.PERMISSIONS[6]) {
+        this.manageRoleFlag = true;
+      } else if (permissions[i] === constant.PERMISSIONS[7]) {
+        this.manageUserFlag = true;
+      }
     }
   },
   data() {
     console.log("header");
     return {
       firstName: "",
-      username:"",
-      image:'',
-      manageRoleFlag:false,
-      manageUserFlag:false,
-      changePasswordFlag:true
+      username: "",
+      image: "",
+      manageRoleFlag: false,
+      manageUserFlag: false,
+      changePasswordFlag: true
     };
   },
- 
+
   beforeMount() {},
   methods: {
-     redirectUser()
-  {
-router.push("/user");
-  },
-   redirectRole()
-  {
-router.push("/role");
-  },
-  redirectChangePassword()
-  {
-    router.push("/password");
-  },
-  logout() {
+    redirectUser() {
+      router.push("/user");
+    },
+    redirectRole() {
+      router.push("/role");
+    },
+    redirectChangePassword() {
+      router.push("/password");
+    },
+    logout() {
       console.log("logout");
       router.push("/");
       localStorage.clear();

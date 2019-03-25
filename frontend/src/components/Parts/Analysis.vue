@@ -186,7 +186,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -194,7 +195,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -222,7 +224,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -273,7 +276,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -281,7 +285,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -309,7 +314,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -360,7 +366,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -368,7 +375,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -396,7 +404,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -424,7 +433,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -432,7 +442,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -460,7 +471,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -488,7 +500,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -496,7 +509,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -524,7 +538,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -552,7 +567,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -560,7 +576,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -588,7 +605,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -617,7 +635,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -625,7 +644,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -653,7 +673,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -682,7 +703,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -690,7 +712,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -718,7 +741,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -746,7 +770,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -754,7 +779,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -778,7 +804,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -806,7 +833,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -814,7 +842,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:green">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -838,7 +867,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -866,7 +896,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:green">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -874,7 +905,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:red">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -902,7 +934,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -930,7 +963,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:red">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -938,7 +972,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -966,7 +1001,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -994,7 +1030,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="3">
                     <span class="step_no" style="backgroundColor:#bbb">3</span>
-                    <span class="step_descr">Error Records
+                    <span class="step_descr">
+                      Error Records
                       <br>Filtered
                     </span>
                   </a>
@@ -1002,7 +1039,8 @@
                 <li>
                   <a class="disabled" isdone="0" rel="4">
                     <span class="step_no" style="backgroundColor:#bbb">4</span>
-                    <span class="step_descr">Current Inventory
+                    <span class="step_descr">
+                      Current Inventory
                       <br>Loaded
                     </span>
                   </a>
@@ -1030,7 +1068,8 @@
                       <span>6</span>
                       <i style="display:none" class="fa fa-download"></i>
                     </span>
-                    <span class="step_descr">Summary Calculation
+                    <span class="step_descr">
+                      Summary Calculation
                       <br>Completed
                     </span>
                   </a>
@@ -1078,6 +1117,15 @@
           </div>
         </div>
       </form>
+      <div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom font-small blue">
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+          <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+      </div>
       <!-- </div> -->
     </div>
   </div>
@@ -1134,7 +1182,7 @@ export default {
       show: false,
       label: "Loading...",
       uploading: false,
-      loaderFlag:false
+      loaderFlag: false
     };
   },
   methods: {
@@ -1232,15 +1280,15 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
-            if(payload.code === "token_expired")
-            {
+            if (payload.code === "token_expired") {
               this.logout();
             }
             console.log("Get requst Analysis data ---->", payload);
@@ -1262,10 +1310,10 @@ export default {
               window.intervalObj = setInterval(() => {
                 this.get_request_analysis_by_Id(this.requestId);
               }, 5000);
-              this.loaderFlag=true;
+              this.loaderFlag = true;
             } else {
               clearInterval(window.intervalObj);
-              this.loaderFlag=false;
+              this.loaderFlag = false;
             }
           });
         })
@@ -1283,8 +1331,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data ---->", data);
@@ -1315,7 +1362,7 @@ export default {
     post_spare_part_analysis(data) {
       let formData = new FormData();
       console.log("loader show");
-      this.loaderFlag=true;
+      this.loaderFlag = true;
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
@@ -1334,8 +1381,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Response from backend data ---->", data);

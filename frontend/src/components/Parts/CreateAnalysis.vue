@@ -203,6 +203,15 @@
         </div>
       </form>
       <!-- </div> -->
+      <div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom font-small blue">
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+          <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+      </div>
     </div>
   </div>
 </template>
@@ -256,8 +265,8 @@ export default {
       errorData: [],
       uploading: false,
       resubmit: false,
-      loaderFlag:false,
-      diasableFlag:false
+      loaderFlag: false,
+      diasableFlag: false
     };
   },
   methods: {
@@ -327,8 +336,7 @@ export default {
         replensihTime: this.replensihTime,
         date: new Date(),
         dnafile: this.dnafile,
-        sapfile: this.sapfile,
-        
+        sapfile: this.sapfile
       };
 
       if (
@@ -391,8 +399,7 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("data ---->", data);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             this.partsAnalysis = data;
@@ -413,7 +420,7 @@ export default {
       let formData = new FormData();
       console.log("loader show");
 
-      this.loaderFlag=true;
+      this.loaderFlag = true;
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
@@ -432,8 +439,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Response from backend data ---->", data);
@@ -450,7 +456,7 @@ export default {
                 text: data.msg,
                 icon: "error"
               });
-             this.loaderFlag=false;
+              this.loaderFlag = false;
             }
           });
         })

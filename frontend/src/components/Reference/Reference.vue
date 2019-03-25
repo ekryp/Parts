@@ -10,253 +10,299 @@
       </div>
       <div class>
         <h5 style="font-size: 1.25em;">Reference File Information :</h5>
-        <div >
+        <div>
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="table-responsive">
+                <table class="table" style="width:100%">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <label>Part File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="fileupload" class="file">
+                          <input
+                            type="file"
+                            @change="partsFileEvent"
+                            id="fileupload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
 
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="table-responsive">
-                <table class="table" style="width:100%" >
-            
-            <tbody>
-            <tr>
-              <td >
-                <label >Part File</label>
-              </td>
-              <td >
-               
-                  <label for="fileupload" class="file">
-                    <input
-                      type="file"
-                      @change="partsFileEvent"
-                      id="fileupload"
-                      style="display:none"
-                    >
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg "></i>
-                  </label>
-                
-                  <span style="paddingLeft:7%;paddingTop:1%">{{partsFileName}}</span>
-                
-              
-              </td>
-              <td >
-                <DownloadExcel :data="partsAnalysisRequestList" type="csv" name="Sample_Parts.csv"  >
- 
-                <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%">
-                  <span>Download Sample_Parts.csv</span>
-                </div>
-              </DownloadExcel>
-              </td>
-              <td >
-               
-                <!-- <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button> -->
-                <!-- <button
+                        <span style="paddingLeft:7%;paddingTop:1%">{{partsFileName}}</span>
+                      </td>
+                      <td>
+                        <DownloadExcel
+                          :data="partsAnalysisRequestList"
+                          type="csv"
+                          name="Sample_Parts.csv"
+                        >
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Parts.csv</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                      <td>
+                        <!-- <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button> -->
+                        <!-- <button
                   type="button"
                   class="btn btn-success"
                   @click="routeToView('parts')"
                 #afa0a0 ;color:#afa0a0;
-                >View</button> -->
-                 &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadPartsData()" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('parts')"></i>
-              </td>
-            </tr>
-            <tr>
-              <td >
-               <label>High Spare File</label>
-              </td>
-              <td >
-               
-                  <label for="highSpareUpload" class="file">
-                    <input
-                      type="file"
-                      @change="highSpareFileEvent"
-                      id="highSpareUpload"
-                      style="display:none"
-                    >
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                
-                  <span style="paddingLeft:7%;paddingTop:1%">{{highSpareFileName}}</span>
-              
-              </td>
-              <td >
-                <DownloadExcel :data="highSpareFilesList" type="csv" name="Sample_High_Spare.csv"  >
-                <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%">
-                  <span>Download Sample_High_Spare.csv</span>
-                </div>
-                </DownloadExcel>
-              </td>
-              <td >
-                  &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadHighSpareData()" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('highspare')"></i>
-                 <!-- <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadPartsData()"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('parts')"
+                        ></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label>High Spare File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="highSpareUpload" class="file">
+                          <input
+                            type="file"
+                            @change="highSpareFileEvent"
+                            id="highSpareUpload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+
+                        <span style="paddingLeft:7%;paddingTop:1%">{{highSpareFileName}}</span>
+                      </td>
+                      <td>
+                        <DownloadExcel
+                          :data="highSpareFilesList"
+                          type="csv"
+                          name="Sample_High_Spare.csv"
+                        >
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_High_Spare.csv</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                      <td>
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadHighSpareData()"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('highspare')"
+                        ></i>
+                        <!-- <button type="button" class="btn btn-success" @click="uploadHighSpareData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('highspare')"
                 
-              >View</button> -->
-              </td>
-            </tr>
-            <tr>
-              <td >
-               <label>Node File</label>
-              </td>
-              <td >
-               
-                 <label for="nodeUpload" class="file">
-                    <input type="file" @change="nodeFileEvent" id="nodeUpload" style="display:none">
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                
-                  <span style="paddingLeft:7%;paddingTop:1%">{{nodeFileName}}</span>
-              
-              </td>
-              <td >
-               <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv"  >
-                <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%">
-                  <span>Download Sample_Node.csv</span>
-                </div>
-              </DownloadExcel>
-              </td>
-              <td >
+                        >View</button>-->
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label>Node File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="nodeUpload" class="file">
+                          <input
+                            type="file"
+                            @change="nodeFileEvent"
+                            id="nodeUpload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
 
-                   &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadNodeData()" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('node')"></i>
-                 <!-- <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
+                        <span style="paddingLeft:7%;paddingTop:1%">{{nodeFileName}}</span>
+                      </td>
+                      <td>
+                        <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Node.csv</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                      <td>
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadNodeData()"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('node')"
+                        ></i>
+                        <!-- <button type="button" class="btn btn-success" @click="uploadNodeData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('node')"
-              >View</button> -->
-              </td>
-            </tr>
-            <tr>
-              <td >
-               <label>Depot File</label>
-              </td>
-              <td >
-               <label for="depotUpload" class="file">
-                    <input
-                      type="file"
-                      @change="depotFileEvent"
-                      id="depotUpload"
-                      style="display:none"
-                    >
-                  <i style="cursor:pointer;color:#afa0a0;"  class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                  <span style="paddingLeft:7%;paddingTop:1%">{{depotFileName}}</span>
-              
-              </td>
-              <td >
-                <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv"  >
-                <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%">
-                  <span>Download Sample_Depot.csv</span>
-                </div>
-              </DownloadExcel>
-              </td>
-              <td >
-                <!-- <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
+                        >View</button>-->
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label>Depot File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="depotUpload" class="file">
+                          <input
+                            type="file"
+                            @change="depotFileEvent"
+                            id="depotUpload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%">{{depotFileName}}</span>
+                      </td>
+                      <td>
+                        <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Depot.csv</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                      <td>
+                        <!-- <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('depot')"
-              >View</button> -->
-                  &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;"  @click="uploadDepotData()" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('depot')"></i>
-              </td>
-            </tr>
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadDepotData()"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('depot')"
+                        ></i>
+                      </td>
+                    </tr>
 
-             <tr>
-              <td >
-               <label>Minsomer File</label>
-              </td>
-              <td >
-               <label for="minsomerUpload" class="file">
-                    <input
-                      type="file"
-                      @change="minsomerFileEvent"
-                      id="minsomerUpload"
-                      style="display:none"
-                    >
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                  <span style="paddingLeft:7%;paddingTop:1%">{{minsomerFileName}}</span>
-              
-              </td>
-              <td >
-                <DownloadExcel :data="minsomerFilesList" type="csv" name="Sample_Minsomer.csv"  >
-                 <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%">
-                  <span>Download Sample_Minsomer.csv</span>
-                </div>
-               </DownloadExcel>
-              </td>
-              <td >
-              <!-- <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
+                    <tr>
+                      <td>
+                        <label>Minsomer File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="minsomerUpload" class="file">
+                          <input
+                            type="file"
+                            @change="minsomerFileEvent"
+                            id="minsomerUpload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%">{{minsomerFileName}}</span>
+                      </td>
+                      <td>
+                        <DownloadExcel
+                          :data="minsomerFilesList"
+                          type="csv"
+                          name="Sample_Minsomer.csv"
+                        >
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Minsomer.csv</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                      <td>
+                        <!-- <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
               <button
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('misnomer')"
-              >View</button> -->
-             
-                  &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadMinsomerData()" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('misnomer')"></i>
-              </td>
-            </tr>
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadMinsomerData()"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('misnomer')"
+                        ></i>
+                      </td>
+                    </tr>
 
-             <tr>
-              <td >
-               <label>Ratio of PON - 2Day File</label>
-              </td>
-              <td >
-              <label for="ratio2Upload" class="file">
-                    <input
-                      type="file"
-                      @change="ratio2FileEvent"
-                      id="ratio2Upload"
-                      style="display:none"
-                    >
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio2FileName}}</span>
-              
-              </td>
-              <td >
-               <div  style="cursor:pointer" @click="downloadRatio2CSV()">
-                  <div class="float-left" style="marginTop:1%">
-                    <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                  </div>
-                  <div style="paddingLeft:7%;paddingTop:1%">
-                    <span>Download Sample_Ratio_2Day.csv</span>
-                  </div>
-                </div>
-              </td>
-              <td >
-              <!-- <button
+                    <tr>
+                      <td>
+                        <label>Ratio of PON - 2Day File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="ratio2Upload" class="file">
+                          <input
+                            type="file"
+                            @change="ratio2FileEvent"
+                            id="ratio2Upload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio2FileName}}</span>
+                      </td>
+                      <td>
+                        <div style="cursor:pointer" @click="downloadRatio2CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Ratio_2Day.csv</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <!-- <button
                 type="button"
                 class="btn btn-success"
                 @click="uploadRatioData('Ratio of PON - 2Day')"
@@ -265,44 +311,51 @@
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('Ratio of PON - 2Day')"
-              >View</button> -->
-                  &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 2Day')" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 2Day')"></i>
-              </td>
-            </tr>
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadRatioData('Ratio of PON - 2Day')"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('Ratio of PON - 2Day')"
+                        ></i>
+                      </td>
+                    </tr>
 
-
-             <tr>
-              <td >
-               <label>Ratio of PON - 7Day File</label>
-              </td>
-              <td >
-               <label for="ratio7Upload" class="file">
-                    <input
-                      type="file"
-                      @change="ratio7FileEvent"
-                      id="ratio7Upload"
-                      style="display:none"
-                    >
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio7FileName}}</span>
-              
-              </td>
-              <td >
-               <div style="cursor:pointer" @click="downloadRatio7CSV()">
-                <div class="float-left" style="marginTop:1%">
-                  <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                </div>
-                <div style="paddingLeft:7%;paddingTop:1%">
-                  <span>Download Sample_Ratio_7Day.csv</span>
-                </div>
-               </div>
-              </td>
-              <td >
-                <!-- <button
+                    <tr>
+                      <td>
+                        <label>Ratio of PON - 7Day File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="ratio7Upload" class="file">
+                          <input
+                            type="file"
+                            @change="ratio7FileEvent"
+                            id="ratio7Upload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio7FileName}}</span>
+                      </td>
+                      <td>
+                        <div style="cursor:pointer" @click="downloadRatio7CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Ratio_7Day.csv</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <!-- <button
                     type="button"
                     class="btn btn-success"
                     @click="uploadRatioData('Ratio of PON - 7Day')"
@@ -311,43 +364,51 @@
                     type="button"
                     class="btn btn-success"
                     @click="routeToView('Ratio of PON - 7Day')"
-                  >View</button> -->
-                     &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 7Day')" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 7Day')"></i>
-              </td>
-            </tr>
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadRatioData('Ratio of PON - 7Day')"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('Ratio of PON - 7Day')"
+                        ></i>
+                      </td>
+                    </tr>
 
-            <tr>
-              <td >
-               <label>Ratio of PON - 30Day File</label>
-              </td>
-              <td >
-               <label for="ratio30Upload" class="file">
-                    <input
-                      type="file"
-                      @change="ratio30FileEvent"
-                      id="ratio30Upload"
-                      style="display:none"
-                    >
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio30FileName}}</span>
-              
-              </td>
-              <td >
-                <div  style="cursor:pointer" @click="downloadRatio30CSV()">
-                  <div class="float-left" style="marginTop:1%">
-                    <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                  </div>
-                  <div style="paddingLeft:7%;paddingTop:1%">
-                    <span>Download Sample_Ratio_30Day.csv</span>
-                  </div>
-                </div>
-              </td>
-              <td >
-                <!-- <button
+                    <tr>
+                      <td>
+                        <label>Ratio of PON - 30Day File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="ratio30Upload" class="file">
+                          <input
+                            type="file"
+                            @change="ratio30FileEvent"
+                            id="ratio30Upload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio30FileName}}</span>
+                      </td>
+                      <td>
+                        <div style="cursor:pointer" @click="downloadRatio30CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Ratio_30Day.csv</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <!-- <button
                 type="button"
                 class="btn btn-success"
                 @click="uploadRatioData('Ratio of PON - 30Day')"
@@ -356,43 +417,51 @@
                 type="button"
                 class="btn btn-success"
                 @click="routeToView('Ratio of PON - 30Day')"
-              >View</button> -->
-                 &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 30Day')" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 30Day')"></i>
-              </td>
-            </tr>
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadRatioData('Ratio of PON - 30Day')"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('Ratio of PON - 30Day')"
+                        ></i>
+                      </td>
+                    </tr>
 
-            <tr>
-              <td >
-               <label>Ratio of PON - 60Day File</label>
-              </td>
-              <td >
-              <label for="ratio60Upload" class="file">
-                    <input
-                      type="file"
-                      @change="ratio60FileEvent"
-                      id="ratio60Upload"
-                      style="display:none"
-                    >
-                    <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
-                  </label>
-                  <span style="paddingLeft:7%;paddingTop:1%">{{ratio60FileName}}</span>
-              
-              </td>
-              <td >
-                 <div  style="cursor:pointer" @click="downloadRatio60CSV()">
-              <div class="float-left" style="marginTop:1%">
-                <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-              </div>
-              <div style="paddingLeft:7%;paddingTop:1%">
-                <span>Download Sample_Ratio_60Day.csv</span>
-              </div>
-            </div>
-              </td>
-              <td >
-                  <!-- <button
+                    <tr>
+                      <td>
+                        <label>Ratio of PON - 60Day File</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="ratio60Upload" class="file">
+                          <input
+                            type="file"
+                            @change="ratio60FileEvent"
+                            id="ratio60Upload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio60FileName}}</span>
+                      </td>
+                      <td>
+                        <div style="cursor:pointer" @click="downloadRatio60CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>Download Sample_Ratio_60Day.csv</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <!-- <button
                   type="button"
                   class="btn btn-success"
                   @click="uploadRatioData('Ratio of PON - 60Day')"
@@ -401,22 +470,38 @@
                   type="button"
                   class="btn btn-success"
                   @click="routeToView('Ratio of PON - 60Day')"
-                >View</button> -->
-                   &nbsp;
-                <i class="fas fa-upload" style="cursor:pointer;color:#549EE2;" @click="uploadRatioData('Ratio of PON - 60Day')" v-if="editFlag"></i>
-                &nbsp; &nbsp; &nbsp;
-                 <i class="fas fa-eye" style="cursor:pointer;color:#169f85;" @click="routeToView('Ratio of PON - 60Day')"></i>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadRatioData('Ratio of PON - 60Day')"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('Ratio of PON - 60Day')"
+                        ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            </div>
-          
-        </div>
-         
+          </div>
         </div>
       </div>
+    </div>
+    <div>
+      <!-- Footer -->
+      <footer class="footer fixed-bottom font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
     </div>
   </div>
 </template>
@@ -447,7 +532,7 @@ export default {
     DownloadExcel
   },
   created() {
-      this.editFlag=localStorage.getItem('editFlag');
+    this.editFlag = localStorage.getItem("editFlag");
   },
   data() {
     console.log("home");
@@ -629,7 +714,7 @@ export default {
       }
     },
     uploadPartsData() {
-      console.log(localStorage.getItem('email_id'));
+      console.log(localStorage.getItem("email_id"));
       //let email_id = localStorage.getItem("email_id");
       let data = {
         partsFile: this.partsFile,
@@ -651,7 +736,7 @@ export default {
       formData.append("parts_file", data.partsFile);
       formData.append("user_email_id", data.email_id);
       console.log("inside the da");
-      fetch(constant.APIURL+"api/v1/post_parts", {
+      fetch(constant.APIURL + "api/v1/post_parts", {
         method: "POST",
         body: formData,
         headers: {
@@ -661,8 +746,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Response from backend data ---->", data);
@@ -707,7 +791,7 @@ export default {
       let formData = new FormData();
       formData.append("high_spare_file", data.highSpareFile);
       formData.append("user_email_id", data.email_id);
-      fetch(constant.APIURL+"api/v1/post_high_spare", {
+      fetch(constant.APIURL + "api/v1/post_high_spare", {
         method: "POST",
         body: formData,
         headers: {
@@ -717,8 +801,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Response from backend data ---->", data);
@@ -763,7 +846,7 @@ export default {
       let formData = new FormData();
       formData.append("node_file", data.nodeFile);
       formData.append("user_email_id", data.email_id);
-      fetch(constant.APIURL+"api/v1/post_node", {
+      fetch(constant.APIURL + "api/v1/post_node", {
         method: "POST",
         body: formData,
         headers: {
@@ -773,8 +856,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Response from backend data ---->", data);
@@ -819,7 +901,7 @@ export default {
       let formData = new FormData();
       formData.append("misnomer_file", data.minsomerFile);
       formData.append("user_email_id", data.email_id);
-      fetch(constant.APIURL+"api/v1/post_misnomer", {
+      fetch(constant.APIURL + "api/v1/post_misnomer", {
         method: "POST",
         body: formData,
         headers: {
@@ -829,8 +911,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Response from backend data ---->", data);
@@ -875,7 +956,7 @@ export default {
       let formData = new FormData();
       formData.append("depot_file", data.depotFile);
       formData.append("user_email_id", data.email_id);
-      fetch(constant.APIURL+"api/v1/post_depot", {
+      fetch(constant.APIURL + "api/v1/post_depot", {
         method: "POST",
         body: formData,
         headers: {
@@ -885,8 +966,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Response from backend data ---->", data);
@@ -963,7 +1043,7 @@ export default {
       formData.append("user_email_id", data.email_id);
       formData.append("analysis_type", data.analysis_type);
       console.log(data.ratio_file);
-      fetch(constant.APIURL+"api/v1/post_ratio", {
+      fetch(constant.APIURL + "api/v1/post_ratio", {
         method: "POST",
         body: formData,
         headers: {
@@ -974,8 +1054,7 @@ export default {
           response.text().then(text => {
             const data = text && JSON.parse(text);
             console.log("Response from backend data ---->", data);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             if (data.http_status_code == 200) {

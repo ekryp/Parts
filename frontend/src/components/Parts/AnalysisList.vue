@@ -2,10 +2,7 @@
   <div>
     <headernav msg="Analysis Dashboard"/>
     <side-nav menu="analysis"/>
-    <Loading :active="isLoading" 
-        :can-cancel="false" 
-        color=#15ba9a
-        :is-full-page="fullPage"></Loading>
+    <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
 
     <div class="custom-container" style="paddingTop:7.57%">
       <div>
@@ -21,19 +18,17 @@
           <br>
           <br>
           <span class="count">{{dashboard_request_count.total_request}}</span>
-       
         </div>
         <div class="col-2 text-center">
           <span class="text-top">Completed Request</span>
           <br>
           <br>
           <span class="count">{{dashboard_request_count.complete_request}}</span>
-        
         </div>
         <div class="col-2 text-center">
           <span class="text-top">Completed Request with Error</span>
           <br>
-          
+
           <span
             class="count"
             v-if="dashboard_request_count.failed_request > 0"
@@ -43,12 +38,14 @@
             class="count"
             v-if="dashboard_request_count.failed_request === 0"
           >{{dashboard_request_count.failed_request}}</span>
-        
         </div>
         <div class="col-2 text-center">
           <span class="text-top">Completed Request Successfully</span>
           <br>
-          <span class="count" style="color:green">{{dashboard_request_count.complete_request_succesfully}}</span>
+          <span
+            class="count"
+            style="color:green"
+          >{{dashboard_request_count.complete_request_succesfully}}</span>
         </div>
         <div class="col-2 text-center">
           <span class="text-top">Requests In Progress</span>
@@ -89,7 +86,7 @@
         <div class="col-lg-2 text-center">
           <span class="count">{{dashboard_request_count.saved_request}}</span>
         </div>
-      </div> -->
+      </div>-->
       <div class="float-right" style="marginTop:1%">
         <button
           type="button"
@@ -104,12 +101,16 @@
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Download'"
         >
-        
-            <DownloadExcel :data="partsAnalysisRequestDownload" type="csv" name="AnalysisList.csv"  :columnHeaders="partsAnalysisRequestListTitle">
+          <DownloadExcel
+            :data="partsAnalysisRequestDownload"
+            type="csv"
+            name="AnalysisList.csv"
+            :columnHeaders="partsAnalysisRequestListTitle"
+          >
             <i class="fas fa-file-excel"></i>
             &nbsp;
             Export
-            </DownloadExcel>
+          </DownloadExcel>
         </button>
       </div>
 
@@ -137,6 +138,15 @@
           </div>
         </div>
       </div>
+      <div>
+        <!-- Footer -->
+        <footer class="footer fixed-bottom font-small blue">
+          <!-- Copyright -->
+          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+          <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+      </div>
     </div>
   </div>
 </template>
@@ -145,6 +155,7 @@
 import router from "../../router/";
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 import headernav from "@/components/header/header";
+import footernav from "@/components/footer/footer";
 import SideNav from "@/components/sidenav/sidenav";
 import Multiselect from "vue-multiselect";
 import { mapState, mapActions, mapGetters } from "vuex";
@@ -152,8 +163,8 @@ import Vue from "vue";
 import JsonExcel from "vue-json-excel";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 Vue.component("downloadExcel", JsonExcel);
 
@@ -190,9 +201,15 @@ export default {
         { name: "Requests In Progress" },
         { name: "Requests To Be Submitted" }
       ],
-      partsAnalysisRequestListTitle:['Analysis Name','Analysis Type','Customer Name','Status','Created Date'],
+      partsAnalysisRequestListTitle: [
+        "Analysis Name",
+        "Analysis Type",
+        "Customer Name",
+        "Status",
+        "Created Date"
+      ],
       partsAnalysisRequestList: [],
-      partsAnalysisRequestDownload:[],
+      partsAnalysisRequestDownload: [],
       dashboard_request_count: "",
       current: "Analysis",
       columnDefs: null,
@@ -239,7 +256,7 @@ export default {
 
     // API Calls
     get_all_request_analysis() {
-      this.isLoading=true;
+      this.isLoading = true;
       console.log("working successfully");
       fetch(constant.APIURL + "api/v1/get_steps_all_users", {
         method: "GET",
@@ -250,8 +267,7 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("data -getallrequest--->", data);
@@ -264,23 +280,25 @@ export default {
                 analysis_type: this.partsAnalysisRequestList[i].analysis_type,
                 customer_name: this.partsAnalysisRequestList[i].customer_name,
                 requestStatus: this.partsAnalysisRequestList[i].requestStatus,
-                createdDate: new Date(this.partsAnalysisRequestList[i].created_at),
+                createdDate: new Date(
+                  this.partsAnalysisRequestList[i].created_at
+                ),
                 completedFlag: this.partsAnalysisRequestList[i]
                   .analysis_request_id
               });
               this.partsAnalysisRequestDownload.push({
-                  analysis_name: this.partsAnalysisRequestList[i].analysis_name,
-                  analysis_type: this.partsAnalysisRequestList[i].analysis_type,
-                  customer_name: this.partsAnalysisRequestList[i].customer_name,
-                  requestStatus: this.partsAnalysisRequestList[i].requestStatus,
-                  createdDate: new Date(
-                    this.partsAnalysisRequestList[i].created_at
-                  )
-                    .toDateString()
-                    .substring(4)
+                analysis_name: this.partsAnalysisRequestList[i].analysis_name,
+                analysis_type: this.partsAnalysisRequestList[i].analysis_type,
+                customer_name: this.partsAnalysisRequestList[i].customer_name,
+                requestStatus: this.partsAnalysisRequestList[i].requestStatus,
+                createdDate: new Date(
+                  this.partsAnalysisRequestList[i].created_at
+                )
+                  .toDateString()
+                  .substring(4)
               });
             }
-            this.isLoading=false;
+            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -293,7 +311,7 @@ export default {
       localStorage.clear();
     },
     get_dashboard_request_count() {
-      this.isLoading=true;
+      this.isLoading = true;
       fetch(constant.APIURL + "api/v1/get_dashboard_request_count", {
         method: "GET",
         headers: {
@@ -303,11 +321,10 @@ export default {
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
-            this.isLoading=false;
+            this.isLoading = false;
             console.log("data -- get_dashboard_request_count-->", data);
             this.dashboard_request_count = data;
           });
@@ -316,7 +333,7 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    
+
     createColumnDefs() {
       this.columnDefs = [
         {
@@ -394,11 +411,10 @@ export default {
     }
   }
 };
-function dateCellRenderer(params)
-{
-  var options = {  year: 'numeric', month: 'long', day: 'numeric' };
-let dateVal=params.value.toLocaleDateString("en-US", options);
-return dateVal;
+function dateCellRenderer(params) {
+  var options = { year: "numeric", month: "long", day: "numeric" };
+  let dateVal = params.value.toLocaleDateString("en-US", options);
+  return dateVal;
 }
 
 function actionCellRenderer(params) {
