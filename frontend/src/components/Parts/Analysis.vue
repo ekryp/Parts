@@ -8,16 +8,16 @@
         <div>
           <div class="myBreadCrumb">
             <p>
-              <span class="in-progress" @click="cancel()">{{postMenu}}</span>
-              <span v-if="requestId!==''" style="font-size: 14px;">{{current}}</span>
-              <span v-if="requestId===''" style="font-size: 14px;">Analysis Create</span>
+              <span class="in-progress" @click="cancel()">{{viewAnalysisConstant.breadcrumbs[0]}}</span>
+              <span v-if="requestId!==''" style="font-size: 14px;">{{viewAnalysisConstant.breadcrumbs[1]}}</span>
+             
             </p>
           </div>
         </div>
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Analysis Name :</label>
+              <label>{{viewAnalysisConstant.createAnalysisLabels[0]}}</label>
             </div>
             <div class="col-lg-6">
               <input
@@ -33,7 +33,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Customer Name :</label>
+              <label>{{viewAnalysisConstant.createAnalysisLabels[1]}}</label>
             </div>
             <div class="col-lg-6">
               <input
@@ -49,7 +49,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Date :</label>
+              <label>{{viewAnalysisConstant.createAnalysisLabels[2]}}</label>
             </div>
             <div class="col-lg-6">
               <input
@@ -66,7 +66,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Analysis Type :</label>
+              <label>{{viewAnalysisConstant.createAnalysisLabels[3]}}</label>
             </div>
             <div class="col-lg-6">
               <input
@@ -82,7 +82,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Replenish time :</label>
+              <label>{{viewAnalysisConstant.createAnalysisLabels[4]}}</label>
             </div>
             <div class="col-lg-6">
               <input
@@ -99,7 +99,7 @@
           <!-- <strong>Files To Upload</strong> -->
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
-              <label>DNA File :</label>
+              <label>{{viewAnalysisConstant.createAnalysisLabels[5]}}</label>
             </div>
             <div class="col-lg-6 form-group">
               <div class="row">
@@ -123,7 +123,7 @@
           </div>
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
-              <label>SAP Current Inventory File :</label>
+              <label>{{viewAnalysisConstant.createAnalysisLabels[6]}}</label>
             </div>
             <div class="col-lg-6 form-group">
               <div class="row">
@@ -1081,10 +1081,10 @@
           <div class="float-right" style="marginBottom:5%">
             <div class="row">
               <div class="col-lg-4" v-if="uploading">
-                <button type="button" class="btn btn-danger" disabled>Back</button>
+                <button type="button" class="btn btn-danger" disabled>{{viewAnalysisConstant.buttons[0]}}</button>
               </div>
               <div class="col-lg-4" v-if="!uploading">
-                <button type="button" class="btn btn-danger" @click="cancel()">Back</button>
+                <button type="button" class="btn btn-danger" @click="cancel()">{{viewAnalysisConstant.buttons[0]}}</button>
               </div>
               <div class="col-lg-3">
                 <button
@@ -1105,13 +1105,13 @@
                   type="button"
                   class="btn btn-success"
                   @click="redirectToError()"
-                >Error Details</button>
+                >{{viewAnalysisConstant.buttons[2]}}</button>
                 <button
                   v-if="requestId !== '' && partsAnalysisData.requestStatus ==='Completed'"
                   type="button"
                   class="btn btn-success"
                   @click="redirectToSummary()"
-                >View Details</button>
+                >{{viewAnalysisConstant.buttons[1]}}</button>
               </div>
             </div>
           </div>
@@ -1163,6 +1163,7 @@ export default {
   data() {
     console.log("Parts-Analysis", this.$store.state);
     return {
+      viewAnalysisConstant:constant.ViewAnalysisScreen,
       requestId: "",
       dnafileName: "",
       sapfileName: "",

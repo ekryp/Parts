@@ -6,7 +6,7 @@
       <div class="row-one">
         <div class="myBreadCrumb">
           <p>
-            <span style="font-size: 14px;">{{current}}</span>
+            <span style="font-size: 14px;">{{dashboardConstants.breadcrumb}}</span>
           </p>
         </div>
 
@@ -28,7 +28,7 @@
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="row">
-                      <div class="col-lg-2">Customer</div>
+                      <div class="col-lg-2">{{dashboardConstants.filterNames[0]}}</div>
                       <div class="col" align="right">
                         <button
                           style="fontSize:1vw;"
@@ -36,7 +36,7 @@
                           class="all-success"
                           @click="selectAll('customer')"
                         >
-                          <i class="fas fa-check-circle"></i> &nbsp;All
+                          <i class="fas fa-check-circle"></i> &nbsp;{{dashboardConstants.filterButtons[0]}}
                         </button>
 
                         <button
@@ -45,7 +45,7 @@
                           class="all-success"
                           @click="clearAll('customer')"
                         >
-                          <i class="fas fa-minus-circle"></i> &nbsp; Clear
+                          <i class="fas fa-minus-circle"></i> &nbsp; {{dashboardConstants.filterButtons[1]}}
                         </button>
                       </div>
                     </div>
@@ -67,7 +67,7 @@
                   </div>
                   <div class="col-lg-4">
                     <div class="row">
-                      <div class="col-lg-2">Depot</div>
+                      <div class="col-lg-2">{{dashboardConstants.filterNames[1]}}</div>
                       <div class="col" align="right">
                         <button
                           style="fontSize:1vw;"
@@ -75,7 +75,7 @@
                           class="all-success"
                           @click="selectAll('depot')"
                         >
-                          <i class="fas fa-check-circle"></i> &nbsp;All
+                          <i class="fas fa-check-circle"></i> &nbsp;{{dashboardConstants.filterButtons[0]}}
                         </button>
 
                         <button
@@ -84,7 +84,7 @@
                           class="all-success"
                           @click="clearAll('depot')"
                         >
-                          <i class="fas fa-minus-circle"></i> &nbsp; Clear
+                          <i class="fas fa-minus-circle"></i> &nbsp; {{dashboardConstants.filterButtons[1]}}
                         </button>
                       </div>
                     </div>
@@ -141,7 +141,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Total Customer</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[0]}}</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_customer}}</span>
               </div>
@@ -151,7 +151,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Critical PONs</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[1]}}</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_pon}}</span>
               </div>
@@ -162,7 +162,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Critical Customers</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[2]}}</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_customer}}</span>
               </div>
@@ -173,7 +173,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Critical Depots</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[3]}}</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_depot}}</span>
               </div>
@@ -184,7 +184,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Total PON types</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[4]}}</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_pon_type}}</span>
               </div>
@@ -195,7 +195,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Total Depots</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[5]}}</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_depot}}</span>
               </div>
@@ -212,7 +212,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h5>Top PONs</h5>
+                    <h5>{{dashboardConstants.table1.tableName}}</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -221,8 +221,8 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">PONs</th>
-                      <th scope="col">Count</th>
+                      <th scope="col">{{dashboardConstants.table1.tableHeaders[0]}}</th>
+                      <th scope="col">{{dashboardConstants.table1.tableHeaders[1]}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -240,7 +240,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h5>Top Depots</h5>
+                    <h5>{{dashboardConstants.table2.tableName}}</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -249,8 +249,8 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">Depot</th>
-                      <th scope="col">PONs Count</th>
+                      <th scope="col">{{dashboardConstants.table2.tableHeaders[0]}}</th>
+                      <th scope="col">{{dashboardConstants.table2.tableHeaders[1]}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -268,7 +268,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h5>Top Customers</h5>
+                    <h5>{{dashboardConstants.table3.tableName}}</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -277,8 +277,8 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">Customer</th>
-                      <th scope="col">PONs Count</th>
+                      <th scope="col">{{dashboardConstants.table3.tableHeaders[0]}}</th>
+                      <th scope="col">{{dashboardConstants.table3.tableHeaders[1]}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -407,6 +407,7 @@ export default {
         center: { lat: 48.1667, lng: -100.1667 }
       },
       data: data,
+      dashboardConstants:constant.Dashboard,
       isLoading: false,
       fullPage: true,
       dashboardData: [],

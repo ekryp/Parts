@@ -111,7 +111,7 @@
     <div class="custom-container" style="paddingTop: 6%">
     <div class="row col">
       <div class="col" align="center">
-      <h3>User Management </h3>
+      <h3>{{userConstants.pageHeader}} </h3>
       </div>
     </div>
     <br>
@@ -120,22 +120,22 @@
         <div class="col-lg-12">
           <div class=" p-3 mb-5 bg-white ">
               
-           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >Users</h5>
+           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >{{userConstants.table.tableName}}</h5>
             <br>
             
             <div class="row">
                 <div class="col-lg-12">
                    
                     
-                    <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">Add User
+                    <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">{{userConstants.addButton}}
                                     </button>
                                   <div class="table-responsive"> 
                                       <table id="example" class="table  table-bordered" align="center"  style="fontSize:14px">
               <thead align="left">
                 <tr>
-                  <th  scope="col">User</th>
-                  <th  scope="col">Roles</th>
-                  <th  align="center">Manage Roles</th>
+                  <th  scope="col">{{userConstants.table.tableHeaders[0]}}</th>
+                  <th  scope="col">{{userConstants.table.tableHeaders[1]}}</th>
+                  <th  align="center">{{userConstants.table.tableHeaders[2]}}</th>
                 </tr>
               </thead>
               <tbody >
@@ -219,6 +219,7 @@ export default {
     return {
     isLoading: false,
     fullPage: true,
+    userConstants:constant.UserManagementScreen,
     allusers:[],
     errorMessage:'',
     allPermissions:[],

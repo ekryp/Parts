@@ -11,19 +11,19 @@
               <div class="card-header">
                 <div class="row">
                   
-                    <h5>Change Password </h5>
+                    <h5>{{changePasswordConstant.table.tableName}} </h5>
                   
                 </div>
               </div>
               <div class="card-body">
                 
                 <div class="row" align="">
-                <label class="col" for="usrname">New Password :</label>
+                <label class="col" for="usrname">{{changePasswordConstant.table.tableHeaders[0]}}</label>
                 <input class="col"  type="password" id="usrname" v-model="new_password" required>
                 </div>
                 <br>
                 <div class="row">
-                <label for="psw" class="col">Confirm Password : </label>
+                <label for="psw" class="col">{{changePasswordConstant.table.tableHeaders[1]}} </label>
                 <input class="col" type="password" id="psw" name="psw" v-model="cnrf_password"  required>
                 </div>
                 <br>
@@ -72,7 +72,8 @@ export default {
     console.log("dashboard", this.data);
     return {
      cnrf_password:"",
-     new_password:""
+     new_password:"",
+     changePasswordConstant:constant.ChangePasswordScreen
     };
   },
   methods: {
