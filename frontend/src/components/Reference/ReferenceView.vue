@@ -240,7 +240,7 @@ export default {
       this.$modals.myModal.$hide();
     },
     partsColumnDef() {
-      this.title = constant.partsFileData.title;
+      this.title = "Parts Details";
       this.columnList = [
         {
           columnName: "Part Name",
