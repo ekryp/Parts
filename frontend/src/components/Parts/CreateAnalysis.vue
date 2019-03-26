@@ -203,7 +203,9 @@
         </div>
       </form>
       <!-- </div> -->
-      <div>
+     
+    </div>
+     <div>
         <!-- Footer -->
         <footer class="footer fixed-bottom font-small blue">
           <!-- Copyright -->
@@ -212,7 +214,6 @@
         </footer>
         <!-- Footer -->
       </div>
-    </div>
   </div>
 </template>
 <script>

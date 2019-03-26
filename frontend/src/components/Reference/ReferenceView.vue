@@ -133,16 +133,17 @@
           >Back</button>
         </div>
       </div>
-      <div>
+      
+    </div>
+    <div>
         <!-- Footer -->
-        <footer class="footer fixed-bottom font-small blue">
+        <footer class="footer  font-small blue">
           <!-- Copyright -->
           <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
           <!-- Copyright -->
         </footer>
         <!-- Footer -->
       </div>
-    </div>
   </div>
 </template>
 
