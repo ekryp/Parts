@@ -373,7 +373,7 @@
             <br>-->
             <br>
             <ag-grid-vue
-              style="width: 100%; height: 345px;"
+              style="width: 100%; height: 500px;"
               class="ag-theme-balham"
               :columnDefs="errorColumnDefs"
               :rowData="errorRowData"
@@ -391,16 +391,17 @@
           </div>
         </div>
       </div>
-      <div>
+      
+    </div>
+    <div>
         <!-- Footer -->
-        <footer class="footer fixed-bottom font-small blue">
+        <footer class="footer  font-small blue" >
           <!-- Copyright -->
           <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
           <!-- Copyright -->
         </footer>
         <!-- Footer -->
       </div>
-    </div>
   </div>
 </template>
 
