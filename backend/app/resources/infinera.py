@@ -1549,7 +1549,7 @@ class GetSummaryByPONforSpecificRequest(Resource):
 
             summary_df.reset_index(inplace=True)
             # Get sum(ib_quantity) from install_base & group by pon_name
-            sum_ib_query_by_pon = 'SELECT product_ordering_name as part_name, sum(pon_quanity) as ib_quantity_from_install_base  FROM infinera.current_ib where ' \
+            sum_ib_query_by_pon = 'SELECT product_ordering_name as part_name, sum(pon_quanity) as ib_quantity_from_install_base  FROM current_ib where ' \
                                   'request_id={} group by product_ordering_name '.format(request_id)
 
             sum_ib_query_by_pon_df = get_df_from_sql_query(
@@ -1632,7 +1632,7 @@ class GetSummaryByPONforSpecificRequest(Resource):
 
             summary_df.reset_index(inplace=True)
             # Get sum(ib_quantity) from install_base & group by pon_name
-            sum_ib_query_by_pon = 'SELECT product_ordering_name as part_name, sum(pon_quanity) as ib_quantity_from_install_base FROM infinera.current_ib where ' \
+            sum_ib_query_by_pon = 'SELECT product_ordering_name as part_name, sum(pon_quanity) as ib_quantity_from_install_base FROM current_ib where ' \
                                   'request_id={} group by product_ordering_name '.format(request_id)
 
             sum_ib_query_by_pon_df = get_df_from_sql_query(
