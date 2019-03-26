@@ -154,6 +154,11 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
 
     # keep only valid rows, keep rows having part_names are present in sap_inventory
     unique_parts_in_sap = sap_inventory['Material Description = Part Name'].unique()
+    not_in_sap_file = all_valid[~all_valid['Product Ordering Name'].isin(unique_parts_in_sap)]
+    if not not_in_sap_file.empty:
+        not_in_sap_file['present_in_sap'] = False
+        process_error_pon('error_records', not_in_sap_file, analysis_date, analysis_id)
+
     all_valid = all_valid[all_valid['Product Ordering Name'].isin(unique_parts_in_sap)]
 
     to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
