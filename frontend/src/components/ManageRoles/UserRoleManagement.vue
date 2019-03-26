@@ -11,8 +11,8 @@
  <vudal name="myModal">
   <div class="header">
     <i class="close icon"></i>
-   <h4 v-if="addFlag">Create Role</h4>
-    <h4 v-if="editFlag">Edit Role</h4>
+   <h4 v-if="addFlag">{{roleConstants.PopUpHeaders[0]}}</h4>
+    <h4 v-if="editFlag">{{roleConstants.PopUpHeaders[1]}}</h4>
   </div>
   <div class="content">
     <div class="form-group text-left" >
@@ -25,17 +25,17 @@
 
       <div>
          <div class="row" align="">
-                <label class="col-lg-3" for="usrname">Name :</label>
+                <label class="col-lg-3" for="usrname">{{roleConstants.popUpFields[0]}}   :</label>
                 <input class="col-lg-8"  type="text" id="usrname"   v-model="roleName">
                 </div>
                 <br>
                 <div class="row">
-                <label for="psw" class="col-lg-3">Description : </label>
+                <label for="psw" class="col-lg-3">{{roleConstants.popUpFields[1]}} : </label>
                 <textarea class="col-lg-8"  id="psw" name="psw"  v-model="roleDescription" ></textarea>
                 </div>
                 <br>
                 <div class="row">
-                <label for="psw" class="col-lg-3">Permissions : </label>
+                <label for="psw" class="col-lg-3">{{roleConstants.popUpFields[2]}}  : </label>
                 
   
                 </div>
@@ -57,17 +57,17 @@
   </div>
   <div class="actions">
     <button v-if="addFlag"  type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Create'" @click="addRoleData()">
-                    Create
+                    {{roleConstants.popUpButtons[0]}}
                 </button>
     <button v-if="editFlag" type="button" class="btn btn-success" v-tooltip.top.hover.focus="'Click to Update'" @click="editRoleData()">
-                    Update
+                    {{roleConstants.popUpButtons[1]}}
                 </button>
                 <button
                 type="button"
                 class="btn btn-danger"
                 @click="hideEntry()"
                 v-tooltip.top.hover.focus="'Cancel the option'"
-              >Cancel</button>
+              >{{roleConstants.popUpButtons[2]}}</button>
   </div>
 </vudal> 
 
@@ -78,7 +78,7 @@
     <div class="custom-container" style="paddingTop: 6%">
     <div class="row col">
       <div class="col" align="center">
-      <h3>Role Management </h3>
+      <h3>{{roleConstants.pageHeader}} </h3>
       </div>
     </div>
     <br>
@@ -87,21 +87,21 @@
         <div class="col-lg-12">
           <div class=" p-3 mb-5 bg-white ">
               
-           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >Role</h5>
+           <h5 class="gridTitle col-lg-12 " style="marginLeft:-1%" >{{roleConstants.table.tableName}}</h5>
             <br>
             
             <div class="row">
                 <div class="col-lg-12">
                    
                     
-                    <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">Add Role
+                    <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">{{roleConstants.addButton}}
                                     </button>
             <table id="example" class="table table-bordered col-lg-12" align="center"  style="fontSize:14px">
               <thead align="left">
                 <tr>
-                  <th  scope="col">Name</th>
-                  <th  scope="col">Description</th>
-                  <th  align="center">Action</th>
+                  <th  scope="col">{{roleConstants.table.tableHeaders[0]}}</th>
+                  <th  scope="col">{{roleConstants.table.tableHeaders[1]}}</th>
+                  <th  align="center">{{roleConstants.table.tableHeaders[2]}}</th>
                 </tr>
               </thead>
               <tbody >
@@ -180,7 +180,8 @@ export default {
   data() {
     
     return {
-      errorMessage:'',
+    errorMessage:'',
+    roleConstants:constant.RoleManagementScreen,
     isLoading: false,
     fullPage: true,
     allRoles:[],
