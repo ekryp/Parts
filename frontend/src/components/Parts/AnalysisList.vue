@@ -8,25 +8,25 @@
       <div>
         <div class="myBreadCrumb">
           <p>
-            <span style="font-size: 14px;">{{current}}</span>
+            <span style="font-size: 14px;">{{analysisDashboardConstant.breadcrumb}}</span>
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-2 text-center">
-          <span class="text-top">Total Analysis Request</span>
+          <span class="text-top">{{analysisDashboardConstant.analysisDetails[0]}}</span>
           <br>
           <br>
           <span class="count">{{dashboard_request_count.total_request}}</span>
         </div>
         <div class="col-2 text-center">
-          <span class="text-top">Completed Request</span>
+          <span class="text-top">{{analysisDashboardConstant.analysisDetails[1]}}</span>
           <br>
           <br>
           <span class="count">{{dashboard_request_count.complete_request}}</span>
         </div>
         <div class="col-2 text-center">
-          <span class="text-top">Completed Request with Error</span>
+          <span class="text-top">{{analysisDashboardConstant.analysisDetails[2]}}</span>
           <br>
 
           <span
@@ -40,7 +40,7 @@
           >{{dashboard_request_count.failed_request}}</span>
         </div>
         <div class="col-2 text-center">
-          <span class="text-top">Completed Request Successfully</span>
+          <span class="text-top">{{analysisDashboardConstant.analysisDetails[3]}}</span>
           <br>
           <span
             class="count"
@@ -48,13 +48,13 @@
           >{{dashboard_request_count.complete_request_succesfully}}</span>
         </div>
         <div class="col-2 text-center">
-          <span class="text-top">Requests In Progress</span>
+          <span class="text-top">{{analysisDashboardConstant.analysisDetails[4]}}</span>
           <br>
           <br>
           <span class="count">{{dashboard_request_count.incomplete_request}}</span>
         </div>
         <div class="col-2 text-center">
-          <span class="text-top">Requests To Be Submitted</span>
+          <span class="text-top">{{analysisDashboardConstant.analysisDetails[5]}}</span>
           <br>
           <span class="count">{{dashboard_request_count.saved_request}}</span>
         </div>
@@ -93,7 +93,7 @@
           class="btn btn-success"
           @click="createAnalysis"
           v-tooltip.top.hover.focus="'Click to Create'"
-        >Create Analysis</button>
+        >{{analysisDashboardConstant.createAnalysisButton}}</button>
       </div>
       <div class="float-left" style="marginTop:1%">
         <button
@@ -109,7 +109,7 @@
           >
             <i class="fas fa-file-excel"></i>
             &nbsp;
-            Export
+            {{analysisDashboardConstant.exportButton}}
           </DownloadExcel>
         </button>
       </div>
@@ -194,6 +194,8 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
+      analysisDashboardConstant:constant.AnalysisDashboardScreen,
+
       options: [
         { name: "Total Analysis Request" },
         { name: "Completed Request" },
@@ -432,7 +434,7 @@ function actionCellRenderer(params) {
   font-weight: 500;
 }
 .count {
-  font-size: 40px;
+  font-size: 2.500em;
   font-weight: 600;
 }
 .myBreadCrumb {

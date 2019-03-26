@@ -6,12 +6,12 @@
           <div class="text-center" v-if="!diasableFlag" @click="dashboard()">
             <i class="fas fa-home" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Dashboard</p>
+            <p class="upload-text">{{sidanavConstants.dashboardText}}</p>
           </div>
           <div class="text-center" v-if="diasableFlag">
             <i class="fas fa-home" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Dashboard</p>
+            <p class="upload-text">{{sidanavConstants.dashboardText}}</p>
           </div>
         </li>
         <hr v-if="analysisFlag">
@@ -27,12 +27,12 @@
           <div class="text-center" v-if="!diasableFlag" @click="parts_analysis()">
             <i class="fas fa-list-ul" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Analysis</p>
+            <p class="upload-text">{{sidanavConstants.analysis}}</p>
           </div>
           <div class="text-center" v-if="diasableFlag" >
             <i class="fas fa-list-ul" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Analysis</p>
+            <p class="upload-text">{{sidanavConstants.analysis}}</p>
           </div>
         </li>
         <hr v-if="createAnalysisFlag">
@@ -40,7 +40,7 @@
           <div class="text-center" @click="createPartsRequest()">
             <i class="fas fa-plus" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Create Analysis Request</p>
+            <p class="upload-text">{{sidanavConstants.createAnalysisRequest}}</p>
           </div>
         </li>
         <hr v-if="referenceDataFlag">
@@ -49,12 +49,12 @@
             <i class="fas fa-file-alt" style="fontSize:2em"></i>
             
             <br>
-            <p class="upload-text">Reference Data</p>
+            <p class="upload-text">{{sidanavConstants.referenceData}}</p>
           </div>
           <div class="text-center" v-if="diasableFlag" >
             <i class="fas fa-file-alt" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Reference Data</p>
+            <p class="upload-text">{{sidanavConstants.referenceData}}</p>
           </div>
         </li>
         <hr v-if="solutionFlag">
@@ -63,12 +63,12 @@
             <i class=" fa fa-puzzle-piece" style="fontSize:2em"></i>
             
             <br>
-            <p class="upload-text">Solution Prediction</p>
+            <p class="upload-text">{{sidanavConstants.solutionPrediction}}</p>
           </div>
           <div class="text-center" v-if="diasableFlag" >
             <i class="fa fa-puzzle-piece" style="fontSize:2em"></i>
             <br>
-            <p class="upload-text">Solution Prediction</p>
+            <p class="upload-text">{{sidanavConstants.solutionPrediction}}</p>
           </div>
         </li>
         <hr>
@@ -87,6 +87,7 @@ export default {
   data() {
     console.log("props", this.$props);
     return {
+      sidanavConstants:constant.Sidenav,
       partsClose: true,
       showPartsChild: false,
       dashboardFlag: false,

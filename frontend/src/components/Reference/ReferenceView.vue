@@ -55,20 +55,20 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Create'"
             @click="addData()"
-          >Create</button>
+          >{{editReferenceConstant.createButton}}</button>
           <button
             v-if="editFlag"
             type="button"
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Update'"
             @click="editData()"
-          >Update</button>
+          >{{editReferenceConstant.updateButton}}</button>
           <button
             type="button"
             class="btn btn-danger"
             @click="hideEntry()"
             v-tooltip.top.hover.focus="'Cancel the option'"
-          >Cancel</button>
+          >{{editReferenceConstant.cancelButton}}</button>
         </div>
       </vudal>
 
@@ -83,7 +83,7 @@
             @click="addEntry()"
             v-if="editReferenceFlag"
           >
-            <i class="fas fa-plus-square"></i> &nbsp;Add
+            <i class="fas fa-plus-square"></i> &nbsp;{{editReferenceConstant.addButton}}
           </button>
           &nbsp; &nbsp;
           <button
@@ -94,7 +94,7 @@
             <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
               <i class="fas fa-file-excel"></i>
               &nbsp;
-              Export
+              {{editReferenceConstant.exportButton}}
             </DownloadExcel>
           </button>
         </div>
@@ -130,7 +130,7 @@
             class="btn btn-danger"
             @click="cancel()"
             v-tooltip.top.hover.focus="'Move to Reference Page'"
-          >Back</button>
+          >{{editReferenceConstant.backButton}}</button>
         </div>
       </div>
       
@@ -201,6 +201,7 @@ export default {
       postMenu: "Reference >",
       current: "Reference View",
       fileType: "",
+      editReferenceConstant:constant.editReferenceScreen,
       referenceFileData: [],
       referenceColumnDefs: null,
       referenceRowData: [],
