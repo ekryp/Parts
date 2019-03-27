@@ -3,7 +3,7 @@
 <headernav msg="Dashboard"/>
     <side-nav/>
 
-    
+    <div>
     <div class="custom-container" style="paddingTop: 15%" align="center">
 
 
@@ -33,19 +33,19 @@
               </div>
             </div>
         </div>
-      <div>
+      
+  </div>
+  <div>
       <!-- Footer -->
-      <footer class="footer  font-small blue">
+      <footer class="footer fixed-bottom font-small blue">
         <!-- Copyright -->
         <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
         <!-- Copyright -->
       </footer>
       <!-- Footer -->
     </div>
-  </div>
-  
 </div>
-
+</div>
 </template>
 <script>
 import router from "../../router/";

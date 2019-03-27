@@ -119,10 +119,20 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-11"></div>
+                  <div class="col-lg-10"></div>
                   <div class="col-lg-1">
                     <button
-                      style="fontSize:1vw;"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="addFavourites()"
+                    >
+                      <i class="far fa-star"></i> &nbsp;Favourites
+                    </button>
+                  </div>
+                  <div class="col-lg-1">
+                    <button
+                      style="fontSize:0.75vw;"
                       type="button"
                       class="btn btn-success btn-block"
                       @click="applyFilter()"
@@ -360,6 +370,7 @@ import VTooltip from "v-tooltip";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import Multiselect from "vue-multiselect";
+import axios from 'axios'
 
 Vue.use(VTooltip);
 
@@ -392,13 +403,20 @@ export default {
     this.$getLocation({ enableHighAccuracy: true }).then(coordinates => {
       console.log("coordinates ----->", coordinates);
     });
-    this.getMainDashboardCount();
-    this.getTopPons();
-    this.getTopDepots();
-    this.getTopCustomer();
-    this.getPieChart();
     this.getFilterMainDashboard();
-    this.getMapLocations(this.markers);
+    // this.customerValue=localStorage.getItem("customer_details");
+    
+    // this.depotValue=localStorage.getItem("depot_details");
+    // this.toggle= localStorage.getItem("toggle");
+    
+    //this.applyFilter();
+    //  this.getMainDashboardCount();
+    //  this.getTopPons();
+    //  this.getTopDepots();
+    //  this.getTopCustomer();
+    //  this.getPieChart();
+     
+    //  this.getMapLocations(this.markers);
   },
   data() {
     console.log("dashboard", this.data);
@@ -706,7 +724,7 @@ export default {
       }
     },
     getFilterMainDashboard() {
-      //this.isLoading = true;
+      this.isLoading = true;
       fetch(constant.APIURL + "api/v1/get_filter_main_dashboard", {
         method: "GET",
         headers: {
@@ -715,6 +733,7 @@ export default {
       })
         .then(response => {
           response.text().then(text => {
+            
             const data = text && JSON.parse(text);
             if (data.code === "token_expired") {
               this.logout();
@@ -727,8 +746,37 @@ export default {
             for (var i = 0; i < data.depot_list.length; i++) {
               this.depotOptions.push({ name: data.depot_list[i] });
             }
+           
           });
           // this.isLoading = false;
+        }).then(text=>{
+         
+         var depotValue=JSON.parse(localStorage.getItem("depot_details"));
+          var customerValue=JSON.parse(localStorage.getItem("customer_details"));
+           this.toggle= localStorage.getItem("toggle");
+         
+          if(customerValue.length>0 || depotValue.length>0 ||( this.toggle ==='total_stock'))
+          {
+           
+         
+          if(this.toggle === 'total_stock')
+          {
+            this.state=false;
+          }
+          this.filterFLag=true;
+           for(var i=0;i<customerValue.length;i++)
+           {
+             this.customerValue.push(customerValue[i]);
+           }
+           
+            for(var i=0;i<depotValue.length;i++)
+           {
+             this.depotValue.push(depotValue[i]);
+           }
+           }
+        }).then(text=>{
+          this.isLoading = false;
+          this.applyFilter();
         })
 
         .catch(handleError => {
@@ -758,6 +806,38 @@ export default {
       this.markers = [];
       this.getMapLocations(this.markers);
       console.log(this.filterURL);
+    },
+    addFavourites()
+    {
+      
+      localStorage.setItem("customer_details",JSON.stringify(this.customerValue))
+      localStorage.setItem("depot_details",JSON.stringify(this.depotValue))
+      localStorage.setItem("toggle",this.toggle)
+      var user_metadata=JSON.parse(JSON.stringify({filterDetails:{
+        customerFilters:this.customerValue,
+        depotFilter:this.depotValue,
+        toggle:this.toggle
+      }}
+));
+      axios.patch('https://ekryp.auth0.com/api/v2/users/'+localStorage.getItem("userInfo"), {
+        
+        user_metadata: user_metadata},{headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_id_token"),
+          'Content-Type': "application/json"
+        }
+      }).then(response => {
+       if(response.status === 200)
+       {
+          swal({
+                title: "Success",
+                text: "Favourites Updated Successfully",
+                icon: "success"
+              });
+       }
+      })
+      .catch(err => {
+        console.log(err)
+      })
     },
     logout() {
       console.log("logout");

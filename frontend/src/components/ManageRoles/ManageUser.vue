@@ -130,7 +130,7 @@
                     <button class="btn btn-sm btn-success" style="margin-bottom: 2%;marginLeft:1%" @click="showAddRole()">{{userConstants.addButton}}
                                     </button>
                                   <div class="table-responsive"> 
-                                      <table id="example" class="table  table-bordered" align="center"  style="fontSize:14px">
+          <table id="example" class="table  table-bordered" align="center"  style="fontSize:14px">
               <thead align="left">
                 <tr>
                   <th  scope="col">{{userConstants.table.tableHeaders[0]}}</th>
@@ -599,44 +599,32 @@ export default {
               this.loaderFlag=true;
               let roles='';
               let role_ids=[];
-              fetch(constant.APIURL + "api/v1/info/members/get-all-roles-by-user?user_id="+data[i].user_id , {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
-        }
-      })
-        .then(response => {
-          response.text().then(text => {
-            const roleData = text && JSON.parse(text);
-            if(roleData.length>0)
-            {
+              const roleData = data[i].roles;
+                if(roleData.length>0)
+                {
 
-          roles=roleData[0].name;
-          role_ids.push(roleData[0]._id);
-            for (let i = 1; i < roleData.length; i++) {
-              this.loaderFlag=true;
-              roles=roles+','+roleData[i].name;
-              role_ids.push(roleData[i]._id);
-            }
-            }   
-            console.log(role_ids);
-            this.allusers.push({
-                email: data[i].email,
-                roles:roles,
-                user_id:data[i].user_id,
-                role_ids:role_ids
-              });   
-              this.isLoading=false;
-             
-          });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
-        console.log('okok',roles  );
-               
-              
-            }
+              roles=roleData[0].name;
+              role_ids.push(roleData[0]._id);
+                for (let i = 1; i < roleData.length; i++) {
+                  this.loaderFlag=true;
+                  roles=roles+','+roleData[i].name;
+                  role_ids.push(roleData[i]._id);
+                }
+                }   
+                console.log(role_ids);
+                this.allusers.push({
+                    email: data[i].email,
+                    roles:roles,
+                    user_id:data[i].user_id,
+                    role_ids:role_ids
+                  });   
+                   $(document).ready(function() {
+                    $("#example").DataTable();
+                  });
+                  this.isLoading=false;
+                  
+                  
+                }
             
            });
         })
