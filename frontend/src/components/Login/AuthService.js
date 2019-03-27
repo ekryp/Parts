@@ -60,7 +60,7 @@ export default {
                 
                 localStorage.setItem('isSocial',profile.identities[0].isSocial)
                 localStorage.setItem('user_id',profile.user_id)
-                debugger;
+               
                 console.log(profile.user_metadata.customerFilters);
                 if(profile.user_metadata.customerFilters)
                 {

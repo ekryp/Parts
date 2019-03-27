@@ -750,7 +750,7 @@ export default {
           });
           // this.isLoading = false;
         }).then(text=>{
-          debugger;
+          
           var filterFlag=localStorage.getItem("filter_flag");
          if(filterFlag=== true)
          {
