@@ -22,7 +22,7 @@ class GetSparePartAnalysis(Resource):
     @requires_auth
     def get(self):
         engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
-        query = "SELECT concat(concat(end_cust_name,'_'),end_cust_id_from_source) as end_cust_name FROM infinera_test.end_customer"
+        query = "SELECT concat(concat(end_cust_name,'_'),end_cust_id_from_source) as end_cust_name FROM end_customer"
         end_customer_name_df = pd.read_sql(query, engine)
         customer_names = end_customer_name_df['end_cust_name'].tolist()
         query = "SELECT distinct(analysis_type_name)  FROM analysis_type"
