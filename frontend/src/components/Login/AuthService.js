@@ -60,9 +60,18 @@ export default {
                 
                 localStorage.setItem('isSocial',profile.identities[0].isSocial)
                 localStorage.setItem('user_id',profile.user_id)
+                debugger;
+                console.log(profile.user_metadata.customerFilters);
+                if(profile.user_metadata.customerFilters)
+                {
+                    localStorage.setItem("filter_flag",true)
                 localStorage.setItem('customer_details',JSON.stringify(profile.user_metadata.filterDetails.customerFilters))
                 localStorage.setItem('depot_details',JSON.stringify(profile.user_metadata.filterDetails.depotFilter))
                 localStorage.setItem('toggle',profile.user_metadata.filterDetails.toggle)
+                }else
+                {
+                    localStorage.setItem("filter_flag",false)
+                }
                 //var allowed_custmors = profile.user_metadata.allowed_custmors
                 localStorage.setItem('authorization',profile.app_metadata.authorization.permissions)
                 localStorage.setItem('groups',profile.app_metadata.authorization.groups)
