@@ -612,11 +612,11 @@ def sendEmailNotificatio(user_email_id,subject,message):
     print('email response ----->',response.content)
 
 
-#@celery.task
+@celery.task
 def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time,analysis_name):
    
     try:
-        #sendEmailNotificatio(user_email_id,"Infinera Analysis","Your"+analysis_name+"Analysis Submitted Successfully..")
+        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your"+analysis_name+"Analysis Submitted Successfully..")
         convert_headers_in_sap_file(sap_file)
         def set_request_status(status, analysis_id,msg):
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
