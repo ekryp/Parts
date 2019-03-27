@@ -75,7 +75,6 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
         print("Failed to update status for prospects_id {0}".format(prospects_id))
 
 
-
 def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
 
     # 5.4 Load all Data elements from Reference Data
@@ -174,6 +173,15 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
 
     # Remove the rows for item which are not present in SAP file ,error condition 1
     all_valid = all_valid[all_valid['Product Ordering Name'].isin(unique_parts_in_sap)]
+
+    # if a given Depot is not in SAP inventory file then it an Error BUT we can still process this.
+    # Essentially they need to work with a partner to open a depot (Error 4)
+
+    unique_depot_in_sap = sap_inventory['Storage Location = Depot Name'].unique()
+    depot_not_in_sap_file = all_valid[~all_valid['node_depot_belongs'].isin(unique_depot_in_sap)]
+    if not depot_not_in_sap_file.empty:
+        depot_not_in_sap_file['depot_in_sap_file'] = False  # flag used in finding error 4
+        process_error_pon('error_records', depot_not_in_sap_file, analysis_date, analysis_id)
 
     to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
 
