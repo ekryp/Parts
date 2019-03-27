@@ -228,7 +228,7 @@ def simple_calculation(get_bom_for_table):
     return get_bom_for_table
 
 
-def mtbf_calculation(get_bom_for_table, get_ratio_to_pon, parts):
+def mtbf_calculation(get_bom_for_table, get_ratio_to_pon, parts, analysis_date, analysis_id):
     spare_cols = [str(x + 1) for x in range(10)]
 
     def find_spare_bin(row):
@@ -246,6 +246,23 @@ def mtbf_calculation(get_bom_for_table, get_ratio_to_pon, parts):
                             how='left')
 
     # If the reliability class is not found for a PON then we will assign a default count of 1
+    # Process such records but error out condition 6
+
+    reliabilty_class_missing = Get_MTBF_BOM[Get_MTBF_BOM['part_reliability_class'].isna()]
+    if not reliabilty_class_missing.empty:
+        keep_col = ['Product Ordering Name']
+        reliabilty_class_missing = reliabilty_class_missing[keep_col]
+        reliabilty_class_missing.rename(columns={
+            'Product Ordering Name': 'PON'
+        }, inplace=True
+        )
+        reliabilty_class_missing['error_reason'] = 'Part has no associated reliablity class'
+        reliabilty_class_missing.loc[:, 'analysis_request_time'] = analysis_date
+        reliabilty_class_missing.loc[:, 'cust_id'] = 7
+        reliabilty_class_missing.loc[:, 'request_id'] = analysis_id
+        reliabilty_class_missing.to_sql(name='error_records', con=engine, index=False, if_exists='append')
+        print("Loaded Data into table : {0}".format('error_records'))
+
     Get_MTBF_BOM.loc[(Get_MTBF_BOM['part_reliability_class'].isna(), 'PON Quanity')] = 1
 
     Get_MTBF_BOM['PON Quanity'] = Get_MTBF_BOM.apply(find_spare_bin, axis=1)
@@ -568,7 +585,7 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, repleni
     '''
 
 
-    gross_depot = mtbf_calculation(bom, get_ratio_to_pon, parts)
+    gross_depot = mtbf_calculation(bom, get_ratio_to_pon, parts, analysis_date, analysis_id)
 
     #5.13 Accommodating for Corporate and Regional Disti - Process 13
 
