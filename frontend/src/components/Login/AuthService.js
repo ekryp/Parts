@@ -62,7 +62,8 @@ export default {
                 localStorage.setItem('user_id',profile.user_id)
                
                 console.log(profile.user_metadata.customerFilters);
-                if(profile.user_metadata.customerFilters)
+              
+                if(profile.user_metadata.filterDetails)
                 {
                     localStorage.setItem("filter_flag",true)
                 localStorage.setItem('customer_details',JSON.stringify(profile.user_metadata.filterDetails.customerFilters))

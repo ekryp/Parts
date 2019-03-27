@@ -752,7 +752,8 @@ export default {
         }).then(text=>{
           
           var filterFlag=localStorage.getItem("filter_flag");
-         if(filterFlag=== true)
+          
+         if(filterFlag=== "true")
          {
          var depotValue=JSON.parse(localStorage.getItem("depot_details"));
           var customerValue=JSON.parse(localStorage.getItem("customer_details"));
