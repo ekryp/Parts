@@ -750,7 +750,11 @@ export default {
           });
           // this.isLoading = false;
         }).then(text=>{
-         
+          
+          var filterFlag=localStorage.getItem("filter_flag");
+          
+         if(filterFlag=== "true")
+         {
          var depotValue=JSON.parse(localStorage.getItem("depot_details"));
           var customerValue=JSON.parse(localStorage.getItem("customer_details"));
            this.toggle= localStorage.getItem("toggle");
@@ -772,6 +776,7 @@ export default {
             for(var i=0;i<depotValue.length;i++)
            {
              this.depotValue.push(depotValue[i]);
+           }
            }
            }
         }).then(text=>{
@@ -819,6 +824,8 @@ export default {
         toggle:this.toggle
       }}
 ));
+
+
       axios.patch('https://ekryp.auth0.com/api/v2/users/'+localStorage.getItem("userInfo"), {
         
         user_metadata: user_metadata},{headers: {
