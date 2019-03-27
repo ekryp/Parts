@@ -486,6 +486,60 @@
                         ></i>
                       </td>
                     </tr>
+
+
+                      <tr>
+                      <td>
+                        <label>{{referenceViewConstant.fileNames[9]}}</label>
+                      </td>
+                      <td v-if="editFlag">
+                        <label for="customerUpload" class="file">
+                          <input
+                            type="file"
+                            @change="customerFileEvent"
+                            id="customerUpload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{customerFileName}}</span>
+                      </td>
+                      <td>
+                        <div style="cursor:pointer" @click="downloadCustomer()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>{{referenceViewConstant.filesDownloadText[9]}}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <!-- <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="uploadRatioData('Ratio of PON - 60Day')"
+                >Save</button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="routeToView('Ratio of PON - 60Day')"
+                        >View</button>-->
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadCustomerData()"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('customer')"
+                        ></i>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -566,7 +620,9 @@ export default {
       ratio60File: "",
       ratio60FilesList: ratio60Data,
       ratio60FileName: "no file chosen",
-      editFlag: false
+      editFlag: false,
+      customerFile:"",
+      customerFileName: "no file chosen"
     };
   },
   methods: {
@@ -706,6 +762,22 @@ export default {
         console.log(file.name);
         this.ratio60File = file;
         this.ratio60FileName = file.name;
+      } else {
+        swal({
+          title: "Error",
+          text: "Upload a .csv File",
+          icon: "error"
+        });
+      }
+    },
+    customerFileEvent(e) {
+      console.log("hi");
+      console.log("image ----parts->", e.target.files);
+      const file = e.target.files[0];
+      if (file.name.endsWith("csv") || file.name.endsWith("CSV")) {
+        console.log(file.name);
+        this.customerFile = file;
+        this.customerFileName = file.name;
       } else {
         swal({
           title: "Error",

@@ -90,7 +90,7 @@ export const SpareSummaryScreen={
 export const ReferenceViewScreen={
     breadcrumb:"Reference",
     tableHeader:"Reference File Information :",
-    fileNames:["Part File","High Spare File","Node File","Depot File","Misnomer File","Ratio of PON - 2Day File","Ratio of PON - 7Day File","Ratio of PON - 30Day File","Ratio of PON - 60Day File"],
+    fileNames:["Part File","High Spare File","Node File","Depot File","Misnomer File","Ratio of PON - 2Day File","Ratio of PON - 7Day File","Ratio of PON - 30Day File","Ratio of PON - 60Day File","Customer File"],
     filesDownloadText:["Download Sample_Parts.csv",
     "Download Sample_High_Spare.csv",
     "Download Sample_Node.csv",
@@ -100,6 +100,7 @@ export const ReferenceViewScreen={
     "Download Sample_Ratio_7Day.csv",
     "Download Sample_Ratio_30Day.csv",
     "Download Sample_Ratio_60Day.csv",
+    "Download Sample_Customer.csv"
 ]
 }
 export const SolutionScreen={
