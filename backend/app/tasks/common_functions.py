@@ -207,12 +207,26 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
     df = df.drop(['end_customer_node_belongs', 'node_depot_belongs', 'standard_cost',
                    'Valid', 'is_sparrable', 'node_name', 'node_id', 'material_number'], 1)
     for index, row in df.iterrows():
-        if row['has_node_depot'] == False:
-            df.loc[index, 'error_reason'] = 'PON with no depot'
-        elif row['has_std_cost'] == False:
-            df.loc[index, 'error_reason'] = 'PON with no std cost'
-        elif row['present_in_sap'] == False:
-            df.loc[index, 'error_reason'] = 'Parts not present in SAP file'
+        try:
+            if row['has_node_depot'] == False:
+                df.loc[index, 'error_reason'] = 'PON {0} with no depot'.format(row['Product Ordering Name'])  # error 5
+        except KeyError:
+            pass
+        try:
+            if row['has_std_cost'] == False:
+                df.loc[index, 'error_reason'] = 'PON {0} with no std cost'.format(row['Product Ordering Name'])  # error 3
+        except KeyError:
+            pass
+        try:
+            if row['present_in_sap'] == False:
+                df.loc[index, 'error_reason'] = 'Part {0} not present in SAP file'.format(row['Product Ordering Name']) # error 1
+        except KeyError:
+            pass
+        try:
+            if row['high_spare_present_in_sap'] == False:
+                df.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} not present in SAP file'.format(row['high_spare'], row['part_name'])  # error 2
+        except KeyError:
+            pass
 
     df.rename(columns={
         'Product Ordering Name': 'PON',
@@ -248,6 +262,32 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
 
     try:
         df = df.drop(['version_number'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+    try:
+        df = df.drop(['high_spare_present_in_sap'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+    try:
+        df = df.drop(['has_high_spare'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['high_spare'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['part_name'], 1)
     except KeyError:
         # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
         # ignore such logical issue
