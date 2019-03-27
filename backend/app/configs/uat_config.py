@@ -42,7 +42,7 @@ class Configuration(BaseConfig):
 
     DEBUG = True
     ECLIPSE_DATA_DB_URI = "mysql+cymysql://root:tang3456@infinera-prod.cnccf8ulxory.us-west-2.rds.amazonaws.com/infinera_staging"
-    BASE_DIR = r'/data'`
+    BASE_DIR = r'/data'
     ssl_args = {'ssl': {'ca': '/data/rds-combined-ca-bundle.pem'}}
 
     net_depot = os.path.join(BASE_DIR, 'net_depot.csv')
