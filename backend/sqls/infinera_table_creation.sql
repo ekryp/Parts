@@ -225,7 +225,7 @@ DROP TABLE IF EXISTS `error_records`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `error_records` (
   `error_record_id` int(11) NOT NULL AUTO_INCREMENT,
-  `error_reason` varchar(45) DEFAULT NULL,
+  `error_reason` varchar(100) DEFAULT NULL,
   `cust_id` varchar(45) DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
   `PON` varchar(45) DEFAULT NULL,
