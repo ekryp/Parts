@@ -116,6 +116,21 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     print("Loaded Data into table : {0}".format(table_name))
 
 
+def to_sql_bom_record(table_name, df, analysis_date, analysis_id):
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'request_id'] = analysis_id
+    df.rename(columns={
+        'Product Ordering Name': 'part_name',
+        'Node Depot Belongs': 'depot_name',
+        'PON Quantity': 'part_quantity'
+    }, inplace=True
+    )
+
+    df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
+    print("Loaded Data into table : {0}".format(table_name))
+
 def to_sql_current_inventory(table_name, df, analysis_date, analysis_id):
 
     # Analysis datetime will come from frontend to bind with analysis request id

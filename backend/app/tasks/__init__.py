@@ -9,7 +9,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     to_sql_customer_dna_record, read_sap_export_file, to_sql_current_inventory, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
-    to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table
+    to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -671,11 +671,8 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         set_request_status('Failed', analysis_id,'Unknown Reason')
         print(150 * "*")
 
-#@celery.task
+@celery.task
 def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time,analysis_name):
-
-    bom_df = read_bom_file(bom_file)
-    convert_headers_in_sap_file(sap_file)
 
     def set_request_status(status, analysis_id, msg):
         engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
@@ -683,6 +680,29 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
                 "where analysis_request_id = {1}".format(status, analysis_id, msg)
         print(query)
         engine.execute(query)
+
+    # 5.2 Capture the data from the file in PON-Depot and Inventory values.
+    # Note some of these parts may not be sparable and will perform such checks later.
+
+    bom_df = read_bom_file(bom_file)
+
+    # Save BOM record data in table
+    to_sql_bom_record('bom_record', bom_df, analysis_date, analysis_id)
+    update_prospect_step(prospect_id, 2, analysis_date)  # Dump customer_dna Table Status
+
+    # 5.3 Capture SAP Export and load into current inventory
+    convert_headers_in_sap_file(sap_file)
+    update_prospect_step(prospect_id, 3, analysis_date)
+
+    sap_inventory = read_sap_export_file(sap_file)
+    to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
+    update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
+
+    # 5.4 Load key data elements in data frame:: Standard cost table,
+    # Unspared pon table , High spares table (Substitution matrix data)
+
+    (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
+     parts_cost, high_spares, depot) = fetch_db(replenish_time)
 
 
 @celery.task
