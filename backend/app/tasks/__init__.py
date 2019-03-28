@@ -15,6 +15,7 @@ from celery import Celery
 from sqlalchemy import create_engine
 import requests
 from flask_restful import Resource
+from app.tasks.bom_data import read_bom_file
 
 
 
@@ -669,6 +670,20 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         print(str(e))
         set_request_status('Failed', analysis_id,'Unknown Reason')
         print(150 * "*")
+
+#@celery.task
+def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time,analysis_name):
+
+    bom_df = read_bom_file(bom_file)
+    convert_headers_in_sap_file(sap_file)
+
+    def set_request_status(status, analysis_id, msg):
+        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+        query = "update analysis_request set requestStatus='{0}',failure_reason='{2}' " \
+                "where analysis_request_id = {1}".format(status, analysis_id, msg)
+        print(query)
+        engine.execute(query)
+
 
 @celery.task
 def part_table_creation(part_file, extension):

@@ -14,7 +14,7 @@ from flask_restful import Resource
 from flask_restful import reqparse
 from sqlalchemy import create_engine
 from app.tasks.common_functions import read_data
-from app.tasks import derive_table_creation
+from app.tasks import derive_table_creation, bom_derive_table_creation
 
 
 class GetSparePartAnalysis(Resource):
@@ -1335,7 +1335,6 @@ class PostSparePartAnalysis(Resource):
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
                 #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
-
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
