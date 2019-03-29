@@ -91,11 +91,11 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Download'"
           >
-            <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
+            <downloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
               <i class="fas fa-file-excel"></i>
               &nbsp;
               {{editReferenceConstant.exportButton}}
-            </DownloadExcel>
+            </downloadExcel>
           </button>
         </div>
 
@@ -156,10 +156,12 @@ import { AgGridVue } from "ag-grid-vue";
 import Vue from "vue";
 import Vudal from "vudal";
 import accounting from "../../utilies/accounting";
-import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
+//import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import JsonExcel from 'vue-json-excel'
 
+Vue.component('downloadExcel', JsonExcel)
 export default {
   name: "ReferenceView",
   components: {
@@ -167,7 +169,7 @@ export default {
     headernav,
     AgGridVue,
     Vudal,
-    DownloadExcel,
+   // DownloadExcel,
     Loading
   },
 
@@ -190,6 +192,11 @@ export default {
     } else if (this.fileType === "misnomer") {
       this.misnomerColumnDef();
       this.getMisnomer();
+    } 
+    else if (this.fileType === "customer") {
+      this.customerColumnDef();
+      //this.();
+      this.getCustomer();
     } else {
       this.ratioPONColumnDef();
       this.getRatioPON(this.fileType);
@@ -449,6 +456,12 @@ export default {
           value: "",
           placeHolder: "NSW"
         },
+         {
+          columnName: "Country",
+          formName: "country",
+          value: "",
+          placeHolder: "Austria"
+        },
         {
           columnName: "Region",
           formName: "region",
@@ -461,12 +474,7 @@ export default {
           value: "",
           placeHolder: "Choice Logistics"
         },
-        {
-          columnName: "Depot Address",
-          formName: "depot_address",
-          value: "",
-          placeHolder: "129-137 Beaconsfield Street"
-        },
+       
         {
           columnName: "Contact",
           formName: "contact",
@@ -509,34 +517,29 @@ export default {
           width: 150
         },
         {
+          headerName: "Country",
+          field: "country",
+          width: 150,
+        },
+        {
           headerName: "Region",
           field: "region",
           width: 150,
-          filter: "date"
         },
         {
           headerName: "Partner Warehouse Code",
           field: "partner_warehouse_code",
           width: 150,
-          filter: "date"
-        },
-        {
-          headerName: "Depot Address",
-          field: "depot_address",
-          width: 150,
-          filter: "date"
         },
         {
           headerName: "Contact",
           field: "contact",
           width: 150,
-          filter: "date"
         },
         {
           headerName: "Hub",
           field: "hub",
           width: 150,
-          filter: "date"
         },
         {
           headerName: "Latitude",
@@ -768,6 +771,56 @@ export default {
         });
       }
     },
+    customerColumnDef()
+    {
+      this.title = "Customer Details";
+
+      this.columnList = [
+        {
+          columnName: "Sold To Customer",
+          formName: "end_cust_id_from_source",
+          value: "",
+          placeHolder: "101314"
+        },
+        {
+          columnName: "Customer Name",
+          formName: "end_cust_name",
+          value: "",
+          placeHolder: "ABB Limited"
+        },
+        
+      ];
+      this.referenceColumnDefs = [
+        {
+          headerName: "Sold To Customer",
+          field: "end_cust_id_from_source",
+          width: 250,
+          cellStyle: { "text-align": "right" }
+
+        },
+        {
+          
+              headerName: "Customer Name",
+              field: "end_cust_name",
+              width: 250
+            }
+         
+      ];
+       if (this.editReferenceFlag) {
+        this.referenceColumnDefs.push({
+          headerName: "Edit",
+          field: "editFlag",
+          width: 250,
+          cellRenderer: actionEditRenderer
+        });
+        this.referenceColumnDefs.push({
+          headerName: "Delete",
+          field: "deleteFlag",
+          width: 250,
+          cellRenderer: actionDeleteRenderer
+        });
+      }
+    },
     editData() {
       let url;
       this.errorMessage = false;
@@ -879,6 +932,8 @@ export default {
         url = "api/v1/get_all_depot";
       } else if (this.fileType === "misnomer") {
         url = "api/v1/get_all_misnomer";
+      } else if (this.fileType === "customer") {
+        url = "api/v1/get_customer";
       } else {
         url = "api/v1/get_all_ratio?pon_type=" + this.fileType;
       }
@@ -941,6 +996,8 @@ export default {
                       this.getDepot();
                     } else if (this.fileType === "misnomer") {
                       this.getMisnomer();
+                    }else if (this.fileType === "customer") {
+                      this.getCustomer();
                     } else {
                       this.getRatioPON(this.fileType);
                     }
@@ -1127,19 +1184,18 @@ export default {
                 deleteFlag: this.referenceList[i].depot_id
               });
               this.referenceFileData.push({
-                city: this.referenceList[i].city,
-                contact: this.referenceList[i].contact,
-                country: this.referenceList[i].country,
-                depot_address: this.referenceList[i].depot_address,
                 depot_name: this.referenceList[i].depot_name,
+                partner: this.referenceList[i].partner,
+                city: this.referenceList[i].city,
+                state: this.referenceList[i].state,
+                country: this.referenceList[i].country,
+                region: this.referenceList[i].region,
+                partner_warehouse_code: this.referenceList[i].partner_warehouse_code,
+                contact: this.referenceList[i].contact,
                 hub: this.referenceList[i].hub,
                 lat: this.referenceList[i].lat,
-                long: this.referenceList[i].long,
-                partner: this.referenceList[i].partner,
-                partner_warehouse_code: this.referenceList[i]
-                  .partner_warehouse_code,
-                region: this.referenceList[i].region,
-                state: this.referenceList[i].state
+                long: this.referenceList[i].long
+                
               });
             }
 
@@ -1239,6 +1295,45 @@ export default {
                 number_of_spares8: this.referenceList[i].number_of_spares8,
                 number_of_spares9: this.referenceList[i].number_of_spares9,
                 number_of_spares10: this.referenceList[i].number_of_spares10
+              });
+            }
+            this.isLoading = false;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    getCustomer() {
+      this.isLoading = true;
+      this.referenceRowData = [];
+      fetch(constant.APIURL + "api/v1/get_customer", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        }
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            console.log("data -getallrequest--->", data);
+            this.referenceList = data;
+            for (let i = 0; i < this.referenceList.length; i++) {
+              //console.log(this.partsAnalysisRequestList[i].analysis_name);
+              this.referenceRowData.push({
+                end_cust_id_from_source: this.referenceList[i]
+                  .end_cust_id_from_source,
+                end_cust_name: this.referenceList[i].end_cust_name,
+                editFlag: this.referenceList[i].end_cust_id,
+                deleteFlag: this.referenceList[i].end_cust_id
+              });
+              this.referenceFileData.push({
+                 end_cust_id_from_source: this.referenceList[i]
+                  .end_cust_id_from_source,
+                end_cust_name: this.referenceList[i].end_cust_name
               });
             }
             this.isLoading = false;
@@ -1533,7 +1628,61 @@ export default {
                 });
             }
           });
-        } else {
+        }else if (this.fileType === "customer") {
+          let end_cust_id = event.value;
+          console.log('cust ID',end_cust_id);
+
+          swal({
+            title: "Info",
+            text: "Do You Want to Delete the Data ?",
+            icon: "info"
+          }).then(ok => {
+            if (ok) {
+              this.isLoading = true;
+              fetch(
+                constant.APIURL +
+                  "api/v1/get_customer?end_cust_id=" +
+                  end_cust_id,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization:
+                      "Bearer " + localStorage.getItem("auth0_access_token")
+                  }
+                }
+              )
+                .then(response => {
+                  response.text().then(text => {
+                    const data = text && JSON.parse(text);
+
+                    console.log("data -getallrequest--->", data);
+                    this.isLoading = false;
+                    if (data.http_status_code === 200) {
+                      swal({
+                        title: "Success",
+                        text: data.msg,
+                        icon: "success"
+                      }).then(ok => {
+                        if (ok) {
+                          this.getCustomer();
+                        }
+                      });
+                    } else {
+                      swal({
+                        title: "Error",
+                        text: data.msg,
+                        icon: "error"
+                      });
+                    }
+                  });
+                })
+                .catch(handleError => {
+                  console.log(" Error Response ------->", handleError);
+                });
+            }
+          });
+        }  
+        else {
           let reliability_id = event.value;
           swal({
             title: "Info",

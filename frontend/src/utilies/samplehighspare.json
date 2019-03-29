@@ -1,6 +1,6 @@
 [
   {
-    "ClassicPON": "Enter the name of the Classic PON.\n(Example: AAM-B1)",
-    "SubstitutionPON": "Enter the name of the PON that can replace the given Classic PON.\n(Example: AAM-B2)"
+    "ClassicPON": "Enter the name of the Classic PON.(Example: AAM-B1)",
+    "SubstitutionPON": "Enter the name of the PON that can replace the given Classic PON.(Example: AAM-B2)"
   }
 ]

@@ -508,3 +508,95 @@ class GetRatio(Resource):
 
     def options(self):
             return
+
+
+class Customer(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('cust_id', location='form')
+        self.reqparse.add_argument('end_cust_country', location='form')
+        self.reqparse.add_argument('end_cust_geo', location='form')
+        self.reqparse.add_argument('end_cust_name', location='form')
+        self.reqparse.add_argument('end_cust_id', required=False, help='reference_table_id', location='args')
+        self.reqparse.add_argument('end_cust_id_from_source', location='form')
+        self.reqparse.add_argument('end_cust_industry', location='form')
+        self.reqparse.add_argument('end_cust_site_count', location='form')
+        self.reqparse.add_argument('end_cust_status', location='form')
+        self.reqparse.add_argument('end_cust_target_market_segment', location='form')
+        self.reqparse.add_argument('end_cust_tz', location='form')
+        super(Customer, self).__init__()
+
+    @requires_auth
+    def patch(self):
+        args = self.reqparse.parse_args()
+        customer_id = args['customer_id']
+        customer_name = args['customer_name']
+        cust_id = args['cust_id']
+        end_cust_country = args['end_cust_country']
+        try:
+            query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_name='{1}'  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
+            engine.execute(query)
+            return jsonify(msg="Misonomer Details Updated Successfully", http_status_code=200)
+        except:
+            return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
+
+    @requires_auth
+    def put(self):
+        args = self.reqparse.parse_args()
+        end_cust_country = args['end_cust_country']
+        end_cust_geo = args['end_cust_geo']
+        end_cust_id = args['end_cust_id']
+        end_cust_id_from_source = args['end_cust_id_from_source']
+        end_cust_industry = args['end_cust_industry']
+        end_cust_site_count = args['end_cust_site_count']
+        end_cust_status = args['end_cust_status']
+        end_cust_target_market_segment = args['end_cust_target_market_segment']
+        end_cust_tz = args['end_cust_tz']
+        end_cust_name = args['end_cust_name']
+        try:       
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
+            query="Insert into end_customer (cust_id,end_cust_country,end_cust_geo,end_cust_id,end_cust_id_from_source,end_cust_name,end_cust_industry,end_cust_site_count,end_cust_status,end_cust_target_market_segment,end_cust_tz) values ({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')".format(7,end_cust_country,end_cust_geo,end_cust_id,end_cust_id_from_source,end_cust_name,end_cust_industry,end_cust_site_count,end_cust_status,end_cust_target_market_segment,end_cust_tz)
+            print(query)
+            engine.execute(query)
+           
+            return jsonify(msg="Inserted Customer Details Successfully", http_status_code=200)
+        except Exception as e:
+            print(e)
+            return jsonify(msg="Error in Inserting,Please try again", http_status_code=400)
+
+    @requires_auth
+    def get(self):
+        query = "select * "\
+                " from end_customer "
+        print(Configuration.INFINERA_DB_URL)
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        result = result.loc[:, ~result.columns.duplicated()]
+        #Removes duplicate column names not column values
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+    @requires_auth
+    def delete(self):
+        args = self.reqparse.parse_args()
+        end_cust_id = args['end_cust_id']
+        try:
+            print(end_cust_id)
+            query = "DELETE FROM infinera_staging.end_customer WHERE end_cust_id={0}".format(end_cust_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
+            result=engine.execute(query)
+            #result = result.loc[:, ~result.columns.duplicated()]
+            #Removes duplicate column names not column values
+            
+            return jsonify(msg="Deleted Customer Details Successfully", http_status_code=200)
+        except Exception as e:
+            print(e)
+            return jsonify(msg="Error in Deleting,Please try again", http_status_code=400)
+
+
+    def options(self):
+            return
