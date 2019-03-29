@@ -116,6 +116,22 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     print("Loaded Data into table : {0}".format(table_name))
 
 
+def to_sql_bom_record(table_name, df, analysis_date, analysis_id):
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'request_id'] = analysis_id
+    df.rename(columns={
+        'Product Ordering Name': 'part_name',
+        'Node Depot Belongs': 'depot_name',
+        'PON Quantity': 'part_quantity'
+    }, inplace=True
+    )
+
+    df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
+    print("Loaded Data into table : {0}".format(table_name))
+
+
 def to_sql_current_inventory(table_name, df, analysis_date, analysis_id):
 
     # Analysis datetime will come from frontend to bind with analysis request id
@@ -321,6 +337,19 @@ def validate_pon(pon, analysis_date, analysis_id):
     return valid_pon
 
 
+def validate_pon_for_bom(pon, analysis_date, analysis_id):
+
+    pon['Valid'] = True
+    invalid_list = ["", "none", "n/a", "null", "chassis", "unknown", "@", ".."]
+    pon.loc[pon['Product Ordering Name'].isin(invalid_list), 'Valid'] = False
+    valid_pon = pon[pon['Valid'] == True]
+    invalid_pon = pon[pon['Valid'] == False]
+    if not invalid_pon.empty:
+        # to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo", analysis_date, analysis_id)
+        pass
+    return valid_pon
+
+
 def validate_depot(pon, analysis_date, analysis_id):
 
     invalid_list = ["not 4hr", "not supported", "nan", "n/a"]
@@ -332,6 +361,26 @@ def validate_depot(pon, analysis_date, analysis_id):
     invalid_pon = pon[pon['Valid'] == False]
     invalid_pon = invalid_pon[['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
                            'Product Ordering Name', 'Part#', 'Serial#', 'Source', 'Valid']]
+    if not invalid_pon.empty:
+        # to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date, analysis_id)
+        pass
+
+    return valid_pon
+
+
+def validate_depot_for_bom(pon, analysis_date, analysis_id):
+
+    pon.rename(columns={
+        'Node Depot Belongs': 'node_depot_belongs'
+    }, inplace=True
+    )
+    invalid_list = ["not 4hr", "not supported", "nan", "n/a"]
+    pon.loc[pon['node_depot_belongs'].str.lower().isin(invalid_list), 'Valid'] = False
+    # if depot is null are null make it invalid
+    pon['node_depot_belongs'] = pon['node_depot_belongs'].fillna("not 4hr")
+    pon.loc[pon['node_depot_belongs'].str.lower().isin(invalid_list), 'Valid'] = False
+    valid_pon = pon[pon['Valid'] == True]
+    invalid_pon = pon[pon['Valid'] == False]
     if not invalid_pon.empty:
         # to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date, analysis_id)
         pass

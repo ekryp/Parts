@@ -530,6 +530,21 @@ CREATE TABLE `summary` (
 ) ENGINE=InnoDB AUTO_INCREMENT=151890 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `bom_record`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bom_record` (
+  `bom_record_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cust_id` varchar(45) DEFAULT NULL,
+  `request_id` int(11) DEFAULT NULL,
+  `part_name` varchar(45) DEFAULT NULL,
+  `depot_name` varchar(45) DEFAULT NULL,
+  `part_quantity` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`bom_record_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=151890 DEFAULT CHARSET=utf8;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

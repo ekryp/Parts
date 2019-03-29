@@ -14,7 +14,7 @@ from flask_restful import Resource
 from flask_restful import reqparse
 from sqlalchemy import create_engine
 from app.tasks.common_functions import read_data
-from app.tasks import derive_table_creation
+from app.tasks import derive_table_creation, bom_derive_table_creation
 
 
 class GetSparePartAnalysis(Resource):
@@ -1165,11 +1165,12 @@ class PostSparePartAnalysis(Resource):
         dest_folder = request.form.get('user_email_id')
         analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         customer_dna_file = ''
+        bom_file=''
         sap_export_file = ''
         customer_name = args['customer_name'].replace(",", "|")
         replenish_time = args['replenish_time'].replace(",", "|")
 
-        def save_analysis_record_db():
+        def save_analysis_record_db(input_file):
 
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
@@ -1178,7 +1179,7 @@ class PostSparePartAnalysis(Resource):
                     "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
                                                 replenish_time,
                                                 args['user_email_id'], analysis_date,
-                                                customer_dna_file, sap_export_file,
+                                                input_file, sap_export_file,
                                                 customer_name)
             engine.execute(query)
 
@@ -1232,6 +1233,23 @@ class PostSparePartAnalysis(Resource):
             if dna_row < 1:
                 raise FileFormatIssue(dna_file, "No Records to process,BAD DNA File")
 
+        def check_bom_file(bom_file, extension):
+
+            if extension.lower() == '.csv':
+                bom_df = pd.read_csv(bom_file, nrows=200)
+
+            elif extension.lower() == '.txt':
+                bom_df = pd.read_csv(bom_file, sep='\t', nrows=200)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                bom_df = pd.read_excel(bom_file)
+
+            bom_row, cols_cols = bom_df.shape
+            if bom_row < 1:
+                raise FileFormatIssue(bom_file, "No Records to process,BAD BOM File")
+
+            elif cols_cols < 3:
+                raise FileFormatIssue(bom_file, "Number of columns is less than minimum columns 3, BAD BOM File")
 
 
         try:
@@ -1287,20 +1305,53 @@ class PostSparePartAnalysis(Resource):
                     # are valid then only save it.
                     check_header_sap_file(file, sap_export_file, full_path)
 
+            for file in request.files.getlist('bom_file'):
+                name, extension = os.path.splitext(file.filename)
+
+                if extension.lower() == '.csv':
+                    dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "bom_file_{0}{1}".format(analysis_date, extension.lower())
+                    bom_file = file.filename
+                    csvs.save(file, folder=dest_folder)
+
+                elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                    dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "bom_file_{0}{1}".format(analysis_date, extension.lower())
+                    bom_file = file.filename
+                    excel.save(file, folder=dest_folder)
+
             sap_file = os.path.join(full_path, sap_export_file)
-
+            bom_file = os.path.join(full_path, bom_file)
+            # Check headers in BOM file names & count of headers ,If headers
+            # are valid then only save it.
+            check_bom_file(bom_file, extension)
             prospect_id = add_prospect(args['user_email_id'])
-            save_analysis_record_db()
-            analysis_id = get_analysis_id()
 
-            update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
-            print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
+            if customer_dna_file:
+                save_analysis_record_db(customer_dna_file)
+                analysis_id = get_analysis_id()
+                update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
+                print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
+                #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
 
-            #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
-
-            celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
+                celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time,args['analysis_name']])
+
+            elif bom_file:
+                save_analysis_record_db(bom_file)
+                analysis_id = get_analysis_id()
+                update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
+                print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
+                bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
+
+                '''
+                celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
+                                                                args['user_email_id'], analysis_id,
+                                                               customer_name, prospect_id, replenish_time,args['analysis_name']])
+                '''
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
 
