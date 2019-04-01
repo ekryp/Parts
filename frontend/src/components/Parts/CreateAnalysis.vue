@@ -353,9 +353,13 @@ export default {
     {
       if(this.fileFlag)
       {
+        this.dnafile="";
+        this.dnafileName="";
         this.fileFlag = false;
       }else
       {
+        this.bomFile="";
+        this.bomFileName="";
         this.fileFlag = true;
       }
 
@@ -432,7 +436,9 @@ export default {
         this.analysisType !== "" &&
         this.replensihTime !== ""
       ) {
-        if (this.dnafile !== "") {
+        if (this.dnafile !== ""||(!this.fileFlag)) {
+        if(this.bomFile !=="")
+        {
           if (this.sapfile !== "") {
             this.diasableFlag = true;
             this.uploading = true;
@@ -458,8 +464,15 @@ export default {
               icon: "error"
             });
           }
+        }else{
+           swal({
+            title: "Error",
+            text: "Please Attach the BOM File",
+            icon: "error"
+          });
+        }
         } else {
-          swal({
+            swal({
             title: "Error",
             text: "Please Attach the DNA File",
             icon: "error"
