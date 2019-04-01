@@ -1322,11 +1322,14 @@ class PostSparePartAnalysis(Resource):
                     bom_file = file.filename
                     excel.save(file, folder=dest_folder)
 
+                bom_file = os.path.join(full_path, bom_file)
+                check_bom_file(bom_file, extension)
+
             sap_file = os.path.join(full_path, sap_export_file)
-            bom_file = os.path.join(full_path, bom_file)
+
             # Check headers in BOM file names & count of headers ,If headers
             # are valid then only save it.
-            check_bom_file(bom_file, extension)
+
             prospect_id = add_prospect(args['user_email_id'])
 
             if customer_dna_file:
@@ -1335,6 +1338,7 @@ class PostSparePartAnalysis(Resource):
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
                 #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
+
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
@@ -1347,10 +1351,10 @@ class PostSparePartAnalysis(Resource):
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
                 #bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
 
+
                 celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time,args['analysis_name']])
-
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
 
