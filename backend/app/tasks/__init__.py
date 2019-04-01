@@ -844,7 +844,7 @@ def sendEmailNotificatio(user_email_id,subject,message):
 def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time,analysis_name):
    
     try:
-        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your"+analysis_name+"Analysis Submitted Successfully..")
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Submitted Successfully..")
         convert_headers_in_sap_file(sap_file)
         def set_request_status(status, analysis_id,msg):
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
@@ -860,38 +860,54 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
         set_request_status('Completed', analysis_id, 'Success')
-        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+" Analysis Completed Successfully..")
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", "Your "+analysis_name+" Analysis Completed Successfully..")
     except CustomException as e:
-        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
-        set_request_status('Failed', analysis_id,e.msg)
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
+        set_request_status('Failed', analysis_id, e.msg)
 
     except Exception as e:
-        sendEmailNotificatio(user_email_id,"Infinera Analysis","Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
         print("SOME ERROR OCCURRED")
         print(150 * "*")
         print(str(e))
-        set_request_status('Failed', analysis_id,'Unknown Reason')
+        set_request_status('Failed', analysis_id, 'Unknown Reason')
         print(150 * "*")
 
 @celery.task
-def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time,analysis_name):
+def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name):
 
-    def set_request_status(status, analysis_id, msg):
-        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
-        query = "update analysis_request set requestStatus='{0}',failure_reason='{2}' " \
-                "where analysis_request_id = {1}".format(status, analysis_id, msg)
-        print(query)
-        engine.execute(query)
+    try:
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your " + analysis_name + " Analysis Submitted Successfully..")
+        convert_headers_in_sap_file(sap_file)
 
-    single_bom, high_spares, standard_cost, parts = get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id,
-                                                            replenish_time)
+        def set_request_status(status, analysis_id, msg):
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+            query = "update analysis_request set requestStatus='{0}',failure_reason='{2}' " \
+                    "where analysis_request_id = {1}".format(status, analysis_id, msg)
+            print(query)
+            engine.execute(query)
 
-    update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
-    calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
-                           user_email_id, analysis_id, customer_name)
+        single_bom, high_spares, standard_cost, parts = get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id,
+                                                                replenish_time)
 
-    update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
-    set_request_status('Completed', analysis_id, 'Success')
+        update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
+        calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
+                               user_email_id, analysis_id, customer_name)
+
+        update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
+        set_request_status('Completed', analysis_id, 'Success')
+
+    except CustomException as e:
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", "Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
+        set_request_status('Failed', analysis_id, e.msg)
+
+    except Exception as e:
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", "Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
+        print("SOME ERROR OCCURRED")
+        print(150 * "*")
+        print(str(e))
+        set_request_status('Failed', analysis_id, 'Unknown Reason')
+        print(150 * "*")
 
 
 @celery.task
