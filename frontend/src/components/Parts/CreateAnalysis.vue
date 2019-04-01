@@ -429,15 +429,42 @@ export default {
         sapfile: this.sapfile,
         bomfile:this.bomFile
       };
-
+      var filePresent=false;
       if (
         this.analyisisName !== "" &&
         this.customerNames !== "" &&
         this.analysisType !== "" &&
         this.replensihTime !== ""
       ) {
-        if (this.dnafile !== ""||(!this.fileFlag)) {
-        if(this.bomFile !=="")
+        if(this.fileFlag)
+        {
+          if(this.dnafile !== "")
+          {
+            filePresent=true
+          }else
+          {
+            swal({
+              title: "Error",
+              text: "Please Attach the DNA File",
+              icon: "error"
+            });
+          }
+        }else
+        {
+           if(this.bomFile !== "")
+          {
+            filePresent=true
+          }else
+          {
+          swal({
+            title: "Error",
+            text: "Please Attach the BOM File",
+            icon: "error"
+            });
+          }
+        }
+       
+        if(filePresent)
         {
           if (this.sapfile !== "") {
             this.diasableFlag = true;
@@ -464,19 +491,6 @@ export default {
               icon: "error"
             });
           }
-        }else{
-           swal({
-            title: "Error",
-            text: "Please Attach the BOM File",
-            icon: "error"
-          });
-        }
-        } else {
-            swal({
-            title: "Error",
-            text: "Please Attach the DNA File",
-            icon: "error"
-          });
         }
       } else {
         swal({
