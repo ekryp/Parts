@@ -365,6 +365,10 @@ def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_i
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function_for_bom_record(bom_file, sap_file, analysis_date,
                                                                                                            analysis_id, prospect_id, replenish_time)
+
+    '''
+    Install base PON quantity logic change for BOM file as BOM
+    already has PON quantity we will use that one 
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
     Get_Fru.to_csv(Configuration.fruc_file_location, index=True)
@@ -374,6 +378,9 @@ def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_i
         fill_value=0).stack().to_csv(Configuration.bom_table, header=True)
     get_bom_for_table = pd.read_csv(Configuration.bom_table)
     get_bom_for_table = get_bom_for_table.rename(columns={'0': 'PON Quanity'})
+    '''
+    get_bom_for_table = all_valid[['Product Ordering Name', 'node_depot_belongs', 'PON Quantity']]
+    get_bom_for_table = get_bom_for_table.rename(columns={'PON Quantity': 'PON Quanity'})
     #get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
     to_sql_current_ib('current_ib', get_bom_for_table, analysis_id)
     get_bom_for_table.rename(columns={
