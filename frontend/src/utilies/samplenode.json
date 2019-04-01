@@ -1,7 +1,7 @@
 [
   {
-    "node_name": "Enter the node name .\n(Example: Adjuntas_Flex_1)",
-    "end_customer_node_belongs": "Enter the customer name that the given node belongs to.\n(Example: Bestel)",
-    "node_depot_belongs": "Enter the depot that the given node belongs to.\n(Example: MZTM)"
+    "node_name": "Enter the node name .(Example: Adjuntas_Flex_1)",
+    "end_customer_node_belongs": "Enter the customer name that the given node belongs to.(Example: Bestel)",
+    "node_depot_belongs": "Enter the depot that the given node belongs to.(Example: MZTM)"
   }
 ]

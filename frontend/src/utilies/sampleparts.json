@@ -1,9 +1,9 @@
 [
   {
-    "material_number": "Enter Material Number of the part\n(Example: 1000008)",
-    "part_name": "Part name (PON) goes here\n(Example: AAM-B1)",
-    "part_reliability_class": "Reliability Class for the part is entered here.\n(Example: AAM)",
+    "material_number": "Enter Material Number of the part(Example: 1000008)",
+    "part_name": "Part name (PON) goes here(Example: AAM-B1)",
+    "part_reliability_class": "Reliability Class for the part is entered here.(Example: AAM)",
     "spared_attribute": "Enter 1 if the part is sparable otherwise 0",
-    "standard_cost": "Enter the standard cost of the part here.\n(Example: 1966.70)"
+    "standard_cost": "Enter the standard cost of the part here.(Example: 1966.70)"
   }
 ]

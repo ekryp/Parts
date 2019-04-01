@@ -404,6 +404,36 @@ export default {
       console.log("coordinates ----->", coordinates);
     });
     this.getFilterMainDashboard();
+
+     var filterFlag=localStorage.getItem("filter_flag");
+          
+         if(filterFlag=== "true")
+         {
+         var depotValue=JSON.parse(localStorage.getItem("depot_details"));
+          var customerValue=JSON.parse(localStorage.getItem("customer_details"));
+           this.toggle= localStorage.getItem("toggle");
+         
+          if(customerValue.length>0 || depotValue.length>0 ||( this.toggle ==='total_stock'))
+          {
+           
+         
+          if(this.toggle === 'total_stock')
+          {
+            this.state=false;
+          }
+          this.filterFLag=true;
+           for(var i=0;i<customerValue.length;i++)
+           {
+             this.customerValue.push(customerValue[i]);
+           }
+           
+            for(var i=0;i<depotValue.length;i++)
+           {
+             this.depotValue.push(depotValue[i]);
+           }
+           }
+           }
+           this.applyFilter();
     // this.customerValue=localStorage.getItem("customer_details");
     
     // this.depotValue=localStorage.getItem("depot_details");
@@ -749,39 +779,6 @@ export default {
            
           });
           // this.isLoading = false;
-        }).then(text=>{
-          
-          var filterFlag=localStorage.getItem("filter_flag");
-          
-         if(filterFlag=== "true")
-         {
-         var depotValue=JSON.parse(localStorage.getItem("depot_details"));
-          var customerValue=JSON.parse(localStorage.getItem("customer_details"));
-           this.toggle= localStorage.getItem("toggle");
-         
-          if(customerValue.length>0 || depotValue.length>0 ||( this.toggle ==='total_stock'))
-          {
-           
-         
-          if(this.toggle === 'total_stock')
-          {
-            this.state=false;
-          }
-          this.filterFLag=true;
-           for(var i=0;i<customerValue.length;i++)
-           {
-             this.customerValue.push(customerValue[i]);
-           }
-           
-            for(var i=0;i<depotValue.length;i++)
-           {
-             this.depotValue.push(depotValue[i]);
-           }
-           }
-           }
-        }).then(text=>{
-          this.isLoading = false;
-          this.applyFilter();
         })
 
         .catch(handleError => {
@@ -803,6 +800,7 @@ export default {
         this.filterURL =
           this.filterURL + `&depot_filter=` + this.depotValue[i].name;
       }
+      
       this.getMainDashboardCount();
       this.getPieChart();
       this.getTopDepots();

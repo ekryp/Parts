@@ -148,6 +148,7 @@ export default {
       xlsData += "</thead>";
 
       //Data
+    
       xlsData += "<tbody>";
       data.map(function(item, index) {
         xlsData += "<tr>";
@@ -188,6 +189,7 @@ export default {
         csvData.push(this.parseExtraData(this.title, "${data}\r\n"));
       }
       //Fields
+       
       if(this.columnHeaders !== null)
       {
          for (var i=0;i<this.columnHeaders.length;i++) {
@@ -209,9 +211,9 @@ export default {
       data.map(function(item) {
         for (let key in item) {
           let escapedCSV = item[key] ; // cast Numbers to string
-          // if (escapedCSV.match(/[,"\n]/)) {
-          //   escapedCSV = '"' + escapedCSV.replace(/\"/g, '""') + '"';
-          // }
+          if (escapedCSV.match(/[,"\n]/)) {
+             escapedCSV = '"' + escapedCSV.replace(/\"/g, '""') + '"';
+           }
           csvData.push(escapedCSV);
           csvData.push(",");
         }

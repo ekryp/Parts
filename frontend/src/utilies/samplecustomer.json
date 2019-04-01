@@ -1,0 +1,4138 @@
+ [
+        {
+            "SAP Sold-to Customer #": "101109",
+            "Customer Name": "ABB Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100281",
+            "Customer Name": "A.H. Belo Management Services, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "101394",
+            "Customer Name": "ACTS - Gamamia "
+        },
+        {
+            "SAP Sold-to Customer #": "100136",
+            "Customer Name": "Acuntia - Fundacion Centro de Supercomputacion de Castilla y Leon (FCSCL)\r\n(formerly Telindus) (Distributor)"
+        },
+        {
+            "SAP Sold-to Customer #": "100135",
+            "Customer Name": "Acuntia - RETEGAL\r\n(formerly Telindus) (Distributor)"
+        },
+        {
+            "SAP Sold-to Customer #": "100103",
+            "Customer Name": "Acuntia - I2Basque"
+        },
+        {
+            "SAP Sold-to Customer #": "100216",
+            "Customer Name": "Agder Breiband (Master Purchase Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101034",
+            "Customer Name": "Akamai Technologies Inc"
+        },
+        {
+            "SAP Sold-to Customer #": "100236",
+            "Customer Name": "Algeria Telecom"
+        },
+        {
+            "SAP Sold-to Customer #": "100009",
+            "Customer Name": "Altice - Formerly Cablevision and CSC Holdings"
+        },
+        {
+            "SAP Sold-to Customer #": "101309",
+            "Customer Name": "Anixter (end user Blackboard)"
+        },
+        {
+            "SAP Sold-to Customer #": "101152",
+            "Customer Name": "Anixter (end user City Satan Fe)"
+        },
+        {
+            "SAP Sold-to Customer #": "101164",
+            "Customer Name": "Anixter (end user Matanuska Telephone)"
+        },
+        {
+            "SAP Sold-to Customer #": "100314",
+            "Customer Name": "Anixter (end user MGM)"
+        },
+        {
+            "SAP Sold-to Customer #": "101085",
+            "Customer Name": "Anixter (end user Spring Net)"
+        },
+        {
+            "SAP Sold-to Customer #": "101434",
+            "Customer Name": "Anixter (end user White Plains High School)"
+        },
+        {
+            "SAP Sold-to Customer #": "100003",
+            "Customer Name": "Oath (AOL)"
+        },
+        {
+            "SAP Sold-to Customer #": "101204",
+            "Customer Name": "Apple"
+        },
+        {
+            "SAP Sold-to Customer #": "101224",
+            "Customer Name": "Arsitec Electronica Comercio e Servicos Ltda - ALOO\r\n(Subsidiary: ART Solutions Technology) "
+        },
+        {
+            "SAP Sold-to Customer #": "100848",
+            "Customer Name": "Atea Sverige AB - AXFOOD"
+        },
+        {
+            "SAP Sold-to Customer #": "100847",
+            "Customer Name": "Atea Sverige AB - Linkopings Univrsitet"
+        },
+        {
+            "SAP Sold-to Customer #": "100852",
+            "Customer Name": "Atea Sverige AB - Net1"
+        },
+        {
+            "SAP Sold-to Customer #": "101542",
+            "Customer Name": "Atea Sverige AB - Conapto AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100836",
+            "Customer Name": "Atea Sverige AB - Energimyndigheten"
+        },
+        {
+            "SAP Sold-to Customer #": "101206",
+            "Customer Name": "Atea Sverige AB - ENKOPINGS KOMMU"
+        },
+        {
+            "SAP Sold-to Customer #": "101139",
+            "Customer Name": "Atea Sverige AB - Finansinspektionen"
+        },
+        {
+            "SAP Sold-to Customer #": "100849",
+            "Customer Name": "Atea Sverige AB - H&M"
+        },
+        {
+            "SAP Sold-to Customer #": "100843",
+            "Customer Name": "Atea Sverige AB - Mälardalens högskola"
+        },
+        {
+            "SAP Sold-to Customer #": "101149",
+            "Customer Name": "Atea Sverige AB - MSB"
+        },
+        {
+            "SAP Sold-to Customer #": "101314",
+            "Customer Name": "Atea Sverige AB - Norrsken AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100830",
+            "Customer Name": "Atea Sverige AB - RPS  (Rikspolisstyelsen)"
+        },
+        {
+            "SAP Sold-to Customer #": "100835",
+            "Customer Name": "Atea Sverige AB - SIX Sverige AB"
+        },
+        {
+            "SAP Sold-to Customer #": "101100",
+            "Customer Name": "Atea Sverige AB - Spotify"
+        },
+        {
+            "SAP Sold-to Customer #": "101065",
+            "Customer Name": "Atea Sverige AB - Sungard"
+        },
+        {
+            "SAP Sold-to Customer #": "100851",
+            "Customer Name": "Atea Sverige AB- Göteborgs stad"
+        },
+        {
+            "SAP Sold-to Customer #": "100838",
+            "Customer Name": "Atea Sverige AB- ICA"
+        },
+        {
+            "SAP Sold-to Customer #": "100839",
+            "Customer Name": "Atea Sverige AB- Informationsteknik Norrbotte"
+        },
+        {
+            "SAP Sold-to Customer #": "101153",
+            "Customer Name": "Atea Sverige AB- Infosys"
+        },
+        {
+            "SAP Sold-to Customer #": "100833",
+            "Customer Name": "Atea Sverige AB- Lanstinget Sormland"
+        },
+        {
+            "SAP Sold-to Customer #": "100854",
+            "Customer Name": "Atea Sverige AB- Skånetrafiken"
+        },
+        {
+            "SAP Sold-to Customer #": "100831",
+            "Customer Name": "Atea Sverige AB- Skellefteå Kraft"
+        },
+        {
+            "SAP Sold-to Customer #": "100857",
+            "Customer Name": "Atea Sverige AB- SVT"
+        },
+        {
+            "SAP Sold-to Customer #": "101064",
+            "Customer Name": "Atea Sverige AB- Skandia Liv"
+        },
+        {
+            "SAP Sold-to Customer #": "100266",
+            "Customer Name": "Australia Japan Cable (AJC)"
+        },
+        {
+            "SAP Sold-to Customer #": "101558",
+            "Customer Name": "Axians - SOCO"
+        },
+        {
+            "SAP Sold-to Customer #": "100067",
+            "Customer Name": "Axians Networks & Solutions GmbH\r\n(Distributor) (f.k.a. NK Networks)"
+        },
+        {
+            "SAP Sold-to Customer #": "101296",
+            "Customer Name": "Axians Networks & Solutions GmbH\r\n(Distributor) (f.k.a. NK Networks) - De-Cix (End User) "
+        },
+        {
+            "SAP Sold-to Customer #": "100241",
+            "Customer Name": "Baca Valley "
+        },
+        {
+            "SAP Sold-to Customer #": "100248",
+            "Customer Name": "Balalink"
+        },
+        {
+            "SAP Sold-to Customer #": "100004",
+            "Customer Name": "BeFree \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100004",
+            "Customer Name": "BeFree \r\n(Distribution Agreement)\r\nReseller"
+        },
+        {
+            "SAP Sold-to Customer #": "100257",
+            "Customer Name": "BICS (Belgacom International Carrier Services NV/SA)"
+        },
+        {
+            "SAP Sold-to Customer #": "100276",
+            "Customer Name": "Boeing Company"
+        },
+        {
+            "SAP Sold-to Customer #": "100006",
+            "Customer Name": "Boreas Net \r\n (University of Minnesota)"
+        },
+        {
+            "SAP Sold-to Customer #": "100007",
+            "Customer Name": "Bristol Virginia Utilities (BVU)"
+        },
+        {
+            "SAP Sold-to Customer #": "101278",
+            "Customer Name": "Broadcast Media Communications Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "101193",
+            "Customer Name": "Burwood Group (Citadel- end-user)"
+        },
+        {
+            "SAP Sold-to Customer #": "100214",
+            "Customer Name": "Bynet -  Partner Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "100008",
+            "Customer Name": "Cable & Wireless UK (merged with Vodafone)"
+        },
+        {
+            "SAP Sold-to Customer #": "101117",
+            "Customer Name": "Cable One, Inc. (MPA)"
+        },
+        {
+            "SAP Sold-to Customer #": "101058",
+            "Customer Name": "CableLabs"
+        },
+        {
+            "SAP Sold-to Customer #": "100010",
+            "Customer Name": "Canalink"
+        },
+        {
+            "SAP Sold-to Customer #": "101261",
+            "Customer Name": "Canalink"
+        },
+        {
+            "SAP Sold-to Customer #": "100218",
+            "Customer Name": "Carpathia"
+        },
+        {
+            "SAP Sold-to Customer #": "100084",
+            "Customer Name": "Centurylink (Legacy customers Qwest BRI & Qwest Government Services)"
+        },
+        {
+            "SAP Sold-to Customer #": "100011",
+            "Customer Name": "Charter Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "100394",
+            "Customer Name": "Citadel LLC"
+        },
+        {
+            "SAP Sold-to Customer #": "100031",
+            "Customer Name": "Citizens Telecom Services \r\nd/b/a (doing business as) Frontier / Commonwealth"
+        },
+        {
+            "SAP Sold-to Customer #": "100012",
+            "Customer Name": "Colt"
+        },
+        {
+            "SAP Sold-to Customer #": "100012",
+            "Customer Name": "Colt - Greenfield"
+        },
+        {
+            "SAP Sold-to Customer #": "100013",
+            "Customer Name": "Comcast"
+        },
+        {
+            "SAP Sold-to Customer #": "101213",
+            "Customer Name": "Computergross -University of Padoa "
+        },
+        {
+            "SAP Sold-to Customer #": "101143",
+            "Customer Name": "Computergross -ASCO TLC SPA "
+        },
+        {
+            "SAP Sold-to Customer #": "101132",
+            "Customer Name": "Computergross - VEM Sistemi"
+        },
+        {
+            "SAP Sold-to Customer #": "101570",
+            "Customer Name": "Computergross - Italtel"
+        },
+        {
+            "SAP Sold-to Customer #": "101248",
+            "Customer Name": "Computergross - Impianti SPA"
+        },
+        {
+            "SAP Sold-to Customer #": "101214",
+            "Customer Name": "Computergross - Essequattro"
+        },
+        {
+            "SAP Sold-to Customer #": "101313",
+            "Customer Name": "Computergross - BT Italy"
+        },
+        {
+            "SAP Sold-to Customer #": "100258",
+            "Customer Name": "Consolidated Communications Inc (CCI)"
+        },
+        {
+            "SAP Sold-to Customer #": "101108",
+            "Customer Name": "Core-Backbone GmBH"
+        },
+        {
+            "SAP Sold-to Customer #": "101267",
+            "Customer Name": "Core-Backbone GmBH"
+        },
+        {
+            "SAP Sold-to Customer #": "100264",
+            "Customer Name": "CoreSpace, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100381",
+            "Customer Name": "Correos Telecom S.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100014",
+            "Customer Name": "Covage"
+        },
+        {
+            "SAP Sold-to Customer #": "100015",
+            "Customer Name": "Cox"
+        },
+        {
+            "SAP Sold-to Customer #": "101399",
+            "Customer Name": "Cleareon"
+        },
+        {
+            "SAP Sold-to Customer #": "101350",
+            "Customer Name": "Crown Castle USA Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100127",
+            "Customer Name": "Cyprus Telecom Authority (CYTA)"
+        },
+        {
+            "SAP Sold-to Customer #": "100254",
+            "Customer Name": "Dacom Crossing"
+        },
+        {
+            "SAP Sold-to Customer #": "100304",
+            "Customer Name": "Datalan"
+        },
+        {
+            "SAP Sold-to Customer #": "100299",
+            "Customer Name": "Datalink - Walt Disney Pictures"
+        },
+        {
+            "SAP Sold-to Customer #": "101538",
+            "Customer Name": "DCI Corp - Kakao"
+        },
+        {
+            "SAP Sold-to Customer #": "100017",
+            "Customer Name": "Dell Telephone Cooperative, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100018",
+            "Customer Name": "Deutsche Telekom \r\n(German Government)"
+        },
+        {
+            "SAP Sold-to Customer #": "100018",
+            "Customer Name": "Deutsche Telekom\r\n(DTAG)"
+        },
+        {
+            "SAP Sold-to Customer #": "100016",
+            "Customer Name": "Development Authority of the North County (DANC)"
+        },
+        {
+            "SAP Sold-to Customer #": "100309",
+            "Customer Name": "Digital Broadcast Network (DBN)- Kakao "
+        },
+        {
+            "SAP Sold-to Customer #": "100250",
+            "Customer Name": "Dimension Data (New Zealand) \r\nEnd Users\r\nFX Networks,\r\nTelecom Fiji, \r\nVodafone New Zealand"
+        },
+        {
+            "SAP Sold-to Customer #": "100259",
+            "Customer Name": "Dimension Data (South Africa) \r\nEnd Users - Internet Solutions;\r\nCustomers in Africa excluding Embargoed Countries including Sudan"
+        },
+        {
+            "SAP Sold-to Customer #": "100298",
+            "Customer Name": "Dimension Data Asia Pacific (Singapore) \r\nEnd Users: Starhub group of companies; Territories: Singapore"
+        },
+        {
+            "SAP Sold-to Customer #": "100308",
+            "Customer Name": "Dimension Data Canada, Inc. and Dimension Data North America, Inc.- United Methodist Hospital\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101125",
+            "Customer Name": "Dimension Data Canada, Inc. and Dimension Data North America, Inc.\r\n-  Intuitive Surgical "
+        },
+        {
+            "SAP Sold-to Customer #": "101156",
+            "Customer Name": "Dimension Data Canada, Inc. and Dimension Data North America, Inc.\r\n- Northeastern University"
+        },
+        {
+            "SAP Sold-to Customer #": "101195",
+            "Customer Name": "Dimension Data Canada, Inc. and Dimension Data North America, Inc.\r\n- ZF North America"
+        },
+        {
+            "SAP Sold-to Customer #": "101403",
+            "Customer Name": "Dimension Data \r\n - Prince William Co. Schools\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "100287",
+            "Customer Name": "Dropbox, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100019",
+            "Customer Name": "Duke University"
+        },
+        {
+            "SAP Sold-to Customer #": "100021",
+            "Customer Name": "EarthLink, Inc. (ITC Deltacom)"
+        },
+        {
+            "SAP Sold-to Customer #": "100133",
+            "Customer Name": "eBay"
+        },
+        {
+            "SAP Sold-to Customer #": "100023",
+            "Customer Name": "Elisa"
+        },
+        {
+            "SAP Sold-to Customer #": "100025",
+            "Customer Name": "ENMR"
+        },
+        {
+            "SAP Sold-to Customer #": "101465",
+            "Customer Name": "ePlus Technology - Bloomberg"
+        },
+        {
+            "SAP Sold-to Customer #": "100026",
+            "Customer Name": "Equinix"
+        },
+        {
+            "SAP Sold-to Customer #": "100300",
+            "Customer Name": "Equinix"
+        },
+        {
+            "SAP Sold-to Customer #": "100212",
+            "Customer Name": "euNetworks"
+        },
+        {
+            "SAP Sold-to Customer #": "100028",
+            "Customer Name": "Eurofiber"
+        },
+        {
+            "SAP Sold-to Customer #": "101122",
+            "Customer Name": "EUVIC (End user VECTRA)"
+        },
+        {
+            "SAP Sold-to Customer #": "100029",
+            "Customer Name": "Facebook"
+        },
+        {
+            "SAP Sold-to Customer #": "100030",
+            "Customer Name": "Fibernet (FPL)"
+        },
+        {
+            "SAP Sold-to Customer #": "100318",
+            "Customer Name": "Fibre Technologies Limited - Bristol University (End User)\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101158",
+            "Customer Name": "Fibre Technologies Limited - Capita IT Services (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "100312",
+            "Customer Name": "Fibre Technologies Limited - CGI Datacentres (End User)\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "100311",
+            "Customer Name": "Fibre Technologies Limited - Dundee University (End User)\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101090",
+            "Customer Name": "Fibre Technologies Limited - Fibre Technologies (End User)\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101090",
+            "Customer Name": "Fibre Technologies Limited - Internal\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101258",
+            "Customer Name": "Fibre Technologies Limited - Nova Incepta\r\n (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101128",
+            "Customer Name": "Fibre Technologies Limited - SURE (End User)\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101392",
+            "Customer Name": "Fibre Technologies Limited - Axial System (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101549",
+            "Customer Name": "Fonex Data Systems - Western James Bay Telecom"
+        },
+        {
+            "SAP Sold-to Customer #": "101205",
+            "Customer Name": "Fonex Data Systems - Five Nations Energy"
+        },
+        {
+            "SAP Sold-to Customer #": "101479",
+            "Customer Name": "Fonex Data Systems - Transcontinental"
+        },
+        {
+            "SAP Sold-to Customer #": "100283",
+            "Customer Name": "FRA"
+        },
+        {
+            "SAP Sold-to Customer #": "101597",
+            "Customer Name": "Fusionstorm - Peoples Natural Gas"
+        },
+        {
+            "SAP Sold-to Customer #": "100297",
+            "Customer Name": "Gaikai"
+        },
+        {
+            "SAP Sold-to Customer #": "100121",
+            "Customer Name": "Gainesville Regional Utilities (GRU)"
+        },
+        {
+            "SAP Sold-to Customer #": "101244",
+            "Customer Name": "Gamma Telecoms"
+        },
+        {
+            "SAP Sold-to Customer #": "101161",
+            "Customer Name": "GBI Gulf Commercial Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "101121",
+            "Customer Name": "GCI"
+        },
+        {
+            "SAP Sold-to Customer #": "101289",
+            "Customer Name": "GEANT Limited (fka DANTE)"
+        },
+        {
+            "SAP Sold-to Customer #": "100205",
+            "Customer Name": "GEANT Limited (fka DANTE) - This contract will be retired 1/1/2018"
+        },
+        {
+            "SAP Sold-to Customer #": "100237",
+            "Customer Name": "GlobeNet (formerly Brazil Telecom)"
+        },
+        {
+            "SAP Sold-to Customer #": "100035",
+            "Customer Name": "Google"
+        },
+        {
+            "SAP Sold-to Customer #": "100032",
+            "Customer Name": "Government Communications Headquarter Procurement (GCHQ)"
+        },
+        {
+            "SAP Sold-to Customer #": "100120",
+            "Customer Name": "Grant County"
+        },
+        {
+            "SAP Sold-to Customer #": "100036",
+            "Customer Name": "Guangzhou CTT (end user-China Mobile)"
+        },
+        {
+            "SAP Sold-to Customer #": "100715",
+            "Customer Name": "Hetzner"
+        },
+        {
+            "SAP Sold-to Customer #": "100037",
+            "Customer Name": "Hill Country Telephone Cooperative"
+        },
+        {
+            "SAP Sold-to Customer #": "100272",
+            "Customer Name": "Himachal Futuristic Communications Limited (HFCL)"
+        },
+        {
+            "SAP Sold-to Customer #": "100272",
+            "Customer Name": "Himachal Futuristic Communications Limited (HFCL) "
+        },
+        {
+            "SAP Sold-to Customer #": "101555",
+            "Customer Name": "Idaho Regional Optical Network"
+        },
+        {
+            "SAP Sold-to Customer #": "100313",
+            "Customer Name": "IIX USA"
+        },
+        {
+            "SAP Sold-to Customer #": "100038",
+            "Customer Name": "Infracom Italia S.p.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100280",
+            "Customer Name": "Inline Logistics Limited (Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100039",
+            "Customer Name": "Integra"
+        },
+        {
+            "SAP Sold-to Customer #": "100268",
+            "Customer Name": "Intelligent Communications Technology Co. Ltd. (ICT) (Distribution Agreement) (CAT TELECOM)"
+        },
+        {
+            "SAP Sold-to Customer #": "100130",
+            "Customer Name": "Internap"
+        },
+        {
+            "SAP Sold-to Customer #": "101271",
+            "Customer Name": "Internet Solutions\r\n(a division of Dimension Data (Pty) Ltd)"
+        },
+        {
+            "SAP Sold-to Customer #": "100041",
+            "Customer Name": "Interoute"
+        },
+        {
+            "SAP Sold-to Customer #": "100423",
+            "Customer Name": "ION"
+        },
+        {
+            "SAP Sold-to Customer #": "100581",
+            "Customer Name": "IP Only Networks AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100555",
+            "Customer Name": "ISC International Services, Investment & Development Co. - Ministry of Defense Egypt"
+        },
+        {
+            "SAP Sold-to Customer #": "100042",
+            "Customer Name": "Itochu Techno Solutions America (CTC)"
+        },
+        {
+            "SAP Sold-to Customer #": "101047",
+            "Customer Name": "Itochu Techno Solutions America (CTC)"
+        },
+        {
+            "SAP Sold-to Customer #": "101545",
+            "Customer Name": "Itochu Techno Solutions America (CTC)"
+        },
+        {
+            "SAP Sold-to Customer #": "100045",
+            "Customer Name": "KDDI America"
+        },
+        {
+            "SAP Sold-to Customer #": "100047",
+            "Customer Name": "KVH Co., Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100048",
+            "Customer Name": "Lawrence Berkeley National Lab (EsNet)"
+        },
+        {
+            "SAP Sold-to Customer #": "100049",
+            "Customer Name": "Level 3"
+        },
+        {
+            "SAP Sold-to Customer #": "100049",
+            "Customer Name": "Level 3\r\n(NEC Argentina)"
+        },
+        {
+            "SAP Sold-to Customer #": "100049",
+            "Customer Name": "Level 3\r\n(NEC Chile)"
+        },
+        {
+            "SAP Sold-to Customer #": "100049",
+            "Customer Name": "Level 3\r\n(NEC Colombia)"
+        },
+        {
+            "SAP Sold-to Customer #": "100049",
+            "Customer Name": "Level 3\r\n(NEC Latin America)"
+        },
+        {
+            "SAP Sold-to Customer #": "100049",
+            "Customer Name": "Level 3\r\n(NEC Mexico)"
+        },
+        {
+            "SAP Sold-to Customer #": "100050",
+            "Customer Name": "Liberty Cablevision of Puerto Rico Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100051",
+            "Customer Name": "Lightbound"
+        },
+        {
+            "SAP Sold-to Customer #": "100086",
+            "Customer Name": "Lightower Fiber Networks (f.k.a. Sidera (Previously RCN_Neon))"
+        },
+        {
+            "SAP Sold-to Customer #": "101485",
+            "Customer Name": "Lightriver Technologies - Rahi Systems (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100052",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101101",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101105",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101302",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101123",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100286",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101137",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101259",
+            "Customer Name": "Lightriver Technologies (Resale Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100132",
+            "Customer Name": "Linkem"
+        },
+        {
+            "SAP Sold-to Customer #": "101298",
+            "Customer Name": "Lintas Teknologi Indonesia - PT XL Axiata Tbk (\"XL\")"
+        },
+        {
+            "SAP Sold-to Customer #": "100285",
+            "Customer Name": "Liquid PC - Blackboard"
+        },
+        {
+            "SAP Sold-to Customer #": "101312",
+            "Customer Name": "Marcum - Sungard"
+        },
+        {
+            "SAP Sold-to Customer #": "100053",
+            "Customer Name": "Maryland Broadband Cooperative \r\n(MDBC)"
+        },
+        {
+            "SAP Sold-to Customer #": "100426",
+            "Customer Name": "Masergy Communications Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100418",
+            "Customer Name": "Mediacom Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "100278",
+            "Customer Name": "MENA"
+        },
+        {
+            "SAP Sold-to Customer #": "100393",
+            "Customer Name": "Metro Fibernet LLC"
+        },
+        {
+            "SAP Sold-to Customer #": "100055",
+            "Customer Name": "Microsoft"
+        },
+        {
+            "SAP Sold-to Customer #": "100056",
+            "Customer Name": "Mid-Atlantic Broadband Cooperative \r\n(MBC)"
+        },
+        {
+            "SAP Sold-to Customer #": "100057",
+            "Customer Name": "Midcontinent Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "100058",
+            "Customer Name": "Mitchell Technical Institute"
+        },
+        {
+            "SAP Sold-to Customer #": "100059",
+            "Customer Name": "MTI Teleport"
+        },
+        {
+            "SAP Sold-to Customer #": "101231",
+            "Customer Name": "NEC Corporation\r\n(Approved customer/ End user - Telkomsel)"
+        },
+        {
+            "SAP Sold-to Customer #": "100315",
+            "Customer Name": "NEC Europe"
+        },
+        {
+            "SAP Sold-to Customer #": "101509",
+            "Customer Name": "NEC Mexico- AT&T"
+        },
+        {
+            "SAP Sold-to Customer #": "100277",
+            "Customer Name": "NEC Mexico (Maxcom End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "100217",
+            "Customer Name": "NEC Mexico (Telmex End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "100565",
+            "Customer Name": "NEC-GCI"
+        },
+        {
+            "SAP Sold-to Customer #": "101476",
+            "Customer Name": "NEC ARGENTINA - TIGO"
+        },
+        {
+            "SAP Sold-to Customer #": "101163",
+            "Customer Name": "Netflix"
+        },
+        {
+            "SAP Sold-to Customer #": "100378",
+            "Customer Name": "Network 41"
+        },
+        {
+            "SAP Sold-to Customer #": "100430",
+            "Customer Name": "New Wave Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "100586",
+            "Customer Name": "Nianet A/S"
+        },
+        {
+            "SAP Sold-to Customer #": "100061",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100062",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100063",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100246",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100256",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100251",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100065",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100064",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100066",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100290",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100289",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100288",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100310",
+            "Customer Name": "Nissho \r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100317",
+            "Customer Name": "Nissho Electronics Vietnam Company Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "101081",
+            "Customer Name": "Nissho Electronics Vietnam Company Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "101556",
+            "Customer Name": "nLogic AS - TDC"
+        },
+        {
+            "SAP Sold-to Customer #": "101591",
+            "Customer Name": "nLogic AS - Nordfiber"
+        },
+        {
+            "SAP Sold-to Customer #": "101338",
+            "Customer Name": "nLogic AS - Eidsiva (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101291",
+            "Customer Name": "nLogic AS - GET AS (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101142",
+            "Customer Name": "nLogic AS - Tampnet AS (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101455",
+            "Customer Name": "Nlogic-Bredbandsfylket Troms As\r\n(End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101020",
+            "Customer Name": "nLogic AS-Statens Vegvesen (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "100068",
+            "Customer Name": "North Dakota State University"
+        },
+        {
+            "SAP Sold-to Customer #": "100069",
+            "Customer Name": "NTT Com Asia \r\n(Hong Kong)"
+        },
+        {
+            "SAP Sold-to Customer #": "100253",
+            "Customer Name": "NTT World Communications Network Pte"
+        },
+        {
+            "SAP Sold-to Customer #": "100407",
+            "Customer Name": "Nvidia"
+        },
+        {
+            "SAP Sold-to Customer #": "100252",
+            "Customer Name": "Nvision Group\r\nCJSC\r\n(Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "101505",
+            "Customer Name": "O2MP Company Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100075",
+            "Customer Name": "Operbes \r\n(Bestel)"
+        },
+        {
+            "SAP Sold-to Customer #": "101148",
+            "Customer Name": "Optical Technologies"
+        },
+        {
+            "SAP Sold-to Customer #": "100307",
+            "Customer Name": "Oracle America, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "101467",
+            "Customer Name": "Orange SA"
+        },
+        {
+            "SAP Sold-to Customer #": "100076",
+            "Customer Name": "OTE"
+        },
+        {
+            "SAP Sold-to Customer #": "100077",
+            "Customer Name": "OVH SAS"
+        },
+        {
+            "SAP Sold-to Customer #": "100078",
+            "Customer Name": "Pacific Northwest Gigapop"
+        },
+        {
+            "SAP Sold-to Customer #": "100082",
+            "Customer Name": "PC Landing"
+        },
+        {
+            "SAP Sold-to Customer #": "100284",
+            "Customer Name": "PC Landing"
+        },
+        {
+            "SAP Sold-to Customer #": "100408",
+            "Customer Name": "Peoples Natural Gas Company"
+        },
+        {
+            "SAP Sold-to Customer #": "100572",
+            "Customer Name": "Phoenix Telecom"
+        },
+        {
+            "SAP Sold-to Customer #": "100204",
+            "Customer Name": "PIPE Networks"
+        },
+        {
+            "SAP Sold-to Customer #": "101604",
+            "Customer Name": "Presidio Networked Solutions LLC - Intuitive Surgical"
+        },
+        {
+            "SAP Sold-to Customer #": "100295",
+            "Customer Name": "PS Lightwave, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "101078",
+            "Customer Name": "RCN Telecom Services, LLC"
+        },
+        {
+            "SAP Sold-to Customer #": "100087",
+            "Customer Name": "Reliance Globalcom Limited (RGC)"
+        },
+        {
+            "SAP Sold-to Customer #": "100089",
+            "Customer Name": "Resolution \r\n(End-user Kazakhtelecom) LLP Resolution"
+        },
+        {
+            "SAP Sold-to Customer #": "100090",
+            "Customer Name": "RETN (Eltel)"
+        },
+        {
+            "SAP Sold-to Customer #": "101400",
+            "Customer Name": "RETN (Eltel)"
+        },
+        {
+            "SAP Sold-to Customer #": "100271",
+            "Customer Name": "RK Telecom"
+        },
+        {
+            "SAP Sold-to Customer #": "100208",
+            "Customer Name": "RK Telecom OOO (f.k.a. RK Telecom ZAO)"
+        },
+        {
+            "SAP Sold-to Customer #": "101438",
+            "Customer Name": "Safari Micro Inc.\r\nFDOT"
+        },
+        {
+            "SAP Sold-to Customer #": "100305",
+            "Customer Name": "Saffron Solutions, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100468",
+            "Customer Name": "Sak Data Products Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100470",
+            "Customer Name": "Sak Data Products Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100467",
+            "Customer Name": "Sak Data Products Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "101452",
+            "Customer Name": "Sak Data Products Ltd - Centrilogic"
+        },
+        {
+            "SAP Sold-to Customer #": "100890",
+            "Customer Name": "Santa Monica Networks SIA - Latvia (LVRTC) "
+        },
+        {
+            "SAP Sold-to Customer #": "101588",
+            "Customer Name": "Santa Monica Networks SIA - Luminor Bank"
+        },
+        {
+            "SAP Sold-to Customer #": "100610",
+            "Customer Name": "Santa Monica Networks SIA"
+        },
+        {
+            "SAP Sold-to Customer #": "101512",
+            "Customer Name": "Santa Monica Networks SIA"
+        },
+        {
+            "SAP Sold-to Customer #": "100091",
+            "Customer Name": "Savvis Communications Corporation"
+        },
+        {
+            "SAP Sold-to Customer #": "101308",
+            "Customer Name": "ScanSource Brasil Distribuidora de Tecnologias Ltda. - WZTech"
+        },
+        {
+            "SAP Sold-to Customer #": "101093",
+            "Customer Name": "Scientel Wireless"
+        },
+        {
+            "SAP Sold-to Customer #": "101045",
+            "Customer Name": "Seabras 1 USA"
+        },
+        {
+            "SAP Sold-to Customer #": "100093",
+            "Customer Name": "Seacom  (Republic of South Africa)"
+        },
+        {
+            "SAP Sold-to Customer #": "100131",
+            "Customer Name": "Seacom - Tata (Egypt)"
+        },
+        {
+            "SAP Sold-to Customer #": "100231",
+            "Customer Name": "Service Electric Cable TV"
+        },
+        {
+            "SAP Sold-to Customer #": "100207",
+            "Customer Name": "Service Electric Cablevision Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100095",
+            "Customer Name": "Sirti - Limited Distribution and Sevice Agreement (LDSA or Limited Disit Agmt)"
+        },
+        {
+            "SAP Sold-to Customer #": "101129",
+            "Customer Name": "Sizwe Afica IT Group (Pty) Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "101354",
+            "Customer Name": "Smartcom Bulgaria AD"
+        },
+        {
+            "SAP Sold-to Customer #": "101412",
+            "Customer Name": "Sky ITLIA S.r.l."
+        },
+        {
+            "SAP Sold-to Customer #": "100044",
+            "Customer Name": "Softbank Telecom America Corp. (fka Japan Telecom America)"
+        },
+        {
+            "SAP Sold-to Customer #": "100098",
+            "Customer Name": "Softlayer Technologies, Inc.\r\n(an IBM Company)"
+        },
+        {
+            "SAP Sold-to Customer #": "100092",
+            "Customer Name": "South Dakota Network (MPA)"
+        },
+        {
+            "SAP Sold-to Customer #": "100099",
+            "Customer Name": "Southern Light D.B.A Uniti Fibre"
+        },
+        {
+            "SAP Sold-to Customer #": "100124",
+            "Customer Name": "State of New Mexico"
+        },
+        {
+            "SAP Sold-to Customer #": "101407",
+            "Customer Name": "StackPath, LLC"
+        },
+        {
+            "SAP Sold-to Customer #": "100100",
+            "Customer Name": "Suddenlink"
+        },
+        {
+            "SAP Sold-to Customer #": "101131",
+            "Customer Name": "Sungard"
+        },
+        {
+            "SAP Sold-to Customer #": "101087",
+            "Customer Name": "Supernap"
+        },
+        {
+            "SAP Sold-to Customer #": "100274",
+            "Customer Name": "Superonline Iletisim Hizmetleri A.S."
+        },
+        {
+            "SAP Sold-to Customer #": "100221",
+            "Customer Name": "Synchronous Communication Corp. (Distribution Agreement)"
+        },
+        {
+            "SAP Sold-to Customer #": "100074",
+            "Customer Name": "Talk Talk (formerly Opal Telecom)"
+        },
+        {
+            "SAP Sold-to Customer #": "100105",
+            "Customer Name": "Technology Integrated (TI) Solutions (Distributor)"
+        },
+        {
+            "SAP Sold-to Customer #": "101157",
+            "Customer Name": "TechnoServ AS (Distribution Agreement) - PROMSVYA"
+        },
+        {
+            "SAP Sold-to Customer #": "100273",
+            "Customer Name": "TechnoServ AS (Distribution Agreement) - ROSTELECOM"
+        },
+        {
+            "SAP Sold-to Customer #": "100320",
+            "Customer Name": "Techxs Value Added IT Distribution B.V\r\n(Reseller Agreement, supersedes Distributor Agreement under TechAccess, #131)"
+        },
+        {
+            "SAP Sold-to Customer #": "101112",
+            "Customer Name": "Techxs Value Added IT Distribution B.V\r\n(Reseller Agreement, supersedes Distributor Agreement under TechAccess, #131)"
+        },
+        {
+            "SAP Sold-to Customer #": "100319",
+            "Customer Name": "Telamon Technologies Corp – Allo"
+        },
+        {
+            "SAP Sold-to Customer #": "101262",
+            "Customer Name": "Telamon Technologies Corp – Ellijay"
+        },
+        {
+            "SAP Sold-to Customer #": "101141",
+            "Customer Name": "Telamon Technologies Corp – LUMOS"
+        },
+        {
+            "SAP Sold-to Customer #": "101133",
+            "Customer Name": "Telamon Technologies Corp – Phonoscope "
+        },
+        {
+            "SAP Sold-to Customer #": "101140",
+            "Customer Name": "Telamon Technologies Corp – TekLinks"
+        },
+        {
+            "SAP Sold-to Customer #": "101406",
+            "Customer Name": "Telamon Technologies Corp – Evocative"
+        },
+        {
+            "SAP Sold-to Customer #": "101521",
+            "Customer Name": "Telamon Technologies Corp. - Blizzard"
+        },
+        {
+            "SAP Sold-to Customer #": "101561",
+            "Customer Name": "Telamon Technologies Corp. - SECOM"
+        },
+        {
+            "SAP Sold-to Customer #": "101580",
+            "Customer Name": "Telamon Technologies Corp. - Coinbase"
+        },
+        {
+            "SAP Sold-to Customer #": "100899",
+            "Customer Name": "Tele2 Sverige AB - FRA"
+        },
+        {
+            "SAP Sold-to Customer #": "101530",
+            "Customer Name": "Tele2 Sverige AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100226",
+            "Customer Name": "Telecom Egypt"
+        },
+        {
+            "SAP Sold-to Customer #": "101277",
+            "Customer Name": "Telecom Egypt France SAS"
+        },
+        {
+            "SAP Sold-to Customer #": "100282",
+            "Customer Name": "Telecom Italia (GARR End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101073",
+            "Customer Name": "Telecom Italia Sparkle"
+        },
+        {
+            "SAP Sold-to Customer #": "100054",
+            "Customer Name": "Telecom Italia Sparkle S.p.A.\r\n(formerly TI Sparkle Ireland Limited, and previously Lan Med Nautilus Limited)"
+        },
+        {
+            "SAP Sold-to Customer #": "100101",
+            "Customer Name": "Telefonica "
+        },
+        {
+            "SAP Sold-to Customer #": "100101",
+            "Customer Name": "Telefonica (Telxius)"
+        },
+        {
+            "SAP Sold-to Customer #": "100101",
+            "Customer Name": "Telefonica International Wholesale Services "
+        },
+        {
+            "SAP Sold-to Customer #": "100270",
+            "Customer Name": "Telefonica UK Limited (Also Known As \"O2\")"
+        },
+        {
+            "SAP Sold-to Customer #": "101486",
+            "Customer Name": "Telent Technology"
+        },
+        {
+            "SAP Sold-to Customer #": "101160",
+            "Customer Name": "Teleplex Solutions Sdn Bhd. -  \r\nFiberail (end user)"
+        },
+        {
+            "SAP Sold-to Customer #": "101215",
+            "Customer Name": "Teleplex Solutions Sdn Bhd. -  \r\nSkinet (end user)"
+        },
+        {
+            "SAP Sold-to Customer #": "101222",
+            "Customer Name": "Teleplex Solutions Sdn Bhd. -  \r\nSymphone (end user)"
+        },
+        {
+            "SAP Sold-to Customer #": "100102",
+            "Customer Name": "Teliasonera"
+        },
+        {
+            "SAP Sold-to Customer #": "100499",
+            "Customer Name": "Telindus-ISIT B.V. - VRU (Veilighreidsregio Utrecht)"
+        },
+        {
+            "SAP Sold-to Customer #": "100500",
+            "Customer Name": "Telindus-ISIT B.V. - Gusto MSC"
+        },
+        {
+            "SAP Sold-to Customer #": "100486",
+            "Customer Name": "Telindus-ISIT B.V."
+        },
+        {
+            "SAP Sold-to Customer #": "100488",
+            "Customer Name": "Telindus-ISIT B.V. -Brabantwater"
+        },
+        {
+            "SAP Sold-to Customer #": "101209",
+            "Customer Name": "Telstra Corporation"
+        },
+        {
+            "SAP Sold-to Customer #": "100104",
+            "Customer Name": "Telstra Corporation Limited - AAG"
+        },
+        {
+            "SAP Sold-to Customer #": "100261",
+            "Customer Name": "Telstra Corporation Limited - Endeavour"
+        },
+        {
+            "SAP Sold-to Customer #": "100262",
+            "Customer Name": "Telstra Corporation Limited - RNAL"
+        },
+        {
+            "SAP Sold-to Customer #": "100260",
+            "Customer Name": "Telstra Corporation Limited - Unity"
+        },
+        {
+            "SAP Sold-to Customer #": "100106",
+            "Customer Name": "Time Warner Cable"
+        },
+        {
+            "SAP Sold-to Customer #": "100107",
+            "Customer Name": "Tiscali"
+        },
+        {
+            "SAP Sold-to Customer #": "101600",
+            "Customer Name": "Transtelco Holding, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "101559",
+            "Customer Name": "Trigon AG - EKT"
+        },
+        {
+            "SAP Sold-to Customer #": "100434",
+            "Customer Name": "Trigon AG - Kantonsspital Winterthur"
+        },
+        {
+            "SAP Sold-to Customer #": "101028",
+            "Customer Name": "Trigon AG - HGC"
+        },
+        {
+            "SAP Sold-to Customer #": "101192",
+            "Customer Name": "Trigon AG - Internal"
+        },
+        {
+            "SAP Sold-to Customer #": "101220",
+            "Customer Name": "Trigon -  Kantonspital St Gallen"
+        },
+        {
+            "SAP Sold-to Customer #": "101190",
+            "Customer Name": "Trigon - AET"
+        },
+        {
+            "SAP Sold-to Customer #": "100777",
+            "Customer Name": "Trigon - AFI"
+        },
+        {
+            "SAP Sold-to Customer #": "101223",
+            "Customer Name": "Trigon - AXPO"
+        },
+        {
+            "SAP Sold-to Customer #": "101329",
+            "Customer Name": "Trigon - Digital Roots"
+        },
+        {
+            "SAP Sold-to Customer #": "100781",
+            "Customer Name": "Trigon - EBU"
+        },
+        {
+            "SAP Sold-to Customer #": "101304",
+            "Customer Name": "Trigon - Glattwerke"
+        },
+        {
+            "SAP Sold-to Customer #": "101311",
+            "Customer Name": "Trigon - HUG"
+        },
+        {
+            "SAP Sold-to Customer #": "101031",
+            "Customer Name": "Trigon - Rolex SA"
+        },
+        {
+            "SAP Sold-to Customer #": "101030",
+            "Customer Name": "Trigon - Siag Secure Infostore"
+        },
+        {
+            "SAP Sold-to Customer #": "101191",
+            "Customer Name": "Trigon - Telecom Liechtenstein"
+        },
+        {
+            "SAP Sold-to Customer #": "101221",
+            "Customer Name": "Trigon - Universitätsspital Zürich"
+        },
+        {
+            "SAP Sold-to Customer #": "101484",
+            "Customer Name": "Triohmtec"
+        },
+        {
+            "SAP Sold-to Customer #": "101138",
+            "Customer Name": "Triohmtec - Banco de Mexico"
+        },
+        {
+            "SAP Sold-to Customer #": "100269",
+            "Customer Name": "TVC Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "101159",
+            "Customer Name": "Uber Technologies, Inc. "
+        },
+        {
+            "SAP Sold-to Customer #": "100108",
+            "Customer Name": "Unity Partners"
+        },
+        {
+            "SAP Sold-to Customer #": "100109",
+            "Customer Name": "University of Montana"
+        },
+        {
+            "SAP Sold-to Customer #": "100275",
+            "Customer Name": "University of Wisconsin"
+        },
+        {
+            "SAP Sold-to Customer #": "101110",
+            "Customer Name": "Valve Corporation"
+        },
+        {
+            "SAP Sold-to Customer #": "100238",
+            "Customer Name": "Verisign"
+        },
+        {
+            "SAP Sold-to Customer #": "100115",
+            "Customer Name": "Verizon Sourcing LLC (Formerly XO Communication)"
+        },
+        {
+            "SAP Sold-to Customer #": "101579",
+            "Customer Name": "Viasat, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100292",
+            "Customer Name": "Vocus  (f.k.a. FX Networks)"
+        },
+        {
+            "SAP Sold-to Customer #": "101089",
+            "Customer Name": "Vodafone - Austria GMBH"
+        },
+        {
+            "SAP Sold-to Customer #": "101049",
+            "Customer Name": "Vodafone - Espana S.A.U "
+        },
+        {
+            "SAP Sold-to Customer #": "101049",
+            "Customer Name": "Vodafone - ONO S.A.U "
+        },
+        {
+            "SAP Sold-to Customer #": "101251",
+            "Customer Name": "Vodafone - US (VGC)"
+        },
+        {
+            "SAP Sold-to Customer #": "101347",
+            "Customer Name": "Vodafone Procurement Company S.a.r.l\r\nFor resale to \r\nNational Grid Electricity Transmission PLC (National Grid)"
+        },
+        {
+            "SAP Sold-to Customer #": "101051",
+            "Customer Name": "Vodafone Procurement Company S.a.r.l"
+        },
+        {
+            "SAP Sold-to Customer #": "100110",
+            "Customer Name": "VTX"
+        },
+        {
+            "SAP Sold-to Customer #": "101036",
+            "Customer Name": "White Plains"
+        },
+        {
+            "SAP Sold-to Customer #": "100005",
+            "Customer Name": "WideOpen West Finance, LLC (WOW) (f.k.a. Bluemile)"
+        },
+        {
+            "SAP Sold-to Customer #": "100247",
+            "Customer Name": "Windstream (Previously Paetec)"
+        },
+        {
+            "SAP Sold-to Customer #": "100265",
+            "Customer Name": "WiscNet"
+        },
+        {
+            "SAP Sold-to Customer #": "100055",
+            "Customer Name": "World Wide Technology, Inc. (WWT) - Microsoft\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101134",
+            "Customer Name": "World Wide Technology, Inc. (WWT) - Nike \r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "100301",
+            "Customer Name": "World Wide Technology, Inc. (WWT)- Twitch.tv and Amazon.com\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "100111",
+            "Customer Name": "Wuhan NEC  (Reseller)"
+        },
+        {
+            "SAP Sold-to Customer #": "100267",
+            "Customer Name": "Wuhan NEC (Reseller)                                   \r\nJibei Power (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "100112",
+            "Customer Name": "Wuhan NEC (Reseller)                                   \r\nShanxi Electrical Power (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "100294",
+            "Customer Name": "Wuhan NEC (Reseller)\r\nYanzhou Coal Mining Company (\"YCMC\") (End User)"
+        },
+        {
+            "SAP Sold-to Customer #": "101187",
+            "Customer Name": "Xantaro (Distributor)"
+        },
+        {
+            "SAP Sold-to Customer #": "100113",
+            "Customer Name": "Xantaro (Distributor)"
+        },
+        {
+            "SAP Sold-to Customer #": "101048",
+            "Customer Name": "Xantaro (Distributor)\r\nRETN"
+        },
+        {
+            "SAP Sold-to Customer #": "100116",
+            "Customer Name": "Xarxa Oberta "
+        },
+        {
+            "SAP Sold-to Customer #": "101499",
+            "Customer Name": "Xon Systems (End-user Optinet)"
+        },
+        {
+            "SAP Sold-to Customer #": "101182",
+            "Customer Name": "Xon Systems (End-user Internet Solutions)"
+        },
+        {
+            "SAP Sold-to Customer #": "101018",
+            "Customer Name": "Xon Systems (End-user Seacom SA (Proprietary) Ltd.)"
+        },
+        {
+            "SAP Sold-to Customer #": "101534",
+            "Customer Name": "XON Systems (Pty) Ltd. - Internet Technologies Angola"
+        },
+        {
+            "SAP Sold-to Customer #": "100117",
+            "Customer Name": "Zayo Bandwidth, Inc. (Previously PPL Telecom)"
+        },
+        {
+            "SAP Sold-to Customer #": "101260",
+            "Customer Name": "Zayo Group, LLC (end customer: Pixar)"
+        },
+        {
+            "SAP Sold-to Customer #": "101582",
+            "Customer Name": "DynTek Services -Integra Optics Inc"
+        },
+        {
+            "SAP Sold-to Customer #": "101346",
+            "Customer Name": "DynTek Services - MGM"
+        },
+        {
+            "SAP Sold-to Customer #": "101349",
+            "Customer Name": "SSE Telecommunications Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "101348",
+            "Customer Name": "BT Federal, Inc. "
+        },
+        {
+            "SAP Sold-to Customer #": "100631",
+            "Customer Name": "Avola"
+        },
+        {
+            "SAP Sold-to Customer #": "100627",
+            "Customer Name": "Indra Sistemas S.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100594",
+            "Customer Name": "Virgin Media Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100619",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100904",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100905",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100906",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100907",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100908",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100909",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100910",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100911",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100912",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100913",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100914",
+            "Customer Name": "Liberty Global Services B.V (previously UPC Broadband Holding B.V.)"
+        },
+        {
+            "SAP Sold-to Customer #": "100525",
+            "Customer Name": "NEC CORPORATION - Latvijas (LMT)"
+        },
+        {
+            "SAP Sold-to Customer #": "101589",
+            "Customer Name": "NEC CORPORATION -NEC de Colombia S.A. - Mediacommerce Columbia"
+        },
+        {
+            "SAP Sold-to Customer #": "100357",
+            "Customer Name": "NEC CORPORATION"
+        },
+        {
+            "SAP Sold-to Customer #": "100018",
+            "Customer Name": "Deutsche Telekom AG, PG 1025"
+        },
+        {
+            "SAP Sold-to Customer #": "100602",
+            "Customer Name": "Telenor Telecom Solutions AS (Aka Telenor Norge AS)"
+        },
+        {
+            "SAP Sold-to Customer #": "100603",
+            "Customer Name": "Telenor Sverige AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100636",
+            "Customer Name": "Telenor Satellite Broadcasting AS"
+        },
+        {
+            "SAP Sold-to Customer #": "100884",
+            "Customer Name": "Telenor A/S"
+        },
+        {
+            "SAP Sold-to Customer #": "101042",
+            "Customer Name": "Telenor A/S"
+        },
+        {
+            "SAP Sold-to Customer #": "100641",
+            "Customer Name": "Norkring AS (Affiliate of Telenor)"
+        },
+        {
+            "SAP Sold-to Customer #": "100581",
+            "Customer Name": "IP-Only Networks AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100612",
+            "Customer Name": "TDC A/S"
+        },
+        {
+            "SAP Sold-to Customer #": "100590",
+            "Customer Name": "TDC Song AS"
+        },
+        {
+            "SAP Sold-to Customer #": "100651",
+            "Customer Name": "TDC Finland"
+        },
+        {
+            "SAP Sold-to Customer #": "101039",
+            "Customer Name": "Serbia Broadband - Srpske Kablovske Mreze d.o.o."
+        },
+        {
+            "SAP Sold-to Customer #": "100386",
+            "Customer Name": "Telemach, Sirokopasovne komunikacij\r\n(formely Telemach d.o.o)"
+        },
+        {
+            "SAP Sold-to Customer #": "100664",
+            "Customer Name": "Telemach d.o.o.\r\n\r\n(Formerly BH Cable until 2/17/2011 & Affiliate of Telemach, Sirokopasovne komunikacij.  Using the original BH Cable MPA T&C)"
+        },
+        {
+            "SAP Sold-to Customer #": "101068",
+            "Customer Name": "Anixter Corp - MGM"
+        },
+        {
+            "SAP Sold-to Customer #": "100332",
+            "Customer Name": "Xantaro Deutschland GmbH"
+        },
+        {
+            "SAP Sold-to Customer #": "101106",
+            "Customer Name": "Xantaro Deutschland GmbH"
+        },
+        {
+            "SAP Sold-to Customer #": "100630",
+            "Customer Name": "OpnetTechnologies Co., LTD"
+        },
+        {
+            "SAP Sold-to Customer #": "100361",
+            "Customer Name": "ATOS IT SOLUTIONS AND SERVICES LIMI"
+        },
+        {
+            "SAP Sold-to Customer #": "100576",
+            "Customer Name": "Fiberdata AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100720",
+            "Customer Name": "Fiberdata AB (Norrsken AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100322",
+            "Customer Name": "Cygate Måldata AB (now: Cygate AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100380",
+            "Customer Name": "Axians Infocom"
+        },
+        {
+            "SAP Sold-to Customer #": "101513",
+            "Customer Name": "Axians Networks & Solutions GmbH - De-CIX"
+        },
+        {
+            "SAP Sold-to Customer #": "101495",
+            "Customer Name": "Axians Networks & Solutions GmbH - Interact (Metro)"
+        },
+        {
+            "SAP Sold-to Customer #": "101317 (formerly 100067)",
+            "Customer Name": "Axians Networks & Solutions GmbH"
+        },
+        {
+            "SAP Sold-to Customer #": "100700",
+            "Customer Name": "Baltic IT Expert OÜ"
+        },
+        {
+            "SAP Sold-to Customer #": "100689",
+            "Customer Name": "BCC Solutions OY"
+        },
+        {
+            "SAP Sold-to Customer #": "101000",
+            "Customer Name": "BCC Solutions OY-FNE Finland Oy"
+        },
+        {
+            "SAP Sold-to Customer #": "100666",
+            "Customer Name": "DGC Access AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100617",
+            "Customer Name": "Teracom AB\r\nTeracom A/S (Organization # 25598008) shall no longer be a purchasing party under the agreement effective 11/19/2018"
+        },
+        {
+            "SAP Sold-to Customer #": "100617",
+            "Customer Name": "Teracom AB\r\nTercom A/S (Organization # 25598008) shall no longer be a purchasing party under the agreement effective 11/19/2018"
+        },
+        {
+            "SAP Sold-to Customer #": "100711",
+            "Customer Name": "Teracom Danmark A/S\r\nTeracom A/S (Organization # 25598008) shall no longer be a purchasing party under the agreement effective 11/19/2018"
+        },
+        {
+            "SAP Sold-to Customer #": "100623",
+            "Customer Name": "Telenet, N.V"
+        },
+        {
+            "SAP Sold-to Customer #": "100684",
+            "Customer Name": "Hutchison Global Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "100599",
+            "Customer Name": "Broadnet Networks AS"
+        },
+        {
+            "SAP Sold-to Customer #": "100633",
+            "Customer Name": "bwin Games AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100698",
+            "Customer Name": "Caperio AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100697",
+            "Customer Name": "Nera Telecommunications Ltd (Singapore)\r\nNera Malaysia 1361 Nera Indonesia 1358"
+        },
+        {
+            "SAP Sold-to Customer #": "100699",
+            "Customer Name": "Nera Infocom (Malaysia)"
+        },
+        {
+            "SAP Sold-to Customer #": "100376",
+            "Customer Name": "International Business Group L.L.C."
+        },
+        {
+            "SAP Sold-to Customer #": "100692",
+            "Customer Name": "ComSource s.r.o."
+        },
+        {
+            "SAP Sold-to Customer #": "100354",
+            "Customer Name": "Montabras Optics s.r.o."
+        },
+        {
+            "SAP Sold-to Customer #": "100950",
+            "Customer Name": "CONNECTICA CO., LTD"
+        },
+        {
+            "SAP Sold-to Customer #": "100465",
+            "Customer Name": "Kapsch BusinessCom GmbH\r\n(Formerly: Kapsch Carrier Solutions GmbH)"
+        },
+        {
+            "SAP Sold-to Customer #": "100600",
+            "Customer Name": "FCA Sp. Z o.o."
+        },
+        {
+            "SAP Sold-to Customer #": "100637",
+            "Customer Name": "Western Power Distribution plc (Surf Telecom)"
+        },
+        {
+            "SAP Sold-to Customer #": "100675",
+            "Customer Name": "Försvarets Materielverk (FMV)"
+        },
+        {
+            "SAP Sold-to Customer #": "100629",
+            "Customer Name": "ESB Telecoms Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100583",
+            "Customer Name": "GlobalConnect A/S"
+        },
+        {
+            "SAP Sold-to Customer #": "100442",
+            "Customer Name": "SFR Business Solutions (Previously Telindus France)"
+        },
+        {
+            "SAP Sold-to Customer #": "100457",
+            "Customer Name": "SFR Business Solutions (Previously Telindus France) -EURO DISNEY"
+        },
+        {
+            "SAP Sold-to Customer #": "101102",
+            "Customer Name": "SFR Business Solutions (Previously Telindus France) - CNES\r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "100573",
+            "Customer Name": "Tele2 Sverige AB"
+        },
+        {
+            "SAP Sold-to Customer #": "101136",
+            "Customer Name": "Tele2 Business AB\r\n(Formerly TDC Sverige AB (Operator))"
+        },
+        {
+            "SAP Sold-to Customer #": "100703",
+            "Customer Name": "Tele2 Croatia d.o.o."
+        },
+        {
+            "SAP Sold-to Customer #": "100596",
+            "Customer Name": "HI3G Access AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100597",
+            "Customer Name": "HI3G Denmark Aps"
+        },
+        {
+            "SAP Sold-to Customer #": "100655",
+            "Customer Name": "Dimension Data Germany AG & Co. KG"
+        },
+        {
+            "SAP Sold-to Customer #": "100653",
+            "Customer Name": "Netnod AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100955",
+            "Customer Name": "Empayar Kelana (M) Sdn Bhd"
+        },
+        {
+            "SAP Sold-to Customer #": "100589",
+            "Customer Name": "Foss AS"
+        },
+        {
+            "SAP Sold-to Customer #": "100654",
+            "Customer Name": "Tampnet AS"
+        },
+        {
+            "SAP Sold-to Customer #": "100667",
+            "Customer Name": "Statens Fastighetsverk"
+        },
+        {
+            "SAP Sold-to Customer #": "100676",
+            "Customer Name": "Fujitsu Sweden AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100588",
+            "Customer Name": "Hewlett-Packard Sverige AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100335",
+            "Customer Name": "Interact Systemes IDF SAS\r\n(same as Sold-to #100379 Axians France)"
+        },
+        {
+            "SAP Sold-to Customer #": "100349",
+            "Customer Name": "Telecity"
+        },
+        {
+            "SAP Sold-to Customer #": "100344",
+            "Customer Name": "BCE (Broadcasting Center Europe)"
+        },
+        {
+            "SAP Sold-to Customer #": "100348",
+            "Customer Name": "Ingenis Professional SL"
+        },
+        {
+            "SAP Sold-to Customer #": "100508",
+            "Customer Name": "Ingenis Professional SL\r\n(end user: Cabild)"
+        },
+        {
+            "SAP Sold-to Customer #": "100336",
+            "Customer Name": "C-Net Informatikai Zrt"
+        },
+        {
+            "SAP Sold-to Customer #": "100622",
+            "Customer Name": "Bahnhof AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100578",
+            "Customer Name": "Lidén Data Produkt AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100701",
+            "Customer Name": "Ricoh UK Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100366",
+            "Customer Name": "Nexicom Systems, Inc."
+        },
+        {
+            "SAP Sold-to Customer #": "100582",
+            "Customer Name": "Göteborg Energi"
+        },
+        {
+            "SAP Sold-to Customer #": "100345",
+            "Customer Name": "Adamo Telecom Iberia, S.L."
+        },
+        {
+            "SAP Sold-to Customer #": "100350",
+            "Customer Name": "Abertis Telecom (purchaser is Tradia, PO reflects Tradia)"
+        },
+        {
+            "SAP Sold-to Customer #": "100646",
+            "Customer Name": "SEB"
+        },
+        {
+            "SAP Sold-to Customer #": "100574",
+            "Customer Name": "Nilings AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100325",
+            "Customer Name": "Fibranet"
+        },
+        {
+            "SAP Sold-to Customer #": "100696",
+            "Customer Name": "SC Crescendo International SRL"
+        },
+        {
+            "SAP Sold-to Customer #": "100886",
+            "Customer Name": "Damovo Polska Sp. z o.o. - BRE Bank"
+        },
+        {
+            "SAP Sold-to Customer #": "100887",
+            "Customer Name": "Damovo Polska Sp. z o.o. - COI"
+        },
+        {
+            "SAP Sold-to Customer #": "101568",
+            "Customer Name": "Damovo Polska Sp. z o.o. - PGE Lublin"
+        },
+        {
+            "SAP Sold-to Customer #": "101569",
+            "Customer Name": "Damovo Polska Sp. z o.o. - PGE Rzeszow"
+        },
+        {
+            "SAP Sold-to Customer #": "101595",
+            "Customer Name": "Damovo Polska Sp. z o.o. - PGE - Warszawa"
+        },
+        {
+            "SAP Sold-to Customer #": "100885",
+            "Customer Name": "Damovo Polska Sp. z o.o.  -PGE Bailystok"
+        },
+        {
+            "SAP Sold-to Customer #": "101596",
+            "Customer Name": "Damovo Polska Sp. z o.o. - PGE - Zamosc"
+        },
+        {
+            "SAP Sold-to Customer #": "100607",
+            "Customer Name": "Damovo Polska Sp. z o.o."
+        },
+        {
+            "SAP Sold-to Customer #": "100369",
+            "Customer Name": "MMX Communications Services Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100372",
+            "Customer Name": "Horsebridge Networks Systems Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100327",
+            "Customer Name": "Cinodis\r\n(Formerly CB Networks)"
+        },
+        {
+            "SAP Sold-to Customer #": "100323",
+            "Customer Name": "Sistemas Avanzados de Tecnologia, S.A (SATEC)"
+        },
+        {
+            "SAP Sold-to Customer #": "100799",
+            "Customer Name": "Nordic LAN&WAN Communication OY"
+        },
+        {
+            "SAP Sold-to Customer #": "100800",
+            "Customer Name": "Nordic LAN&WAN Communication OY"
+        },
+        {
+            "SAP Sold-to Customer #": "100624",
+            "Customer Name": "Santa Monica Networks AS"
+        },
+        {
+            "SAP Sold-to Customer #": "101104",
+            "Customer Name": "Santa Monica Networks AS - Tallink"
+        },
+        {
+            "SAP Sold-to Customer #": "100642",
+            "Customer Name": "Fujitsu Telecommunications Europe Limited "
+        },
+        {
+            "SAP Sold-to Customer #": "100340",
+            "Customer Name": "b! S.p.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100647",
+            "Customer Name": "Ishavslink"
+        },
+        {
+            "SAP Sold-to Customer #": "100640",
+            "Customer Name": "Verizon Sweden AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100710",
+            "Customer Name": "Adcomtec (Pty) Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100613",
+            "Customer Name": "Broighter Networks Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100650",
+            "Customer Name": "Ålcom"
+        },
+        {
+            "SAP Sold-to Customer #": "101517",
+            "Customer Name": "JSC NEC NEVA Communications Syst. - JINR"
+        },
+        {
+            "SAP Sold-to Customer #": "101489",
+            "Customer Name": "JSC NEC NEVA-JET-JP BANK"
+        },
+        {
+            "SAP Sold-to Customer #": "100530",
+            "Customer Name": "JSC NEC NEVA Communications Systems (Formerly CJSC NEC NEVA Communications Systems)\r\nSeparate from Sold To: 100531"
+        },
+        {
+            "SAP Sold-to Customer #": "100352",
+            "Customer Name": "TELEFONICA DE ESPAÑA"
+        },
+        {
+            "SAP Sold-to Customer #": "100373",
+            "Customer Name": "Telefonica Soluciones S.A.U"
+        },
+        {
+            "SAP Sold-to Customer #": "100716",
+            "Customer Name": "Platinum Core Solutions Sdn. Bhd."
+        },
+        {
+            "SAP Sold-to Customer #": "100712",
+            "Customer Name": "Electcoms Berhad"
+        },
+        {
+            "SAP Sold-to Customer #": "100379",
+            "Customer Name": "Axians France"
+        },
+        {
+            "SAP Sold-to Customer #": "101061",
+            "Customer Name": "Fiberail Sdn Bhd"
+        },
+        {
+            "SAP Sold-to Customer #": "100635",
+            "Customer Name": "ABB AS"
+        },
+        {
+            "SAP Sold-to Customer #": "100382",
+            "Customer Name": "Inverson Technologies S.A"
+        },
+        {
+            "SAP Sold-to Customer #": "100330",
+            "Customer Name": "Neo Telecoms"
+        },
+        {
+            "SAP Sold-to Customer #": "100708",
+            "Customer Name": "Advanced  CommunicationTechnology & Solutions Corp"
+        },
+        {
+            "SAP Sold-to Customer #": "100620",
+            "Customer Name": "Kapsch BusinessKom Kft.\r\n(Kapsch CarrierCom AG)"
+        },
+        {
+            "SAP Sold-to Customer #": "100632",
+            "Customer Name": "Tejas"
+        },
+        {
+            "SAP Sold-to Customer #": "100582",
+            "Customer Name": "Gothnet "
+        },
+        {
+            "SAP Sold-to Customer #": "100334",
+            "Customer Name": "NGI S.p.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100339",
+            "Customer Name": "Tecnologia en Fibra Optica"
+        },
+        {
+            "SAP Sold-to Customer #": "100341",
+            "Customer Name": "Telecomino FZCO"
+        },
+        {
+            "SAP Sold-to Customer #": "100343",
+            "Customer Name": "CI-Net Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100346",
+            "Customer Name": "ECS International Czech Republic s."
+        },
+        {
+            "SAP Sold-to Customer #": "100347",
+            "Customer Name": "Telent Technology Services Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100351",
+            "Customer Name": "Availo Networks AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100353",
+            "Customer Name": "Teledata UK Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100355",
+            "Customer Name": "Thiemstone Investments Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100356",
+            "Customer Name": "Convex, Lda."
+        },
+        {
+            "SAP Sold-to Customer #": "100360",
+            "Customer Name": "EZAN"
+        },
+        {
+            "SAP Sold-to Customer #": "100365",
+            "Customer Name": "Integral Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100367",
+            "Customer Name": "Ontario Northland"
+        },
+        {
+            "SAP Sold-to Customer #": "100368",
+            "Customer Name": "CentriLogic Inc"
+        },
+        {
+            "SAP Sold-to Customer #": "100375",
+            "Customer Name": "Open Canarias SL"
+        },
+        {
+            "SAP Sold-to Customer #": "100385",
+            "Customer Name": "Phinix Integrate Co.Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "101127",
+            "Customer Name": "Phinix Integrate Co.Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100575",
+            "Customer Name": "Ericsson AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100577",
+            "Customer Name": "Vtesse Networks Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100579",
+            "Customer Name": "HÖGSKOLAN DALARNA"
+        },
+        {
+            "SAP Sold-to Customer #": "100580",
+            "Customer Name": "Skellefte Kraft Elnät AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100585",
+            "Customer Name": "Acreo AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100593",
+            "Customer Name": "Nordic LAN&WAN Communication OY"
+        },
+        {
+            "SAP Sold-to Customer #": "100606",
+            "Customer Name": "Siemens Business Services Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100611",
+            "Customer Name": "Net North West Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100621",
+            "Customer Name": "Norrsken AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100625",
+            "Customer Name": "Total Storage Solutions Sweden  AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100626",
+            "Customer Name": "ELTEL Network Infranet AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100615",
+            "Customer Name": "Santa Monica Networks, UAB"
+        },
+        {
+            "SAP Sold-to Customer #": "100638",
+            "Customer Name": "TVC Canada Corp."
+        },
+        {
+            "SAP Sold-to Customer #": "100639",
+            "Customer Name": "Smallworld Media"
+        },
+        {
+            "SAP Sold-to Customer #": "100643",
+            "Customer Name": "Eidsiva Bredbånd"
+        },
+        {
+            "SAP Sold-to Customer #": "100644",
+            "Customer Name": "Linx, London Internet Exchange Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100652",
+            "Customer Name": "Rolex SA"
+        },
+        {
+            "SAP Sold-to Customer #": "100702",
+            "Customer Name": "Smart Com d.o.o."
+        },
+        {
+            "SAP Sold-to Customer #": "100656",
+            "Customer Name": "Network Services Norden AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100657",
+            "Customer Name": "Global Light"
+        },
+        {
+            "SAP Sold-to Customer #": "100658",
+            "Customer Name": "Data Associates Co. Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100659",
+            "Customer Name": "British Telecommunications UK"
+        },
+        {
+            "SAP Sold-to Customer #": "100660",
+            "Customer Name": "Connectica Co. Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "100668",
+            "Customer Name": "Everything Everywhere"
+        },
+        {
+            "SAP Sold-to Customer #": "100669",
+            "Customer Name": "Jumbohan Globaltel Sdn Bhd"
+        },
+        {
+            "SAP Sold-to Customer #": "100670",
+            "Customer Name": "Griffin Information System Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100677",
+            "Customer Name": "Empayar Kelana (M) Sdn Bhd"
+        },
+        {
+            "SAP Sold-to Customer #": "100680",
+            "Customer Name": "MDNX Network Services Limited"
+        },
+        {
+            "SAP Sold-to Customer #": "100682",
+            "Customer Name": "SITECOM AS"
+        },
+        {
+            "SAP Sold-to Customer #": "100688",
+            "Customer Name": "GTT EMEA Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100691",
+            "Customer Name": "SIGtech Technologies Sdn.Bhd."
+        },
+        {
+            "SAP Sold-to Customer #": "100695",
+            "Customer Name": "Axians AB (Formerly TEC Finance Sweden AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "101506",
+            "Customer Name": "Axians AB (Formerly TEC Finance Sweden AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100705",
+            "Customer Name": "Nykredit Leasing"
+        },
+        {
+            "SAP Sold-to Customer #": "100713",
+            "Customer Name": "Com Hem AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100714",
+            "Customer Name": "Sprint S.A"
+        },
+        {
+            "SAP Sold-to Customer #": "100616",
+            "Customer Name": "Svensk IT Funktion AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100614",
+            "Customer Name": "Tele2 Business AB\r\n(Formerly TDC Sverige AB (Integration))"
+        },
+        {
+            "SAP Sold-to Customer #": "100951",
+            "Customer Name": "Teliasonera Asset Finans AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100952",
+            "Customer Name": "TeliaSonera Assset Finance"
+        },
+        {
+            "SAP Sold-to Customer #": "100342",
+            "Customer Name": "Telindus-ISIT B.V."
+        },
+        {
+            "SAP Sold-to Customer #": "100921",
+            "Customer Name": "Total Storage Solutions Sweden  AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100704",
+            "Customer Name": "Uniadex Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "101023",
+            "Customer Name": "Sprint S.A- Sprint Spolka (KPSI)"
+        },
+        {
+            "SAP Sold-to Customer #": "101066",
+            "Customer Name": "Xantaro Deutschland GmbH"
+        },
+        {
+            "SAP Sold-to Customer #": "100706",
+            "Customer Name": "XON Systems (Pty) Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100370",
+            "Customer Name": "Xantaro UK Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "101074",
+            "Customer Name": "Xantaro UK Ltd."
+        },
+        {
+            "SAP Sold-to Customer #": "101075",
+            "Customer Name": "Trigon AG - Swisslife"
+        },
+        {
+            "SAP Sold-to Customer #": "101080",
+            "Customer Name": "Foss AS -  Tele2Tal AS"
+        },
+        {
+            "SAP Sold-to Customer #": "101082",
+            "Customer Name": "CB Networks - ITER"
+        },
+        {
+            "SAP Sold-to Customer #": "101092",
+            "Customer Name": "Inverson Technologies S.A.-Uzbektel"
+        },
+        {
+            "SAP Sold-to Customer #": "101086",
+            "Customer Name": "Axians Networks & Solutions GmbH - ALPIQ"
+        },
+        {
+            "SAP Sold-to Customer #": "101083",
+            "Customer Name": "Enterprise Communications Group OOD"
+        },
+        {
+            "SAP Sold-to Customer #": "100690",
+            "Customer Name": "Atea AS\r\n(Formerly known as Atea Denmark)"
+        },
+        {
+            "SAP Sold-to Customer #": "101130",
+            "Customer Name": "Emporium Excess Aps"
+        },
+        {
+            "SAP Sold-to Customer #": "100707",
+            "Customer Name": "Focus Technology Network Sdn Bhd"
+        },
+        {
+            "SAP Sold-to Customer #": "101150",
+            "Customer Name": "GlobalConnect A/S"
+        },
+        {
+            "SAP Sold-to Customer #": "101155",
+            "Customer Name": "Adria News"
+        },
+        {
+            "SAP Sold-to Customer #": "101171",
+            "Customer Name": "UPC Telekabel Wien GmbH (Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101553",
+            "Customer Name": "T-Mobile (UPC Telekabel Wien GmbH) "
+        },
+        {
+            "SAP Sold-to Customer #": "101170",
+            "Customer Name": "UPC Schweiz GmbH \r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101169",
+            "Customer Name": "Unitymedia BW GmbH\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101168",
+            "Customer Name": "Unitymedia NRW GmbH\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "100618",
+            "Customer Name": "UPC Ceská republika, s.r.o.\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "100645",
+            "Customer Name": "UPC Austria Services GmbH\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101167",
+            "Customer Name": "Unitymedia Hessen GmbH&Co. KG \r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "100628",
+            "Customer Name": "UPC Magyarország Kft. (Hungary) \r\n(Affiliate of Liberty Global)                         "
+        },
+        {
+            "SAP Sold-to Customer #": "100924",
+            "Customer Name": "UPC Magyarország Kft. (Czech) \r\n(Affiliate of Liberty Global)                         "
+        },
+        {
+            "SAP Sold-to Customer #": "101184",
+            "Customer Name": "UPC Polska Sp. Z.o.o.\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101185",
+            "Customer Name": "Ziggo Services BV\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101203",
+            "Customer Name": "UPC Austria GmbH\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101198",
+            "Customer Name": "UPC Business Austria GmbH\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101199",
+            "Customer Name": "UPC DSL Telecom GmbH\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101200",
+            "Customer Name": "UPC BROADBAND SLOVAKIA, s.r.o.\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101212",
+            "Customer Name": "Virgin Media Ireland Limited\r\n(Affiliate of Liberty Global)"
+        },
+        {
+            "SAP Sold-to Customer #": "101246",
+            "Customer Name": "NEC Africa - Internet Technologies"
+        },
+        {
+            "SAP Sold-to Customer #": "100673",
+            "Customer Name": "Kabel Deutschland Vertrieb und Service GmbH & Co. KG  (from 2 Sept 2015: Vodafone Kabel Deutschland GmbH)"
+        },
+        {
+            "SAP Sold-to Customer #": "100709",
+            "Customer Name": "nLogic AS"
+        },
+        {
+            "SAP Sold-to Customer #": "101547",
+            "Customer Name": "Cellnex Telecom"
+        },
+        {
+            "SAP Sold-to Customer #": "101299",
+            "Customer Name": "Försvarsmakten"
+        },
+        {
+            "SAP Sold-to Customer #": "101360",
+            "Customer Name": "Cygate Måldata AB (now: Cygate AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "101386",
+            "Customer Name": "Telemach d.o.o."
+        },
+        {
+            "SAP Sold-to Customer #": "101170",
+            "Customer Name": "UPC Schweiz GmbH \r\n"
+        },
+        {
+            "SAP Sold-to Customer #": "101462",
+            "Customer Name": "Brookings Municipal Utilities, d.b.a. Swiftel Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "100462",
+            "Customer Name": "SFR Business Solutions"
+        },
+        {
+            "SAP Sold-to Customer #": "101487",
+            "Customer Name": "Grupo Pravia Mexico"
+        },
+        {
+            "SAP Sold-to Customer #": "100711",
+            "Customer Name": "Teracom A/S"
+        },
+        {
+            "SAP Sold-to Customer #": "100993",
+            "Customer Name": "Xantaro UK Ltd - MS3    "
+        },
+        {
+            "SAP Sold-to Customer #": "100994",
+            "Customer Name": "Xantaro UK Ltd - UNIVERSITY OF MANCHESTER"
+        },
+        {
+            "SAP Sold-to Customer #": "100995",
+            "Customer Name": "Xantaro UK Ltd - BOURNEMOUTH"
+        },
+        {
+            "SAP Sold-to Customer #": "100996",
+            "Customer Name": "Xantaro UK Ltd - EASYNET"
+        },
+        {
+            "SAP Sold-to Customer #": "100997",
+            "Customer Name": "Xantaro UK Ltd - PHOENIX"
+        },
+        {
+            "SAP Sold-to Customer #": "100998",
+            "Customer Name": "Xantaro UK Ltd - GAMMA"
+        },
+        {
+            "SAP Sold-to Customer #": "100999",
+            "Customer Name": "Xantaro UK Ltd - MS3    "
+        },
+        {
+            "SAP Sold-to Customer #": "100217",
+            "Customer Name": "NEC de Mexico, S.A. de C.V. - Telmex"
+        },
+        {
+            "SAP Sold-to Customer #": "100358",
+            "Customer Name": "NEC de Colombia S.A - NEC de Colombia S.A"
+        },
+        {
+            "SAP Sold-to Customer #": "100533",
+            "Customer Name": "NEC Europe Ltd.  - Embratel"
+        },
+        {
+            "SAP Sold-to Customer #": "100549",
+            "Customer Name": "NEC Europe Ltd.  - Italien Navy"
+        },
+        {
+            "SAP Sold-to Customer #": "100550",
+            "Customer Name": "NEC Europe Ltd.  - TGS"
+        },
+        {
+            "SAP Sold-to Customer #": "100551",
+            "Customer Name": "NEC Europe Ltd.  - Internexa"
+        },
+        {
+            "SAP Sold-to Customer #": "100483",
+            "Customer Name": "NEC Europe Ltd.  - Panno"
+        },
+        {
+            "SAP Sold-to Customer #": "100671",
+            "Customer Name": "NEC Europe Ltd.  - NEC China"
+        },
+        {
+            "SAP Sold-to Customer #": "100989",
+            "Customer Name": "NEC de Colombia S.A - Mediacommerce"
+        },
+        {
+            "SAP Sold-to Customer #": "100990",
+            "Customer Name": "NEC de Colombia S.A - CableColor"
+        },
+        {
+            "SAP Sold-to Customer #": "100991",
+            "Customer Name": "NEC de Colombia S.A - Cable&Wireless"
+        },
+        {
+            "SAP Sold-to Customer #": "100517",
+            "Customer Name": "NEC Europe Ltd.  - Energia Communications"
+        },
+        {
+            "SAP Sold-to Customer #": "101067",
+            "Customer Name": "NEC Europe Ltd.  - Yatanarpon"
+        },
+        {
+            "SAP Sold-to Customer #": "101077",
+            "Customer Name": "NEC Europe Ltd.  - HTNet"
+        },
+        {
+            "SAP Sold-to Customer #": "101094",
+            "Customer Name": "NEC de Colombia S.A - Claro"
+        },
+        {
+            "SAP Sold-to Customer #": "101097",
+            "Customer Name": "NEC de Colombia S.A - Redca"
+        },
+        {
+            "SAP Sold-to Customer #": "100359",
+            "Customer Name": "NEC de Mexico, S.A. de C.V. - NEC de Mexico, S.A. de C.V."
+        },
+        {
+            "SAP Sold-to Customer #": "100515",
+            "Customer Name": "NEC Europe Ltd.  - NEC Latin America S.A"
+        },
+        {
+            "SAP Sold-to Customer #": "100516",
+            "Customer Name": "NEC Europe Ltd.  - Petrobas"
+        },
+        {
+            "SAP Sold-to Customer #": "100518",
+            "Customer Name": "NEC Europe Ltd.  - Equant"
+        },
+        {
+            "SAP Sold-to Customer #": "100519",
+            "Customer Name": "NEC Europe Ltd.  - FSK"
+        },
+        {
+            "SAP Sold-to Customer #": "100521",
+            "Customer Name": "NEC Europe Ltd.  - UPT"
+        },
+        {
+            "SAP Sold-to Customer #": "100522",
+            "Customer Name": "NEC Europe Ltd.  - STN"
+        },
+        {
+            "SAP Sold-to Customer #": "100523",
+            "Customer Name": "NEC Europe Ltd.  - NEC Russia NEVA"
+        },
+        {
+            "SAP Sold-to Customer #": "100524",
+            "Customer Name": "NEC Europe Ltd.  - NEC Colombia"
+        },
+        {
+            "SAP Sold-to Customer #": "100525",
+            "Customer Name": "NEC Europe Ltd.  - LMT"
+        },
+        {
+            "SAP Sold-to Customer #": "100526",
+            "Customer Name": "NEC Europe Ltd.  - NEC Chile"
+        },
+        {
+            "SAP Sold-to Customer #": "100527",
+            "Customer Name": "NEC Europe Ltd.  - NEC Argentina S.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100528",
+            "Customer Name": "NEC Europe Ltd.  - TGS"
+        },
+        {
+            "SAP Sold-to Customer #": "100529",
+            "Customer Name": "NEC Europe Ltd.  - Internexa"
+        },
+        {
+            "SAP Sold-to Customer #": "100531",
+            "Customer Name": "CJSC NEC NEVA Communications Syst. - FSK\r\nSeparate from Sold To: 100530"
+        },
+        {
+            "SAP Sold-to Customer #": "100566",
+            "Customer Name": "NEC Corporation of America - NewWave"
+        },
+        {
+            "SAP Sold-to Customer #": "100649",
+            "Customer Name": "NEC Europe Ltd.  - NEC Eastern Europe Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100678",
+            "Customer Name": "CJSC NEC NEVA Communications Syst. - NEC NEVA"
+        },
+        {
+            "SAP Sold-to Customer #": "100717",
+            "Customer Name": "NEC Corporation of America - NEC USA"
+        },
+        {
+            "SAP Sold-to Customer #": "100956",
+            "Customer Name": "NEC Europe Ltd.  - NEC Japan"
+        },
+        {
+            "SAP Sold-to Customer #": "100957",
+            "Customer Name": "NEC Europe Ltd.  - MPT (Myanmar)"
+        },
+        {
+            "SAP Sold-to Customer #": "100958",
+            "Customer Name": "NEC Europe Ltd.  - TOKAI"
+        },
+        {
+            "SAP Sold-to Customer #": "100959",
+            "Customer Name": "NEC Europe Ltd.  - KSGM (Myanmar)"
+        },
+        {
+            "SAP Sold-to Customer #": "100960",
+            "Customer Name": "NEC Europe Ltd.  - TOHKNet"
+        },
+        {
+            "SAP Sold-to Customer #": "100961",
+            "Customer Name": "NEC Europe Ltd.  - OTNet"
+        },
+        {
+            "SAP Sold-to Customer #": "100962",
+            "Customer Name": "NEC Europe Ltd.  - QTNet"
+        },
+        {
+            "SAP Sold-to Customer #": "100963",
+            "Customer Name": "NEC Europe Ltd.  - NEC Russia"
+        },
+        {
+            "SAP Sold-to Customer #": "100964",
+            "Customer Name": "NEC Europe Ltd.  - Panama C&W"
+        },
+        {
+            "SAP Sold-to Customer #": "100965",
+            "Customer Name": "NEC Europe Ltd.  - Mediacommerce"
+        },
+        {
+            "SAP Sold-to Customer #": "100966",
+            "Customer Name": "NEC Europe Ltd.  - Internexa"
+        },
+        {
+            "SAP Sold-to Customer #": "100967",
+            "Customer Name": "NEC Europe Ltd.  - NEC Hungary"
+        },
+        {
+            "SAP Sold-to Customer #": "100968",
+            "Customer Name": "NEC Europe Ltd.  - ST Net"
+        },
+        {
+            "SAP Sold-to Customer #": "100969",
+            "Customer Name": "NEC Europe Ltd.  - Telenor"
+        },
+        {
+            "SAP Sold-to Customer #": "100970",
+            "Customer Name": "NEC Europe Ltd.  - NEC Poland"
+        },
+        {
+            "SAP Sold-to Customer #": "100971",
+            "Customer Name": "NEC Europe Ltd.  - Vectra"
+        },
+        {
+            "SAP Sold-to Customer #": "100972",
+            "Customer Name": "NEC Europe Ltd.  - HAWE"
+        },
+        {
+            "SAP Sold-to Customer #": "100973",
+            "Customer Name": "NEC Europe Ltd.  - NEC Thailand"
+        },
+        {
+            "SAP Sold-to Customer #": "100974",
+            "Customer Name": "NEC Europe Ltd.  - AIS"
+        },
+        {
+            "SAP Sold-to Customer #": "100975",
+            "Customer Name": "NEC Europe Ltd.  - TOT Interlink"
+        },
+        {
+            "SAP Sold-to Customer #": "100976",
+            "Customer Name": "NEC Europe Ltd.  - MPT (Myanmar)"
+        },
+        {
+            "SAP Sold-to Customer #": "100977",
+            "Customer Name": "NEC Europe Ltd.  - NEC Latvia"
+        },
+        {
+            "SAP Sold-to Customer #": "100978",
+            "Customer Name": "NEC Europe Ltd.  - NEC Indonesia"
+        },
+        {
+            "SAP Sold-to Customer #": "100979",
+            "Customer Name": "NEC Europe Ltd.  - ALITA"
+        },
+        {
+            "SAP Sold-to Customer #": "100980",
+            "Customer Name": "NEC Europe Ltd.  - Telkomsel"
+        },
+        {
+            "SAP Sold-to Customer #": "100981",
+            "Customer Name": "NEC Europe Ltd.  - NTT"
+        },
+        {
+            "SAP Sold-to Customer #": "100982",
+            "Customer Name": "NEC Europe Ltd.  - Mitratel"
+        },
+        {
+            "SAP Sold-to Customer #": "100983",
+            "Customer Name": "NEC Europe Ltd.  - NEC Romania"
+        },
+        {
+            "SAP Sold-to Customer #": "100984",
+            "Customer Name": "NEC Europe Ltd.  - Euroweb"
+        },
+        {
+            "SAP Sold-to Customer #": "100985",
+            "Customer Name": "NEC Europe Ltd.  - Orange Romania S.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100986",
+            "Customer Name": "NEC Europe Ltd.  - NEC South Africa"
+        },
+        {
+            "SAP Sold-to Customer #": "100987",
+            "Customer Name": "NEC Europe Ltd.  - Regro Technologies"
+        },
+        {
+            "SAP Sold-to Customer #": "100988",
+            "Customer Name": "NEC Europe Ltd.  - NEC Italy"
+        },
+        {
+            "SAP Sold-to Customer #": "101024",
+            "Customer Name": "NEC Corporation of America - AT&T"
+        },
+        {
+            "SAP Sold-to Customer #": "101052",
+            "Customer Name": "NEC Europe Ltd.  - NEC de Mexico, S.A. de C.V."
+        },
+        {
+            "SAP Sold-to Customer #": "101053",
+            "Customer Name": "NEC Europe Ltd.  - Telmex"
+        },
+        {
+            "SAP Sold-to Customer #": "101054",
+            "Customer Name": "NEC Europe Ltd.  - Maxcom"
+        },
+        {
+            "SAP Sold-to Customer #": "101124",
+            "Customer Name": "NEC Europe Ltd./NEC Colombia - REDCA"
+        },
+        {
+            "SAP Sold-to Customer #": "100891",
+            "Customer Name": "Tele2 Business AB - Telecomputing(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100901",
+            "Customer Name": "Tele2 Business AB - Nasdaq Sthlm(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100900",
+            "Customer Name": "Tele2 Business AB - Compose IT(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100899",
+            "Customer Name": "Tele2 Business AB - F R A (Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100898",
+            "Customer Name": "Tele2 Business AB - Finansinspektionen(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100897",
+            "Customer Name": "Tele2 Business AB - AC-Net(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100896",
+            "Customer Name": "Tele2 Business AB - Norrköpings kommun(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100895",
+            "Customer Name": "Tele2 Business AB - Försvaret S1(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100894",
+            "Customer Name": "Tele2 Business AB - Västtrafik(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100893",
+            "Customer Name": "Tele2 Business AB - Norrköpings tidning(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100892",
+            "Customer Name": "Tele2 Business AB - Lawson Software(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "101111",
+            "Customer Name": "Tele2 Business AB - Karlstads kommun(Formerly TDC Sverige AB)"
+        },
+        {
+            "SAP Sold-to Customer #": "100435",
+            "Customer Name": "Trigon AG - KSGR"
+        },
+        {
+            "SAP Sold-to Customer #": "100436",
+            "Customer Name": "Trigon AG - MGB"
+        },
+        {
+            "SAP Sold-to Customer #": "100782",
+            "Customer Name": "Trigon AG - Fiberstream 87 AG"
+        },
+        {
+            "SAP Sold-to Customer #": "100778",
+            "Customer Name": "Trigon AG - Charles Vögele Trading"
+        },
+        {
+            "SAP Sold-to Customer #": "100775",
+            "Customer Name": "Trigon AG - Cortex"
+        },
+        {
+            "SAP Sold-to Customer #": "100774",
+            "Customer Name": "Trigon AG - Tamedia AG"
+        },
+        {
+            "SAP Sold-to Customer #": "100773",
+            "Customer Name": "Trigon AG - SIG Backbone"
+        },
+        {
+            "SAP Sold-to Customer #": "100772",
+            "Customer Name": "Trigon AG - in4U AG"
+        },
+        {
+            "SAP Sold-to Customer #": "100771",
+            "Customer Name": "Trigon AG - UniversitätsSpital Züri"
+        },
+        {
+            "SAP Sold-to Customer #": "100769",
+            "Customer Name": "Trigon - Avaloq Evolution AG"
+        },
+        {
+            "SAP Sold-to Customer #": "100768",
+            "Customer Name": "Trigon - Elektrizitätswerk des Bezi"
+        },
+        {
+            "SAP Sold-to Customer #": "100765",
+            "Customer Name": "Trigon - Telecom Liechtenstein"
+        },
+        {
+            "SAP Sold-to Customer #": "100764",
+            "Customer Name": "Trigon - BLS"
+        },
+        {
+            "SAP Sold-to Customer #": "100763",
+            "Customer Name": "Trigon AG - DSI"
+        },
+        {
+            "SAP Sold-to Customer #": "100584",
+            "Customer Name": "Trigon AG"
+        },
+        {
+            "SAP Sold-to Customer #": "101032",
+            "Customer Name": "Trigon - OIZ"
+        },
+        {
+            "SAP Sold-to Customer #": "101025",
+            "Customer Name": "Trigon AG - Glencore"
+        },
+        {
+            "SAP Sold-to Customer #": "101029",
+            "Customer Name": "Trigon - Axpo AG"
+        },
+        {
+            "SAP Sold-to Customer #": "101028",
+            "Customer Name": "Trigon - HG Commerciale"
+        },
+        {
+            "SAP Sold-to Customer #": "100888",
+            "Customer Name": "Damovo Polska - mBank S.A."
+        },
+        {
+            "SAP Sold-to Customer #": "100887",
+            "Customer Name": "Damovo Polska - COI"
+        },
+        {
+            "SAP Sold-to Customer #": "100886",
+            "Customer Name": "Damovo Polska - BRE Bank"
+        },
+        {
+            "SAP Sold-to Customer #": "100885",
+            "Customer Name": "Damovo Polska - PGE Bialystok"
+        },
+        {
+            "SAP Sold-to Customer #": "100873",
+            "Customer Name": "FCA - PGE Rzeszów"
+        },
+        {
+            "SAP Sold-to Customer #": "100872",
+            "Customer Name": "FCA - Fonbud"
+        },
+        {
+            "SAP Sold-to Customer #": "100871",
+            "Customer Name": "FCA - PGE Lodz"
+        },
+        {
+            "SAP Sold-to Customer #": "100870",
+            "Customer Name": "FCA - Politechnika Cz?stochowska"
+        },
+        {
+            "SAP Sold-to Customer #": "100869",
+            "Customer Name": "FCA - INEA"
+        },
+        {
+            "SAP Sold-to Customer #": "100868",
+            "Customer Name": "FCA - Pern"
+        },
+        {
+            "SAP Sold-to Customer #": "100867",
+            "Customer Name": "FCA - PSE"
+        },
+        {
+            "SAP Sold-to Customer #": "100866",
+            "Customer Name": "FCA - Energa"
+        },
+        {
+            "SAP Sold-to Customer #": "100865",
+            "Customer Name": "FCA - PGE Skarzysko (ZEORK)"
+        },
+        {
+            "SAP Sold-to Customer #": "100864",
+            "Customer Name": "FCA - TKP"
+        },
+        {
+            "SAP Sold-to Customer #": "100860",
+            "Customer Name": "FCA - ATM"
+        },
+        {
+            "SAP Sold-to Customer #": "100861",
+            "Customer Name": "FCA - Espol"
+        },
+        {
+            "SAP Sold-to Customer #": "100859",
+            "Customer Name": "FCA - Aster"
+        },
+        {
+            "SAP Sold-to Customer #": "100862",
+            "Customer Name": "FCA - Exatel"
+        },
+        {
+            "SAP Sold-to Customer #": "100863",
+            "Customer Name": "FCA - NASK"
+        },
+        {
+            "SAP Sold-to Customer #": "100858",
+            "Customer Name": "FCA - AGH"
+        },
+        {
+            "SAP Sold-to Customer #": "100595",
+            "Customer Name": "KAPSCH"
+        },
+        {
+            "SAP Sold-to Customer #": "100801",
+            "Customer Name": "KAPSCH - CURRENTA"
+        },
+        {
+            "SAP Sold-to Customer #": "100802",
+            "Customer Name": "KAPSCH - DOKOM"
+        },
+        {
+            "SAP Sold-to Customer #": "100803",
+            "Customer Name": "KAPSCH - PFALZKOM"
+        },
+        {
+            "SAP Sold-to Customer #": "100804",
+            "Customer Name": "KAPSCH - TMR"
+        },
+        {
+            "SAP Sold-to Customer #": "100805",
+            "Customer Name": "KAPSCH - ENTEGA(HSE)"
+        },
+        {
+            "SAP Sold-to Customer #": "100806",
+            "Customer Name": "KAPSCH - ONTRAS"
+        },
+        {
+            "SAP Sold-to Customer #": "100807",
+            "Customer Name": "KAPSCH - CBC"
+        },
+        {
+            "SAP Sold-to Customer #": "100808",
+            "Customer Name": "KAPSCH - WITCOM"
+        },
+        {
+            "SAP Sold-to Customer #": "100809",
+            "Customer Name": "KAPSCH - KEVAG"
+        },
+        {
+            "SAP Sold-to Customer #": "100810",
+            "Customer Name": "KAPSCH - WEMACOM"
+        },
+        {
+            "SAP Sold-to Customer #": "100811",
+            "Customer Name": "KAPSCH - PLUSNET"
+        },
+        {
+            "SAP Sold-to Customer #": "100812",
+            "Customer Name": "KAPSCH - HTP"
+        },
+        {
+            "SAP Sold-to Customer #": "100813",
+            "Customer Name": "KAPSCH - PROJECT PLU"
+        },
+        {
+            "SAP Sold-to Customer #": "100814",
+            "Customer Name": "KAPSCH - PREGO"
+        },
+        {
+            "SAP Sold-to Customer #": "100815",
+            "Customer Name": "KAPSCH - K-NET"
+        },
+        {
+            "SAP Sold-to Customer #": "100816",
+            "Customer Name": "KAPSCH - HZB"
+        },
+        {
+            "SAP Sold-to Customer #": "100817",
+            "Customer Name": "KAPSCH - KONRAD ZUSE"
+        },
+        {
+            "SAP Sold-to Customer #": "100818",
+            "Customer Name": "KAPSCH - SCHLUCHSEEW"
+        },
+        {
+            "SAP Sold-to Customer #": "100819",
+            "Customer Name": "KAPSCH - GELSEN-NET"
+        },
+        {
+            "SAP Sold-to Customer #": "100820",
+            "Customer Name": "KAPSCH - CREDIT SUIS"
+        },
+        {
+            "SAP Sold-to Customer #": "100821",
+            "Customer Name": "KAPSCH - LANFER SYST"
+        },
+        {
+            "SAP Sold-to Customer #": "100822",
+            "Customer Name": "KAPSCH - ENBW"
+        },
+        {
+            "SAP Sold-to Customer #": "100823",
+            "Customer Name": "KAPSCH - CONTROLWARE"
+        },
+        {
+            "SAP Sold-to Customer #": "100824",
+            "Customer Name": "KAPSCH - CYBERWAYS"
+        },
+        {
+            "SAP Sold-to Customer #": "100825",
+            "Customer Name": "KAPSCH - ENERGIE AG"
+        },
+        {
+            "SAP Sold-to Customer #": "100826",
+            "Customer Name": "KAPSCH - VIENNA"
+        },
+        {
+            "SAP Sold-to Customer #": "100827",
+            "Customer Name": "KAPSCH - GAMBRO"
+        },
+        {
+            "SAP Sold-to Customer #": "100828",
+            "Customer Name": "KAPSCH - BREMENBRITE"
+        },
+        {
+            "SAP Sold-to Customer #": "100829",
+            "Customer Name": "KAPSCH - FREUDENBERG"
+        },
+        {
+            "SAP Sold-to Customer #": "100874",
+            "Customer Name": "Axians Networks - NetCologne"
+        },
+        {
+            "SAP Sold-to Customer #": "100875",
+            "Customer Name": "Axians Networks - Noris Networks"
+        },
+        {
+            "SAP Sold-to Customer #": "100876",
+            "Customer Name": "Axians Networks - NetAachen"
+        },
+        {
+            "SAP Sold-to Customer #": "100877",
+            "Customer Name": "Axians Networks - CGI"
+        },
+        {
+            "SAP Sold-to Customer #": "100878",
+            "Customer Name": "Axians Networks -Johann-Wolfgang-Go"
+        },
+        {
+            "SAP Sold-to Customer #": "100879",
+            "Customer Name": "Axians Networks - Koch, Neff & Volc"
+        },
+        {
+            "SAP Sold-to Customer #": "100880",
+            "Customer Name": "Axians Networks - HeliNet"
+        },
+        {
+            "SAP Sold-to Customer #": "100881",
+            "Customer Name": "Axians Networks - Witte-Velbert"
+        },
+        {
+            "SAP Sold-to Customer #": "100882",
+            "Customer Name": "Axians Networks - Mega"
+        },
+        {
+            "SAP Sold-to Customer #": "100883",
+            "Customer Name": "Axians Networks - KomMITT"
+        },
+        {
+            "SAP Sold-to Customer #": "101050",
+            "Customer Name": "AXIANS NETWORKS"
+        },
+        {
+            "SAP Sold-to Customer #": "100916",
+            "Customer Name": "Santa Monica Estonia - SEB"
+        },
+        {
+            "SAP Sold-to Customer #": "100917",
+            "Customer Name": "Santa Monica Estonia - EEnet"
+        },
+        {
+            "SAP Sold-to Customer #": "100918",
+            "Customer Name": "Santa Monica Estonia - Sertifitseer"
+        },
+        {
+            "SAP Sold-to Customer #": "100919",
+            "Customer Name": "Santa Monica Estonia - Elion"
+        },
+        {
+            "SAP Sold-to Customer #": "100920",
+            "Customer Name": "Santa Monica Estonia - Eesti Teleko"
+        },
+        {
+            "SAP Sold-to Customer #": "100721",
+            "Customer Name": "Fiberdata - Östhammars Kommun"
+        },
+        {
+            "SAP Sold-to Customer #": "100722",
+            "Customer Name": "Fiberdata - Härjeåns Nät AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100723",
+            "Customer Name": "Fiberdata - Österåkers Kommun"
+        },
+        {
+            "SAP Sold-to Customer #": "100725",
+            "Customer Name": "Fiberdata - Karlstads Elnät"
+        },
+        {
+            "SAP Sold-to Customer #": "100726",
+            "Customer Name": "Fiberdata - Teknikbyrån Åkersberga"
+        },
+        {
+            "SAP Sold-to Customer #": "100481",
+            "Customer Name": "Xantaro - euNetworks"
+        },
+        {
+            "SAP Sold-to Customer #": "100482",
+            "Customer Name": "Xantaro - 123Reg"
+        },
+        {
+            "SAP Sold-to Customer #": "100925",
+            "Customer Name": "Xantaro - KielNet"
+        },
+        {
+            "SAP Sold-to Customer #": "100926",
+            "Customer Name": "Xantaro - LEWTelNet"
+        },
+        {
+            "SAP Sold-to Customer #": "100927",
+            "Customer Name": "Xantaro - TU Darmstadt"
+        },
+        {
+            "SAP Sold-to Customer #": "100928",
+            "Customer Name": "Xantaro - Teliko"
+        },
+        {
+            "SAP Sold-to Customer #": "100929",
+            "Customer Name": "Xantaro - WINGAS"
+        },
+        {
+            "SAP Sold-to Customer #": "100930",
+            "Customer Name": "Xantaro - Host Europe"
+        },
+        {
+            "SAP Sold-to Customer #": "100931",
+            "Customer Name": "Xantaro - Pironet"
+        },
+        {
+            "SAP Sold-to Customer #": "100932",
+            "Customer Name": "Xantaro - Hofmeir"
+        },
+        {
+            "SAP Sold-to Customer #": "100933",
+            "Customer Name": "Xantaro - New Telcc"
+        },
+        {
+            "SAP Sold-to Customer #": "100934",
+            "Customer Name": "Xantaro - UMKBW"
+        },
+        {
+            "SAP Sold-to Customer #": "100591",
+            "Customer Name": "SFR Business Solutions"
+        },
+        {
+            "SAP Sold-to Customer #": "100443",
+            "Customer Name": "SFR Business Solutions - GIP Pacrre"
+        },
+        {
+            "SAP Sold-to Customer #": "100444",
+            "Customer Name": "SFR Business Solutions - Hachette"
+        },
+        {
+            "SAP Sold-to Customer #": "100448",
+            "Customer Name": "SFR Business Solutions - Natixis"
+        },
+        {
+            "SAP Sold-to Customer #": "100449",
+            "Customer Name": "SFR Business Solutions - ODDO"
+        },
+        {
+            "SAP Sold-to Customer #": "100451",
+            "Customer Name": "SFR Business Solutions - AGRICA"
+        },
+        {
+            "SAP Sold-to Customer #": "100454",
+            "Customer Name": "SFR Business Solutions - Girc Agirc"
+        },
+        {
+            "SAP Sold-to Customer #": "100455",
+            "Customer Name": "SFR Business Solutions - CCIP"
+        },
+        {
+            "SAP Sold-to Customer #": "100456",
+            "Customer Name": "SFR Business Solutions - Région Lor"
+        },
+        {
+            "SAP Sold-to Customer #": "100457",
+            "Customer Name": "SFR Business Solutions - EURO DISNE"
+        },
+        {
+            "SAP Sold-to Customer #": "100458",
+            "Customer Name": "SFR Business Solutions - Nestlé"
+        },
+        {
+            "SAP Sold-to Customer #": "100459",
+            "Customer Name": "SFR Business Solutions - CG67"
+        },
+        {
+            "SAP Sold-to Customer #": "100460",
+            "Customer Name": "SFR Business Solutions - CHRU Montp"
+        },
+        {
+            "SAP Sold-to Customer #": "100461",
+            "Customer Name": "SFR Business Solutions - UP Paris S"
+        },
+        {
+            "SAP Sold-to Customer #": "100462",
+            "Customer Name": "SFR Business Solutions - HEC"
+        },
+        {
+            "SAP Sold-to Customer #": "100463",
+            "Customer Name": "SFR Business Solutions - Veolia"
+        },
+        {
+            "SAP Sold-to Customer #": "100464",
+            "Customer Name": "SFR Business Solutions - Altavia"
+        },
+        {
+            "SAP Sold-to Customer #": "100719",
+            "Customer Name": "Anixter Corp"
+        },
+        {
+            "SAP Sold-to Customer #": "100552",
+            "Customer Name": "Axians IPSICOM CHU Amiens"
+        },
+        {
+            "SAP Sold-to Customer #": "101001",
+            "Customer Name": "BCC Solutions Oy - KYMP"
+        },
+        {
+            "SAP Sold-to Customer #": "101002",
+            "Customer Name": "BCC Solutions Oy - ARCADA"
+        },
+        {
+            "SAP Sold-to Customer #": "101003",
+            "Customer Name": "BCC Solutions Oy - Metropolia"
+        },
+        {
+            "SAP Sold-to Customer #": "101004",
+            "Customer Name": "BCC Solutions Oy - Ainacom"
+        },
+        {
+            "SAP Sold-to Customer #": "101005",
+            "Customer Name": "BCC Solutions Oy - YLE"
+        },
+        {
+            "SAP Sold-to Customer #": "101010",
+            "Customer Name": "Caperio AB - SKANDIA"
+        },
+        {
+            "SAP Sold-to Customer #": "100477",
+            "Customer Name": "CB Networks -La Française"
+        },
+        {
+            "SAP Sold-to Customer #": "100478",
+            "Customer Name": "CB Networks - L´Oreal"
+        },
+        {
+            "SAP Sold-to Customer #": "101006",
+            "Customer Name": "ComSource s.r.o.- Seznam"
+        },
+        {
+            "SAP Sold-to Customer #": "101007",
+            "Customer Name": "ComSource s.r.o. - Turk Tele"
+        },
+        {
+            "SAP Sold-to Customer #": "101022",
+            "Customer Name": "Electcoms Berhad - Fiberail"
+        },
+        {
+            "SAP Sold-to Customer #": "100787",
+            "Customer Name": "Foss AS - LOS"
+        },
+        {
+            "SAP Sold-to Customer #": "100788",
+            "Customer Name": "Foss AS - Pronea"
+        },
+        {
+            "SAP Sold-to Customer #": "100789",
+            "Customer Name": "Foss AS - Signal Bredband"
+        },
+        {
+            "SAP Sold-to Customer #": "100790",
+            "Customer Name": "Foss AS - Netcom"
+        },
+        {
+            "SAP Sold-to Customer #": "100791",
+            "Customer Name": "Foss AS - Eidsiva"
+        },
+        {
+            "SAP Sold-to Customer #": "100792",
+            "Customer Name": "Foss AS - NAV"
+        },
+        {
+            "SAP Sold-to Customer #": "100793",
+            "Customer Name": "Foss AS -  ElTele"
+        },
+        {
+            "SAP Sold-to Customer #": "100794",
+            "Customer Name": "Foss AS - Sira"
+        },
+        {
+            "SAP Sold-to Customer #": "100795",
+            "Customer Name": "Foss AS - ABB"
+        },
+        {
+            "SAP Sold-to Customer #": "100796",
+            "Customer Name": "Foss AS - Expert"
+        },
+        {
+            "SAP Sold-to Customer #": "100797",
+            "Customer Name": "Foss AS - Westnet"
+        },
+        {
+            "SAP Sold-to Customer #": "100798",
+            "Customer Name": "Foss AS - Nordix Data"
+        },
+        {
+            "SAP Sold-to Customer #": "100783",
+            "Customer Name": "Hewlett Packard - Telecity"
+        },
+        {
+            "SAP Sold-to Customer #": "100784",
+            "Customer Name": "Hewlett Packard - OKQ8"
+        },
+        {
+            "SAP Sold-to Customer #": "100785",
+            "Customer Name": "Hewlett Packard - PostNord"
+        },
+        {
+            "SAP Sold-to Customer #": "100786",
+            "Customer Name": "Hewlett Packard - Länsförsäkringar"
+        },
+        {
+            "SAP Sold-to Customer #": "100545",
+            "Customer Name": "HORSEBRIDGE - Galway Oil & Gas"
+        },
+        {
+            "SAP Sold-to Customer #": "100923",
+            "Customer Name": "Indra S.A. - Metro de Madrid"
+        },
+        {
+            "SAP Sold-to Customer #": "100505",
+            "Customer Name": "ingenis professional, s.l. - i2CAT"
+        },
+        {
+            "SAP Sold-to Customer #": "100506",
+            "Customer Name": "ingenis professional, s.l. - GITPA"
+        },
+        {
+            "SAP Sold-to Customer #": "100507",
+            "Customer Name": "ingenis professional, s.l. - Claran"
+        },
+        {
+            "SAP Sold-to Customer #": "100510",
+            "Customer Name": "ingenis professional, s.l. - CMC"
+        },
+        {
+            "SAP Sold-to Customer #": "100511",
+            "Customer Name": "ingenis professional, s.l. - ADAMO"
+        },
+        {
+            "SAP Sold-to Customer #": "100945",
+            "Customer Name": "Interact Systemes IDF SAS - BNP Par"
+        },
+        {
+            "SAP Sold-to Customer #": "100548",
+            "Customer Name": "IBG - Jet Info System"
+        },
+        {
+            "SAP Sold-to Customer #": "100554",
+            "Customer Name": "Inverson Technologies S.A.- KazTran"
+        },
+        {
+            "SAP Sold-to Customer #": "101014",
+            "Customer Name": "ITOCHU (CTC) - Yahoo"
+        },
+        {
+            "SAP Sold-to Customer #": "100512",
+            "Customer Name": "Montabras Optics s.r.o. - Turk Tele"
+        },
+        {
+            "SAP Sold-to Customer #": "100513",
+            "Customer Name": "Montabras Optics s.r.o. - itself s."
+        },
+        {
+            "SAP Sold-to Customer #": "100534",
+            "Customer Name": "Nexicom - Trent"
+        },
+        {
+            "SAP Sold-to Customer #": "100535",
+            "Customer Name": "Nexicom - Trio"
+        },
+        {
+            "SAP Sold-to Customer #": "100536",
+            "Customer Name": "Nexicom - North Renfro"
+        },
+        {
+            "SAP Sold-to Customer #": "100537",
+            "Customer Name": "Nexicom - WTC"
+        },
+        {
+            "SAP Sold-to Customer #": "100935",
+            "Customer Name": "Opnet - TWM"
+        },
+        {
+            "SAP Sold-to Customer #": "100936",
+            "Customer Name": "Opnet - APTG"
+        },
+        {
+            "SAP Sold-to Customer #": "100937",
+            "Customer Name": "Opnet - CNS"
+        },
+        {
+            "SAP Sold-to Customer #": "100437",
+            "Customer Name": "Satec S.A. - Cixtec"
+        },
+        {
+            "SAP Sold-to Customer #": "100439",
+            "Customer Name": "Satec S.A. - Cabildo de Tenerife"
+        },
+        {
+            "SAP Sold-to Customer #": "100440",
+            "Customer Name": "Satec S.A. - BCBL"
+        },
+        {
+            "SAP Sold-to Customer #": "100441",
+            "Customer Name": "Satec S.A. - Andorra Telecom"
+        },
+        {
+            "SAP Sold-to Customer #": "101016",
+            "Customer Name": "Smart Com d.o.o. - AMIS Slovenia"
+        },
+        {
+            "SAP Sold-to Customer #": "100902",
+            "Customer Name": "Svensk IT Funktion AB - FONUS"
+        },
+        {
+            "SAP Sold-to Customer #": "100903",
+            "Customer Name": "Svensk IT Funktion - Finansinspekti"
+        },
+        {
+            "SAP Sold-to Customer #": "100938",
+            "Customer Name": "Tejas Networks  - India Railtel"
+        },
+        {
+            "SAP Sold-to Customer #": "100939",
+            "Customer Name": "Tejas Networks - Somalia"
+        },
+        {
+            "SAP Sold-to Customer #": "100940",
+            "Customer Name": "Tejas Networks - Sierra Leone"
+        },
+        {
+            "SAP Sold-to Customer #": "100943",
+            "Customer Name": "Tejas Networks - Myanmar PT"
+        },
+        {
+            "SAP Sold-to Customer #": "100944",
+            "Customer Name": "Tejas Networks - Zonta Techn."
+        },
+        {
+            "SAP Sold-to Customer #": "100486",
+            "Customer Name": "Telindus B.V. - Eurofiber"
+        },
+        {
+            "SAP Sold-to Customer #": "100487",
+            "Customer Name": "Telindus B.V. - Fortis Bank NL"
+        },
+        {
+            "SAP Sold-to Customer #": "100488",
+            "Customer Name": "Telindus B.V. - Brabant Water"
+        },
+        {
+            "SAP Sold-to Customer #": "100489",
+            "Customer Name": "Telindus B.V. - Gemeente Weert"
+        },
+        {
+            "SAP Sold-to Customer #": "100490",
+            "Customer Name": "Telindus B.V. - Cable Concepts Cent"
+        },
+        {
+            "SAP Sold-to Customer #": "100491",
+            "Customer Name": "Telindus B.V. - Helicon"
+        },
+        {
+            "SAP Sold-to Customer #": "100492",
+            "Customer Name": "Telindus B.V. - SBM Schiedam BV"
+        },
+        {
+            "SAP Sold-to Customer #": "100493",
+            "Customer Name": "Telindus B.V. - AVNET"
+        },
+        {
+            "SAP Sold-to Customer #": "100494",
+            "Customer Name": "Telindus B.V. - IBM"
+        },
+        {
+            "SAP Sold-to Customer #": "100495",
+            "Customer Name": "Telindus B.V. - Comtek Communicatio"
+        },
+        {
+            "SAP Sold-to Customer #": "100496",
+            "Customer Name": "Telindus B.V. - Noorderboog"
+        },
+        {
+            "SAP Sold-to Customer #": "100497",
+            "Customer Name": "Telindus B.V. - Tele2"
+        },
+        {
+            "SAP Sold-to Customer #": "100498",
+            "Customer Name": "Telindus B.V. - Euronet"
+        },
+        {
+            "SAP Sold-to Customer #": "100499",
+            "Customer Name": "Telindus B.V. - VRU Veiligheids Reg"
+        },
+        {
+            "SAP Sold-to Customer #": "100500",
+            "Customer Name": "Telindus B.V. - Gusto MSC"
+        },
+        {
+            "SAP Sold-to Customer #": "100501",
+            "Customer Name": "Telindus B.V. - Waterschap Rivieren"
+        },
+        {
+            "SAP Sold-to Customer #": "100502",
+            "Customer Name": "Telindus B.V. - De Brauw Advocaten"
+        },
+        {
+            "SAP Sold-to Customer #": "100503",
+            "Customer Name": "Telindus B.V. - RET"
+        },
+        {
+            "SAP Sold-to Customer #": "100889",
+            "Customer Name": "Santa Monica Latvia"
+        },
+        {
+            "SAP Sold-to Customer #": "101135",
+            "Customer Name": "Kapsch Carrier Solutions GmbH - Inexio"
+        },
+        {
+            "SAP Sold-to Customer #": "101063",
+            "Customer Name": "Kapsch Carrier Solutions Gmbh - Humboldt"
+        },
+        {
+            "SAP Sold-to Customer #": "101011",
+            "Customer Name": "NERA Infocom - PCS"
+        },
+        {
+            "SAP Sold-to Customer #": "101013",
+            "Customer Name": "NERA Infocom - Fiberail"
+        },
+        {
+            "SAP Sold-to Customer #": "101012",
+            "Customer Name": "NERA Infocom - TdC"
+        },
+        {
+            "SAP Sold-to Customer #": "100779",
+            "Customer Name": "Trigon AG – ISATEL"
+        },
+        {
+            "SAP Sold-to Customer #": "100504",
+            "Customer Name": "Broadcasting Center Europe SA"
+        },
+        {
+            "SAP Sold-to Customer #": "100681",
+            "Customer Name": "CYGATE OY FINLAND"
+        },
+        {
+            "SAP Sold-to Customer #": "101091",
+            "Customer Name": "CYGATE - LIDÉN DATA"
+        },
+        {
+            "SAP Sold-to Customer #": "100432",
+            "Customer Name": "Cygate AB - Apoteket AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100727",
+            "Customer Name": "Cygate AB - LST Västmanland"
+        },
+        {
+            "SAP Sold-to Customer #": "100728",
+            "Customer Name": "Cygate AB - SLL Stockholms landstin"
+        },
+        {
+            "SAP Sold-to Customer #": "100729",
+            "Customer Name": "Cygate AB - Tullverket"
+        },
+        {
+            "SAP Sold-to Customer #": "100730",
+            "Customer Name": "Cygate AB - SEB"
+        },
+        {
+            "SAP Sold-to Customer #": "100731",
+            "Customer Name": "Cygate AB - Ekonomistyrningsverket"
+        },
+        {
+            "SAP Sold-to Customer #": "100732",
+            "Customer Name": "Cygate AB - Landstinget Östergötlan"
+        },
+        {
+            "SAP Sold-to Customer #": "100733",
+            "Customer Name": "Cygate AB - EDB Card Services"
+        },
+        {
+            "SAP Sold-to Customer #": "100734",
+            "Customer Name": "Cygate AB - Thomas Cook"
+        },
+        {
+            "SAP Sold-to Customer #": "100735",
+            "Customer Name": "Cygate AB - TV 4 AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100736",
+            "Customer Name": "Cygate AB - Enjoy IT"
+        },
+        {
+            "SAP Sold-to Customer #": "100739",
+            "Customer Name": "Cygate AB - Svensk Exportkredit"
+        },
+        {
+            "SAP Sold-to Customer #": "100740",
+            "Customer Name": "Cygate AB - Nynäs Petroleum"
+        },
+        {
+            "SAP Sold-to Customer #": "100741",
+            "Customer Name": "Cygate AB - Svenska Kraftnät"
+        },
+        {
+            "SAP Sold-to Customer #": "100742",
+            "Customer Name": "Cygate AB - Linköpings universitet"
+        },
+        {
+            "SAP Sold-to Customer #": "100743",
+            "Customer Name": "Cygate AB - Riksgälden"
+        },
+        {
+            "SAP Sold-to Customer #": "100744",
+            "Customer Name": "Cygate AB - Landstinget Jönköping"
+        },
+        {
+            "SAP Sold-to Customer #": "100745",
+            "Customer Name": "Cygate AB - Skandia American Corp"
+        },
+        {
+            "SAP Sold-to Customer #": "100746",
+            "Customer Name": "Cygate AB - Sollefteå Stadsnät"
+        },
+        {
+            "SAP Sold-to Customer #": "100747",
+            "Customer Name": "Cygate AB - SL Stockholms Lokaltraf"
+        },
+        {
+            "SAP Sold-to Customer #": "100748",
+            "Customer Name": "Cygate AB - RG 19 i Norden AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100749",
+            "Customer Name": "Cygate AB - SEB Norway"
+        },
+        {
+            "SAP Sold-to Customer #": "100750",
+            "Customer Name": "Cygate AB - STOKAB AB"
+        },
+        {
+            "SAP Sold-to Customer #": "100751",
+            "Customer Name": "Cygate AB - Stenungsunds kommun"
+        },
+        {
+            "SAP Sold-to Customer #": "100752",
+            "Customer Name": "Cygate AB - Kungälvs kommun"
+        },
+        {
+            "SAP Sold-to Customer #": "100755",
+            "Customer Name": "Cygate AB - Ericsson"
+        },
+        {
+            "SAP Sold-to Customer #": "100756",
+            "Customer Name": "Cygate AB -Jönköpings kommun"
+        },
+        {
+            "SAP Sold-to Customer #": "100757",
+            "Customer Name": "Cygate AB - Marks Kraft & värme"
+        },
+        {
+            "SAP Sold-to Customer #": "100758",
+            "Customer Name": "Cygate AB - FONUS"
+        },
+        {
+            "SAP Sold-to Customer #": "100760",
+            "Customer Name": "Cygate AB - Internt TM DC"
+        },
+        {
+            "SAP Sold-to Customer #": "100761",
+            "Customer Name": "Cygate AB - Soltak"
+        },
+        {
+            "SAP Sold-to Customer #": "100922",
+            "Customer Name": "Indra S.A. - Vodafone"
+        },
+        {
+            "SAP Sold-to Customer #": "100484",
+            "Customer Name": "b! S.p.A. - Università di Padova"
+        },
+        {
+            "SAP Sold-to Customer #": "100485",
+            "Customer Name": "b! S.p.A. - Essequattro"
+        },
+        {
+            "SAP Sold-to Customer #": "100890",
+            "Customer Name": "Santa Monica Latvia"
+        },
+        {
+            "SAP Sold-to Customer #": "101018",
+            "Customer Name": "XON Systems (Pty) Ltd"
+        },
+        {
+            "SAP Sold-to Customer #": "100737",
+            "Customer Name": "Cygate AB - Köpings Kabel-TV"
+        },
+        {
+            "SAP Sold-to Customer #": "100738",
+            "Customer Name": "Cygate AB - Region Skåne"
+        },
+        {
+            "SAP Sold-to Customer #": "100753",
+            "Customer Name": "Cygate AB - Swedbank"
+        },
+        {
+            "SAP Sold-to Customer #": "100992",
+            "Customer Name": "Cygate oy - Yle-Tampere"
+        },
+        {
+            "SAP Sold-to Customer #": "100388",
+            "Customer Name": "Tele2 Lithuania UAB"
+        },
+        {
+            "SAP Sold-to Customer #": "101021",
+            "Customer Name": "Adcomtec (Pty) Ltd - Paratus"
+        },
+        {
+            "SAP Sold-to Customer #": "100383",
+            "Customer Name": "Axians Networks France"
+        },
+        {
+            "SAP Sold-to Customer #": "100915",
+            "Customer Name": "Kapsch Kft. Hungary - Magyar T."
+        },
+        {
+            "SAP Sold-to Customer #": "100941",
+            "Customer Name": "Tejas Networks - Citycomm"
+        },
+        {
+            "SAP Sold-to Customer #": "100942",
+            "Customer Name": "Tejas Networks- TdC (Nissen)"
+        },
+        {
+            "SAP Sold-to Customer #": "100538",
+            "Customer Name": "MMX Communications - Smallworld"
+        },
+        {
+            "SAP Sold-to Customer #": "100539",
+            "Customer Name": "MMX - Hughes Electronics"
+        },
+        {
+            "SAP Sold-to Customer #": "100540",
+            "Customer Name": "MMX - Telecity"
+        },
+        {
+            "SAP Sold-to Customer #": "100541",
+            "Customer Name": "MMX - ITPS"
+        },
+        {
+            "SAP Sold-to Customer #": "100542",
+            "Customer Name": "MMX - ATOS"
+        },
+        {
+            "SAP Sold-to Customer #": "100543",
+            "Customer Name": "MMX - Easynet"
+        },
+        {
+            "SAP Sold-to Customer #": "100544",
+            "Customer Name": "MMX - Northan Power Grid"
+        },
+        {
+            "SAP Sold-to Customer #": "100724",
+            "Customer Name": "Fiberdata - Exalt Network AB"
+        },
+        {
+            "SAP Sold-to Customer #": "101144",
+            "Customer Name": "NEC Corporation of America - GCI"
+        },
+        {
+            "SAP Sold-to Customer #": "101145",
+            "Customer Name": "Xantaro Deutschland GmbH - Nethinks"
+        },
+        {
+            "SAP Sold-to Customer #": "101146",
+            "Customer Name": "IBG - VTB Bank"
+        },
+        {
+            "SAP Sold-to Customer #": "101147",
+            "Customer Name": "Trigon AG - Oettinger Davidoff"
+        },
+        {
+            "SAP Sold-to Customer #": "101151",
+            "Customer Name": "CB Networks - Neo Services"
+        },
+        {
+            "SAP Sold-to Customer #": "101176",
+            "Customer Name": "Xantaro Deutschland GmbH - Hochschulrechenzentr um der J.W. Goethe-Universität"
+        },
+        {
+            "SAP Sold-to Customer #": "101186",
+            "Customer Name": "CB Networks - TXO Systems"
+        },
+        {
+            "SAP Sold-to Customer #": "101183",
+            "Customer Name": "Xantaro UK Ltd - Commsworld Fluency"
+        },
+        {
+            "SAP Sold-to Customer #": "101217",
+            "Customer Name": "Cygate AB - Karolinska Institutet"
+        },
+        {
+            "SAP Sold-to Customer #": "101234",
+            "Customer Name": "CJSC NEC NEVA Communications Syst. - STN"
+        },
+        {
+            "SAP Sold-to Customer #": "101245",
+            "Customer Name": "BCC Solutions Oy - JNT"
+        },
+        {
+            "SAP Sold-to Customer #": "101235",
+            "Customer Name": "Xantaro Deutschland GmbH - ZF"
+        },
+        {
+            "SAP Sold-to Customer #": "101254",
+            "Customer Name": "MMX Communications - BBC Wood Norton"
+        },
+        {
+            "SAP Sold-to Customer #": "101250",
+            "Customer Name": "NEC Europe Ltd.  - Indosat"
+        },
+        {
+            "SAP Sold-to Customer #": "100553",
+            "Customer Name": "nLogic AS - Nornett"
+        },
+        {
+            "SAP Sold-to Customer #": "101020",
+            "Customer Name": "nLogic AS - Statens Vegvesen"
+        },
+        {
+            "SAP Sold-to Customer #": "101269",
+            "Customer Name": "Satec S.A. - Euskotren"
+        },
+        {
+            "SAP Sold-to Customer #": "101276",
+            "Customer Name": "NEC de Mexico, S.A. de C.V. - EvenTelecom"
+        },
+        {
+            "SAP Sold-to Customer #": "101283",
+            "Customer Name": "Xantaro GmbH - IHK Dortmund"
+        },
+        {
+            "SAP Sold-to Customer #": "101287",
+            "Customer Name": "Xantaro UK Ltd. - Fujitsu"
+        },
+        {
+            "SAP Sold-to Customer #": "101288",
+            "Customer Name": "CJSC NEC NEVA Communications Syst. - Russia Central Bank"
+        },
+        {
+            "SAP Sold-to Customer #": "101297",
+            "Customer Name": "CJSC NEC NEVA Communications Syst. - Russia Central Bank"
+        },
+        {
+            "SAP Sold-to Customer #": "101284",
+            "Customer Name": "NEC Italia - University of Pisa "
+        },
+        {
+            "SAP Sold-to Customer #": "101318",
+            "Customer Name": "NEC de Mexico - Telmex"
+        },
+        {
+            "SAP Sold-to Customer #": "101319",
+            "Customer Name": "NEC de Mexico - Maxcom"
+        },
+        {
+            "SAP Sold-to Customer #": "101416",
+            "Customer Name": "NEC Europe Ltd. - Nexco East"
+        },
+        {
+            "SAP Sold-to Customer #": "101451",
+            "Customer Name": "Xantaro - Innovo Cloud Gmbh"
+        },
+        {
+            "SAP Sold-to Customer #": "101460",
+            "Customer Name": "NEC de Mexico, S.A. de C.V. - Telefonica"
+        },
+        {
+            "SAP Sold-to Customer #": "101470",
+            "Customer Name": "Xantaro UK Ltd - ONTIX"
+        },
+        {
+            "SAP Sold-to Customer #": "101480",
+            "Customer Name": "Foss AS - Relacom "
+        },
+        {
+            "SAP Sold-to Customer #": "101503",
+            "Customer Name": "Foss AS - Sitecom AS"
+        },
+        {
+            "SAP Sold-to Customer #": "101526",
+            "Customer Name": "FCA - Sprint KPSI"
+        },
+        {
+            "SAP Sold-to Customer #": "101532",
+            "Customer Name": "Santa Monica Networks AS - RIA"
+        },
+        {
+            "SAP Sold-to Customer #": "101565",
+            "Customer Name": "CINODIS (CB Networks) - Telmo-CD57"
+        },
+        {
+            "SAP Sold-to Customer #": "100786",
+            "Customer Name": "Hewlett-Packard Sverige AB - Telecity"
+        },
+        {
+            "SAP Sold-to Customer #": "101568",
+            "Customer Name": "Damovo Polska - LUBLIN"
+        },
+        {
+            "SAP Sold-to Customer #": "101569",
+            "Customer Name": "Damovo Polska - Rzeszow"
+        },
+        {
+            "SAP Sold-to Customer #": "101589",
+            "Customer Name": "NEC de Colombia S.A. - Mediacommerce Columbia"
+        },
+        {
+            "SAP Sold-to Customer #": "101592",
+            "Customer Name": "Xantaro Deutschland GmbH - CBC"
+        },
+        {
+            "SAP Sold-to Customer #": "100607",
+            "Customer Name": "Damovo Polska Sp. z o.o. - Direct"
+        }
+    ]
