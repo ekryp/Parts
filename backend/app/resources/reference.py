@@ -126,13 +126,13 @@ def check_depot_file(depot_file, extension):
     if depot_row < 1:
         raise FileFormatIssue(depot_file, "No Records to process, BAD Depot File")
 
-    if depot_cols < 12:
-        raise FileFormatIssue(depot_file, "Less than required 12 columns, BAD Depot File")
+    if depot_cols < 11:
+        raise FileFormatIssue(depot_file, "Less than required 11 columns, BAD Depot File")
 
-    if depot_cols > 12:
-        raise FileFormatIssue(depot_file, "More than required 12 columns, BAD Depot File")
+    if depot_cols > 11:
+        raise FileFormatIssue(depot_file, "More than required 11 columns, BAD Depot File")
 
-    depot_cols = ['depot_name', 'depot_address', 'city', 'state', 'country', 'region', 'hub',
+    depot_cols = ['depot_name', 'city', 'state', 'country', 'region', 'hub',
                   'partner', 'partner_warehouse_code', 'contact', 'lat', 'long']
 
     if set(depot_df.columns.values.tolist()) != set(depot_cols):
