@@ -195,7 +195,6 @@ export default {
     } 
     else if (this.fileType === "customer") {
       this.customerColumnDef();
-      //this.();
       this.getCustomer();
     } else {
       this.ratioPONColumnDef();
@@ -916,7 +915,17 @@ export default {
             });
           })
           .catch(handleError => {
-            console.log(" Error Response ------->", handleError);
+           this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
           });
       }
     },
@@ -1010,7 +1019,17 @@ export default {
             });
           })
           .catch(handleError => {
-            console.log(" Error Response ------->", handleError);
+            this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
           });
       }
     },
@@ -1062,7 +1081,17 @@ export default {
           });
         })
         .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
+         this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
         });
     },
     getHighSpare() {
@@ -1100,7 +1129,17 @@ export default {
           });
         })
         .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
+          this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
         });
     },
     cancel() {
@@ -1144,7 +1183,17 @@ export default {
           });
         })
         .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
+          this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
         });
     },
     getDepot() {
@@ -1203,7 +1252,17 @@ export default {
           });
         })
         .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
+         this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
         });
     },
     getMisnomer() {
@@ -1245,7 +1304,17 @@ export default {
           });
         })
         .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
+         this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
         });
     },
     getRatioPON(fileType) {
@@ -1301,7 +1370,17 @@ export default {
           });
         })
         .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
+          this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
         });
     },
     getCustomer() {
@@ -1314,6 +1393,7 @@ export default {
         }
       })
         .then(response => {
+          console.log(response);
           response.text().then(text => {
             const data = text && JSON.parse(text);
             if (data.code === "token_expired") {
@@ -1340,8 +1420,20 @@ export default {
           });
         })
         .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
+          
+          this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
         });
+        
     },
 
     OnRefReady(event) {
@@ -1425,7 +1517,17 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  console.log(" Error Response ------->", handleError);
+                    this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
                 });
             }
           });
@@ -1475,7 +1577,17 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  console.log(" Error Response ------->", handleError);
+                  this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
                 });
             }
           });
@@ -1524,7 +1636,17 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  console.log(" Error Response ------->", handleError);
+                  this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
                 });
             }
           });
@@ -1572,7 +1694,17 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  console.log(" Error Response ------->", handleError);
+                  this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
                 });
             }
           });
@@ -1624,7 +1756,17 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  console.log(" Error Response ------->", handleError);
+                  this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
                 });
             }
           });
@@ -1677,7 +1819,17 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  console.log(" Error Response ------->", handleError);
+                  this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
                 });
             }
           });
@@ -1730,7 +1882,17 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  console.log(" Error Response ------->", handleError);
+                  this.isLoading=false;
+                    if(handleError.message === 'Failed to fetch')
+                    {
+                      swal({
+                        title: "Error",
+                        text: "Something Went Wrong.Please Try After Sometime ",
+                        icon: "error"
+                      })
+                    }
+                    console.log(" Error Response ------->", handleError);
+                  
                 });
             }
           });

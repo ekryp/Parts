@@ -67,7 +67,7 @@ export const AnalysisDashboardScreen={
 
 export const CreateAnalysisScreen={
     breadcrumbs:["Analysis","Analysis Create"],
-    createAnalysisLabels:["Analysis Name :","Customer Name :","Date :","Analysis Type :","Replenish Time :","DNA File :","SAP Current Inventory File :"],
+    createAnalysisLabels:["Analysis Name :","Customer Name :","Date :","Analysis Type :","Replenish Time :","DNA File :","SAP Current Inventory File :","BOM File :"],
     createAnalysisPlaceHolders:["Enter Analysis Name ","Select Customer "," Select Analysis Type","Select Replenish Time ","no file selected"],
     buttons:["Back","Submit For Analysis","ReSubmit For Analysis","Uploading"]
 }
@@ -75,7 +75,7 @@ export const CreateAnalysisScreen={
 
 export const ViewAnalysisScreen={
     breadcrumbs:["Analysis >","Analysis Update"],
-    createAnalysisLabels:["Analysis Name :","Customer Name :","Date :","Analysis Type :","Replenish Time :","DNA File :","SAP Current Inventory File :"],
+    createAnalysisLabels:["Analysis Name :","Customer Name :","Date :","Analysis Type :","Replenish Time :","Input File :","SAP Current Inventory File :","BOM File :"],
     createAnalysisPlaceHolders:["Enter Analysis Name ","Select Customer "," Select Analysis Type","Select Replenish Time ","no file selected"],
     buttons:["Back","View Details","Error Details"]
 }
