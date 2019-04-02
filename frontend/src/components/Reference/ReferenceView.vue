@@ -91,11 +91,11 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Download'"
           >
-            <downloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
+            <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
               <i class="fas fa-file-excel"></i>
               &nbsp;
               {{editReferenceConstant.exportButton}}
-            </downloadExcel>
+            </DownloadExcel>
           </button>
         </div>
 
@@ -156,12 +156,12 @@ import { AgGridVue } from "ag-grid-vue";
 import Vue from "vue";
 import Vudal from "vudal";
 import accounting from "../../utilies/accounting";
-//import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcelReference";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-import JsonExcel from 'vue-json-excel'
+//import JsonExcel from 'vue-json-excel'
 
-Vue.component('downloadExcel', JsonExcel)
+//Vue.component('downloadExcel', JsonExcel)
 export default {
   name: "ReferenceView",
   components: {
@@ -169,7 +169,7 @@ export default {
     headernav,
     AgGridVue,
     Vudal,
-   // DownloadExcel,
+    DownloadExcel,
     Loading
   },
 
@@ -1294,10 +1294,7 @@ export default {
                 CorrectPON: this.referenceList[i].Correct_PON,
                 MisnomerPON: this.referenceList[i].Misnomer_PON
               });
-              this.referenceFileData.push({
-                CorrectPON: this.referenceList[i].Correct_PON,
-                MisnomerPON: this.referenceList[i].Misnomer_PON
-              });
+           
             }
 
             this.isLoading = false;
