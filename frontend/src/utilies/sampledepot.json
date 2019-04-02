@@ -1,7 +1,6 @@
 [
   {
     "depot_name": "Enter depot name here.(Example: BOTA)",
-    "depot_address": "Enter the street name of the depot.(Example: 129-137 Beaconsfield Street)",
     "city": "Enter the city name where the depot is located.(Example: Silverwater)",
     "state": "Enter the State name the depot is located in.(Example: NSW)",
     "country": "Enter the country where the depot is located.(Example: Australia)",
