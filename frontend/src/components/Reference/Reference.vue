@@ -973,7 +973,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Minsomer File Uploaded Successfully",
+                text: "Misnomer File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1028,7 +1028,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Minsomer File Uploaded Successfully",
+                text: "Depot File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
