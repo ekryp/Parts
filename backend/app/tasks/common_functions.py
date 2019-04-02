@@ -355,7 +355,7 @@ def validate_depot(pon, analysis_date, analysis_id):
     invalid_list = ["not 4hr", "not supported", "nan", "n/a"]
     pon.loc[pon['Node Name'].str.lower().isin(invalid_list), 'Valid'] = False
     # if depot is null are null make it invalid
-    pon['node_depot_belongs'] = pon['node_depot_belongs'].fillna("not 4hr")
+    # pon['node_depot_belongs'] = pon['node_depot_belongs'].fillna("not 4hr")
     pon.loc[pon['node_depot_belongs'].str.lower().isin(invalid_list), 'Valid'] = False
     valid_pon = pon[pon['Valid'] == True]
     invalid_pon = pon[pon['Valid'] == False]
