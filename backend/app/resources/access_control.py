@@ -209,7 +209,7 @@ class User(Resource):
         for each_user in response.json().get('users'):
             users_dict = {}
             users_dict['email'] = each_user.get('email')
-
+            users_dict['username'] = each_user.get('username', "NA")
             headers = {
             'Authorization': 'Bearer {0}'.format(extension_access_token),
             'content-type': 'application/json',
