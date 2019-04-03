@@ -822,7 +822,7 @@ export default {
     },
     editData() {
       let url;
-      this.errorMessage = false;
+      this.errorMessage = "";
       let formData = new FormData();
       if (this.fileType === "parts") {
         // formData.append("parts_id",this.uniqueId);
@@ -839,6 +839,10 @@ export default {
       } else if (this.fileType === "misnomer") {
         //formData.append("reference_table_id",this.uniqueId);
         url = "api/v1/get_all_misnomer?reference_table_id=" + this.uniqueId;
+      } 
+      else if (this.fileType === "customer") {
+        //formData.append("reference_table_id",this.uniqueId);
+        url = "api/v1/get_customer?end_cust_id=" + this.uniqueId;
       } else {
         formData.append("reliability_id", this.uniqueId);
         url =
@@ -882,7 +886,7 @@ export default {
               }
               console.log("Response from backend data ---->", data);
               if (data.http_status_code === 200) {
-                this.logout();
+               
                 for (let i = 0; i < this.columnList.length; i++) {
                   this.columnList[i].value = "";
                 }
@@ -902,6 +906,9 @@ export default {
                       this.getDepot();
                     } else if (this.fileType === "misnomer") {
                       this.getMisnomer();
+                    }
+                    else if (this.fileType === "customer") {
+                      this.getCustomer();
                     } else {
                       this.getRatioPON(this.fileType);
                     }
@@ -1946,7 +1953,13 @@ export default {
           this.columnList[1].value = event.data.MisnomerPON;
 
           this.$modals.myModal.$show();
-        } else {
+        }   else if (this.fileType === "customer") {
+          this.uniqueId = event.value;
+          this.columnList[0].value = event.data.end_cust_id_from_source;
+          this.columnList[1].value = event.data.end_cust_name;
+
+          this.$modals.myModal.$show();
+        }else {
           this.uniqueId = event.value;
           this.columnList[0].value = event.data.product_family;
           this.columnList[1].value = event.data.number_of_spares1;

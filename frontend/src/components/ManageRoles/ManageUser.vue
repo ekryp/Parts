@@ -135,13 +135,15 @@
                 <tr>
                   <th  scope="col">{{userConstants.table.tableHeaders[0]}}</th>
                   <th  scope="col">{{userConstants.table.tableHeaders[1]}}</th>
-                  <th  align="center">{{userConstants.table.tableHeaders[2]}}</th>
+                  <th  scope="col">{{userConstants.table.tableHeaders[2]}}</th>
+                  <th  align="center">{{userConstants.table.tableHeaders[3]}}</th>
                 </tr>
               </thead>
               <tbody >
                 
                 <tr v-for="user in allusers" :key="user.name">
                     <td scope="col">{{user.email}}</td>
+                    <td scope="col">{{user.username}}</td>
                     <td scope="col">{{user.roles}}</td>
                     <td scope="col">
                       <div class="row">
@@ -615,6 +617,7 @@ export default {
                 this.allusers.push({
                     email: data[i].email,
                     roles:roles,
+                    username:data[i].username,
                     user_id:data[i].user_id,
                     role_ids:role_ids
                   });   

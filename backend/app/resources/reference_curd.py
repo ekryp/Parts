@@ -530,16 +530,24 @@ class Customer(Resource):
     @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
-        customer_id = args['customer_id']
-        customer_name = args['customer_name']
-        cust_id = args['cust_id']
         end_cust_country = args['end_cust_country']
+        end_cust_geo = args['end_cust_geo']
+        end_cust_id = args['end_cust_id']
+        end_cust_id_from_source = args['end_cust_id_from_source']
+        end_cust_industry = args['end_cust_industry']
+        end_cust_site_count = args['end_cust_site_count']
+        end_cust_status = args['end_cust_status']
+        end_cust_target_market_segment = args['end_cust_target_market_segment']
+        end_cust_tz = args['end_cust_tz']
+        end_cust_name = args['end_cust_name']
         try:
-            query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_name='{1}'  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
+            query = "update end_customer set end_cust_id_from_source='{0}',end_cust_name='{1}'  where end_cust_id = {2}".format(end_cust_id_from_source,end_cust_name,end_cust_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
+            print(query)
             engine.execute(query)
-            return jsonify(msg="Misonomer Details Updated Successfully", http_status_code=200)
-        except:
+            return jsonify(msg="Customer Details Updated Successfully", http_status_code=200)
+        except Exception as e:
+            print(e)
             return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
 
     @requires_auth
@@ -586,7 +594,7 @@ class Customer(Resource):
         end_cust_id = args['end_cust_id']
         try:
             print(end_cust_id)
-            query = "DELETE FROM infinera_staging.end_customer WHERE end_cust_id={0}".format(end_cust_id)
+            query = "DELETE FROM end_customer WHERE end_cust_id={0}".format(end_cust_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             result=engine.execute(query)
             #result = result.loc[:, ~result.columns.duplicated()]
