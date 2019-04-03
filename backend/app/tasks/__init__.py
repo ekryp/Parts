@@ -10,7 +10,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
-    validate_pon_for_bom, validate_depot_for_bom
+    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -1087,6 +1087,29 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
     # ratio table populated
     to_sql_reliability_class_table(ratio_df)
+
+
+@celery.task
+def end_customer_table_creation(end_customer_file, extension):
+
+    if extension.lower() == '.csv':
+        end_customer_df = pd.read_csv(end_customer_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        end_customer_df = pd.read_csv(end_customer_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        end_customer_df = pd.read_excel(end_customer_file)
+
+    # Remove duplicate cust_name
+    end_customer_df.drop_duplicates(subset="end_cust_name", keep="first", inplace=True)
+
+    # delete end_customer  & append with new values
+    query = "delete from end_customer"
+    engine.execute(query)
+
+    # end_customer table populated
+    to_sql_end_customer(end_customer_df)
 
 
 

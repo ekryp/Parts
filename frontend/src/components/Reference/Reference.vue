@@ -973,7 +973,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Minsomer File Uploaded Successfully",
+                text: "Misnomer File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1028,7 +1028,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Minsomer File Uploaded Successfully",
+                text: "Depot File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1116,6 +1116,61 @@ export default {
               swal({
                 title: "Success",
                 text: "Ratio File Uploaded Successfully",
+                icon: "success"
+              });
+            } else if (data.http_status_code == 400) {
+              swal({
+                title: "Error",
+                text: data.msg,
+                icon: "error"
+              });
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    uploadCustomerData()
+    {
+      let data = {
+        customerFile: this.customerFile,
+        email_id: this.email_id
+      };
+
+      if (this.customerFile !== "") {
+        this.post_customer_data(data);
+      } else {
+        swal({
+          title: "Info",
+          text: "Please add your Customer File",
+          icon: "info"
+        });
+      }
+    },
+    post_customer_data(data)
+    {
+      let formData = new FormData();
+      formData.append("end_customer_file", data.customerFile);
+      formData.append("user_email_id", data.email_id);
+      fetch(constant.APIURL + "api/v1/post_end_customer", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        }
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            console.log("Response from backend data ---->", data);
+            if (data.http_status_code == 200) {
+              swal({
+                title: "Success",
+                text: "Customer File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {

@@ -2,7 +2,7 @@ from datetime import datetime
 from app import app
 from app import csvs, excel, mytext
 from app.tasks import celery, part_table_creation, depot_table_creation, node_table_creation, \
-    high_spare_table_creation, misnomer_table_creation, ratio_table_creation
+    high_spare_table_creation, misnomer_table_creation, ratio_table_creation, end_customer_table_creation
 from flask import jsonify
 from flask import request
 from flask_restful import Resource
@@ -466,3 +466,70 @@ class UploadRatio(Resource):
             print(str(e))
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
 
+
+def check_end_customer_file(end_customer_file, extension):
+
+    if extension.lower() == '.csv':
+        end_customer_df = pd.read_csv(end_customer_file, nrows=200)
+
+    elif extension.lower() == '.txt':
+        end_customer_df = pd.read_csv(end_customer_file, sep='\t', nrows=200)
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        end_customer_df = pd.read_excel(end_customer_file)
+
+    end_customer_row, end_customer_cols = end_customer_df.shape
+    if end_customer_row < 1:
+        raise FileFormatIssue(end_customer_file, "No Records to process, BAD Depot File")
+
+    if end_customer_cols < 2:
+        raise FileFormatIssue(end_customer_file, "Less than required 2 columns, BAD End Customer File")
+
+    if end_customer_cols > 2:
+        raise FileFormatIssue(end_customer_file, "More than required 2 columns, BAD End Customer File")
+
+    end_customer_cols = ['end_cust_id_from_source', 'end_cust_name']
+
+    if set(end_customer_df.columns.values.tolist()) != set(end_customer_cols):
+        raise FileFormatIssue(end_customer_file, "Header mismatch, BAD End Customer File")
+
+
+class UploadEndCustomer(Resource):
+    ''' It populates end customer table '''
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
+        super(UploadEndCustomer, self).__init__()
+
+    @requires_auth
+    def post(self):
+        args = self.reqparse.parse_args()
+        dest_folder = request.form.get('user_email_id')
+        upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        end_customer_file = ''
+
+        for file in request.files.getlist('end_customer_file'):
+
+            name, extension = os.path.splitext(file.filename)
+
+            if extension.lower() == '.csv':
+                dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "end_customer_file_{0}{1}".format(upload_date, extension.lower())
+                end_customer_file = file.filename
+                csvs.save(file, folder=dest_folder)
+
+            end_customer_file = os.path.join(full_path, end_customer_file)
+        try:
+            check_end_customer_file(end_customer_file, extension)
+
+            #end_customer_table_creation(end_customer_file, extension)
+            celery.send_task('app.tasks.end_customer_table_creation', [end_customer_file, extension])
+            return jsonify(msg="End Customer File Uploaded Successfully", http_status_code=200)
+
+        except FileFormatIssue as e:
+            return jsonify(msg=e.msg, http_status_code=400)
+
+        except Exception as e:
+            print(str(e))
+            return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)

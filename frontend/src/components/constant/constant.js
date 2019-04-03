@@ -44,7 +44,7 @@ export const UserManagementScreen={
     popUpButtons:["Create","Update","Cancel"],
     table:{
         tableName:"Users",
-        tableHeaders:["User","Roles","Manage Roles"]
+        tableHeaders:["User Mail Id","Username","Roles","Manage Roles"]
     },
     addButton:"Add User"
     
