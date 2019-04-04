@@ -213,9 +213,20 @@ class Roles(Resource):
         roles = requests.get(ext_url, data=None, headers={'authorization': "Bearer " + extension_access_token})
         rolesJson = roles.json()
 
+        # auth0 stores group & roles on global basis.
+        # hence deleting roles will remove roles inside all group not only current group.
+        # Hence, to update roles to user, we have to delete roles within current group & not from other groups
+        # and append roles we got from UI
+
+        # To do this,Below is approach
+        # Get all roles irrespective of groups
+        # save roles of existing app in one list, from other groups in other list
+        # Delete existing app roles & roles in group will be untouched
         existing_roles = []
+
         for role in rolesJson:
-            existing_roles.append(role['_id'])
+            if role.get('applicationId') == Configuration.AUTH0_CLIENT_ID:
+                existing_roles.append(role['_id'])
 
         ext_url = "https://ekryp.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api/users/" + args['userId'] + "/roles"
         delete_existing_roles = requests.delete(ext_url, json=existing_roles,
@@ -229,7 +240,7 @@ class Roles(Resource):
         roles = requests.get(ext_url, data=None, headers={'authorization': "Bearer " + extension_access_token})
         updated_roles = roles.json()
 
-        return  jsonify(msg="Roles Updated Sucessfully", http_status_code=200)
+        return jsonify(msg="Roles Updated Sucessfully", http_status_code=200)
 
     def options(self):
         pass
