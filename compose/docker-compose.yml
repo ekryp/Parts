@@ -14,7 +14,8 @@ services:
     image: backend
     container_name: backend
     volumes:
-     - /home/infinera/Parts/data:/data
+     - ../data:/data
+     - ../backend:/code
     ports: 
      - 5000:5000
     depends_on:
@@ -57,3 +58,18 @@ services:
      - 5555:5555
     restart: always
     command: flower --address=0.0.0.0 --port=5555 --broker=amqp://rabbitmq:rabbitmq@rabbitmq:5672/
+  # haproxy:
+  #   build: ../haproxy
+  #   image: haproxy
+  #   container_name: haproxy
+  #   links:
+  #    - frontend:frontend
+  #    - backend:backend
+  #   entrypoint: haproxy -d -f /etc/haproxy/haproxy.cfg
+  #   depends_on:
+  #    - backend
+  #    - frontend
+  #   ports:
+  #    - 80:80
+  #    - 443:443
+  #   restart: always

@@ -1,16 +1,15 @@
 [
   {
-    "depot_name": "Enter depot name here.\n(Example: BOTA)",
-    "depot_address": "Enter the street name of the depot.\n(Example: 129-137 Beaconsfield Street)",
-    "city": "Enter the city name where the depot is located.\n(Example: Silverwater)",
-    "state": "Enter the State name the depot is located in.\n(Example: NSW)",
-    "country": "Enter the country where the depot is located.\n(Example: Australia)",
-    "region": "Enter the region where the depot is located.  The regions are APAC, EMEA, or US.\n(Example: APAC)",
-    "hub": "Enter 1 if the given depot is a hub. 0 otherwise.\n(Example: 1)",
-    "partner": "Enter the name of the partner that is managing the depot.\n(Example: Choice Logistics)",
-    "partner_warehouse_code": "Enter the partner warehouse code if one is available. Otherwise enter NULL.\n(Example: SYD)",
-    "contact": "Enter the contact phone number of the Depot.\n(Example: +61 2 8756 3977)",
-    "lat": "Enter the latitude where the Depot is located.\n(Example: -33.83641)",
-    "long": "Enter the longitude of the depot location.\n(Example: 151.0334369)"
+    "depot_name": "Enter depot name here.(Example: BOTA)",
+    "city": "Enter the city name where the depot is located.(Example: Silverwater)",
+    "state": "Enter the State name the depot is located in.(Example: NSW)",
+    "country": "Enter the country where the depot is located.(Example: Australia)",
+    "region": "Enter the region where the depot is located.  The regions are APAC EMEA or US.(Example: APAC)",
+    "hub": "Enter 1 if the given depot is a hub. 0 otherwise.(Example: 1)",
+    "partner": "Enter the name of the partner that is managing the depot.(Example: Choice Logistics)",
+    "partner_warehouse_code": "Enter the partner warehouse code if one is available. Otherwise enter NULL.(Example: SYD)",
+    "contact": "Enter the contact phone number of the Depot.(Example: +61 2 8756 3977)",
+    "lat": "Enter the latitude where the Depot is located.(Example: -33.83641)",
+    "long": "Enter the longitude of the depot location.(Example: 151.0334369)"
   }
 ]

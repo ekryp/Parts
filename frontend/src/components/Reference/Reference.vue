@@ -5,20 +5,44 @@
     <div class="custom-container" style="padding:3%; paddingTop:7%">
       <div class="myBreadCrumb" style="margin-bottom:1px">
         <p>
-          <span style="font-size: 14px;">Reference</span>
+          <span style="font-size: 14px;">{{referenceViewConstant.breadcrumb}}</span>
         </p>
       </div>
       <div class>
-        <h5 style="font-size: 1.25em;">Reference File Information :</h5>
+        <h5 style="font-size: 1.25em;">{{referenceViewConstant.tableHeader}}</h5>
         <div>
           <div class="col-lg-12">
             <div class="row">
               <div class="table-responsive">
                 <table class="table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>File Name</th>
+                      <th>Sample Files</th>
+                      <th>File Upload</th>
+                      <th>Options</th>
+                    </tr>
+                  </thead>
                   <tbody>
+                  
                     <tr>
                       <td>
-                        <label>Part File</label>
+                        <label>{{referenceViewConstant.fileNames[0]}}</label>
+                      </td>
+                      
+                      <td>
+                        <DownloadExcel
+                          :data="partsAnalysisRequestList"
+                          type="csv"
+                          name="Sample_Parts.csv"
+                        >
+                          <div class="float-left" style="marginTop:1%;cursor:pointer">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer">
+                            <span>{{referenceViewConstant.filesDownloadText[0]}}</span>
+                          </div>
+                        </DownloadExcel>
                       </td>
                       <td v-if="editFlag">
                         <label for="fileupload" class="file">
@@ -28,24 +52,10 @@
                             id="fileupload"
                             style="display:none"
                           >
-                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                          <i style="cursor:pointer;color:#afa0a0;cursor:pointer;" class="fas fa-paperclip fa-lg"></i>
                         </label>
 
-                        <span style="paddingLeft:7%;paddingTop:1%">{{partsFileName}}</span>
-                      </td>
-                      <td>
-                        <DownloadExcel
-                          :data="partsAnalysisRequestList"
-                          type="csv"
-                          name="Sample_Parts.csv"
-                        >
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Parts.csv</span>
-                          </div>
-                        </DownloadExcel>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{partsFileName}}</span>
                       </td>
                       <td>
                         <!-- <button type="button" class="btn btn-success" @click="uploadPartsData()">Save</button> -->
@@ -72,9 +82,24 @@
                     </tr>
                     <tr>
                       <td>
-                        <label>High Spare File</label>
+                        <label>{{referenceViewConstant.fileNames[1]}}</label>
                       </td>
-                      <td v-if="editFlag">
+                     
+                      <td>
+                        <DownloadExcel
+                          :data="highSpareFilesList"
+                          type="csv"
+                          name="Sample_High_Spare.csv"
+                        >
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer;">
+                            <span>{{referenceViewConstant.filesDownloadText[1]}}</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                       <td v-if="editFlag">
                         <label for="highSpareUpload" class="file">
                           <input
                             type="file"
@@ -85,21 +110,7 @@
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
 
-                        <span style="paddingLeft:7%;paddingTop:1%">{{highSpareFileName}}</span>
-                      </td>
-                      <td>
-                        <DownloadExcel
-                          :data="highSpareFilesList"
-                          type="csv"
-                          name="Sample_High_Spare.csv"
-                        >
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_High_Spare.csv</span>
-                          </div>
-                        </DownloadExcel>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{highSpareFileName}}</span>
                       </td>
                       <td>
                         &nbsp;
@@ -126,7 +137,18 @@
                     </tr>
                     <tr>
                       <td>
-                        <label>Node File</label>
+                        <label>{{referenceViewConstant.fileNames[2]}}</label>
+                      </td>
+                      
+                      <td>
+                        <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer">
+                            <span >Download Sample_Node.csv</span>
+                          </div>
+                        </DownloadExcel>
                       </td>
                       <td v-if="editFlag">
                         <label for="nodeUpload" class="file">
@@ -139,17 +161,7 @@
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
 
-                        <span style="paddingLeft:7%;paddingTop:1%">{{nodeFileName}}</span>
-                      </td>
-                      <td>
-                        <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv">
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Node.csv</span>
-                          </div>
-                        </DownloadExcel>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{nodeFileName}}</span>
                       </td>
                       <td>
                         &nbsp;
@@ -175,9 +187,20 @@
                     </tr>
                     <tr>
                       <td>
-                        <label>Depot File</label>
+                        <label>{{referenceViewConstant.fileNames[3]}}</label>
                       </td>
-                      <td v-if="editFlag">
+                     
+                      <td>
+                        <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span style="cursor:pointer">{{referenceViewConstant.filesDownloadText[3]}}</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                       <td v-if="editFlag">
                         <label for="depotUpload" class="file">
                           <input
                             type="file"
@@ -187,17 +210,7 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%">{{depotFileName}}</span>
-                      </td>
-                      <td>
-                        <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv">
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Depot.csv</span>
-                          </div>
-                        </DownloadExcel>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{depotFileName}}</span>
                       </td>
                       <td>
                         <!-- <button type="button" class="btn btn-success" @click="uploadDepotData()">Save</button>
@@ -224,7 +237,22 @@
 
                     <tr>
                       <td>
-                        <label>Minsomer File</label>
+                        <label>{{referenceViewConstant.fileNames[4]}}</label>
+                      </td>
+                      
+                      <td>
+                        <DownloadExcel
+                          :data="minsomerFilesList"
+                          type="csv"
+                          name="Sample_Minsomer.csv"
+                        >
+                          <div class="float-left" style="marginTop:1%;cursor:pointer">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span style="cursor:pointer">{{referenceViewConstant.filesDownloadText[4]}}</span>
+                          </div>
+                        </DownloadExcel>
                       </td>
                       <td v-if="editFlag">
                         <label for="minsomerUpload" class="file">
@@ -236,21 +264,7 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%">{{minsomerFileName}}</span>
-                      </td>
-                      <td>
-                        <DownloadExcel
-                          :data="minsomerFilesList"
-                          type="csv"
-                          name="Sample_Minsomer.csv"
-                        >
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Minsomer.csv</span>
-                          </div>
-                        </DownloadExcel>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{minsomerFileName}}</span>
                       </td>
                       <td>
                         <!-- <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
@@ -275,9 +289,21 @@
                       </td>
                     </tr>
 
+
+
                     <tr>
                       <td>
-                        <label>Ratio of PON - 2Day File</label>
+                        <label>{{referenceViewConstant.fileNames[5]}}</label>
+                      </td>
+                       <td>
+                        <div style="cursor:pointer" @click="downloadRatio2CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>{{referenceViewConstant.filesDownloadText[5]}}</span>
+                          </div>
+                        </div>
                       </td>
                       <td v-if="editFlag">
                         <label for="ratio2Upload" class="file">
@@ -289,29 +315,10 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio2FileName}}</span>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio2FileName}}</span>
                       </td>
+                     
                       <td>
-                        <div style="cursor:pointer" @click="downloadRatio2CSV()">
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Ratio_2Day.csv</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <!-- <button
-                type="button"
-                class="btn btn-success"
-                @click="uploadRatioData('Ratio of PON - 2Day')"
-              >Save</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="routeToView('Ratio of PON - 2Day')"
-                        >View</button>-->
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -330,9 +337,20 @@
 
                     <tr>
                       <td>
-                        <label>Ratio of PON - 7Day File</label>
+                        <label>{{referenceViewConstant.fileNames[6]}}</label>
                       </td>
-                      <td v-if="editFlag">
+                     
+                      <td>
+                        <div style="cursor:pointer" @click="downloadRatio7CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer">
+                            <span>{{referenceViewConstant.filesDownloadText[6]}}</span>
+                          </div>
+                        </div>
+                      </td>
+                       <td v-if="editFlag">
                         <label for="ratio7Upload" class="file">
                           <input
                             type="file"
@@ -342,29 +360,10 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio7FileName}}</span>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio7FileName}}</span>
                       </td>
                       <td>
-                        <div style="cursor:pointer" @click="downloadRatio7CSV()">
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Ratio_7Day.csv</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <!-- <button
-                    type="button"
-                    class="btn btn-success"
-                    @click="uploadRatioData('Ratio of PON - 7Day')"
-                  >Save</button>
-                  <button
-                    type="button"
-                    class="btn btn-success"
-                    @click="routeToView('Ratio of PON - 7Day')"
-                        >View</button>-->
+                       
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -383,7 +382,18 @@
 
                     <tr>
                       <td>
-                        <label>Ratio of PON - 30Day File</label>
+                        <label>{{referenceViewConstant.fileNames[7]}}</label>
+                      </td>
+                      
+                      <td>
+                        <div style="cursor:pointer" @click="downloadRatio30CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>{{referenceViewConstant.filesDownloadText[7]}}</span>
+                          </div>
+                        </div>
                       </td>
                       <td v-if="editFlag">
                         <label for="ratio30Upload" class="file">
@@ -395,29 +405,10 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio30FileName}}</span>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio30FileName}}</span>
                       </td>
                       <td>
-                        <div style="cursor:pointer" @click="downloadRatio30CSV()">
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Ratio_30Day.csv</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <!-- <button
-                type="button"
-                class="btn btn-success"
-                @click="uploadRatioData('Ratio of PON - 30Day')"
-              >Save</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="routeToView('Ratio of PON - 30Day')"
-                        >View</button>-->
+                       
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -436,7 +427,18 @@
 
                     <tr>
                       <td>
-                        <label>Ratio of PON - 60Day File</label>
+                        <label>{{referenceViewConstant.fileNames[8]}}</label>
+                      </td>
+                      
+                      <td>
+                        <div style="cursor:pointer" @click="downloadRatio60CSV()">
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%">
+                            <span>{{referenceViewConstant.filesDownloadText[8]}}</span>
+                          </div>
+                        </div>
                       </td>
                       <td v-if="editFlag">
                         <label for="ratio60Upload" class="file">
@@ -448,29 +450,10 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%">{{ratio60FileName}}</span>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio60FileName}}</span>
                       </td>
                       <td>
-                        <div style="cursor:pointer" @click="downloadRatio60CSV()">
-                          <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
-                          </div>
-                          <div style="paddingLeft:7%;paddingTop:1%">
-                            <span>Download Sample_Ratio_60Day.csv</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <!-- <button
-                  type="button"
-                  class="btn btn-success"
-                  @click="uploadRatioData('Ratio of PON - 60Day')"
-                >Save</button>
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  @click="routeToView('Ratio of PON - 60Day')"
-                        >View</button>-->
+                       
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -486,6 +469,57 @@
                         ></i>
                       </td>
                     </tr>
+
+
+                      <tr>
+                      <td>
+                        <label>{{referenceViewConstant.fileNames[9]}}</label>
+                      </td>
+                     
+                      <td>
+                        
+                         <DownloadExcel
+                          :data="customerFilesList"
+                          type="csv"
+                          name="Sample_Customer.csv"
+                        >
+                          <div class="float-left" style="marginTop:1%">
+                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer;" aria-hidden="true"></i>
+                          </div>
+                          <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer;">
+                            <span>{{referenceViewConstant.filesDownloadText[9]}}</span>
+                          </div>
+                        </DownloadExcel>
+                      </td>
+                       <td v-if="editFlag">
+                        <label for="customerUpload" class="file">
+                          <input
+                            type="file"
+                            @change="customerFileEvent"
+                            id="customerUpload"
+                            style="display:none"
+                          >
+                          <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
+                        </label>
+                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{customerFileName}}</span>
+                      </td>
+                      <td>
+                      
+                        &nbsp;
+                        <i
+                          class="fas fa-upload"
+                          style="cursor:pointer;color:#549EE2;"
+                          @click="uploadCustomerData()"
+                          v-if="editFlag"
+                        ></i>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('customer')"
+                        ></i>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -496,7 +530,7 @@
     </div>
     <div>
       <!-- Footer -->
-      <footer class="footer fixed-bottom font-small blue">
+      <footer class="footer  font-small blue">
         <!-- Copyright -->
         <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
         <!-- Copyright -->
@@ -520,6 +554,7 @@ import * as ratio2Data from "../../utilies/sampleratio2Day.txt";
 import * as ratio7Data from "../../utilies/sampleratio7Day.txt";
 import * as ratio30Data from "../../utilies/sampleratio30Day.txt";
 import * as ratio60Data from "../../utilies/sampleratio60Day.txt";
+import * as customerData from "../../utilies/samplecustomer.json";
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 
 import swal from "sweetalert";
@@ -544,6 +579,7 @@ export default {
       highSpareFile: "",
       highSpareFileName: "no file chosen",
       highSpareFilesList: highSpareData,
+      customerFilesList: customerData,
       nodeFile: "",
       nodeFileName: "no file chosen",
       nodeFilesList: nodeData,
@@ -551,6 +587,7 @@ export default {
       minsomerFileName: "no file chosen",
       minsomerFilesList: minsomerData,
       depotFile: "",
+      referenceViewConstant:constant.ReferenceViewScreen,
       depotFileName: "no file chosen",
       depotFilesList: depotData,
       ratio2File: "",
@@ -565,7 +602,9 @@ export default {
       ratio60File: "",
       ratio60FilesList: ratio60Data,
       ratio60FileName: "no file chosen",
-      editFlag: false
+      editFlag: false,
+      customerFile:"",
+      customerFileName: "no file chosen"
     };
   },
   methods: {
@@ -705,6 +744,22 @@ export default {
         console.log(file.name);
         this.ratio60File = file;
         this.ratio60FileName = file.name;
+      } else {
+        swal({
+          title: "Error",
+          text: "Upload a .csv File",
+          icon: "error"
+        });
+      }
+    },
+    customerFileEvent(e) {
+      console.log("hi");
+      console.log("image ----parts->", e.target.files);
+      const file = e.target.files[0];
+      if (file.name.endsWith("csv") || file.name.endsWith("CSV")) {
+        console.log(file.name);
+        this.customerFile = file;
+        this.customerFileName = file.name;
       } else {
         swal({
           title: "Error",
@@ -918,7 +973,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Minsomer File Uploaded Successfully",
+                text: "Misnomer File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -973,7 +1028,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Minsomer File Uploaded Successfully",
+                text: "Depot File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1061,6 +1116,61 @@ export default {
               swal({
                 title: "Success",
                 text: "Ratio File Uploaded Successfully",
+                icon: "success"
+              });
+            } else if (data.http_status_code == 400) {
+              swal({
+                title: "Error",
+                text: data.msg,
+                icon: "error"
+              });
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    uploadCustomerData()
+    {
+      let data = {
+        customerFile: this.customerFile,
+        email_id: this.email_id
+      };
+
+      if (this.customerFile !== "") {
+        this.post_customer_data(data);
+      } else {
+        swal({
+          title: "Info",
+          text: "Please add your Customer File",
+          icon: "info"
+        });
+      }
+    },
+    post_customer_data(data)
+    {
+      let formData = new FormData();
+      formData.append("end_customer_file", data.customerFile);
+      formData.append("user_email_id", data.email_id);
+      fetch(constant.APIURL + "api/v1/post_end_customer", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        }
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            console.log("Response from backend data ---->", data);
+            if (data.http_status_code == 200) {
+              swal({
+                title: "Success",
+                text: "Customer File Uploaded Successfully",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {

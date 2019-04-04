@@ -9,32 +9,32 @@
       <div>
         <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
-            <span class="in-progress" @click="redirectToAnalysis()">{{postMenu}}</span>
-            <span style="font-size: 14px;">{{current}}</span>
+            <span class="in-progress" @click="redirectToAnalysis()">{{spareDetailsConstant.breadcrumbs[0]}}</span>
+            <span style="font-size: 14px;">{{spareDetailsConstant.breadcrumbs[1]}}</span>
           </p>
         </div>
 
         <div class="row">
           <div class="col-3 text-center">
-            <span class="text-top">Total Depot</span>
+            <span class="text-top">{{spareDetailsConstant.analysisDetails[0]}}</span>
             <br>
 
             <span class="count">{{analysisDashboardCount.total_depot}}</span>
           </div>
 
           <div class="col-3 text-center">
-            <span class="text-top">Critical Depot</span>
+            <span class="text-top">{{spareDetailsConstant.analysisDetails[1]}}</span>
             <br>
             <span class="count" style="color:red">{{analysisDashboardCount.critical_depot}}</span>
           </div>
           <div class="col-3 text-center">
-            <span class="text-top">Total PON Type</span>
+            <span class="text-top">{{spareDetailsConstant.analysisDetails[2]}}</span>
             <br>
 
             <span class="count">{{analysisDashboardCount.total_pon_type}}</span>
           </div>
           <div class="col-3 text-center">
-            <span class="text-top">Critical PON</span>
+            <span class="text-top">{{spareDetailsConstant.analysisDetails[3]}}</span>
             <br>
             <span class="count" style="color:red">{{analysisDashboardCount.critical_pon}}</span>
           </div>
@@ -51,7 +51,7 @@
             role="tab"
             aria-controls="nav-PONsummary"
             aria-selected="true"
-          >Summary</a>
+          >{{spareDetailsConstant.navHeader[0]}}</a>
           <a
             class="nav-item nav-link"
             id="nav-summary-tab"
@@ -60,7 +60,7 @@
             role="tab"
             aria-controls="nav-summary"
             aria-selected="true"
-          >Summary-PON/Depot</a>
+          >{{spareDetailsConstant.navHeader[1]}}</a>
 
           <a
             class="nav-item nav-link"
@@ -70,7 +70,7 @@
             role="tab"
             aria-controls="nav-home"
             aria-selected="true"
-          >Current Inventory</a>
+          >{{spareDetailsConstant.navHeader[2]}}</a>
           <a
             class="nav-item nav-link"
             id="nav-profile-tab"
@@ -79,7 +79,7 @@
             role="tab"
             aria-controls="nav-profile"
             aria-selected="false"
-          >Install Base Quantity</a>
+          >{{spareDetailsConstant.navHeader[3]}}</a>
           <a
             class="nav-item nav-link"
             id="nav-contact-tab"
@@ -88,7 +88,7 @@
             role="tab"
             aria-controls="nav-contact"
             aria-selected="false"
-          >Gross</a>
+          >{{spareDetailsConstant.navHeader[4]}}</a>
           <a
             class="nav-item nav-link"
             id="nav-netInventory-tab"
@@ -97,7 +97,7 @@
             role="tab"
             aria-controls="nav-netInventory"
             aria-selected="false"
-          >Net</a>
+          >{{spareDetailsConstant.navHeader[5]}}</a>
           <a
             class="nav-item nav-link"
             id="nav-error-tab"
@@ -267,7 +267,7 @@
                 >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
-                  Export
+                  {{spareDetailsConstant.exportButton}}
                 </DownloadExcel>
               </button>
             </div>
@@ -373,7 +373,7 @@
             <br>-->
             <br>
             <ag-grid-vue
-              style="width: 100%; height: 345px;"
+              style="width: 100%; height: 400px;"
               class="ag-theme-balham"
               :columnDefs="errorColumnDefs"
               :rowData="errorRowData"
@@ -391,16 +391,17 @@
           </div>
         </div>
       </div>
-      <div>
+      
+    </div>
+    <div>
         <!-- Footer -->
-        <footer class="footer fixed-bottom font-small blue">
+        <footer class="footer  font-small blue" >
           <!-- Copyright -->
           <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
           <!-- Copyright -->
         </footer>
         <!-- Footer -->
       </div>
-    </div>
   </div>
 </template>
 
@@ -449,6 +450,7 @@ export default {
     return {
       requestID: "",
       data: data,
+      spareDetailsConstant:constant.SpareSummaryScreen,
       state: true,
       isLoading: false,
       fullPage: true,
@@ -1048,7 +1050,10 @@ a {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
 }
-
+.text-top {
+  font-size: 1.15vw;
+  font-weight: 500;
+}
 .in-progress {
   cursor: pointer;
   font-size: 14px;
@@ -1060,5 +1065,9 @@ a {
 .vue-tooltip {
   background-color: white;
   color: #71869e;
+}
+.count {
+  font-size: 2.500em;
+  font-weight: 600;
 }
 </style>

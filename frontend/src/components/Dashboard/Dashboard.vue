@@ -6,7 +6,7 @@
       <div class="row-one">
         <div class="myBreadCrumb">
           <p>
-            <span style="font-size: 14px;">{{current}}</span>
+            <span style="font-size: 14px;">{{dashboardConstants.breadcrumb}}</span>
           </p>
         </div>
 
@@ -28,7 +28,7 @@
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="row">
-                      <div class="col-lg-2">Customer</div>
+                      <div class="col-lg-2">{{dashboardConstants.filterNames[0]}}</div>
                       <div class="col" align="right">
                         <button
                           style="fontSize:1vw;"
@@ -36,7 +36,7 @@
                           class="all-success"
                           @click="selectAll('customer')"
                         >
-                          <i class="fas fa-check-circle"></i> &nbsp;All
+                          <i class="fas fa-check-circle"></i> &nbsp;{{dashboardConstants.filterButtons[0]}}
                         </button>
 
                         <button
@@ -45,7 +45,7 @@
                           class="all-success"
                           @click="clearAll('customer')"
                         >
-                          <i class="fas fa-minus-circle"></i> &nbsp; Clear
+                          <i class="fas fa-minus-circle"></i> &nbsp; {{dashboardConstants.filterButtons[1]}}
                         </button>
                       </div>
                     </div>
@@ -67,7 +67,7 @@
                   </div>
                   <div class="col-lg-4">
                     <div class="row">
-                      <div class="col-lg-2">Depot</div>
+                      <div class="col-lg-2">{{dashboardConstants.filterNames[1]}}</div>
                       <div class="col" align="right">
                         <button
                           style="fontSize:1vw;"
@@ -75,7 +75,7 @@
                           class="all-success"
                           @click="selectAll('depot')"
                         >
-                          <i class="fas fa-check-circle"></i> &nbsp;All
+                          <i class="fas fa-check-circle"></i> &nbsp;{{dashboardConstants.filterButtons[0]}}
                         </button>
 
                         <button
@@ -84,7 +84,7 @@
                           class="all-success"
                           @click="clearAll('depot')"
                         >
-                          <i class="fas fa-minus-circle"></i> &nbsp; Clear
+                          <i class="fas fa-minus-circle"></i> &nbsp; {{dashboardConstants.filterButtons[1]}}
                         </button>
                       </div>
                     </div>
@@ -119,10 +119,20 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-11"></div>
+                  <div class="col-lg-10"></div>
                   <div class="col-lg-1">
                     <button
-                      style="fontSize:1vw;"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="addFavourites()"
+                    >
+                      <i class="far fa-star"></i> &nbsp;Favourites
+                    </button>
+                  </div>
+                  <div class="col-lg-1">
+                    <button
+                      style="fontSize:0.75vw;"
                       type="button"
                       class="btn btn-success btn-block"
                       @click="applyFilter()"
@@ -141,7 +151,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Total Customer</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[0]}}</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_customer}}</span>
               </div>
@@ -151,7 +161,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Critical PONs</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[1]}}</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_pon}}</span>
               </div>
@@ -162,7 +172,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Critical Customers</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[2]}}</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_customer}}</span>
               </div>
@@ -173,7 +183,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Critical Depots</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[3]}}</span>
                 <br>
                 <span class="text-middle" style="color:red">{{dashboardData.critical_depot}}</span>
               </div>
@@ -184,7 +194,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Total PON types</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[4]}}</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_pon_type}}</span>
               </div>
@@ -195,7 +205,7 @@
           <div class="col-2">
             <div class="row">
               <div class="col-10">
-                <span class="text-top">Total Depots</span>
+                <span class="text-top">{{dashboardConstants.dashboardDetails[5]}}</span>
                 <br>
                 <span class="text-middle">{{dashboardData.total_depot}}</span>
               </div>
@@ -212,7 +222,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h5>Top PONs</h5>
+                    <h5>{{dashboardConstants.table1.tableName}}</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -221,8 +231,8 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">PONs</th>
-                      <th scope="col">Count</th>
+                      <th scope="col">{{dashboardConstants.table1.tableHeaders[0]}}</th>
+                      <th scope="col">{{dashboardConstants.table1.tableHeaders[1]}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -240,7 +250,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h5>Top Depots</h5>
+                    <h5>{{dashboardConstants.table2.tableName}}</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -249,8 +259,8 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">Depot</th>
-                      <th scope="col">PONs Count</th>
+                      <th scope="col">{{dashboardConstants.table2.tableHeaders[0]}}</th>
+                      <th scope="col">{{dashboardConstants.table2.tableHeaders[1]}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -268,7 +278,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
-                    <h5>Top Customers</h5>
+                    <h5>{{dashboardConstants.table3.tableName}}</h5>
                   </div>
                   <i @click="routeTable()" class="fas fa-share-square" style="cursor:pointer"></i>
                 </div>
@@ -277,8 +287,8 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">Customer</th>
-                      <th scope="col">PONs Count</th>
+                      <th scope="col">{{dashboardConstants.table3.tableHeaders[0]}}</th>
+                      <th scope="col">{{dashboardConstants.table3.tableHeaders[1]}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -330,16 +340,17 @@
         </div>
       </div>
       <br>
-      <div>
+      
+    </div>
+    <div>
         <!-- Footer -->
-        <footer class="footer fixed-bottom font-small blue">
+        <footer class="footer  font-small blue">
           <!-- Copyright -->
           <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
           <!-- Copyright -->
         </footer>
         <!-- Footer -->
       </div>
-    </div>
   </div>
 </template>
 
@@ -359,6 +370,7 @@ import VTooltip from "v-tooltip";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import Multiselect from "vue-multiselect";
+import axios from 'axios'
 
 Vue.use(VTooltip);
 
@@ -391,13 +403,50 @@ export default {
     this.$getLocation({ enableHighAccuracy: true }).then(coordinates => {
       console.log("coordinates ----->", coordinates);
     });
-    this.getMainDashboardCount();
-    this.getTopPons();
-    this.getTopDepots();
-    this.getTopCustomer();
-    this.getPieChart();
     this.getFilterMainDashboard();
-    this.getMapLocations(this.markers);
+
+     var filterFlag=localStorage.getItem("filter_flag");
+          
+         if(filterFlag=== "true")
+         {
+         var depotValue=JSON.parse(localStorage.getItem("depot_details"));
+          var customerValue=JSON.parse(localStorage.getItem("customer_details"));
+           this.toggle= localStorage.getItem("toggle");
+         
+          if(customerValue.length>0 || depotValue.length>0 ||( this.toggle ==='total_stock'))
+          {
+           
+         
+          if(this.toggle === 'total_stock')
+          {
+            this.state=false;
+          }
+          this.filterFLag=true;
+           for(var i=0;i<customerValue.length;i++)
+           {
+             this.customerValue.push(customerValue[i]);
+           }
+           
+            for(var i=0;i<depotValue.length;i++)
+           {
+             this.depotValue.push(depotValue[i]);
+           }
+           }
+           }
+           this.applyFilter();
+    // this.customerValue=localStorage.getItem("customer_details");
+    
+    // this.depotValue=localStorage.getItem("depot_details");
+    // this.toggle= localStorage.getItem("toggle");
+    
+    //this.applyFilter();
+    //  this.getMainDashboardCount();
+    //  this.getTopPons();
+    //  this.getTopDepots();
+    //  this.getTopCustomer();
+    //  this.getPieChart();
+     
+    //  this.getMapLocations(this.markers);
   },
   data() {
     console.log("dashboard", this.data);
@@ -406,6 +455,7 @@ export default {
         center: { lat: 48.1667, lng: -100.1667 }
       },
       data: data,
+      dashboardConstants:constant.Dashboard,
       isLoading: false,
       fullPage: true,
       dashboardData: [],
@@ -704,7 +754,7 @@ export default {
       }
     },
     getFilterMainDashboard() {
-      //this.isLoading = true;
+      this.isLoading = true;
       fetch(constant.APIURL + "api/v1/get_filter_main_dashboard", {
         method: "GET",
         headers: {
@@ -713,6 +763,7 @@ export default {
       })
         .then(response => {
           response.text().then(text => {
+            
             const data = text && JSON.parse(text);
             if (data.code === "token_expired") {
               this.logout();
@@ -725,6 +776,7 @@ export default {
             for (var i = 0; i < data.depot_list.length; i++) {
               this.depotOptions.push({ name: data.depot_list[i] });
             }
+           
           });
           // this.isLoading = false;
         })
@@ -748,6 +800,7 @@ export default {
         this.filterURL =
           this.filterURL + `&depot_filter=` + this.depotValue[i].name;
       }
+      
       this.getMainDashboardCount();
       this.getPieChart();
       this.getTopDepots();
@@ -756,6 +809,40 @@ export default {
       this.markers = [];
       this.getMapLocations(this.markers);
       console.log(this.filterURL);
+    },
+    addFavourites()
+    {
+      
+      localStorage.setItem("customer_details",JSON.stringify(this.customerValue))
+      localStorage.setItem("depot_details",JSON.stringify(this.depotValue))
+      localStorage.setItem("toggle",this.toggle)
+      var user_metadata=JSON.parse(JSON.stringify({filterDetails:{
+        customerFilters:this.customerValue,
+        depotFilter:this.depotValue,
+        toggle:this.toggle
+      }}
+));
+
+
+      axios.patch('https://ekryp.auth0.com/api/v2/users/'+localStorage.getItem("userInfo"), {
+        
+        user_metadata: user_metadata},{headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_id_token"),
+          'Content-Type': "application/json"
+        }
+      }).then(response => {
+       if(response.status === 200)
+       {
+          swal({
+                title: "Success",
+                text: "Favourites Updated Successfully",
+                icon: "success"
+              });
+       }
+      })
+      .catch(err => {
+        console.log(err)
+      })
     },
     logout() {
       console.log("logout");

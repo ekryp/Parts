@@ -9,22 +9,22 @@
           <div class="myBreadCrumb">
             <p>
               <span class="in-progress" @click="cancel()">{{postMenu}}</span>
-              <span v-if="requestId!==''" style="font-size: 14px;">{{current}}</span>
-              <span v-if="requestId===''" style="font-size: 14px;">Analysis Create</span>
+              <span v-if="requestId!==''" style="font-size: 14px;">{{createAnalysisConstant.breadcrumbs[0]}}</span>
+              <span v-if="requestId===''" style="font-size: 14px;">{{createAnalysisConstant.breadcrumbs[1]}}</span>
             </p>
           </div>
         </div>
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Analysis Name :</label>
+              <label>{{createAnalysisConstant.createAnalysisLabels[0]}}</label>
             </div>
             <div class="col-lg-6">
               <input
                 v-if="requestId === ''"
                 type="text"
                 class="form-control"
-                placeholder="Enter Analysis Name"
+                :placeholder="createAnalysisConstant.createAnalysisPlaceHolders[0]"
                 v-model="analyisisName"
               >
             </div>
@@ -33,14 +33,14 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Customer Name :</label>
+              <label>{{createAnalysisConstant.createAnalysisLabels[1]}}</label>
             </div>
             <div class="col-lg-6">
               <multiselect
                 v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
                 :value="customerNames"
                 @input="selectedCustomerName"
-                placeholder="Select Customer"
+                :placeholder="createAnalysisConstant.createAnalysisPlaceHolders[1]"
                 :options="partsAnalysis.customer_names"
                 :multiple="false"
                 :taggable="true"
@@ -51,7 +51,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Date :</label>
+              <label>{{createAnalysisConstant.createAnalysisLabels[2]}}</label>
             </div>
             <div class="col-lg-6">
               <input
@@ -68,7 +68,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Analysis Type :</label>
+              <label>{{createAnalysisConstant.createAnalysisLabels[3]}}</label>
             </div>
             <div class="col-lg-6">
               <input
@@ -82,7 +82,7 @@
                 v-if="requestId === '' && partsAnalysis.analysis_names !== undefined"
                 v-model="analysisType"
                 @input="selectedAnalysisType"
-                placeholder="Select Analysis Type"
+                :placeholder="createAnalysisConstant.createAnalysisPlaceHolders[2]"
                 :options="partsAnalysis.analysis_names"
                 :multiple="false"
                 :taggable="true"
@@ -93,14 +93,14 @@
         <div class="form-group">
           <div class="row">
             <div class="col-lg-3">
-              <label>Replenish time :</label>
+              <label>{{createAnalysisConstant.createAnalysisLabels[4]}}</label>
             </div>
             <div class="col-lg-6">
               <multiselect
                 v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
                 v-model="replensihTime"
                 @input="selectedReplensihTime"
-                placeholder="Select Replensih Time"
+                :placeholder="createAnalysisConstant.createAnalysisPlaceHolders[3]"
                 :options="partsAnalysis.replenish_times"
                 :multiple="false"
                 :taggable="true"
@@ -110,9 +110,23 @@
         </div>
         <div class="form-group">
           <!-- <strong>Files To Upload</strong> -->
-          <div class="row" style="marginTop:0%">
+
+           <div class="row">
+            <div class="col" align="right">
+                      <toggle-button
+                        :value="fileFlag"
+                        :color="{checked: '#169f85', unchecked: '#169f85'}"
+                        :sync="true"
+                        :labels="{checked: 'DNA', unchecked: 'BOM'}"
+                        :width="80"
+                        v-tooltip.top.hover.focus="'Click to Toggle'"
+                        @change="stateChange()"
+                      />
+                    </div>
+          </div>
+          <div class="row" style="marginTop:0%" v-if="fileFlag">
             <div class="col-lg-3">
-              <label>DNA File :</label>
+              <label>{{createAnalysisConstant.createAnalysisLabels[5]}}</label>
             </div>
             <div class="col-lg-6 form-group">
               <div class="row">
@@ -123,7 +137,7 @@
                   </label>
                 </div>
                 <div class="col-lg-8" v-if="requestId === ''">
-                  <span v-if="dnafileName === ''">no file selected</span>
+                  <span v-if="dnafileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
                   <span v-if="dnafileName !== ''">{{dnafileName}}</span>
                 </div>
                 <div class="col-lg-8" v-if="requestId !== ''">
@@ -134,9 +148,36 @@
               </div>
             </div>
           </div>
+
+
+          <div class="row" style="marginTop:0%" v-if="!fileFlag">
+            <div class="col-lg-3">
+              <label>{{createAnalysisConstant.createAnalysisLabels[7]}}</label>
+            </div>
+            <div class="col-lg-6 form-group">
+              <div class="row">
+                <div class="col-lg-1" v-if="requestId === ''">
+                  <label for="fileupload" class="file">
+                    <input type="file" @change="bomFileEvent" id="fileupload" style="display:none">
+                    <i class="fas fa-paperclip fa-2x"></i>
+                  </label>
+                </div>
+                <div class="col-lg-8" v-if="requestId === ''">
+                  <span v-if="bomFileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
+                  <span v-if="bomFileName !== ''">{{bomFileName}}</span>
+                </div>
+                <div class="col-lg-8" v-if="requestId !== ''">
+                  <span
+                    v-if="partsAnalysisData.bomFileName !== ''"
+                  >{{partsAnalysisData.bomFileName}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+         
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
-              <label>SAP Current Inventory File :</label>
+              <label>{{createAnalysisConstant.createAnalysisLabels[6]}}</label>
             </div>
             <div class="col-lg-6 form-group">
               <div class="row">
@@ -147,7 +188,7 @@
                   </label>
                 </div>
                 <div class="col-lg-8" v-if="requestId === ''">
-                  <span v-if="sapfileName === ''">no file selected</span>
+                  <span v-if="sapfileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
                   <span v-if="sapfileName !== ''">{{sapfileName}}</span>
                 </div>
                 <div class="col-lg-8" v-if="requestId !== ''">
@@ -175,35 +216,37 @@
           </div>-->
           <div class="float-right" style="marginBottom:5%">
             <div class="row">
-              <button type="button" v-if="uploading" class="btn btn-danger" disabled>Back</button>&nbsp; &nbsp;
+              <button type="button" v-if="uploading" class="btn btn-danger" disabled>{{createAnalysisConstant.buttons[0]}}</button>&nbsp; &nbsp;
               <button
                 type="button"
                 v-if="!uploading"
                 class="btn btn-danger"
                 @click="cancel()"
                 v-tooltip.top.hover.focus="'Move to Analysis Dashboard'"
-              >Back</button>&nbsp; &nbsp;
+              >{{createAnalysisConstant.buttons[0]}}</button>&nbsp; &nbsp;
               <button
                 v-if="requestId === '' && !uploading && !resubmit"
                 type="button"
                 class="btn btn-success"
                 @click="formSubmit()"
                 v-tooltip.top.hover.focus="'Click to Submit'"
-              >Submit For Analysis</button>
+              >{{createAnalysisConstant.buttons[1]}}</button>
               <button
                 v-if="requestId === '' && !uploading && resubmit"
                 type="button"
                 class="btn btn-success"
                 @click="formSubmit()"
                 v-tooltip.top.hover.focus="'Click to Resubmit'"
-              >ReSubmit For Analysis</button>
-              <button v-if="uploading " type="button" class="btn btn-success" disabled>Uploading</button>
+              >{{createAnalysisConstant.buttons[2]}}</button>
+              <button v-if="uploading " type="button" class="btn btn-success" disabled>{{createAnalysisConstant.buttons[3]}}</button>
             </div>
           </div>
         </div>
       </form>
       <!-- </div> -->
-      <div>
+     
+    </div>
+     <div>
         <!-- Footer -->
         <footer class="footer fixed-bottom font-small blue">
           <!-- Copyright -->
@@ -212,7 +255,6 @@
         </footer>
         <!-- Footer -->
       </div>
-    </div>
   </div>
 </template>
 <script>
@@ -244,9 +286,11 @@ export default {
   data() {
     console.log("Parts-Analysis", this.$store.state);
     return {
+      createAnalysisConstant:constant.CreateAnalysisScreen,
       requestId: "",
       dnafileName: "",
       sapfileName: "",
+      bomFileName: "",
       analyisisName: "",
       customerNames: "",
       analysisType: "",
@@ -254,6 +298,7 @@ export default {
       date: new Date(),
       dnafile: "",
       sapfile: "",
+      bomFile:"",
       partsAnalysisData: "",
       partsAnalysis: "",
       partsClose: true,
@@ -263,6 +308,7 @@ export default {
       show: false,
       label: "Loading...",
       errorData: [],
+      fileFlag: true,
       uploading: false,
       resubmit: false,
       loaderFlag: false,
@@ -296,7 +342,47 @@ export default {
         this.dnafileName = file.name;
         this.dnafile = file;
       } else {
-        alert("error");
+       swal({
+              title: "Error",
+              text: "Unsupported File Format",
+              icon: "error"
+            });
+      }
+    },
+    stateChange()
+    {
+      if(this.fileFlag)
+      {
+        this.dnafile="";
+        this.dnafileName="";
+        this.fileFlag = false;
+      }else
+      {
+        this.bomFile="";
+        this.bomFileName="";
+        this.fileFlag = true;
+      }
+
+    },
+    bomFileEvent(e) {
+      console.log("image ------>", e.target.files);
+      const file = e.target.files[0];
+      if (
+       
+        file.name.endsWith("csv") ||
+       
+        file.name.endsWith("CSV") 
+       
+      ) {
+        console.log(file.name);
+        this.bomFileName = file.name;
+        this.bomFile = file;
+      } else {
+       swal({
+              title: "Error",
+              text: "Unsupported File Format",
+              icon: "error"
+            });
       }
     },
     sapFile(e) {
@@ -314,7 +400,11 @@ export default {
         this.sapfileName = file.name;
         this.sapfile = file;
       } else {
-        alert("error");
+        swal({
+              title: "Error",
+               text: "Unsupported File Format",
+              icon: "error"
+            });
       }
     },
     cancel() {
@@ -336,16 +426,46 @@ export default {
         replensihTime: this.replensihTime,
         date: new Date(),
         dnafile: this.dnafile,
-        sapfile: this.sapfile
+        sapfile: this.sapfile,
+        bomfile:this.bomFile
       };
-
+      var filePresent=false;
       if (
         this.analyisisName !== "" &&
         this.customerNames !== "" &&
         this.analysisType !== "" &&
         this.replensihTime !== ""
       ) {
-        if (this.dnafile !== "") {
+        if(this.fileFlag)
+        {
+          if(this.dnafile !== "")
+          {
+            filePresent=true
+          }else
+          {
+            swal({
+              title: "Error",
+              text: "Please Attach the DNA File",
+              icon: "error"
+            });
+          }
+        }else
+        {
+           if(this.bomFile !== "")
+          {
+            filePresent=true
+          }else
+          {
+          swal({
+            title: "Error",
+            text: "Please Attach the BOM File",
+            icon: "error"
+            });
+          }
+        }
+       
+        if(filePresent)
+        {
           if (this.sapfile !== "") {
             this.diasableFlag = true;
             this.uploading = true;
@@ -371,12 +491,6 @@ export default {
               icon: "error"
             });
           }
-        } else {
-          swal({
-            title: "Error",
-            text: "Please Attach the DNA File",
-            icon: "error"
-          });
         }
       } else {
         swal({
@@ -424,10 +538,16 @@ export default {
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
-      formData.append("customer_dna_file", data.dnafile);
+      
       formData.append("user_email_id", localStorage.getItem("email_id"));
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
+      if(this.fileFlag)
+      {
+        formData.append("customer_dna_file", data.dnafile);
+      }else{
+        formData.append("bom_file", data.bomfile);
+      }
       console.log("formdata ----->", formData.get("analysis_name"));
       fetch(constant.APIURL + "api/v1/post_spare_part_analysis", {
         method: "POST",

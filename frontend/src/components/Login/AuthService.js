@@ -50,16 +50,29 @@ export default {
             }
         }).then(function (responseData) {
             responseData.text().then(response => {
-
+                localStorage.setItem('userInfo',authResult.idTokenPayload.sub);
                 console.log('response ----->', JSON.parse(response))
                 let expiresAt = JSON.stringify(authResult.expiresIn)
                 localStorage.setItem('auth0_access_token', authResult.accessToken)
                 localStorage.setItem('auth0_id_token', authResult.idToken)
                 localStorage.setItem('auth0_expires_at', expiresAt)
                 var profile = JSON.parse(response)
-
+                
                 localStorage.setItem('isSocial',profile.identities[0].isSocial)
                 localStorage.setItem('user_id',profile.user_id)
+               
+                console.log(profile.user_metadata.customerFilters);
+              
+                if(profile.user_metadata.filterDetails)
+                {
+                    localStorage.setItem("filter_flag",true)
+                localStorage.setItem('customer_details',JSON.stringify(profile.user_metadata.filterDetails.customerFilters))
+                localStorage.setItem('depot_details',JSON.stringify(profile.user_metadata.filterDetails.depotFilter))
+                localStorage.setItem('toggle',profile.user_metadata.filterDetails.toggle)
+                }else
+                {
+                    localStorage.setItem("filter_flag",false)
+                }
                 //var allowed_custmors = profile.user_metadata.allowed_custmors
                 localStorage.setItem('authorization',profile.app_metadata.authorization.permissions)
                 localStorage.setItem('groups',profile.app_metadata.authorization.groups)

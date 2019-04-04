@@ -116,6 +116,22 @@ def to_sql_customer_dna_record(table_name, df, analysis_date, analysis_id):
     print("Loaded Data into table : {0}".format(table_name))
 
 
+def to_sql_bom_record(table_name, df, analysis_date, analysis_id):
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'request_id'] = analysis_id
+    df.rename(columns={
+        'Product Ordering Name': 'part_name',
+        'Node Depot Belongs': 'depot_name',
+        'PON Quantity': 'part_quantity'
+    }, inplace=True
+    )
+
+    df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
+    print("Loaded Data into table : {0}".format(table_name))
+
+
 def to_sql_current_inventory(table_name, df, analysis_date, analysis_id):
 
     # Analysis datetime will come from frontend to bind with analysis request id
@@ -187,13 +203,13 @@ def to_sql_error(table_name, df, invalid_reason, analysis_date, analysis_id):
         'Serial#': 'serial'
     }, inplace=True
     )
+
     df = df.drop(['Source', 'Valid'], 1)
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
 
 
 def process_error_pon(table_name, df, analysis_date, analysis_id):
-
     engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
     # Analysis datetime will come from frontend to bind with analysis request id
     # For now it would be a current time
@@ -203,14 +219,35 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
     df.loc[:, 'cust_id'] = 7
     #df['cust_id'] = 7
     df.loc[: , 'request_id'] = analysis_id
-    df = df.drop(['end_customer_node_belongs', 'node_depot_belongs', 'standard_cost',
+    df = df.drop(['end_customer_node_belongs', 'standard_cost',
                    'Valid', 'is_sparrable', 'node_name', 'node_id', 'material_number'], 1)
     for index, row in df.iterrows():
-        if row['has_node_depot'] == False:
-            df.loc[index, 'error_reason'] = 'PON with no depot'
-        elif row['has_std_cost'] == False:
-            df.loc[index, 'error_reason'] = 'PON with no std cost'
-
+        try:
+            if row['has_node_depot'] == False:
+                df.loc[index, 'error_reason'] = 'PON {0} with no depot'.format(row['Product Ordering Name'])  # error 5
+        except KeyError:
+            pass
+        try:
+            if row['has_std_cost'] == False:
+                df.loc[index, 'error_reason'] = 'PON {0} with no std cost'.format(row['Product Ordering Name'])  # error 3
+        except KeyError:
+            pass
+        try:
+            if row['present_in_sap'] == False:
+                df.loc[index, 'error_reason'] = 'Part {0} not present in SAP file'.format(row['Product Ordering Name']) # error 1
+        except KeyError:
+            pass
+        try:
+            if row['high_spare_present_in_sap'] == False:
+                df.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} not present in SAP file'.format(row['high_spare'], row['part_name'])  # error 2
+        except KeyError:
+            pass
+        try:
+            if row['depot_in_sap_file'] == False:
+                df.loc[index, 'error_reason'] = 'Depot {0} for Part {1} not present in SAP file'.format(row['node_depot_belongs'], row['Product Ordering Name'])  # error 4
+        except KeyError:
+            pass
+    df = df.drop(['node_depot_belongs'], 1)
     df.rename(columns={
         'Product Ordering Name': 'PON',
         'Node Name': 'node_name',
@@ -222,11 +259,68 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
         'Serial#': 'serial'
     }, inplace=True
     )
-    df = df.drop(['has_node_depot', 'has_std_cost'], 1)
+    try:
+        df = df.drop(['has_node_depot'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['has_std_cost'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['present_in_sap'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['version_number'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+    try:
+        df = df.drop(['high_spare_present_in_sap'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+    try:
+        df = df.drop(['has_high_spare'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['high_spare'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['part_name'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['depot_in_sap_file'], 1)
+    except KeyError:
+        # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
+        # ignore such logical issue
+        pass
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
-
-
 
 
 def validate_pon(pon, analysis_date, analysis_id):
@@ -238,7 +332,21 @@ def validate_pon(pon, analysis_date, analysis_id):
     valid_pon = pon[pon['Valid'] == True]
     invalid_pon = pon[pon['Valid'] == False]
     if not invalid_pon.empty:
-        to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo", analysis_date, analysis_id)
+        # to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo", analysis_date, analysis_id)
+        pass
+    return valid_pon
+
+
+def validate_pon_for_bom(pon, analysis_date, analysis_id):
+
+    pon['Valid'] = True
+    invalid_list = ["", "none", "n/a", "null", "chassis", "unknown", "@", ".."]
+    pon.loc[pon['Product Ordering Name'].isin(invalid_list), 'Valid'] = False
+    valid_pon = pon[pon['Valid'] == True]
+    invalid_pon = pon[pon['Valid'] == False]
+    if not invalid_pon.empty:
+        # to_sql_error('error_records', invalid_pon, "Invalid Pon Name or Invalid Depo", analysis_date, analysis_id)
+        pass
     return valid_pon
 
 
@@ -247,14 +355,35 @@ def validate_depot(pon, analysis_date, analysis_id):
     invalid_list = ["not 4hr", "not supported", "nan", "n/a"]
     pon.loc[pon['Node Name'].str.lower().isin(invalid_list), 'Valid'] = False
     # if depot is null are null make it invalid
-    pon['node_depot_belongs'] = pon['node_depot_belongs'].fillna("not 4hr")
+    # pon['node_depot_belongs'] = pon['node_depot_belongs'].fillna("not 4hr")
     pon.loc[pon['node_depot_belongs'].str.lower().isin(invalid_list), 'Valid'] = False
     valid_pon = pon[pon['Valid'] == True]
     invalid_pon = pon[pon['Valid'] == False]
     invalid_pon = invalid_pon[['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
                            'Product Ordering Name', 'Part#', 'Serial#', 'Source', 'Valid']]
     if not invalid_pon.empty:
-        to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date, analysis_id)
+        # to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date, analysis_id)
+        pass
+
+    return valid_pon
+
+
+def validate_depot_for_bom(pon, analysis_date, analysis_id):
+
+    pon.rename(columns={
+        'Node Depot Belongs': 'node_depot_belongs'
+    }, inplace=True
+    )
+    invalid_list = ["not 4hr", "not supported", "nan", "n/a"]
+    pon.loc[pon['node_depot_belongs'].str.lower().isin(invalid_list), 'Valid'] = False
+    # if depot is null are null make it invalid
+    pon['node_depot_belongs'] = pon['node_depot_belongs'].fillna("not 4hr")
+    pon.loc[pon['node_depot_belongs'].str.lower().isin(invalid_list), 'Valid'] = False
+    valid_pon = pon[pon['Valid'] == True]
+    invalid_pon = pon[pon['Valid'] == False]
+    if not invalid_pon.empty:
+        # to_sql_error('error_records', invalid_pon, "Invalid Node Name", analysis_date, analysis_id)
+        pass
 
     return valid_pon
 
@@ -422,6 +551,12 @@ def to_sql_end_customer_table(df):
     df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into end_customer table")
 
+
+def to_sql_end_customer(df):
+    df.loc[:, 'cust_id'] = 7
+    df.loc[:, 'end_cust_status'] = 'Active'
+    df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into end_customer table")
 
 def to_sql_high_spare_table(df):
     df.loc[:, 'cust_id'] = 7

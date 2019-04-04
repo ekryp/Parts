@@ -22,13 +22,13 @@
     <div class="custom-container" style="paddingTop: 5%">
       <div class="myBreadCrumb" style="margin-bottom:1px;fontSize:0.875em">
         <p>
-          <span class="in-progress">Solution</span>
+          <span class="in-progress">{{solutionScreenConstants.breadcrumb}}</span>
         </p>
       </div>
       <div class="row">
         <div class="col-md-5 align-margin bg-white align">
           <div class="row align">
-            <label class="col-md-10">Problem Description</label>
+            <label class="col-md-10">{{solutionScreenConstants.problemDescriptionName}}</label>
           </div>
 
           <div class="row align">
@@ -44,7 +44,7 @@
           </div>
 
           <div class="row align">
-            <label class="col-md-10">Log Info</label>
+            <label class="col-md-10">{{solutionScreenConstants.logInfo}}</label>
           </div>
 
           <div class="row align">
@@ -54,7 +54,7 @@
           </div>
 
           <div class="row align">
-            <label class="col-md-10">Tags</label>
+            <label class="col-md-10">{{solutionScreenConstants.tags}}</label>
           </div>
 
           <div class="row align">
@@ -70,7 +70,7 @@
           </div>
 
           <div class="row align">
-            <label class="col-md-10">TAR Ball</label>
+            <label class="col-md-10">{{solutionScreenConstants.tarBall}}</label>
           </div>
 
           <div class="row align">
@@ -97,14 +97,14 @@
                 type="button"
                 class="btn btn-success"
                 @click="onAnalyze()"
-              >Analyze</button>
+              >{{solutionScreenConstants.buttons[0]}}</button>
               <button
                 v-if="problemDescription === ''"
                 type="button"
                 class="btn btn-success"
                 @click="onAnalyze()"
                 disabled
-              >Analyze</button>
+              >{{solutionScreenConstants.buttons[0]}}</button>
             </div>
           </div>
         </div>
@@ -113,20 +113,20 @@
           <div class="row align">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label>Lab Availablity</label>
+              <label>{{solutionScreenConstants.labAvailablity}}</label>
             </div>
             <div class="col-md-2" align="left">
               <i class="fas fa-dot-circle" style="color:green" v-if="showGreen"></i>
               <i class="fas fa-dot-circle" style="color:#d62828f7" v-if="!showGreen"></i>
             </div>
             <div class="col-md-4">
-              <button type="button" class="btn btn-success" @click="onReserve()">Reserve</button>
+              <button type="button" class="btn btn-success" @click="onReserve()">{{solutionScreenConstants.buttons[1]}}</button>
             </div>
           </div>
 
           <div class="row align" v-if="analyzeFlag">
             <div class="col-md-12">
-              <h5 align="center">Potential Solutions</h5>
+              <h5 align="center">{{solutionScreenConstants.potentialSolutionHeader}}</h5>
             </div>
           </div>
           <div class="row align" v-if="analyzeFlag">
@@ -324,16 +324,17 @@
           <br>
         </div>
       </div>
-      <div>
+      
+    </div>
+    <div>
         <!-- Footer -->
-        <footer class="footer fixed-bottom font-small blue">
+        <footer class="footer  font-small blue">
           <!-- Copyright -->
           <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
           <!-- Copyright -->
         </footer>
         <!-- Footer -->
       </div>
-    </div>
   </div>
 </template>
 
@@ -363,6 +364,7 @@ export default {
     console.log("dashboard", this.data);
     return {
       tags: [],
+      solutionScreenConstants:constant.SolutionScreen,
       showGreen: true,
       tarFileName: "",
       tarFile: "",

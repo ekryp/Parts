@@ -209,7 +209,22 @@ class User(Resource):
         for each_user in response.json().get('users'):
             users_dict = {}
             users_dict['email'] = each_user.get('email')
+            users_dict['username'] = each_user.get('username', "NA")
+            headers = {
+            'Authorization': 'Bearer {0}'.format(extension_access_token),
+            'content-type': 'application/json',
+            }
+
+            routes = 'users' + '/' + each_user.get('user_id') + '/' + 'roles'
+            ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+            response = requests.get(ext_url, headers=headers)
+            application_specific_role = []
+            for role in response.json():
+                if Configuration.AUTH0_CLIENT_ID == role.get('applicationId'):
+                    application_specific_role.append(role)
+
             users_dict['user_id'] = each_user.get('user_id')
+            users_dict['roles']=application_specific_role
             users.append(users_dict)
 
         return users
