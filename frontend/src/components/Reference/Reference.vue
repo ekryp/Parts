@@ -568,13 +568,14 @@ export default {
   },
   created() {
     this.editFlag = localStorage.getItem("editFlag");
+    this.email_id=localStorage.getItem("email_id");
   },
   data() {
     console.log("home");
     return {
       partsFile: "",
       partsFileName: "no file chosen",
-      email_id: "khali.saran@ekryp.com",
+      email_id: "",
       partsAnalysisRequestList: partsData,
       highSpareFile: "",
       highSpareFileName: "no file chosen",
