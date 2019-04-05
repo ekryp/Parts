@@ -913,6 +913,8 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
 @celery.task
 def part_table_creation(part_file, extension):
 
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
     if extension.lower() == '.csv':
         part_df = pd.read_csv(part_file, error_bad_lines=False)
 
@@ -963,6 +965,8 @@ def part_table_creation(part_file, extension):
 @celery.task
 def depot_table_creation(depot_file, extension):
 
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
     if extension.lower() == '.csv':
         depot_df = pd.read_csv(depot_file, error_bad_lines=False)
 
@@ -985,6 +989,8 @@ def depot_table_creation(depot_file, extension):
 
 @celery.task
 def node_table_creation(node_file, extension):
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
         node_df = pd.read_csv(node_file, error_bad_lines=False)
@@ -1015,6 +1021,8 @@ def node_table_creation(node_file, extension):
 @celery.task
 def high_spare_table_creation(high_spare_file, extension):
 
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
     if extension.lower() == '.csv':
         high_spare_df = pd.read_csv(high_spare_file, error_bad_lines=False)
 
@@ -1038,6 +1046,8 @@ def high_spare_table_creation(high_spare_file, extension):
 @celery.task
 def misnomer_table_creation(misnomer_file, extension):
 
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
     if extension.lower() == '.csv':
         misnomer_df = pd.read_csv(misnomer_file, error_bad_lines=False)
 
@@ -1060,6 +1070,8 @@ def misnomer_table_creation(misnomer_file, extension):
 
 @celery.task
 def ratio_table_creation(ratio_file, extension, analysis_type):
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
         ratio_df = pd.read_csv(ratio_file, error_bad_lines=False)
@@ -1091,6 +1103,8 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
 @celery.task
 def end_customer_table_creation(end_customer_file, extension):
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
         end_customer_df = pd.read_csv(end_customer_file, error_bad_lines=False)
