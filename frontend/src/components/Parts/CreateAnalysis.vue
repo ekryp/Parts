@@ -189,7 +189,7 @@
               </div>
             </div>
           </div>
-         
+
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[6]}}</label>
@@ -259,7 +259,7 @@
         </div>
       </form>
       <!-- </div> -->
-     
+
     </div>
      <div>
         <!-- Footer -->
@@ -328,7 +328,7 @@ export default {
       resubmit: false,
       loaderFlag: false,
       diasableFlag: false,
-      mtbf:""
+      mtbf:"yes"
     };
   },
   methods: {
@@ -384,11 +384,11 @@ export default {
       console.log("image ------>", e.target.files);
       const file = e.target.files[0];
       if (
-       
+
         file.name.endsWith("csv") ||
-       
-        file.name.endsWith("CSV") 
-       
+
+        file.name.endsWith("CSV")
+
       ) {
         console.log(file.name);
         this.bomFileName = file.name;
@@ -480,7 +480,7 @@ export default {
             });
           }
         }
-       
+
         if(filePresent)
         {
           if (this.sapfile !== "") {
@@ -555,7 +555,7 @@ export default {
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
-      
+
       formData.append("user_email_id", localStorage.getItem("email_id"));
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
