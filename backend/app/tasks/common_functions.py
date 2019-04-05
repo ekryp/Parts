@@ -464,10 +464,10 @@ def to_sql_bom(table_name, df, analysis_date, analysis_id):
     df.rename(columns={
         'Product Ordering Name': 'part_name',
         'node_depot_belongs': 'depot_name',
-        'PON Quanity': 'part_quantity',
+        'PON Quanity': 'pon_quantity',
     }, inplace=True
     )
-
+    df['pon_quantity'] = df['pon_quantity'].astype(int)
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
 
@@ -551,10 +551,10 @@ def to_sql_end_customer_table(df):
     df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into end_customer table")
 
-
 def to_sql_end_customer(df):
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'end_cust_status'] = 'Active'
+
     df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into end_customer table")
 
