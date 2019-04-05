@@ -108,6 +108,21 @@
             </div>
           </div>
         </div>
+        <div class="row" style="marginTop:0%">
+           <div class="col-lg-3">
+             <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
+           </div>
+           <div class="col-lg-1">
+             <input type="radio" id="Yes" value="yes" v-model="mtbf">
+             &nbsp
+             <label>Yes</label>
+           </div>
+           <div class="col-lg-1">
+             <input type="radio" id="No" value="no" v-model="mtbf">
+           &nbsp
+             <label>No</label>
+           </div>
+          </div>
         <div class="form-group">
           <!-- <strong>Files To Upload</strong> -->
 
@@ -312,7 +327,8 @@ export default {
       uploading: false,
       resubmit: false,
       loaderFlag: false,
-      diasableFlag: false
+      diasableFlag: false,
+      mtbf:""
     };
   },
   methods: {
@@ -427,7 +443,8 @@ export default {
         date: new Date(),
         dnafile: this.dnafile,
         sapfile: this.sapfile,
-        bomfile:this.bomFile
+        bomfile:this.bomFile,
+        mtbf:this.mtbf
       };
       var filePresent=false;
       if (
@@ -542,6 +559,7 @@ export default {
       formData.append("user_email_id", localStorage.getItem("email_id"));
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
+      formData.append("is_mtbf",data.mtbf)
       if(this.fileFlag)
       {
         formData.append("customer_dna_file", data.dnafile);
