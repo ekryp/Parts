@@ -1156,6 +1156,7 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('customer_name', required=True, location='form')
         self.reqparse.add_argument('user_email_id', required=True, location='form')
         self.reqparse.add_argument('replenish_time', required=True, location='form')
+        self.reqparse.add_argument('is_mtbf', required=True, location='form')
         super(PostSparePartAnalysis, self).__init__()
 
     @requires_auth
@@ -1169,6 +1170,7 @@ class PostSparePartAnalysis(Resource):
         sap_export_file = ''
         customer_name = args['customer_name'].replace(",", "|")
         replenish_time = args['replenish_time'].replace(",", "|")
+        is_mtbf = request.form.get('is_mtbf')
 
         def save_analysis_record_db(input_file):
 
@@ -1337,24 +1339,27 @@ class PostSparePartAnalysis(Resource):
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
+                #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
 
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time,args['analysis_name']])
+                                                               customer_name, prospect_id, replenish_time,args['analysis_name'], is_mtbf])
+
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                #bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'])
+                #bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
+
 
 
                 celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time,args['analysis_name']])
+                                                               customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf])
+
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
 

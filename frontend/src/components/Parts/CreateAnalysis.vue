@@ -108,6 +108,21 @@
             </div>
           </div>
         </div>
+        <div class="row" style="marginTop:0%">
+           <div class="col-lg-3">
+             <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
+           </div>
+           <div class="col-lg-1">
+             <input type="radio" id="Yes" value="yes" v-model="mtbf">
+             &nbsp
+             <label>Yes</label>
+           </div>
+           <div class="col-lg-1">
+             <input type="radio" id="No" value="no" v-model="mtbf">
+           &nbsp
+             <label>No</label>
+           </div>
+          </div>
         <div class="form-group">
           <!-- <strong>Files To Upload</strong> -->
 
@@ -174,7 +189,7 @@
               </div>
             </div>
           </div>
-         
+
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[6]}}</label>
@@ -244,7 +259,7 @@
         </div>
       </form>
       <!-- </div> -->
-     
+
     </div>
      <div>
         <!-- Footer -->
@@ -312,7 +327,8 @@ export default {
       uploading: false,
       resubmit: false,
       loaderFlag: false,
-      diasableFlag: false
+      diasableFlag: false,
+      mtbf:"yes"
     };
   },
   methods: {
@@ -368,11 +384,11 @@ export default {
       console.log("image ------>", e.target.files);
       const file = e.target.files[0];
       if (
-       
+
         file.name.endsWith("csv") ||
-       
-        file.name.endsWith("CSV") 
-       
+
+        file.name.endsWith("CSV")
+
       ) {
         console.log(file.name);
         this.bomFileName = file.name;
@@ -427,7 +443,8 @@ export default {
         date: new Date(),
         dnafile: this.dnafile,
         sapfile: this.sapfile,
-        bomfile:this.bomFile
+        bomfile:this.bomFile,
+        mtbf:this.mtbf
       };
       var filePresent=false;
       if (
@@ -463,7 +480,7 @@ export default {
             });
           }
         }
-       
+
         if(filePresent)
         {
           if (this.sapfile !== "") {
@@ -538,10 +555,11 @@ export default {
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
-      
+
       formData.append("user_email_id", localStorage.getItem("email_id"));
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
+      formData.append("is_mtbf",data.mtbf)
       if(this.fileFlag)
       {
         formData.append("customer_dna_file", data.dnafile);
