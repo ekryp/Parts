@@ -282,7 +282,6 @@ import Datepicker from "vuejs-datepicker";
 import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
 import swal from "sweetalert";
-import * as sampleSapData from "../../utilies/sampleSAP.txt";
 import * as sampleBomData from "../../utilies/sampleBOM.txt";
 
 export default {
@@ -331,7 +330,7 @@ export default {
       diasableFlag: false,
       mtbf:true,
       fileType:"dna",
-      sampleSAP:sampleSapData,
+    
       sampleBOM:sampleBomData
       };
   },
@@ -438,39 +437,12 @@ export default {
         swal({
               title: "Error",
                text: "Please Upload a  .XLS or .XLSX File",
-              icon: "error",
-                buttons:{
-                  download :{
-                    text:"Download Sample",
-                    value:"yes"
-                    },
-                    ok : true
-                      },
-                      })
-                  .then((value) => {
-                    switch (value) {
-                    case "yes":
-                    this.downloadSampleSAP();
-                    }
+              icon: "error"
               
                     });
       }
     },
-    downloadSampleSAP() {
-      var fileContent = String(this.sampleSAP);
-      var fileType = "csv";
-
-      fileType = fileType || "csv";
-      var blobType = "text/csv";
-      var a = document.createElement("a");
-      a.href = window.URL.createObjectURL(
-        new Blob([fileContent], { type: blobType })
-      );
-      a.download = "SampleSAP" + "." + fileType;
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-    },
+    
     cancel() {
       router.push("/parts/analysis/dashboard");
     },
