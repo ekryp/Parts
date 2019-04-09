@@ -425,8 +425,9 @@ export default {
       const file = e.target.files[0];
       if (
         file.name.endsWith("xlsx") ||
-        
-        file.name.endsWith("XLSX") 
+        file.name.endsWith("xls") ||
+        file.name.endsWith("XLSX") ||
+        file.name.endsWith("XLS") 
        
         
       ) {
@@ -436,7 +437,7 @@ export default {
       } else {
         swal({
               title: "Error",
-               text: "Please Upload a .CSV or .TXT or .XLSX File",
+               text: "Please Upload a  .XLS or .XLSX File",
               icon: "error",
                 buttons:{
                   download :{
