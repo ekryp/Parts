@@ -178,7 +178,7 @@
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
                     <span class="step_descr">
-                      DNA File
+                      Input File
                       Loaded
                     </span>
                   </a>
@@ -270,7 +270,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -360,7 +360,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -427,7 +427,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -494,7 +494,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -561,7 +561,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -629,7 +629,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -697,7 +697,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:#bbb">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -764,7 +764,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -827,7 +827,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -890,7 +890,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -957,7 +957,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:green">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -1024,7 +1024,7 @@
                 <li>
                   <a class="disabled" isdone="0" rel="2">
                     <span class="step_no" style="backgroundColor:red">2</span>
-                    <span class="step_descr">DNA File loaded</span>
+                    <span class="step_descr">Input File loaded</span>
                   </a>
                 </li>
                 <li>
@@ -1187,90 +1187,13 @@ export default {
     };
   },
   methods: {
-    selectedCustomerName(value) {
-      this.customerNames = value;
-    },
-    selectedAnalysisType(value) {
-      console.log(value);
-      this.analysisType = value;
-    },
-    selectedReplensihTime(value) {
-      console.log(value);
-      this.replensihTime = value;
-    },
-    handleFile(e) {
-      console.log("image ------>", e.target.files);
-      const file = e.target.files[0];
-      if (
-        file.name.endsWith("xlsx") ||
-        file.name.endsWith("csv") ||
-        file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV") ||
-        file.name.endsWith("txt") ||
-        file.name.endsWith("TXT")
-      ) {
-        console.log(file.name);
-        this.dnafileName = file.name;
-        this.dnafile = file;
-      } else {
-        alert("error");
-      }
-    },
-    sapFile(e) {
-      console.log("image ----sap->", e.target.files);
-      const file = e.target.files[0];
-      if (
-        file.name.endsWith("xlsx") ||
-        file.name.endsWith("csv") ||
-        file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV") ||
-        file.name.endsWith("txt") ||
-        file.name.endsWith("TXT")
-      ) {
-        console.log(file.name);
-        this.sapfileName = file.name;
-        this.sapfile = file;
-      } else {
-        alert("error");
-      }
-    },
+    
+   
     cancel() {
       router.push("/parts/analysis/dashboard");
     },
 
-    formSubmit() {
-      let data = {
-        dnafileName: this.dnafileName,
-        sapfileName: this.sapfileName,
-        analyisisName: this.analyisisName,
-        customerNames: this.customerNames,
-        analysisType: this.analysisType,
-        replensihTime: this.replensihTime,
-        date: new Date(),
-        dnafile: this.dnafile,
-        sapfile: this.sapfile
-      };
-      if (
-        this.analyisisName !== "" &&
-        this.customerNames !== "" &&
-        this.analysisType !== "" &&
-        this.replensihTime !== ""
-      ) {
-        if (this.dnafile !== "") {
-          if (this.sapfile !== "") {
-            this.uploading = true;
-            this.post_spare_part_analysis(data);
-          } else {
-            alert("Please add your SAP File");
-          }
-        } else {
-          alert("Please add your DNA File");
-        }
-      } else {
-        alert("Please fill the Form to submit");
-      }
-    },
-
+   
     // API calls
 
     get_request_analysis_by_Id(requestId) {
@@ -1294,7 +1217,7 @@ export default {
             }
             console.log("Get requst Analysis data ---->", payload);
             let object = {
-              sapfileName: payload[0].sap_file_name,
+              sapfileName: payload[0].current_inventory_file_name,
               dnafileName: payload[0].dna_file_name,
               analyisisName: payload[0].analysis_name,
               customerNames: payload[0].customer_name,
