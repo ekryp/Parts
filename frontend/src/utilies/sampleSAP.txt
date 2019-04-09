@@ -1,0 +1,1 @@
+Material Number,Material Description,Plant,Storage Location,Reorder Point,Total Stock,Standard Cost,Total Standard Cost,STO - Qty To be Dlv.,Delivery - Qty To be Dlv.
