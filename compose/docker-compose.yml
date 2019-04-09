@@ -23,6 +23,7 @@ services:
     links:
       - rabbitmq:rabbitmq
       - mailgun:mailgun
+      - flower:flower
     restart: always
   mailgun:
     build: ../mailgun
