@@ -589,7 +589,7 @@ def to_sql_reliability_class_table(df):
 def check_analysis_task_status():
     import requests
     is_running = False
-    tasks_lists = requests.get("http://localhost:5555/api/tasks")
+    tasks_lists = requests.get("http://flower:5555/api/tasks")
     analysis_request_task_name = ["app.tasks.bom_derive_table_creation", "app.tasks.derive_table_creation"]
     for each_task in tasks_lists.json():
         if tasks_lists.json().get(each_task).get('name') in analysis_request_task_name and tasks_lists.json().get(each_task).get('state') == 'STARTED':
