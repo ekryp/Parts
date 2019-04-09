@@ -1246,12 +1246,18 @@ class PostSparePartAnalysis(Resource):
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 bom_df = pd.read_excel(bom_file)
 
+            bom_columns = ['Node Depot Belongs', 'Product Ordering Name', 'PON Quantity']
+
             bom_row, cols_cols = bom_df.shape
             if bom_row < 1:
                 raise FileFormatIssue(bom_file, "No Records to process,BAD BOM File")
 
             elif cols_cols < 3:
                 raise FileFormatIssue(bom_file, "Number of columns is less than minimum columns 3, BAD BOM File")
+            elif set(bom_df.columns) != set(bom_columns):
+                raise FileFormatIssue(bom_file, "Headers mismatch in BOM file column header should be {0}, {1}, {2} , "
+                                                "BAD BOM File".format(bom_columns[0], bom_columns[1], bom_columns[2]))
+
 
 
         try:
