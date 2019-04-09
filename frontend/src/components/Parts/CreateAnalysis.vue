@@ -108,65 +108,78 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <!-- <strong>Files To Upload</strong> -->
+        <div class="row" style="marginTop:0%">
+           <div class="col-lg-3">
+             <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
+           </div>
+           
+           <div class="col-lg-2">
+             <input type="checkbox" id="checkbox" v-model="mtbf">
 
-           <div class="row">
-            <div class="col" align="right">
-                      <toggle-button
-                        :value="fileFlag"
-                        :color="{checked: '#169f85', unchecked: '#169f85'}"
-                        :sync="true"
-                        :labels="{checked: 'DNA', unchecked: 'BOM'}"
-                        :width="80"
-                        v-tooltip.top.hover.focus="'Click to Toggle'"
-                        @change="stateChange()"
-                      />
-                    </div>
+           </div>
           </div>
-          <div class="row" style="marginTop:0%" v-if="fileFlag">
+          <br>
+        <div class="form-group">
+          
+          <div class="row" style="marginTop:0%" >
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[5]}}</label>
             </div>
             <div class="col-lg-6 form-group">
               <div class="row">
-                <div class="col-lg-1" v-if="requestId === ''">
+                <div class="col-lg-2">
+             <input type="radio" id="DNA" value="dna" v-model="fileType">
+             &nbsp
+             <label>DNA </label>
+           </div>
+           <div class="col-lg-2">
+             <input type="radio" id="BOM" value="bom" v-model="fileType">
+           &nbsp
+             <label>BOM</label>
+           </div> 
+                
+              </div>
+              <!-- <div class="row" style="marginTop:3%">
+                
+              </div> -->
+            </div>
+          </div>
+
+          <div class="row" style="marginTop:0%">
+            <div class="col-lg-3">
+
+              <label v-if="fileType === 'dna'">{{createAnalysisConstant.createAnalysisLabels[9]}}</label>
+              <label v-if="fileType === 'bom'">{{createAnalysisConstant.createAnalysisLabels[7]}}</label>
+            </div >
+            <div class="col-lg-6 form-group">
+              <div class="row">
+                <div class="col-lg-1" v-if="fileType === 'dna'">
                   <label for="fileupload" class="file">
                     <input type="file" @change="handleFile" id="fileupload" style="display:none">
                     <i class="fas fa-paperclip fa-2x"></i>
                   </label>
                 </div>
-                <div class="col-lg-8" v-if="requestId === ''">
+                  
+                <div class="col-lg-5" v-if="fileType === 'dna'" >
                   <span v-if="dnafileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
                   <span v-if="dnafileName !== ''">{{dnafileName}}</span>
                 </div>
-                <div class="col-lg-8" v-if="requestId !== ''">
+                <div class="col-lg-5" v-if="fileType === 'dna'">
                   <span
                     v-if="partsAnalysisData.dnafileName !== ''"
                   >{{partsAnalysisData.dnafileName}}</span>
                 </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="row" style="marginTop:0%" v-if="!fileFlag">
-            <div class="col-lg-3">
-              <label>{{createAnalysisConstant.createAnalysisLabels[7]}}</label>
-            </div>
-            <div class="col-lg-6 form-group">
-              <div class="row">
-                <div class="col-lg-1" v-if="requestId === ''">
+                 <div class="col-lg-1" v-if="fileType === 'bom'">
                   <label for="fileupload" class="file">
                     <input type="file" @change="bomFileEvent" id="fileupload" style="display:none">
                     <i class="fas fa-paperclip fa-2x"></i>
                   </label>
                 </div>
-                <div class="col-lg-8" v-if="requestId === ''">
+                 <div class="col-lg-5" v-if="fileType === 'bom'">
                   <span v-if="bomFileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
                   <span v-if="bomFileName !== ''">{{bomFileName}}</span>
                 </div>
-                <div class="col-lg-8" v-if="requestId !== ''">
+                <div class="col-lg-5" v-if="fileType === 'bom'">
                   <span
                     v-if="partsAnalysisData.bomFileName !== ''"
                   >{{partsAnalysisData.bomFileName}}</span>
@@ -174,7 +187,9 @@
               </div>
             </div>
           </div>
+
          
+
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[6]}}</label>
@@ -244,7 +259,7 @@
         </div>
       </form>
       <!-- </div> -->
-     
+
     </div>
      <div>
         <!-- Footer -->
@@ -267,6 +282,7 @@ import Datepicker from "vuejs-datepicker";
 import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
 import swal from "sweetalert";
+import * as sampleBomData from "../../utilies/sampleBOM.txt";
 
 export default {
   name: "CreateAnalysis",
@@ -293,8 +309,8 @@ export default {
       bomFileName: "",
       analyisisName: "",
       customerNames: "",
-      analysisType: "",
-      replensihTime: "",
+      analysisType: "4 Hr Analysis",
+      replensihTime: "Ratio of PON - 2Day",
       date: new Date(),
       dnafile: "",
       sapfile: "",
@@ -308,12 +324,15 @@ export default {
       show: false,
       label: "Loading...",
       errorData: [],
-      fileFlag: true,
       uploading: false,
       resubmit: false,
       loaderFlag: false,
-      diasableFlag: false
-    };
+      diasableFlag: false,
+      mtbf:true,
+      fileType:"dna",
+    
+      sampleBOM:sampleBomData
+      };
   },
   methods: {
     selectedCustomerName(value) {
@@ -344,35 +363,21 @@ export default {
       } else {
        swal({
               title: "Error",
-              text: "Unsupported File Format",
+              text: "Please Upload a .CSV or .TXT or .XLSX File",
               icon: "error"
             });
       }
     },
-    stateChange()
-    {
-      if(this.fileFlag)
-      {
-        this.dnafile="";
-        this.dnafileName="";
-        this.fileFlag = false;
-      }else
-      {
-        this.bomFile="";
-        this.bomFileName="";
-        this.fileFlag = true;
-      }
-
-    },
+   
     bomFileEvent(e) {
       console.log("image ------>", e.target.files);
       const file = e.target.files[0];
       if (
-       
+        file.name.endsWith("xlsx")||
         file.name.endsWith("csv") ||
-       
-        file.name.endsWith("CSV") 
-       
+        file.name.endsWith("XLSX") ||
+        file.name.endsWith("CSV")
+
       ) {
         console.log(file.name);
         this.bomFileName = file.name;
@@ -380,21 +385,50 @@ export default {
       } else {
        swal({
               title: "Error",
-              text: "Unsupported File Format",
-              icon: "error"
+              text: "Please Upload a .CSV or .XSLX File",
+              icon: "error",
+                buttons:{
+                  download :{
+                    text:"Download Sample",
+                    value:"yes"
+                    },
+                    ok : true
+                      },
+                      })
+                  .then((value) => {
+                    switch (value) {
+                    case "yes":
+                    this.downloadSampleBOM();
+                    }
+              
             });
       }
+    },
+    downloadSampleBOM() {
+      var fileContent = String(this.sampleBOM);
+      var fileType = "csv";
+
+      fileType = fileType || "csv";
+      var blobType = "text/csv";
+      var a = document.createElement("a");
+      a.href = window.URL.createObjectURL(
+        new Blob([fileContent], { type: blobType })
+      );
+      a.download = "SampleBOM" + "." + fileType;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
     },
     sapFile(e) {
       console.log("image ----sap->", e.target.files);
       const file = e.target.files[0];
       if (
         file.name.endsWith("xlsx") ||
-        file.name.endsWith("csv") ||
+        file.name.endsWith("xls") ||
         file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV") ||
-        file.name.endsWith("txt") ||
-        file.name.endsWith("TXT")
+        file.name.endsWith("XLS") 
+       
+        
       ) {
         console.log(file.name);
         this.sapfileName = file.name;
@@ -402,11 +436,13 @@ export default {
       } else {
         swal({
               title: "Error",
-               text: "Unsupported File Format",
+               text: "Please Upload a  .XLS or .XLSX File",
               icon: "error"
-            });
+              
+                    });
       }
     },
+    
     cancel() {
       router.push("/parts/analysis/dashboard");
     },
@@ -417,6 +453,14 @@ export default {
       });
     },
     formSubmit() {
+      var mtbfValue;
+      if(this.mtbf)
+      {
+        mtbfValue="yes";
+      }else
+      {
+        mtbfValue="no"
+      }
       let data = {
         dnafileName: this.dnafileName,
         sapfileName: this.sapfileName,
@@ -427,7 +471,8 @@ export default {
         date: new Date(),
         dnafile: this.dnafile,
         sapfile: this.sapfile,
-        bomfile:this.bomFile
+        bomfile:this.bomFile,
+        mtbf:mtbfValue
       };
       var filePresent=false;
       if (
@@ -436,7 +481,7 @@ export default {
         this.analysisType !== "" &&
         this.replensihTime !== ""
       ) {
-        if(this.fileFlag)
+        if(this.fileType === "dna")
         {
           if(this.dnafile !== "")
           {
@@ -463,7 +508,7 @@ export default {
             });
           }
         }
-       
+
         if(filePresent)
         {
           if (this.sapfile !== "") {
@@ -538,11 +583,12 @@ export default {
       formData.append("analysis_name", data.analyisisName);
       formData.append("analysis_type", data.analysisType);
       formData.append("replenish_time", data.replensihTime);
-      
+
       formData.append("user_email_id", localStorage.getItem("email_id"));
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
-      if(this.fileFlag)
+      formData.append("is_mtbf",data.mtbf)
+      if(this.fileType ==="dna")
       {
         formData.append("customer_dna_file", data.dnafile);
       }else{

@@ -57,6 +57,7 @@ export default {
                 localStorage.setItem('auth0_id_token', authResult.idToken)
                 localStorage.setItem('auth0_expires_at', expiresAt)
                 var profile = JSON.parse(response)
+                localStorage.setItem('email_id', profile.email_id)
                 
                 localStorage.setItem('isSocial',profile.identities[0].isSocial)
                 localStorage.setItem('user_id',profile.user_id)

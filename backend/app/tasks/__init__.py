@@ -10,7 +10,8 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
-    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer
+    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status
+
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -741,61 +742,67 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     
 '''
 
-def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+
+def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file,
                                                                                      analysis_date, analysis_id,
                                                                                      prospect_id, replenish_time)
 
     # Flag will be there to choose from simple or mtbf calculation.
-    '''
-    gross_depot = simple_calculation(bom)
 
-    # 5.13 Accommodating for Corporate and Regional Disti - Process 13
+    if is_mtbf.lower() == 'no':
+        print("Simple BOM getting executed")
+        gross_depot = simple_calculation(bom)
+
+        # 5.13 Accommodating for Corporate and Regional Disti - Process 13
     
-    gross_depot = remove_hub_depot(gross_depot, depot)
-    gross_depot_hnad = add_hnad(gross_depot, quantity=1)
-    to_sql_bom('simple_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
-    return gross_depot_hnad, high_spares, standard_cost, parts
-    '''
+        gross_depot = remove_hub_depot(gross_depot, depot)
+        gross_depot_hnad = add_hnad(gross_depot, quantity=1)
+        to_sql_bom('mtbf_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
+        return gross_depot_hnad, high_spares, standard_cost, parts
+
+    elif is_mtbf.lower() == 'yes':
+        print("MTBF BOM getting executed")
+        gross_depot = mtbf_calculation(bom, get_ratio_to_pon, parts, analysis_date, analysis_id)
+
+        #5.13 Accommodating for Corporate and Regional Disti - Process 13
+
+        gross_depot = remove_hub_depot(gross_depot, depot)
+        gross_depot_hnad = add_hnad(gross_depot, quantity=1)
+        to_sql_mtbf('mtbf_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
+        return gross_depot_hnad, high_spares, standard_cost, parts
 
 
-    gross_depot = mtbf_calculation(bom, get_ratio_to_pon, parts, analysis_date, analysis_id)
-
-    #5.13 Accommodating for Corporate and Regional Disti - Process 13
-
-    gross_depot = remove_hub_depot(gross_depot, depot)
-    gross_depot_hnad = add_hnad(gross_depot, quantity=1)
-    to_sql_mtbf('mtbf_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
-    return gross_depot_hnad, high_spares, standard_cost, parts
-
-
-def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation_for_bom_records(bom_file, sap_file,
                                                                                      analysis_date, analysis_id,
                                                                                      prospect_id, replenish_time)
 
     # Flag will be there to choose from simple or mtbf calculation.
-    '''
-    gross_depot = simple_calculation(bom)
+    if is_mtbf.lower() == 'no':
+        print("Simple BOM getting executed")
+        gross_depot = simple_calculation(bom)
 
     # 5.13 Accommodating for Corporate and Regional Disti - Process 13
 
-    gross_depot = remove_hub_depot(gross_depot, depot)
-    gross_depot_hnad = add_hnad(gross_depot, quantity=1)
-    to_sql_bom('simple_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
-    return gross_depot_hnad, high_spares, standard_cost, parts
-    '''
+        gross_depot = remove_hub_depot(gross_depot, depot)
+        gross_depot_hnad = add_hnad(gross_depot, quantity=1)
+        to_sql_bom('mtbf_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
+        return gross_depot_hnad, high_spares, standard_cost, parts
 
-    gross_depot = mtbf_calculation(bom, get_ratio_to_pon, parts, analysis_date, analysis_id)
+    elif is_mtbf.lower() == 'yes':
+        print("MTBF BOM getting executed")
+        gross_depot = mtbf_calculation(bom, get_ratio_to_pon, parts, analysis_date, analysis_id)
 
-    # 5.13 Accommodating for Corporate and Regional Disti - Process 13
+        # 5.13 Accommodating for Corporate and Regional Disti - Process 13
 
-    gross_depot = remove_hub_depot(gross_depot, depot)
-    gross_depot_hnad = add_hnad(gross_depot, quantity=1)
-    to_sql_mtbf('mtbf_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
-    return gross_depot_hnad, high_spares, standard_cost, parts
+        gross_depot = remove_hub_depot(gross_depot, depot)
+        gross_depot_hnad = add_hnad(gross_depot, quantity=1)
+        to_sql_mtbf('mtbf_bom_calculated', gross_depot_hnad, analysis_date, analysis_id)
+        return gross_depot_hnad, high_spares, standard_cost, parts
+
 
 def convert_headers_in_sap_file(sap_file):
 
@@ -841,7 +848,7 @@ def sendEmailNotificatio(user_email_id,subject,message):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time,analysis_name):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf):
    
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Submitted Successfully..")
@@ -853,7 +860,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
             print(query)
             engine.execute(query)
 
-        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time)
+        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf)
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
                            user_email_id, analysis_id, customer_name)
@@ -874,7 +881,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         print(150 * "*")
 
 @celery.task
-def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name):
+def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf):
 
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your " + analysis_name + " Analysis Submitted Successfully..")
@@ -888,7 +895,7 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
             engine.execute(query)
 
         single_bom, high_spares, standard_cost, parts = get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id,
-                                                                replenish_time)
+                                                                replenish_time, is_mtbf)
 
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
@@ -896,6 +903,7 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
         set_request_status('Completed', analysis_id, 'Success')
+        sendEmailNotificatio(user_email_id, " Infinera Analysis ", "Your "+analysis_name+" Analysis Completed Successfully..")
 
     except CustomException as e:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", "Your "+analysis_name+" Analysis Was Failed, Please check with Application!")
@@ -912,6 +920,15 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
 
 @celery.task
 def part_table_creation(part_file, extension):
+
+    while check_analysis_task_status():
+        import time
+        print("The task part_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task part_table_creation started, as No analyis request is running")
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
         part_df = pd.read_csv(part_file, error_bad_lines=False)
@@ -963,6 +980,15 @@ def part_table_creation(part_file, extension):
 @celery.task
 def depot_table_creation(depot_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task depot_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task depot_table_creation started, as No analyis request is running")
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
     if extension.lower() == '.csv':
         depot_df = pd.read_csv(depot_file, error_bad_lines=False)
 
@@ -985,6 +1011,15 @@ def depot_table_creation(depot_file, extension):
 
 @celery.task
 def node_table_creation(node_file, extension):
+
+    while check_analysis_task_status():
+        import time
+        print("The task node_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task node_table_creation started, as No analyis request is running")
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
         node_df = pd.read_csv(node_file, error_bad_lines=False)
@@ -1015,6 +1050,15 @@ def node_table_creation(node_file, extension):
 @celery.task
 def high_spare_table_creation(high_spare_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task high_spare_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task high_spare_table_creation started, as No analyis request is running")
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
     if extension.lower() == '.csv':
         high_spare_df = pd.read_csv(high_spare_file, error_bad_lines=False)
 
@@ -1038,6 +1082,15 @@ def high_spare_table_creation(high_spare_file, extension):
 @celery.task
 def misnomer_table_creation(misnomer_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task ratio_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task ratio_table_creation started, as No analyis request is running")
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
     if extension.lower() == '.csv':
         misnomer_df = pd.read_csv(misnomer_file, error_bad_lines=False)
 
@@ -1060,6 +1113,15 @@ def misnomer_table_creation(misnomer_file, extension):
 
 @celery.task
 def ratio_table_creation(ratio_file, extension, analysis_type):
+
+    while check_analysis_task_status():
+        import time
+        print("The task ratio_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task ratio_table_creation started, as No analyis request is running")
+
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
         ratio_df = pd.read_csv(ratio_file, error_bad_lines=False)
@@ -1091,6 +1153,14 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
 @celery.task
 def end_customer_table_creation(end_customer_file, extension):
+
+    while check_analysis_task_status():
+        import time
+        print("The task end_customer_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task end_customer_table_creation task started, as No analyis request is running")
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
         end_customer_df = pd.read_csv(end_customer_file, error_bad_lines=False)
