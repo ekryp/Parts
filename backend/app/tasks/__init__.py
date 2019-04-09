@@ -10,7 +10,8 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
-    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer
+    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status
+
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
 from sqlalchemy import create_engine
@@ -920,6 +921,13 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
 @celery.task
 def part_table_creation(part_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task part_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task part_table_creation started, as No analyis request is running")
+
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
@@ -972,6 +980,13 @@ def part_table_creation(part_file, extension):
 @celery.task
 def depot_table_creation(depot_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task depot_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task depot_table_creation started, as No analyis request is running")
+
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
@@ -996,6 +1011,13 @@ def depot_table_creation(depot_file, extension):
 
 @celery.task
 def node_table_creation(node_file, extension):
+
+    while check_analysis_task_status():
+        import time
+        print("The task node_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task node_table_creation started, as No analyis request is running")
 
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
@@ -1028,6 +1050,13 @@ def node_table_creation(node_file, extension):
 @celery.task
 def high_spare_table_creation(high_spare_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task high_spare_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task high_spare_table_creation started, as No analyis request is running")
+
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
@@ -1053,6 +1082,13 @@ def high_spare_table_creation(high_spare_file, extension):
 @celery.task
 def misnomer_table_creation(misnomer_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task ratio_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task ratio_table_creation started, as No analyis request is running")
+
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
@@ -1077,6 +1113,13 @@ def misnomer_table_creation(misnomer_file, extension):
 
 @celery.task
 def ratio_table_creation(ratio_file, extension, analysis_type):
+
+    while check_analysis_task_status():
+        import time
+        print("The task ratio_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task ratio_table_creation started, as No analyis request is running")
 
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
@@ -1111,6 +1154,12 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 @celery.task
 def end_customer_table_creation(end_customer_file, extension):
 
+    while check_analysis_task_status():
+        import time
+        print("The task end_customer_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task end_customer_table_creation task started, as No analyis request is running")
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     if extension.lower() == '.csv':
