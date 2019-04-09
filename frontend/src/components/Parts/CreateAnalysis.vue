@@ -425,11 +425,10 @@ export default {
       const file = e.target.files[0];
       if (
         file.name.endsWith("xlsx") ||
-        file.name.endsWith("csv") ||
-        file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV") ||
-        file.name.endsWith("txt") ||
-        file.name.endsWith("TXT")
+        
+        file.name.endsWith("XLSX") 
+       
+        
       ) {
         console.log(file.name);
         this.sapfileName = file.name;
