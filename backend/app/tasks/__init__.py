@@ -1136,7 +1136,6 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
     ratio_df.columns = ratio_df.iloc[np.where((ratio_df.isin(['Products'])) == True)[0]].values[0]
     ratio_df = ratio_df.iloc[(int(np.where((ratio_df.isin(['Products']) == True))[0])) + 1:]
-    ratio_df = ratio_df.drop(['Telcorida MTBF (hrs.)'], 1)
 
     # Remove duplicate from dataframe
     ratio_df.drop_duplicates(keep="first", inplace=True)
