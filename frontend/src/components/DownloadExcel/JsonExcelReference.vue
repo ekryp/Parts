@@ -74,6 +74,9 @@ export default {
     beforeFinish:{
       type: Function,
     },
+    referenceTitle: {
+      default: null
+    },
   },
   computed: {
     // unique identifier
@@ -196,11 +199,21 @@ export default {
         csvData.push(this.parseExtraData(this.title, "${data}\r\n"));
       }
       //Fields
-      for (let key in data[0]) {
-        csvData.push(key);
-        csvData.push(",");
+      if(this.referenceTitle === 'true')
+      {
+      csvData.push(',,Number of Spares,,,,,,,,,');
+      csvData.push("\r\n");
+      csvData.push("Products,Telcorida MTBF (hrs.),1,2,3,4,5,6,7,8,9,10");
+      
+
+      }else
+      {
+        for (let key in data[0]) {
+          csvData.push(key);
+          csvData.push(",");
+        }
+          csvData.pop();
       }
-      csvData.pop();
       csvData.push("\r\n");
       //Data
       data.map(function(item) {

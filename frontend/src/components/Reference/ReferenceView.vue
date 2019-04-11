@@ -91,7 +91,7 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Download'"
           >
-            <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
+            <DownloadExcel :data="referenceFileData"  type="csv" :name="title+'.csv'" :referenceTitle="downloadRatioFlag" >
               <i class="fas fa-file-excel"></i>
               &nbsp;
               {{editReferenceConstant.exportButton}}
@@ -197,6 +197,7 @@ export default {
       this.customerColumnDef();
       this.getCustomer();
     } else {
+      this.downloadRatioFlag="true";
       this.ratioPONColumnDef();
       this.getRatioPON(this.fileType);
     }
@@ -224,6 +225,7 @@ export default {
       uniqueId: "",
       loaderFlag: false,
       editReferenceFlag: false,
+      downloadRatioFlag:"false",
       referenceGridOptions: {
         rowStyle: {
           color: "#72879d",
@@ -609,7 +611,17 @@ export default {
       }
     },
     ratioPONColumnDef() {
-      this.title = "Ratio PON Details";
+      if(this.fileType === "Ratio of PON - 2Day")
+      {
+        this.title = "Ratio PON 2 Day Details";
+      }else if(this.fileType === "Ratio of PON - 7Day"){
+         this.title = "Ratio PON 7 Day Details";
+      }else if(this.fileType === "Ratio of PON - 30Day"){
+         this.title = "Ratio PON 30 Day Details";
+      }else if(this.fileType === "Ratio of PON - 60Day"){
+         this.title = "Ratio PON 60 Day Details";
+      }
+      
       this.columnList = [
         {
           columnName: "Product Family",
@@ -1972,6 +1984,7 @@ export default {
         }
       }
     },
+    
     logout() {
       console.log("logout");
       router.push("/");
