@@ -340,7 +340,7 @@ def check_misnomer_file(misnomer_file, extension):
     if misnomer_df_cols > 2:
         raise FileFormatIssue(misnomer_file, "More than required 2 columns, BAD Misnomer File")
 
-    misnomer_cols = ['Misnomer PON', 'Correct PON']
+    misnomer_cols = ['MisnomerPON', 'CorrectPON']
 
     if set(misnomer_df.columns.values.tolist()) != set(misnomer_cols):
         raise FileFormatIssue(misnomer_file, "Header mismatch, BAD Misnomer File")
