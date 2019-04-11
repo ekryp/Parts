@@ -291,12 +291,7 @@ export default {
           width: 150,
           cellStyle: { "text-align": "right" }
         },
-        {
-          headerName: "Part Number",
-          field: "part_number",
-          width: 150,
-          cellStyle: { "text-align": "right" }
-        },
+        
         {
           headerName: "Part Reliability Class",
           field: "part_reliability_class",
@@ -1063,7 +1058,7 @@ export default {
               this.referenceRowData.push({
                 material_number: this.referenceList[i].material_number,
                 part_name: this.referenceList[i].part_name,
-                part_number: this.referenceList[i].part_number,
+               
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
@@ -1076,7 +1071,7 @@ export default {
               this.referenceFileData.push({
                 material_number: this.referenceList[i].material_number,
                 part_name: this.referenceList[i].part_name,
-                part_number: this.referenceList[i].part_number,
+                
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
