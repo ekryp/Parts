@@ -340,7 +340,7 @@ def check_misnomer_file(misnomer_file, extension):
     if misnomer_df_cols > 2:
         raise FileFormatIssue(misnomer_file, "More than required 2 columns, BAD Misnomer File")
 
-    misnomer_cols = ['Misnomer PON', 'Correct PON']
+    misnomer_cols = ['MisnomerPON', 'CorrectPON']
 
     if set(misnomer_df.columns.values.tolist()) != set(misnomer_cols):
         raise FileFormatIssue(misnomer_file, "Header mismatch, BAD Misnomer File")
@@ -410,13 +410,13 @@ def check_ratio_file(ratio_file, extension):
     if ratio_df_row < 1:
         raise FileFormatIssue(ratio_file, "No Records to process, BAD Ratio File")
 
-    if ratio_df_cols < 12:
-        raise FileFormatIssue(ratio_file, "Less than required 12 columns, BAD Ratio File")
+    if ratio_df_cols < 11:
+        raise FileFormatIssue(ratio_file, "Less than required 11 columns, BAD Ratio File")
 
-    if ratio_df_cols > 12:
-        raise FileFormatIssue(ratio_file, "More than required 12 columns, BAD Ratio File")
+    if ratio_df_cols > 11:
+        raise FileFormatIssue(ratio_file, "More than required 11 columns, BAD Ratio File")
 
-    ratio_cols = ['Products', 'Telcorida MTBF (hrs.)', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ratio_cols = ['Products', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     if set(ratio_df.columns.values.tolist()) != set(ratio_cols):
         raise FileFormatIssue(ratio_file, "Header mismatch, BAD Ratio File")

@@ -7,8 +7,8 @@ if (process.env.NODE_ENV === 'local') {
     APIURL = "https://staging-ib-services.ekryp.com/";
     APPURL = "https://staging-ib.ekryp.com/";
 } else if (process.env.NODE_ENV === 'prod') {
-    APIURL = "https://infinera-services.ekryp.com";
-    APPURL = "https://infinera.ekryp.com";
+    APIURL = "https://infinera-services.ekryp.com/";
+    APPURL = "https://infinera.ekryp.com/";
 }
 
 export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction']
@@ -76,7 +76,7 @@ export const AnalysisDashboardScreen = {
 
 export const CreateAnalysisScreen = {
     breadcrumbs: ["Analysis", "Analysis Create"],
-    createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?","DNA File :"],
+    createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?", "DNA File :"],
     createAnalysisPlaceHolders: ["Enter Analysis Name ", "Select Customer ", " Select Analysis Type", "Select Replenish Time ", "no file selected"],
     buttons: ["Back", "Submit For Analysis", "ReSubmit For Analysis", "Uploading"]
 }

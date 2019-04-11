@@ -31,7 +31,7 @@ class GetParts(Resource):
         args = self.reqparse.parse_args()
         parts_id = args['parts_id']
         material_number = args['material_number']
-        standard_cost = args['standard_cost']
+        standard_cost = args['standard_cost'].replace(',', '')
         part_reliability_class = args['part_reliability_class']
         part_name = args['part_name']
         spared_attribute = args['spared_attribute']

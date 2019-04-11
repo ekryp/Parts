@@ -61,9 +61,9 @@ export default {
     meta: {
       type: Array,
       default: () => []
-    }, 
+    },
     worksheet: {
-      type: String, 
+      type: String,
       default: "Sheet1"
     },
     //event before generate was called
@@ -73,6 +73,9 @@ export default {
     //event before download pops up
     beforeFinish:{
       type: Function,
+    },
+    referenceTitle: {
+      default: null
     },
   },
   computed: {
@@ -196,11 +199,21 @@ export default {
         csvData.push(this.parseExtraData(this.title, "${data}\r\n"));
       }
       //Fields
-      for (let key in data[0]) {
-        csvData.push(key);
-        csvData.push(",");
+      if(this.referenceTitle === 'true')
+      {
+      csvData.push(',,Number of Spares,,,,,,,,');
+      csvData.push("\r\n");
+      csvData.push("Products,1,2,3,4,5,6,7,8,9,10");
+
+
+      }else
+      {
+        for (let key in data[0]) {
+          csvData.push(key);
+          csvData.push(",");
+        }
+          csvData.pop();
       }
-      csvData.pop();
       csvData.push("\r\n");
       //Data
       data.map(function(item) {
@@ -273,17 +286,17 @@ export default {
       const field = typeof key   !== "object" ? key : key.field;
       let indexes = typeof field !== "string" ? []  : field.split(".");
       let value   = this.defaultValue;
-    
+
       if (!field)
 	      value = item;
       else if( indexes.length > 1 )
         value = this.getValueFromNestedItem(item, indexes);
       else
         value = this.parseValue(item[field]);
-      
+
       if( key.hasOwnProperty('callback'))
         value = this.getValueFromCallback(value, key.callback);
-      
+
       return value;
     },
 

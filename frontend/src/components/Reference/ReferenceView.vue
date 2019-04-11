@@ -34,6 +34,7 @@
                     class="form-control place-holder-css"
                     v-model="item.value"
                     :placeholder="item.placeHolder"
+                    @change="checkNumber(item.isNumber,item.value,item.columnName)"
                   >
                 </div>
               </div>
@@ -55,6 +56,7 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Create'"
             @click="addData()"
+
           >{{editReferenceConstant.createButton}}</button>
           <button
             v-if="editFlag"
@@ -91,7 +93,7 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Download'"
           >
-            <DownloadExcel :data="referenceFileData" type="csv" :name="title+'.csv'">
+            <DownloadExcel :data="referenceFileData"  type="csv" :name="title+'.csv'" :referenceTitle="downloadRatioFlag" >
               <i class="fas fa-file-excel"></i>
               &nbsp;
               {{editReferenceConstant.exportButton}}
@@ -197,6 +199,7 @@ export default {
       this.customerColumnDef();
       this.getCustomer();
     } else {
+      this.downloadRatioFlag="true";
       this.ratioPONColumnDef();
       this.getRatioPON(this.fileType);
     }
@@ -224,6 +227,7 @@ export default {
       uniqueId: "",
       loaderFlag: false,
       editReferenceFlag: false,
+      downloadRatioFlag:"false",
       referenceGridOptions: {
         rowStyle: {
           color: "#72879d",
@@ -291,12 +295,7 @@ export default {
           width: 150,
           cellStyle: { "text-align": "right" }
         },
-        {
-          headerName: "Part Number",
-          field: "part_number",
-          width: 150,
-          cellStyle: { "text-align": "right" }
-        },
+        
         {
           headerName: "Part Reliability Class",
           field: "part_reliability_class",
@@ -614,7 +613,17 @@ export default {
       }
     },
     ratioPONColumnDef() {
-      this.title = "Ratio PON Details";
+      if(this.fileType === "Ratio of PON - 2Day")
+      {
+        this.title = "Ratio PON 2 Day Details";
+      }else if(this.fileType === "Ratio of PON - 7Day"){
+         this.title = "Ratio PON 7 Day Details";
+      }else if(this.fileType === "Ratio of PON - 30Day"){
+         this.title = "Ratio PON 30 Day Details";
+      }else if(this.fileType === "Ratio of PON - 60Day"){
+         this.title = "Ratio PON 60 Day Details";
+      }
+      
       this.columnList = [
         {
           columnName: "Product Family",
@@ -626,60 +635,70 @@ export default {
           columnName: "Number of Spares 1",
           formName: "number_of_spares_1",
           value: "",
-          placeHolder: "10"
+          placeHolder: "10",
+          isNumber:true
         },
         {
           columnName: "Number of Spares 2",
           formName: "number_of_spares_2",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 3",
           formName: "number_of_spares_3",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 4",
           formName: "number_of_spares_4",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 5",
           formName: "number_of_spares_5",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 6",
           formName: "number_of_spares_6",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 7",
           formName: "number_of_spares_7",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 8",
           formName: "number_of_spares_8",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 9",
           formName: "number_of_spares_9",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 10",
           formName: "number_of_spares_10",
           value: "",
+          isNumber:true,
           placeHolder: "10"
         }
       ];
@@ -937,6 +956,7 @@ export default {
       }
     },
     addData() {
+       
       let url;
       if (this.fileType === "parts") {
         url = "api/v1/get_all_parts";
@@ -957,10 +977,10 @@ export default {
       let alertIndex;
 
       let formData = new FormData();
-
+     
       for (let i = 0; i < this.columnList.length; i++) {
         formData.append(this.columnList[i].formName, this.columnList[i].value);
-        if (this.columnList[i].value === "") {
+        if (!this.columnList[i].value) {
           alertFlag = true;
           alertIndex = i;
         }
@@ -1063,7 +1083,7 @@ export default {
               this.referenceRowData.push({
                 material_number: this.referenceList[i].material_number,
                 part_name: this.referenceList[i].part_name,
-                part_number: this.referenceList[i].part_number,
+               
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
@@ -1076,7 +1096,7 @@ export default {
               this.referenceFileData.push({
                 material_number: this.referenceList[i].material_number,
                 part_name: this.referenceList[i].part_name,
-                part_number: this.referenceList[i].part_number,
+                
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
@@ -1345,7 +1365,7 @@ export default {
                 product_family: this.referenceList[i].product_family,
                 number_of_spares1: this.referenceList[i].number_of_spares1,
                 number_of_spares2: this.referenceList[i].number_of_spares2,
-                number_of_spares3: this.referenceList[i].number_of_spares2,
+                number_of_spares3: this.referenceList[i].number_of_spares3,
                 number_of_spares4: this.referenceList[i].number_of_spares4,
                 number_of_spares5: this.referenceList[i].number_of_spares5,
                 number_of_spares6: this.referenceList[i].number_of_spares6,
@@ -1360,7 +1380,7 @@ export default {
                 product_family: this.referenceList[i].product_family,
                 number_of_spares1: this.referenceList[i].number_of_spares1,
                 number_of_spares2: this.referenceList[i].number_of_spares2,
-                number_of_spares3: this.referenceList[i].number_of_spares2,
+                number_of_spares3: this.referenceList[i].number_of_spares3,
                 number_of_spares4: this.referenceList[i].number_of_spares4,
                 number_of_spares5: this.referenceList[i].number_of_spares5,
                 number_of_spares6: this.referenceList[i].number_of_spares6,
@@ -1977,6 +1997,31 @@ export default {
         }
       }
     },
+    checkNumber(isNumberFlag,value,key)
+    {
+      if(isNumberFlag)
+      {
+        
+        var pattern = /^\d+$/;
+       if(!pattern.test(value))
+       {
+          swal({
+            title: "Info",
+            text: "Please Insert a Integer Value ?",
+            icon: "info"
+          });
+          for(var i=0;i<this.columnList.length;i++)
+          {
+            if(this.columnList[i].columnName === key)
+            {
+              this.columnList[i].value="";
+            }
+          }
+       }  
+       
+      }
+    }
+,   
     logout() {
       console.log("logout");
       router.push("/");
