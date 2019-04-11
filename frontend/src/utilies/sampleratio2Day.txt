@@ -1,7 +1,6 @@
 ,,Number of Spares,,,,,,,,,
-Products,Telcorida MTBF (hrs.),1,2,3,4,5,6,7,8,9,10
+Products,1,2,3,4,5,6,7,8,9,10
 "Name of the reliability class.
-(Example: BMM)","Enter the MTBF hours.
 (Example: 179000)","Enter the number of units that correspond to spare unit of 1.
 (Example: 52)",Enter the number of units that correspond to spare unit of 2. (Example: 321),"Enter the number of units that correspond to spare unit of 3.
  (Example: 864)","Enter the number of units that correspond to spare unit of 4.

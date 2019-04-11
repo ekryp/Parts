@@ -203,7 +203,7 @@ export default {
       {
       csvData.push(',,Number of Spares,,,,,,,,,');
       csvData.push("\r\n");
-      csvData.push("Products,Telcorida MTBF (hrs.),1,2,3,4,5,6,7,8,9,10");
+      csvData.push("Products,1,2,3,4,5,6,7,8,9,10");
       
 
       }else
