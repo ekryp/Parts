@@ -410,13 +410,13 @@ def check_ratio_file(ratio_file, extension):
     if ratio_df_row < 1:
         raise FileFormatIssue(ratio_file, "No Records to process, BAD Ratio File")
 
-    if ratio_df_cols < 12:
-        raise FileFormatIssue(ratio_file, "Less than required 12 columns, BAD Ratio File")
+    if ratio_df_cols < 11:
+        raise FileFormatIssue(ratio_file, "Less than required 11 columns, BAD Ratio File")
 
-    if ratio_df_cols > 12:
-        raise FileFormatIssue(ratio_file, "More than required 12 columns, BAD Ratio File")
+    if ratio_df_cols > 11:
+        raise FileFormatIssue(ratio_file, "More than required 11 columns, BAD Ratio File")
 
-    ratio_cols = ['Products', 'Telcorida MTBF (hrs.)', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ratio_cols = ['Products', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     if set(ratio_df.columns.values.tolist()) != set(ratio_cols):
         raise FileFormatIssue(ratio_file, "Header mismatch, BAD Ratio File")
