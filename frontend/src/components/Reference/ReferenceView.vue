@@ -402,12 +402,12 @@ export default {
           width: 250
         },
         {
-          headerName: "Node Depot Belongs",
+          headerName: "Depot",
           field: "node_depot_belongs",
           width: 150
         },
         {
-          headerName: "End Customer Node Belongs",
+          headerName: "End Customer",
           field: "end_customer_node_belongs",
           width: 150
         }
@@ -1147,8 +1147,9 @@ export default {
                 deleteFlag: this.referenceList[i].high_spare_id
               });
               this.referenceFileData.push({
-                Classic_Part: this.referenceList[i].ClassicPON,
-                Substitution_Part: this.referenceList[i].SubstitutionPON
+                Substitution_Part: this.referenceList[i].SubstitutionPON,
+                Classic_Part: this.referenceList[i].ClassicPON
+                
               });
             }
 
@@ -1200,10 +1201,10 @@ export default {
                 deleteFlag: this.referenceList[i].node_id
               });
               this.referenceFileData.push({
-                end_customer_node_belongs: this.referenceList[i]
+                 Node_Name: this.referenceList[i].node_name,
+                End_Customer: this.referenceList[i]
                   .end_customer_node_belongs,
-                node_depot_belongs: this.referenceList[i].node_depot_belongs,
-                node_name: this.referenceList[i].node_name
+                Depot: this.referenceList[i].node_depot_belongs
               });
             }
             this.isLoading = false;
