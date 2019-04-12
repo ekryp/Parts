@@ -468,7 +468,7 @@ export default {
       netColumnDefs: null,
       netRowData: [],
       ibColumnDefs: null,
-      ibTitle: ["Depot Name", "Part Name", "Quantity"],
+      ibTitle: ["Depot", "Part", "Quantity"],
       ibRowData: [],
       currColumnDefs: null,
       currRowData: [],
@@ -825,7 +825,7 @@ export default {
     createIbColumnDefs() {
       this.ibColumnDefs = [
         {
-          headerName: "Depot Name",
+          headerName: "Depot",
           field: "node_depot_belongs",
           width: 250
         },

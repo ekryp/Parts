@@ -1,1 +1,1 @@
-Part Name,Depot Name,Quantity
+Part,Depot,Quantity
