@@ -11,6 +11,12 @@ def check_file_validity(file):
         data = pd.read_csv(file)
     elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
         data = pd.read_excel(file)
+
+    data.rename(columns={
+        'Depot': 'Node Depot Belongs',
+        'Part': 'Product Ordering Name',
+        'Quantity': 'PON Quantity'
+    }, inplace=True)
     return data
 
 def read_bom_file(bom_file):

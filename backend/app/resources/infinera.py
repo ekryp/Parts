@@ -1246,7 +1246,7 @@ class PostSparePartAnalysis(Resource):
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 bom_df = pd.read_excel(bom_file)
 
-            bom_columns = ['Node Depot Belongs', 'Product Ordering Name', 'PON Quantity']
+            bom_columns = ['Depot', 'Part', 'Quantity']
 
             bom_row, cols_cols = bom_df.shape
             if bom_row < 1:

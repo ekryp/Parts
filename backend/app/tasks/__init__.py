@@ -1158,7 +1158,7 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
 
 @celery.task
-def end_customer_table_creation(end_customer_file, extension):
+def end_customer_table_creation(end_customer_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -1186,6 +1186,7 @@ def end_customer_table_creation(end_customer_file, extension):
 
     # end_customer table populated
     to_sql_end_customer(end_customer_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ", " Your Request to upload Customer data finished ")
 
 
 
