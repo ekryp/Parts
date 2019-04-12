@@ -505,6 +505,7 @@ class UploadEndCustomer(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         end_customer_file = ''
 
@@ -523,8 +524,8 @@ class UploadEndCustomer(Resource):
         try:
             check_end_customer_file(end_customer_file, extension)
 
-            #end_customer_table_creation(end_customer_file, extension)
-            celery.send_task('app.tasks.end_customer_table_creation', [end_customer_file, extension])
+            #end_customer_table_creation(end_customer_file, extension, user_email_id)
+            celery.send_task('app.tasks.end_customer_table_creation', [end_customer_file, extension, user_email_id])
             return jsonify(msg="End Customer File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
