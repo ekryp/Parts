@@ -1147,8 +1147,8 @@ export default {
                 deleteFlag: this.referenceList[i].high_spare_id
               });
               this.referenceFileData.push({
-                ClassicPON: this.referenceList[i].ClassicPON,
-                SubstitutionPON: this.referenceList[i].SubstitutionPON
+                Classic_Part: this.referenceList[i].ClassicPON,
+                Substitution_Part: this.referenceList[i].SubstitutionPON
               });
             }
 
