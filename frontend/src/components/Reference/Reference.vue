@@ -809,7 +809,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Parts File Uploaded Successfully",
+                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -864,7 +864,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "High Spare File Uploaded Successfully",
+                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -919,7 +919,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Node File Uploaded Successfully",
+                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -974,7 +974,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Misnomer File Uploaded Successfully",
+                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1029,7 +1029,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Depot File Uploaded Successfully",
+               text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1116,7 +1116,7 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Ratio File Uploaded Successfully",
+                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
