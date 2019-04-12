@@ -551,9 +551,14 @@ def to_sql_end_customer_table(df):
     df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into end_customer table")
 
+
 def to_sql_end_customer(df):
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'end_cust_status'] = 'Active'
+    df.rename(columns={
+        'Sold_To_Customer': 'end_cust_id_from_source',
+        'Customer_Name': 'end_cust_name'
+    }, inplace=True)
 
     df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into end_customer table")
