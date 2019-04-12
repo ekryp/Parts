@@ -53,6 +53,7 @@ class UploadParts(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         parts_file = ''
 
@@ -71,8 +72,8 @@ class UploadParts(Resource):
         try:
             check_part_file(parts_file, extension)
 
-            #part_table_creation(parts_file, extension)
-            celery.send_task('app.tasks.part_table_creation', [parts_file, extension])
+            #part_table_creation(parts_file, extension, user_email_id)
+            celery.send_task('app.tasks.part_table_creation', [parts_file, extension, user_email_id])
             return jsonify(msg="Part File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -150,6 +151,7 @@ class UploadDepot(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         depot_file = ''
 
@@ -168,8 +170,8 @@ class UploadDepot(Resource):
         try:
             check_depot_file(depot_file, extension)
 
-            #depot_table_creation(depot_file, extension)
-            celery.send_task('app.tasks.depot_table_creation', [depot_file, extension])
+            #depot_table_creation(depot_file, extension, user_email_id)
+            celery.send_task('app.tasks.depot_table_creation', [depot_file, extension, user_email_id])
             return jsonify(msg="Depot File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -220,6 +222,7 @@ class UploadNode(Resource):
 
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         node_file = ''
 
@@ -238,8 +241,8 @@ class UploadNode(Resource):
         try:
             check_node_file(node_file, extension)
 
-            #node_table_creation(node_file, extension)
-            celery.send_task('app.tasks.node_table_creation', [node_file, extension])
+            #node_table_creation(node_file, extension, user_email_id)
+            celery.send_task('app.tasks.node_table_creation', [node_file, extension, user_email_id])
             return jsonify(msg="Node File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -289,6 +292,7 @@ class UploadHighSpare(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         high_spare_file = ''
 
@@ -307,8 +311,8 @@ class UploadHighSpare(Resource):
         try:
             check_high_spare_file(high_spare_file, extension)
 
-            # high_spare_table_creation(high_spare_file, extension)
-            celery.send_task('app.tasks.high_spare_table_creation', [high_spare_file, extension])
+            # high_spare_table_creation(high_spare_file, extension, user_email_id)
+            celery.send_task('app.tasks.high_spare_table_creation', [high_spare_file, extension, user_email_id])
             return jsonify(msg="High_Spare File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -359,6 +363,7 @@ class UploadMisnomer(Resource):
 
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         misnomer_file = ''
 
@@ -369,7 +374,7 @@ class UploadMisnomer(Resource):
             if extension.lower() == '.csv':
                 dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
                 full_path = os.path.abspath(dir_path)
-                file.filename = "high_spare_file_{0}{1}".format(upload_date, extension.lower())
+                file.filename = "misnomer_file_{0}{1}".format(upload_date, extension.lower())
                 misnomer_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
@@ -377,8 +382,8 @@ class UploadMisnomer(Resource):
         try:
             check_misnomer_file(misnomer_file, extension)
 
-            #misnomer_table_creation(misnomer_file, extension)
-            celery.send_task('app.tasks.misnomer_table_creation', [misnomer_file, extension])
+            #misnomer_table_creation(misnomer_file, extension, user_email_id)
+            celery.send_task('app.tasks.misnomer_table_creation', [misnomer_file, extension, user_email_id])
             return jsonify(msg="Misnomer File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -436,6 +441,7 @@ class UploadRatio(Resource):
 
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         ratio_file = ''
         analysis_type = request.form.get('analysis_type')
@@ -455,8 +461,8 @@ class UploadRatio(Resource):
         try:
             check_ratio_file(ratio_file, extension)
 
-            #ratio_table_creation(ratio_file, extension, analysis_type)
-            celery.send_task('app.tasks.ratio_table_creation', [ratio_file, extension, analysis_type])
+            #ratio_table_creation(ratio_file, extension, analysis_type, user_email_id)
+            celery.send_task('app.tasks.ratio_table_creation', [ratio_file, extension, analysis_type, user_email_id])
             return jsonify(msg="Ratio File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
