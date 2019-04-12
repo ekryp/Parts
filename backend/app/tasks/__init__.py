@@ -919,7 +919,7 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
 
 
 @celery.task
-def part_table_creation(part_file, extension):
+def part_table_creation(part_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -975,10 +975,12 @@ def part_table_creation(part_file, extension):
 
     # std_cost table populated
     to_sql_std_cost_table(std_cost_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ",
+                         " Your Request to upload Parts data finished ")
 
 
 @celery.task
-def depot_table_creation(depot_file, extension):
+def depot_table_creation(depot_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -1007,10 +1009,12 @@ def depot_table_creation(depot_file, extension):
 
     # depot table populated
     to_sql_depot_table(depot_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ",
+                         " Your Request to upload Depot data finished ")
 
 
 @celery.task
-def node_table_creation(node_file, extension):
+def node_table_creation(node_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -1052,10 +1056,12 @@ def node_table_creation(node_file, extension):
     engine.execute(query)
 
     to_sql_end_customer_table(node_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ",
+                         " Your Request to upload Node data finished ")
 
 
 @celery.task
-def high_spare_table_creation(high_spare_file, extension):
+def high_spare_table_creation(high_spare_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -1084,10 +1090,13 @@ def high_spare_table_creation(high_spare_file, extension):
 
     # high_spare table populated
     to_sql_high_spare_table(high_spare_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ",
+                         " Your Request to upload High Spare data finished ")
+
 
 
 @celery.task
-def misnomer_table_creation(misnomer_file, extension):
+def misnomer_table_creation(misnomer_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -1116,10 +1125,12 @@ def misnomer_table_creation(misnomer_file, extension):
 
     # high_spare table populated
     to_sql_misnomer_table(misnomer_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ",
+                         " Your Request to upload Misnomer data finished ")
 
 
 @celery.task
-def ratio_table_creation(ratio_file, extension, analysis_type):
+def ratio_table_creation(ratio_file, extension, analysis_type, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -1155,6 +1166,8 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
     # ratio table populated
     to_sql_reliability_class_table(ratio_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ",
+                         " Your Request to upload Ratio of PON data finished ")
 
 
 @celery.task
