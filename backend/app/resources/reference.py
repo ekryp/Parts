@@ -488,7 +488,7 @@ def check_end_customer_file(end_customer_file, extension):
     if end_customer_cols > 2:
         raise FileFormatIssue(end_customer_file, "More than required 2 columns, BAD End Customer File")
 
-    end_customer_cols = ['end_cust_id_from_source', 'end_cust_name']
+    end_customer_cols = ['Sold_To_Customer', 'Customer_Name']
 
     if set(end_customer_df.columns.values.tolist()) != set(end_customer_cols):
         raise FileFormatIssue(end_customer_file, "Header mismatch, BAD End Customer File")
