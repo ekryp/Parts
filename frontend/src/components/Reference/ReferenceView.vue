@@ -1319,8 +1319,9 @@ export default {
                 deleteFlag: this.referenceList[i].reference_table_id
               });
               this.referenceFileData.push({
-                CorrectPON: this.referenceList[i].Correct_PON,
-                MisnomerPON: this.referenceList[i].Misnomer_PON
+                Misnomer_Part: this.referenceList[i].Misnomer_PON,
+                Correct_Part: this.referenceList[i].Correct_PON
+               
               });
            
             }
