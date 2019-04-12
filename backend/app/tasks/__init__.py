@@ -1178,7 +1178,7 @@ def end_customer_table_creation(end_customer_file, extension):
         end_customer_df = pd.read_excel(end_customer_file)
 
     # Remove duplicate cust_name
-    end_customer_df.drop_duplicates(subset="end_cust_name", keep="first", inplace=True)
+    end_customer_df.drop_duplicates(subset="Customer_Name", keep="first", inplace=True)
 
     # delete end_customer  & append with new values
     query = "delete from end_customer"
