@@ -1,1 +1,1 @@
-Product Ordering Name,Node Depot Belongs,PON Quantity
+Part Name,Depot Name,Quantity

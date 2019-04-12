@@ -468,7 +468,7 @@ export default {
       netColumnDefs: null,
       netRowData: [],
       ibColumnDefs: null,
-      ibTitle: ["Node Depot Belongs", "Product Ordering Name", "PON Quantity"],
+      ibTitle: ["Depot Name", "Part Name", "Quantity"],
       ibRowData: [],
       currColumnDefs: null,
       currRowData: [],
@@ -825,17 +825,17 @@ export default {
     createIbColumnDefs() {
       this.ibColumnDefs = [
         {
-          headerName: "Node Depot Belongs",
+          headerName: "Depot Name",
           field: "node_depot_belongs",
           width: 250
         },
         {
-          headerName: "Product Ordering Name",
+          headerName: "Part Name",
           field: "product_ordering_name",
           width: 150
         },
         {
-          headerName: "PON Quantity",
+          headerName: "Quantity",
           field: "pon_quanity",
           width: 150,
           cellStyle: { "text-align": "right" }
