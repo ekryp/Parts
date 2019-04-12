@@ -620,7 +620,20 @@ export default {
               swal({
                 title: "Error",
                 text: data.msg,
-                icon: "error"
+                icon: "error",
+                buttons:{
+                  download :{
+                    text:"Download Sample",
+                    value:"yes"
+                    },
+                    ok : true
+                      },
+                      })
+                  .then((value) => {
+                    switch (value) {
+                    case "yes":
+                    this.downloadSampleBOM();
+                    }
               });
               this.loaderFlag = false;
             }

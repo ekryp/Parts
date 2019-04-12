@@ -967,7 +967,7 @@ def part_table_creation(part_file, extension):
     # Merge with part_df to get part_id from part_name
     std_cost_df = pd.merge(part_df, df, on=['part_name'], how='left')
     std_cost_df = std_cost_df[['part_id', 'material_number', 'standard_cost']]
-    std_cost_df['material_number'] = std_cost_df['material_number'].astype(int)
+    std_cost_df['material_number'] = std_cost_df['material_number']
 
     # delete parts & append with new values
     query = "delete from `part_cost`"
@@ -1033,6 +1033,13 @@ def node_table_creation(node_file, extension):
     # Remove duplicate from dataframe
     node_df.drop_duplicates(keep="first", inplace=True)
 
+    node_df.rename(columns={
+            'Node_Name': 'node_name',
+            'End_Customer': 'end_customer_node_belongs',
+            'Depot': 'node_depot_belongs'
+        }, inplace=True
+    )
+
     # delete node  & append with new values
     query = "delete from node"
     engine.execute(query)
@@ -1070,7 +1077,7 @@ def high_spare_table_creation(high_spare_file, extension):
 
     # Remove duplicate from dataframe
     high_spare_df.drop_duplicates(keep="first", inplace=True)
-    high_spare_df.rename(columns={'ClassicPON': 'part_name', 'SubstitutionPON': 'high_spare_part_name'}, inplace=True)
+    high_spare_df.rename(columns={'Classic_Part': 'part_name', 'Substitution_Part': 'high_spare_part_name'}, inplace=True)
 
     query = "delete from high_spare"
     engine.execute(query)
@@ -1151,7 +1158,7 @@ def ratio_table_creation(ratio_file, extension, analysis_type):
 
 
 @celery.task
-def end_customer_table_creation(end_customer_file, extension):
+def end_customer_table_creation(end_customer_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
@@ -1171,7 +1178,7 @@ def end_customer_table_creation(end_customer_file, extension):
         end_customer_df = pd.read_excel(end_customer_file)
 
     # Remove duplicate cust_name
-    end_customer_df.drop_duplicates(subset="end_cust_name", keep="first", inplace=True)
+    end_customer_df.drop_duplicates(subset="Customer_Name", keep="first", inplace=True)
 
     # delete end_customer  & append with new values
     query = "delete from end_customer"
@@ -1179,6 +1186,7 @@ def end_customer_table_creation(end_customer_file, extension):
 
     # end_customer table populated
     to_sql_end_customer(end_customer_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ", " Your Request to upload Customer data finished ")
 
 
 

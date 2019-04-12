@@ -383,13 +383,13 @@ export default {
           placeHolder: "Adjuntas_Flex_1"
         },
         {
-          columnName: "Node Depot Belongs",
+          columnName: "Depot",
           formName: "node_depot_belongs",
           value: "",
           placeHolder: "MZTM"
         },
         {
-          columnName: "End Customer Node Belongs",
+          columnName: "End Customer ",
           formName: "end_customer_node_belongs",
           value: "",
           placeHolder: "Bestel"
@@ -402,12 +402,12 @@ export default {
           width: 250
         },
         {
-          headerName: "Node Depot Belongs",
+          headerName: "Depot",
           field: "node_depot_belongs",
           width: 150
         },
         {
-          headerName: "End Customer Node Belongs",
+          headerName: "End Customer",
           field: "end_customer_node_belongs",
           width: 150
         }
@@ -1147,8 +1147,9 @@ export default {
                 deleteFlag: this.referenceList[i].high_spare_id
               });
               this.referenceFileData.push({
-                ClassicPON: this.referenceList[i].ClassicPON,
-                SubstitutionPON: this.referenceList[i].SubstitutionPON
+                Substitution_Part: this.referenceList[i].SubstitutionPON,
+                Classic_Part: this.referenceList[i].ClassicPON
+                
               });
             }
 
@@ -1200,10 +1201,10 @@ export default {
                 deleteFlag: this.referenceList[i].node_id
               });
               this.referenceFileData.push({
-                end_customer_node_belongs: this.referenceList[i]
+                 Node_Name: this.referenceList[i].node_name,
+                End_Customer: this.referenceList[i]
                   .end_customer_node_belongs,
-                node_depot_belongs: this.referenceList[i].node_depot_belongs,
-                node_name: this.referenceList[i].node_name
+                Depot: this.referenceList[i].node_depot_belongs
               });
             }
             this.isLoading = false;
@@ -1318,8 +1319,9 @@ export default {
                 deleteFlag: this.referenceList[i].reference_table_id
               });
               this.referenceFileData.push({
-                CorrectPON: this.referenceList[i].Correct_PON,
-                MisnomerPON: this.referenceList[i].Misnomer_PON
+                Misnomer_Part: this.referenceList[i].Misnomer_PON,
+                Correct_Part: this.referenceList[i].Correct_PON
+               
               });
            
             }
@@ -1435,9 +1437,9 @@ export default {
                 deleteFlag: this.referenceList[i].end_cust_id
               });
               this.referenceFileData.push({
-                 end_cust_id_from_source: this.referenceList[i]
+                 Sold_To_Customer: this.referenceList[i]
                   .end_cust_id_from_source,
-                end_cust_name: this.referenceList[i].end_cust_name
+                Customer_Name: this.referenceList[i].end_cust_name
               });
             }
             this.isLoading = false;

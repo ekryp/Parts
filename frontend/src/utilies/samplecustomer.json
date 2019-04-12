@@ -1,6 +1,6 @@
 [
     {
-      "end_cust_id_from_source": "Enter the Customer ID that denotes the Customer Uniquely.(Example:101109)",
-      "end_cust_name": "Enter the Customer Name.(Example: ABB Limited)"
+      "Sold_To_Customer": "Enter the Customer ID that denotes the Customer Uniquely.(Example:101109)",
+      "Customer_Name": "Enter the Customer Name.(Example: ABB Limited)"
     }
   ]
