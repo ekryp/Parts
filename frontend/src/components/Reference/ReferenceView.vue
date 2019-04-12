@@ -383,13 +383,13 @@ export default {
           placeHolder: "Adjuntas_Flex_1"
         },
         {
-          columnName: "Node Depot Belongs",
+          columnName: "Depot",
           formName: "node_depot_belongs",
           value: "",
           placeHolder: "MZTM"
         },
         {
-          columnName: "End Customer Node Belongs",
+          columnName: "End Customer ",
           formName: "end_customer_node_belongs",
           value: "",
           placeHolder: "Bestel"
