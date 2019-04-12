@@ -967,7 +967,7 @@ def part_table_creation(part_file, extension):
     # Merge with part_df to get part_id from part_name
     std_cost_df = pd.merge(part_df, df, on=['part_name'], how='left')
     std_cost_df = std_cost_df[['part_id', 'material_number', 'standard_cost']]
-    std_cost_df['material_number'] = std_cost_df['material_number'].astype(int)
+    std_cost_df['material_number'] = std_cost_df['material_number']
 
     # delete parts & append with new values
     query = "delete from `part_cost`"

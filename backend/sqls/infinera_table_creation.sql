@@ -332,14 +332,14 @@ CREATE TABLE `part_cost` (
   `part_cost_id` int(11) NOT NULL AUTO_INCREMENT,
   `part_id` int(11) DEFAULT NULL,
   `depot_name` varchar(45) DEFAULT NULL,
-  `material_number` varchar(45) DEFAULT NULL,
+  `material_number` varchar(100) DEFAULT NULL,
   `standard_cost` double DEFAULT NULL,
   `source` varchar(45) DEFAULT NULL,
   `version_number` double DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`part_cost_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=141658 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=207760 DEFAULT CHARSET=utf8
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
