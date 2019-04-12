@@ -1070,7 +1070,7 @@ def high_spare_table_creation(high_spare_file, extension):
 
     # Remove duplicate from dataframe
     high_spare_df.drop_duplicates(keep="first", inplace=True)
-    high_spare_df.rename(columns={'ClassicPON': 'part_name', 'SubstitutionPON': 'high_spare_part_name'}, inplace=True)
+    high_spare_df.rename(columns={'Classic_Part': 'part_name', 'Substitution_Part': 'high_spare_part_name'}, inplace=True)
 
     query = "delete from high_spare"
     engine.execute(query)

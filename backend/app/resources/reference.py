@@ -271,7 +271,7 @@ def check_high_spare_file(high_spare_file, extension):
     if high_spare_cols > 2:
         raise FileFormatIssue(high_spare_file, "More than required 2 columns, BAD High Spare File")
 
-    high_spare_cols = ['ClassicPON', 'SubstitutionPON']
+    high_spare_cols = ['Classic_Part', 'Substitution_Part']
 
     if set(high_spare_df.columns.values.tolist()) != set(high_spare_cols):
         raise FileFormatIssue(high_spare_file, "Header mismatch, BAD High Spare File")
