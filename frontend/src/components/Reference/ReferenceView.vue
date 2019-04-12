@@ -1437,9 +1437,9 @@ export default {
                 deleteFlag: this.referenceList[i].end_cust_id
               });
               this.referenceFileData.push({
-                 end_cust_id_from_source: this.referenceList[i]
+                 Sold_To_Customer: this.referenceList[i]
                   .end_cust_id_from_source,
-                end_cust_name: this.referenceList[i].end_cust_name
+                Customer_Name: this.referenceList[i].end_cust_name
               });
             }
             this.isLoading = false;
