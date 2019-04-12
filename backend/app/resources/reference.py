@@ -201,7 +201,7 @@ def check_node_file(node_file, extension):
     if node_cols > 3:
         raise FileFormatIssue(node_file, "More than required 3 columns, BAD Node File")
 
-    depot_cols = ['node_name', 'end_customer_node_belongs', 'node_depot_belongs']
+    depot_cols = ['Node_Name', 'End_Customer', 'Depot']
 
     if set(node_df.columns.values.tolist()) != set(depot_cols):
         raise FileFormatIssue(node_file, "Header mismatch, BAD Node File")

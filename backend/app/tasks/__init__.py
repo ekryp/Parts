@@ -1033,6 +1033,13 @@ def node_table_creation(node_file, extension):
     # Remove duplicate from dataframe
     node_df.drop_duplicates(keep="first", inplace=True)
 
+    node_df.rename(columns={
+            'Node_Name': 'node_name',
+            'End_Customer': 'end_customer_node_belongs',
+            'Depot': 'node_depot_belongs'
+        }, inplace=True
+    )
+
     # delete node  & append with new values
     query = "delete from node"
     engine.execute(query)
