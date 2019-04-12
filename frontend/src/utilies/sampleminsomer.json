@@ -1,6 +1,6 @@
 [
   {
-    "MisnomerPON": "Enter the misnomer PON name here.(Example: D-FANTRAY)",
-    "CorrectPON": "Enter the correct name of the PON.  Misnomer PON name will be converted to this PON.(Example: D-FANTRAY-B=)"
+    "Misnomer_Part": "Enter the misnomer PON name here.(Example: D-FANTRAY)",
+    "Correct_Part": "Enter the correct name of the PON.  Misnomer PON name will be converted to this PON.(Example: D-FANTRAY-B=)"
   }
 ]

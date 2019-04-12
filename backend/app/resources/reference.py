@@ -53,6 +53,7 @@ class UploadParts(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         parts_file = ''
 
@@ -71,8 +72,8 @@ class UploadParts(Resource):
         try:
             check_part_file(parts_file, extension)
 
-            #part_table_creation(parts_file, extension)
-            celery.send_task('app.tasks.part_table_creation', [parts_file, extension])
+            #part_table_creation(parts_file, extension, user_email_id)
+            celery.send_task('app.tasks.part_table_creation', [parts_file, extension, user_email_id])
             return jsonify(msg="Part File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -150,6 +151,7 @@ class UploadDepot(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         depot_file = ''
 
@@ -168,8 +170,8 @@ class UploadDepot(Resource):
         try:
             check_depot_file(depot_file, extension)
 
-            #depot_table_creation(depot_file, extension)
-            celery.send_task('app.tasks.depot_table_creation', [depot_file, extension])
+            #depot_table_creation(depot_file, extension, user_email_id)
+            celery.send_task('app.tasks.depot_table_creation', [depot_file, extension, user_email_id])
             return jsonify(msg="Depot File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -201,7 +203,7 @@ def check_node_file(node_file, extension):
     if node_cols > 3:
         raise FileFormatIssue(node_file, "More than required 3 columns, BAD Node File")
 
-    depot_cols = ['node_name', 'end_customer_node_belongs', 'node_depot_belongs']
+    depot_cols = ['Node_Name', 'End_Customer', 'Depot']
 
     if set(node_df.columns.values.tolist()) != set(depot_cols):
         raise FileFormatIssue(node_file, "Header mismatch, BAD Node File")
@@ -220,6 +222,7 @@ class UploadNode(Resource):
 
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         node_file = ''
 
@@ -238,8 +241,8 @@ class UploadNode(Resource):
         try:
             check_node_file(node_file, extension)
 
-            #node_table_creation(node_file, extension)
-            celery.send_task('app.tasks.node_table_creation', [node_file, extension])
+            #node_table_creation(node_file, extension, user_email_id)
+            celery.send_task('app.tasks.node_table_creation', [node_file, extension, user_email_id])
             return jsonify(msg="Node File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -271,7 +274,7 @@ def check_high_spare_file(high_spare_file, extension):
     if high_spare_cols > 2:
         raise FileFormatIssue(high_spare_file, "More than required 2 columns, BAD High Spare File")
 
-    high_spare_cols = ['ClassicPON', 'SubstitutionPON']
+    high_spare_cols = ['Classic_Part', 'Substitution_Part']
 
     if set(high_spare_df.columns.values.tolist()) != set(high_spare_cols):
         raise FileFormatIssue(high_spare_file, "Header mismatch, BAD High Spare File")
@@ -289,6 +292,7 @@ class UploadHighSpare(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         high_spare_file = ''
 
@@ -307,8 +311,8 @@ class UploadHighSpare(Resource):
         try:
             check_high_spare_file(high_spare_file, extension)
 
-            # high_spare_table_creation(high_spare_file, extension)
-            celery.send_task('app.tasks.high_spare_table_creation', [high_spare_file, extension])
+            # high_spare_table_creation(high_spare_file, extension, user_email_id)
+            celery.send_task('app.tasks.high_spare_table_creation', [high_spare_file, extension, user_email_id])
             return jsonify(msg="High_Spare File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -340,7 +344,7 @@ def check_misnomer_file(misnomer_file, extension):
     if misnomer_df_cols > 2:
         raise FileFormatIssue(misnomer_file, "More than required 2 columns, BAD Misnomer File")
 
-    misnomer_cols = ['MisnomerPON', 'CorrectPON']
+    misnomer_cols = ['Misnomer_Part', 'Correct_Part']
 
     if set(misnomer_df.columns.values.tolist()) != set(misnomer_cols):
         raise FileFormatIssue(misnomer_file, "Header mismatch, BAD Misnomer File")
@@ -359,6 +363,7 @@ class UploadMisnomer(Resource):
 
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         misnomer_file = ''
 
@@ -369,7 +374,7 @@ class UploadMisnomer(Resource):
             if extension.lower() == '.csv':
                 dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
                 full_path = os.path.abspath(dir_path)
-                file.filename = "high_spare_file_{0}{1}".format(upload_date, extension.lower())
+                file.filename = "misnomer_file_{0}{1}".format(upload_date, extension.lower())
                 misnomer_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
@@ -377,8 +382,8 @@ class UploadMisnomer(Resource):
         try:
             check_misnomer_file(misnomer_file, extension)
 
-            #misnomer_table_creation(misnomer_file, extension)
-            celery.send_task('app.tasks.misnomer_table_creation', [misnomer_file, extension])
+            #misnomer_table_creation(misnomer_file, extension, user_email_id)
+            celery.send_task('app.tasks.misnomer_table_creation', [misnomer_file, extension, user_email_id])
             return jsonify(msg="Misnomer File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -436,6 +441,7 @@ class UploadRatio(Resource):
 
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         ratio_file = ''
         analysis_type = request.form.get('analysis_type')
@@ -455,8 +461,8 @@ class UploadRatio(Resource):
         try:
             check_ratio_file(ratio_file, extension)
 
-            #ratio_table_creation(ratio_file, extension, analysis_type)
-            celery.send_task('app.tasks.ratio_table_creation', [ratio_file, extension, analysis_type])
+            #ratio_table_creation(ratio_file, extension, analysis_type, user_email_id)
+            celery.send_task('app.tasks.ratio_table_creation', [ratio_file, extension, analysis_type, user_email_id])
             return jsonify(msg="Ratio File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
@@ -488,7 +494,7 @@ def check_end_customer_file(end_customer_file, extension):
     if end_customer_cols > 2:
         raise FileFormatIssue(end_customer_file, "More than required 2 columns, BAD End Customer File")
 
-    end_customer_cols = ['end_cust_id_from_source', 'end_cust_name']
+    end_customer_cols = ['Sold_To_Customer', 'Customer_Name']
 
     if set(end_customer_df.columns.values.tolist()) != set(end_customer_cols):
         raise FileFormatIssue(end_customer_file, "Header mismatch, BAD End Customer File")
@@ -505,6 +511,7 @@ class UploadEndCustomer(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
         upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         end_customer_file = ''
 
@@ -523,8 +530,8 @@ class UploadEndCustomer(Resource):
         try:
             check_end_customer_file(end_customer_file, extension)
 
-            #end_customer_table_creation(end_customer_file, extension)
-            celery.send_task('app.tasks.end_customer_table_creation', [end_customer_file, extension])
+            #end_customer_table_creation(end_customer_file, extension, user_email_id)
+            celery.send_task('app.tasks.end_customer_table_creation', [end_customer_file, extension, user_email_id])
             return jsonify(msg="End Customer File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
