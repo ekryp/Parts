@@ -10,9 +10,7 @@
         <h4 v-if="patchFlag">Patches</h4>
       </div>
       <div class="content">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-        <br>
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <span >{{descriptionContent}}</span>
       </div>
       <div class="actions">
         <button type="button" class="btn btn-danger" @click="hideModal()">OK</button>
@@ -102,7 +100,6 @@
                 v-if="problemDescription === ''"
                 type="button"
                 class="btn btn-success"
-                @click="onAnalyze()"
                 disabled
               >{{solutionScreenConstants.buttons[0]}}</button>
             </div>
@@ -119,7 +116,7 @@
               <i class="fas fa-dot-circle" style="color:green" v-if="showGreen"></i>
               <i class="fas fa-dot-circle" style="color:#d62828f7" v-if="!showGreen"></i>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" v-if="analyzeFlag">
               <button type="button" class="btn btn-success" @click="onReserve()">{{solutionScreenConstants.buttons[1]}}</button>
             </div>
           </div>
@@ -130,17 +127,27 @@
             </div>
           </div>
           <div class="row align" v-if="analyzeFlag">
-            <div class="col-md-1"></div>
-            <div class="col-md-10" align="center">
-              <table class="table responsive">
+            <div class="col-md-2"></div>
+            <div class="col-md-8" align="center">
+              <table class="table responsive table-hover">
                 <tbody>
-                  <tr>
+                  <tr v-for="item in devTrackData" :key="item.ids"
+                  class="in-progress col"
+                  
+                  @click="showSolution(item.index)"
+                  >
+                      <td>{{item.ids}}</td>
+                      
+                    </tr>
+                  
+                  
+                  <!-- <tr>
                     <td
                       class="in-progress col"
                       @click="showSolution1()"
                       v-bind:style="{ backgroundColor: b1color }"
                     >Matching Defects</td>
-                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b1color }">76%</td>
+                    
                   </tr>
                   <tr>
                     <td
@@ -173,24 +180,25 @@
                       v-bind:style="{ backgroundColor: b5color }"
                     >TOI Area</td>
                     <td @click="showSolution()" v-bind:style="{ backgroundColor: b5color }">44%</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>
+            <div class="col-md-2"></div>
           </div>
 
-          <div class="row align">
+          <div class="row align" v-if="problem1Flag">
             <div class="col-md-12">
               <h5 align="center" v-if="problem1Flag || problem2Flag ">Solution Links</h5>
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
-              <h5 align="left" v-if="problem1Flag">Patches</h5>
+              <h5 align="left" v-if="problem1Flag">Description</h5>
             </div>
-          </div>
+          </div> -->
 
           <div class="row align" v-if="problem1Flag">
             <div class="col-md-1"></div>
@@ -202,10 +210,10 @@
                       @click="showPatchModal()"
                       v-bind:style="{ backgroundColor: p1color }"
                       class="col in-progress"
-                    >Patch 1</td>
-                    <td class="col in-progress" v-bind:style="{ backgroundColor: p1color }">97%</td>
+                    >Description</td>
+                    
                   </tr>
-                  <tr>
+                  <!--<tr>
                     <td
                       class="col in-progress"
                       @click="showPatchModal()"
@@ -213,7 +221,7 @@
                     >Patch 2</td>
                     <td class="col in-progress" v-bind:style="{ backgroundColor: p2color }">92%</td>
                   </tr>
-                  <!-- <tr>
+                   <tr>
                     <td class="col">Upgraded firmware</td>
                     <td class="col">45%</td>
                   </tr>-->
@@ -221,7 +229,7 @@
               </table>
             </div>
           </div>
-
+<!--
           <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
@@ -250,14 +258,14 @@
                     >Release Notes 2</td>
                     <td class="col" v-bind:style="{ backgroundColor: rl2color }">82%</td>
                   </tr>
-                  <!-- <tr>
+                   <tr>
                     <td class="col">Upgraded firmware</td>
                     <td class="col">83%</td>
-                  </tr>-->
+                  </tr>
                 </tbody>
               </table>
             </div>
-          </div>
+          </div>-->
 
           <!--  <div class="row align" v-if="problem3Flag">
             <div class="col-md-1"></div>
@@ -366,6 +374,7 @@ export default {
       tags: [],
       solutionScreenConstants:constant.SolutionScreen,
       showGreen: true,
+      devTrackData:[],
       tarFileName: "",
       tarFile: "",
       b1color: "",
@@ -377,6 +386,8 @@ export default {
       p2color: "",
       rl1color: "",
       rl2color: "",
+      descriptionContent:"",
+      valueIndex:"",
       releaseFlag: true,
       patchFlag: false,
       problemDescription: "",
@@ -414,7 +425,58 @@ export default {
       }
     },
     onAnalyze() {
-      this.analyzeFlag = true;
+      this.isLoading=true;
+      this.devTrackData=[];
+     
+      fetch("http://localhost:5000/api/getDevTrackData?search_param="+this.problemDescription, {
+      
+      headers: {
+        'Content-Type': 'application/json'
+      }
+       })
+         .then(response => {
+           response.text().then(text => {
+             const data = text && JSON.parse(text);
+             if (data.http_status_code === 200) {
+              this.isLoading=false;
+             
+              for(var i=0;i<data.data.hits.hits.length;i++)
+              {
+                if(i<5){
+                  this.devTrackData.push({ids:data.data.hits.hits[i]._id,index:i,
+                description:data.data.hits.hits[i]._source.description});
+                }
+                
+              }
+              console.log('asdasd',this.devTrackData);
+              if(data.data.hits.hits.length>0)
+              {
+                 this.analyzeFlag = true;
+                swal({
+                 title: "SUCCESS",
+                 text: data.msg,
+                 icon: "success"
+              });
+
+              }
+              else{
+                swal({
+                 title: "SUCCESS",
+                 text: "Sorry No Suggestions Available...Search Again..",
+                 icon: "success"
+              });
+              }
+               
+             } else {
+                this.isLoading=false;
+             }
+             console.log("data -- response-->", data);
+             
+           });
+         })
+         .catch(handleError => {
+           console.log(" Error Response ------->", handleError);
+         });
     },
     showModal() {
       this.patchFlag = false;
@@ -423,13 +485,16 @@ export default {
     },
     showPatchModal() {
       this.patchFlag = true;
+      this.descriptionContent=this.devTrackData[this.valueIndex].description;
       this.releaseFlag = false;
       this.$modals.myModal.$show();
     },
     hideModal() {
       this.$modals.myModal.$hide();
     },
-    showSolution1() {
+    showSolution(index) {
+      console.log(index);
+      this.valueIndex=index;
       this.problem1Flag = true;
       this.problem2Flag = false;
       this.problem3Flag = false;
@@ -558,6 +623,7 @@ export default {
 
 .in-progress {
   cursor: pointer;
+  text-align: center;
 }
 .vue-tooltip {
   background-color: white;
