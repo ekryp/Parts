@@ -121,6 +121,7 @@ export const SolutionScreen = {
     labAvailablity: "Lab Availablity",
     buttons: ["Analyze", "Reserve"],
     potentialSolutionHeader: "Potential Solutions",
+    errorMessage:"No Data Found ",
     suggestionsHeader: "Solution Links",
 
 
