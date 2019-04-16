@@ -1,5 +1,6 @@
 export let APIURL = "";
 export let APPURL = "";
+export let ELKURL = "";
 if (process.env.NODE_ENV === 'local') {
     APIURL = "https://staging-ib-services.ekryp.com/";
     APPURL = "http://localhost:2323/";
@@ -124,7 +125,7 @@ export const SolutionScreen = {
     labAvailablity: "Lab Availablity",
     buttons: ["Analyze", "Reserve"],
     potentialSolutionHeader: "Potential Solutions",
-    errorMessage:"No Data Found ",
+    errorMessage: "No Data Found ",
     suggestionsHeader: "Solution Links",
 
 
