@@ -21,7 +21,12 @@ class DevTrackData(Resource):
             PARAMS = "{\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"Found in Release\"]}}}"
             r = requests.get(url = URL, data = PARAMS, headers=headers) 
             data = r.json()
-            return jsonify(data=data, http_status_code=200)
+            esResponses = data['hits']['hits']
+            responses = []
+            for doc in esResponses:
+                data = doc["_source"]
+                responses.append(data)
+            return jsonify(data=responses, http_status_code=200)
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Updating,Please try again", http_status_code=400)
