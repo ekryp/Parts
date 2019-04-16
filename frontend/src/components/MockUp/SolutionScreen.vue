@@ -765,7 +765,7 @@ export default {
       this.errorFlag=false;
       this.devTrackData=[];
      
-      fetch("http://localhost:5002/api/getDevTrackData?search_param="+this.problemDescription, {
+      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription, {
       
       headers: {
         'Content-Type': 'application/json'
