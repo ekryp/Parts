@@ -1,14 +1,17 @@
 export let APIURL = "";
 export let APPURL = "";
 if (process.env.NODE_ENV === 'local') {
-    APIURL = "http://localhost:5000/";
+    APIURL = "https://staging-ib-services.ekryp.com/";
     APPURL = "http://localhost:2323/";
+    ELKURL = "https://staging-elk.ekryp.com/"
 } else if (process.env.NODE_ENV === 'uat') {
     APIURL = "https://staging-ib-services.ekryp.com/";
     APPURL = "https://staging-ib.ekryp.com/";
+    ELKURL = "https://staging-elk.ekryp.com/"
 } else if (process.env.NODE_ENV === 'prod') {
     APIURL = "https://infinera-services.ekryp.com/";
     APPURL = "https://infinera.ekryp.com/";
+    ELKURL = "https://infinera-elk.ekryp.com/"
 }
 
 export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction']
@@ -121,6 +124,7 @@ export const SolutionScreen = {
     labAvailablity: "Lab Availablity",
     buttons: ["Analyze", "Reserve"],
     potentialSolutionHeader: "Potential Solutions",
+    errorMessage:"No Data Found ",
     suggestionsHeader: "Solution Links",
 
 
