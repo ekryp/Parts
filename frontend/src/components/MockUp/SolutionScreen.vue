@@ -3,21 +3,30 @@
     <headernav msg="Dashboard"/>
     <side-nav/>
 
+
+
+
+    <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+
+
     <vudal name="myModal">
       <div class="header">
         <i class="close icon"></i>
         <h4 v-if="releaseFlag">Release Notes</h4>
         <h4 v-if="patchFlag">Patches</h4>
       </div>
-      <div class="content">
-        <span >{{descriptionContent}}</span>
+      <div class="content modal-content1">
+        <span class="textOverlay">{{descriptionContent}}</span>
       </div>
       <div class="actions">
         <button type="button" class="btn btn-danger" @click="hideModal()">OK</button>
       </div>
     </vudal>
 
-    <div class="custom-container" style="paddingTop: 5%">
+    <div class="custom-container" style="paddingTop: 7%">
       <div class="myBreadCrumb" style="margin-bottom:1px;fontSize:0.875em">
         <p>
           <span class="in-progress">{{solutionScreenConstants.breadcrumb}}</span>
@@ -36,7 +45,7 @@
                 class="form-control"
                 rows="4"
                 id="email"
-                placeholder="Enter the Problem Description"
+                :placeholder="problemDescriptionPlaceholder"
               ></textarea>
             </div>
           </div>
@@ -47,7 +56,7 @@
 
           <div class="row align">
             <div class="col-md-10">
-              <textarea class="form-control" col="4" id="email" placeholder="Enter the Log-Info"></textarea>
+              <textarea class="form-control" col="4" id="email" placeholder="Enter the Log-Info" disabled></textarea>
             </div>
           </div>
 
@@ -76,11 +85,11 @@
               <div class="row">
                 <div class="col-lg-1">
                   <label for="fileupload" class="file">
-                    <input type="file" @change="handleFile" id="fileupload" style="display:none">
+                    <!-- <input type="file" @change="handleFile" id="fileupload" style="display:none"> -->
                     <i class="fas fa-paperclip fa-1.5x in-progress"></i>
                   </label>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-8 in-progress">
                   <span v-if="tarFileName === ''">no file selected</span>
                   <span v-if="tarFileName !== ''">{{tarFileName}}</span>
                 </div>
@@ -126,36 +135,43 @@
               <h5 align="center">{{solutionScreenConstants.potentialSolutionHeader}}</h5>
             </div>
           </div>
+
+          
+           <div class="row align" v-if="errorFlag">
+            <div class="col-md-12">
+              <h5 align="center">{{solutionScreenConstants.errorMessage}}</h5>
+            </div>
+          </div>
           <div class="row align" v-if="analyzeFlag">
-            <div class="col-md-2"></div>
-            <div class="col-md-8" align="center">
-              <table class="table responsive table-hover">
+            <div class="col-md-1"></div>
+            <div class="col-md-10" align="center">
+              <table class="table responsive">
                 <tbody>
-                  <tr v-for="item in devTrackData" :key="item.ids"
+                  <!-- <tr v-for="item in devTrackData" :key="item.ids"
                   class="in-progress col"
                   
                   @click="showSolution(item.index)"
                   >
                       <td>{{item.ids}}</td>
                       
-                    </tr>
+                    </tr> -->
                   
                   
-                  <!-- <tr>
-                    <td
-                      class="in-progress col"
-                      @click="showSolution1()"
-                      v-bind:style="{ backgroundColor: b1color }"
-                    >Matching Defects</td>
-                    
-                  </tr>
-                  <tr>
+                   <tr>
                     <td
                       class="in-progress col"
                       @click="showSolution2()"
                       v-bind:style="{ backgroundColor: b2color }"
+                    >Dev Track Data</td>
+                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b2color }">76%</td> -->
+                  </tr>
+                  <tr>
+                    <td
+                      class="in-progress col"
+                      @click="showSolution1()"
+                      v-bind:style="{ backgroundColor: b1color }"
                     >FSB Tech Notes</td>
-                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b2color }">65%</td>
+                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b1color }">65%</td> -->
                   </tr>
                   <tr>
                     <td
@@ -163,7 +179,7 @@
                       @click="showSolution3()"
                       v-bind:style="{ backgroundColor: b3color }"
                     >Wiki Links</td>
-                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b3color }">45%</td>
+                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b3color }">45%</td> -->
                   </tr>
                   <tr>
                     <td
@@ -171,7 +187,7 @@
                       @click="showSolution4()"
                       v-bind:style="{ backgroundColor: b4color }"
                     >Configurations</td>
-                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b4color }">45%</td>
+                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b4color }">45%</td> -->
                   </tr>
                   <tr>
                     <td
@@ -179,12 +195,12 @@
                       @click="showSolution5()"
                       v-bind:style="{ backgroundColor: b5color }"
                     >TOI Area</td>
-                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b5color }">44%</td>
-                  </tr> -->
+                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b5color }">44%</td> -->
+                  </tr> 
                 </tbody>
               </table>
             </div>
-            <div class="col-md-2"></div>
+            
           </div>
 
           <div class="row align" v-if="problem1Flag">
@@ -193,12 +209,12 @@
             </div>
           </div>
 
-          <!-- <div class="row">
+          <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <h5 align="left" v-if="problem1Flag">Description</h5>
             </div>
-          </div> -->
+          </div> 
 
           <div class="row align" v-if="problem1Flag">
             <div class="col-md-1"></div>
@@ -213,7 +229,7 @@
                     >Description</td>
                     
                   </tr>
-                  <!--<tr>
+                  <tr>
                     <td
                       class="col in-progress"
                       @click="showPatchModal()"
@@ -224,16 +240,16 @@
                    <tr>
                     <td class="col">Upgraded firmware</td>
                     <td class="col">45%</td>
-                  </tr>-->
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
-<!--
+
           <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
-              <h5 align="left" v-if="problem2Flag">Release Notes</h5>
+              <h5 align="left" v-if="problem2Flag">Dev Track</h5>
             </div>
           </div>
 
@@ -241,8 +257,21 @@
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
               <table class="table responsive table-hover">
+                <thead>
+                  <th>Issue Id</th>
+                  <th>Severity</th>
+                </thead>
                 <tbody>
-                  <tr>
+                  <tr v-for="item in devTrackData" :key="item.ids"
+                  
+                  
+                  @click="showPatchModal(item.index)"
+                  >
+                  <td class=" in-progress">
+                    {{item.ids}}</td>
+                      <td class=" in-progress">{{item.severity}}</td>
+                    </tr>
+                  <!-- <tr>
                     <td
                       class="col in-progress"
                       @click="showModal()"
@@ -257,17 +286,14 @@
                       v-bind:style="{ backgroundColor: rl2color }"
                     >Release Notes 2</td>
                     <td class="col" v-bind:style="{ backgroundColor: rl2color }">82%</td>
-                  </tr>
-                   <tr>
-                    <td class="col">Upgraded firmware</td>
-                    <td class="col">83%</td>
-                  </tr>
+                  </tr> -->
+                   
                 </tbody>
               </table>
             </div>
-          </div>-->
+          </div>
 
-          <!--  <div class="row align" v-if="problem3Flag">
+           <div class="row align" v-if="problem3Flag">
             <div class="col-md-1"></div>
             <div class="col-md-10" align="center">
               <table class="table responsive">
@@ -289,7 +315,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12">
               <h5 align="center" v-if="problem1Flag || problem2Flag || problem3Flag">Release Notes</h5>
             </div>
@@ -306,9 +332,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <div class="row align" v-if="problem1Flag || problem2Flag || problem3Flag">
+          <!-- <div class="row align" v-if="problem1Flag || problem2Flag || problem3Flag">
             <div class="col-md-12">
               <h5 align="center">Patches</h5>
             </div>
@@ -328,7 +354,7 @@
                 </div>
               </div>
             </div>
-          </div>-->
+          </div> -->
           <br>
         </div>
       </div>
@@ -354,6 +380,7 @@ import headernav from "@/components/header/header";
 import * as constant from "../constant/constant";
 import tagsinput from "vue-tagsinput";
 import Vudal from "vudal";
+import Loading from 'vue-loading-overlay';
 
 import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 export default {
@@ -363,7 +390,8 @@ export default {
     headernav,
     DownloadExcel,
     tagsinput,
-    Vudal
+    Vudal,
+    Loading
   },
   created() {
     clearInterval(window.intervalObj);
@@ -371,10 +399,12 @@ export default {
   data() {
     console.log("dashboard", this.data);
     return {
+      isLoading: false,
       tags: [],
       solutionScreenConstants:constant.SolutionScreen,
       showGreen: true,
       devTrackData:[],
+      errorFlag:false,
       tarFileName: "",
       tarFile: "",
       b1color: "",
@@ -387,6 +417,7 @@ export default {
       rl1color: "",
       rl2color: "",
       descriptionContent:"",
+      problemDescriptionPlaceholder:"Enter the Problem Description",
       valueIndex:"",
       releaseFlag: true,
       patchFlag: false,
@@ -426,9 +457,10 @@ export default {
     },
     onAnalyze() {
       this.isLoading=true;
+      this.errorFlag=false;
       this.devTrackData=[];
      
-      fetch("http://localhost:5000/api/getDevTrackData?search_param="+this.problemDescription, {
+      fetch("http://localhost:5002/api/getDevTrackData?search_param="+this.problemDescription, {
       
       headers: {
         'Content-Type': 'application/json'
@@ -440,31 +472,26 @@ export default {
              if (data.http_status_code === 200) {
               this.isLoading=false;
              
-              for(var i=0;i<data.data.hits.hits.length;i++)
+              for(var i=0;i<data.data.devTrack.length;i++)
               {
                 if(i<5){
-                  this.devTrackData.push({ids:data.data.hits.hits[i]._id,index:i,
-                description:data.data.hits.hits[i]._source.description});
+                  this.devTrackData.push({ids:data.data.devTrack[i].id,index:i,
+                description:data.data.devTrack[i].description,
+                severity:data.data.devTrack[i].severity});
                 }
                 
               }
               console.log('asdasd',this.devTrackData);
-              if(data.data.hits.hits.length>0)
+              if(data.data.devTrack.length>0)
               {
                  this.analyzeFlag = true;
-                swal({
-                 title: "SUCCESS",
-                 text: data.msg,
-                 icon: "success"
-              });
-
               }
               else{
-                swal({
-                 title: "SUCCESS",
-                 text: "Sorry No Suggestions Available...Search Again..",
-                 icon: "success"
-              });
+                this.analyzeFlag = false;
+                this.problem2Flag = false;
+                this.errorFlag=true;
+                this.problemDescriptionPlaceholder="Sorry ...No Data is Present for the Specified Issue";
+                this.problemDescription="";
               }
                
              } else {
@@ -483,9 +510,9 @@ export default {
       this.releaseFlag = true;
       this.$modals.myModal.$show();
     },
-    showPatchModal() {
+    showPatchModal(index) {
       this.patchFlag = true;
-      this.descriptionContent=this.devTrackData[this.valueIndex].description;
+      this.descriptionContent=this.devTrackData[index].description;
       this.releaseFlag = false;
       this.$modals.myModal.$show();
     },
@@ -504,6 +531,16 @@ export default {
       this.b4color = "";
       this.b5color = "";
     },
+    showSolution1() {
+      // this.problem1Flag = true;
+       this.problem2Flag = false;
+      // this.problem3Flag = false;
+      this.b1color = "#88e288";
+      this.b2color = "";
+      this.b3color = "";
+      this.b4color = "";
+      this.b5color = "";
+    },
     showSolution2() {
       this.problem1Flag = false;
       this.problem2Flag = true;
@@ -515,9 +552,9 @@ export default {
       this.b5color = "";
     },
     showSolution3() {
-      this.problem3Flag = true;
-      this.problem2Flag = false;
-      this.problem1Flag = false;
+      // this.problem3Flag = true;
+       this.problem2Flag = false;
+      // this.problem1Flag = false;
       this.b3color = "#88e288";
       this.b1color = "";
       this.b2color = "";
@@ -525,9 +562,9 @@ export default {
       this.b5color = "";
     },
     showSolution4() {
-      this.problem3Flag = true;
-      this.problem2Flag = false;
-      this.problem1Flag = false;
+      // this.problem3Flag = true;
+       this.problem2Flag = false;
+      // this.problem1Flag = false;
       this.b3color = "";
       this.b2color = "";
       this.b4color = "#88e288";
@@ -535,9 +572,9 @@ export default {
       this.b1color = "";
     },
     showSolution5() {
-      this.problem3Flag = true;
-      this.problem2Flag = false;
-      this.problem1Flag = false;
+      // this.problem3Flag = true;
+       this.problem2Flag = false;
+      // this.problem1Flag = false;
       this.b3color = "";
       this.b2color = "";
       this.b1color = "";
@@ -623,11 +660,19 @@ export default {
 
 .in-progress {
   cursor: pointer;
-  text-align: center;
+  
 }
 .vue-tooltip {
   background-color: white;
   color: #71869e;
+}
+.modal-content1{
+  width: 80%;
+}
+
+.textOverlay
+{
+  word-break: break-all;
 }
 </style>
 
