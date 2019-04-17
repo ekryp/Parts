@@ -9,7 +9,7 @@
     <Loading :active="isLoading" 
         :can-cancel="false" 
         color=#15ba9a
-        :is-full-page="fullPage"></Loading>
+        ></Loading>
 
 
     <vudal name="myModal">
@@ -18,8 +18,310 @@
         <h4 v-if="releaseFlag">Release Notes</h4>
         <h4 v-if="patchFlag">Patches</h4>
       </div>
-      <div class="content modal-content1">
-        <span class="textOverlay">{{descriptionContent}}</span>
+      <div class="content contentwidth">
+        <nav>
+         <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a
+            class="nav-item nav-link active navHeaderColor"
+            id="nav-Details-tab"
+            data-toggle="tab"
+            href="#nav-Details"
+            role="tab"
+            aria-controls="nav-Details"
+            aria-selected="true"
+          >Details</a>
+          <a
+            class="nav-item nav-link navHeaderColor"
+            id="nav-Description-tab"
+            data-toggle="tab"
+            href="#nav-Description"
+            role="tab"
+            aria-controls="nav-Description"
+            aria-selected="true"
+          >Description</a>
+
+          
+        </div>
+
+      
+      </nav>
+        <div class="tab-content" id="nav-tabContent">
+
+            <div
+          class="tab-pane fade show"
+          id="nav-Description"
+          role="tabpanel"
+          aria-labelledby="nav-Description-tab"
+        >
+        <br>
+        <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Title:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.title}}</span>
+            </div>
+          </div>
+          <br>
+          <label class="labelweight">Description:</label>
+          <br>
+          <span class="textOverlay">{{devTrackContent.description}}</span>
+        </div>
+
+          <div
+          class="tab-pane active show"
+          id="nav-Details"
+          role="tabpanel"
+          aria-labelledby="nav-Details-tab"
+        >
+          <br>
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Progress Status:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.progressStatus}}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Group:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.group}}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Severity:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.severity}}</span>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Found In Build:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.foundInBuild}}</span>
+            </div>
+          </div>
+
+           <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Traget Release:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.tragetRelease}}</span>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Date Closed:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.dateClosed}}</span>
+            </div>
+          </div>
+
+           <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Product:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.product}}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Service Account:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.serviceAccount}}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">Fixed In Release:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.fixedinRelease}}</span>
+            </div>
+          </div>
+
+          <!-- <div class="row">
+            <div class="col-lg-5">
+              <label>Issue Id:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.ids}}</span>
+            </div>
+          </div>
+           <div class="row">
+            <div class="col-lg-5">
+              <label>Current Owner:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.currentOwner}}</span>
+            </div>
+          </div>
+           <div class="row">
+            <div class="col-lg-5">
+              <label>Case Reason:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.caseReason}}</span>
+            </div>
+          </div>
+           <div class="row">
+            <div class="col-lg-5">
+              <label>Current Owner:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.currentOwner}}</span>
+            </div>
+          </div>
+           
+           <div class="row">
+            <div class="col-lg-5">
+              <label>Date Submitted:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.dateSubmitted}}</span>
+            </div>
+          </div>
+           <div class="row">
+            <div class="col-lg-5">
+              <label>Final Test RootCause Analysis Comments:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.finalTestRootCauseAnalysisComments}}</span>
+            </div>
+          </div>
+           
+           <div class="row">
+            <div class="col-lg-5">
+              <label>Found In Build:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.foundInBuild}}</span>
+            </div>
+          </div>
+           <div class="row">
+            <div class="col-lg-5">
+              <label>Found On Platform:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.foundOnPlatform}}</span>
+            </div>
+          </div>
+           
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Hw PON:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.hwPON}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Priority:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.priority}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Problem Description Impacted:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.problemDescriptionImpacted}}</span>
+            </div>
+          </div>
+         
+          
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Reporting Customer:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.reportingCustomer}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Resolution:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.resolution}}</span>
+            </div>
+          </div>
+           
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Submitted By:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.submittedBy}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Symptoms:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.symptoms}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Title:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.title}}</span>
+            </div>
+          </div>
+         
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Type:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.type}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Workaround:</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{devTrackContent.workaround}}</span>
+            </div>
+          </div>
+ -->
+
+
+
+
+        </div>
+          </div>
+
+        
+
+
+
+
       </div>
       <div class="actions">
         <button type="button" class="btn btn-danger" @click="hideModal()">OK</button>
@@ -50,17 +352,7 @@
             </div>
           </div>
 
-          <div class="row align">
-            <label class="col-md-10">{{solutionScreenConstants.logInfo}}</label>
-          </div>
-
-          <div class="row align">
-            <div class="col-md-10">
-              <textarea class="form-control" col="4" id="email" placeholder="Enter the Log-Info" disabled></textarea>
-            </div>
-          </div>
-
-          <div class="row align">
+           <div class="row align">
             <label class="col-md-10">{{solutionScreenConstants.tags}}</label>
           </div>
 
@@ -75,6 +367,19 @@
               ></tagsinput>
             </div>
           </div>
+
+
+          <div class="row align">
+            <label class="col-md-10">{{solutionScreenConstants.logInfo}}</label>
+          </div>
+
+          <div class="row align">
+            <div class="col-md-10">
+              <textarea class="form-control" col="4" id="email" placeholder="Enter the Log-Info" disabled></textarea>
+            </div>
+          </div>
+
+         
 
           <div class="row align">
             <label class="col-md-10">{{solutionScreenConstants.tarBall}}</label>
@@ -163,31 +468,31 @@
                       @click="showSolution2()"
                       v-bind:style="{ backgroundColor: b2color }"
                     >Dev Track Data</td>
-                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b2color }">76%</td> -->
+                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b2color }">{{this.devTrackData.length}}</td> 
                   </tr>
                   <tr>
                     <td
                       class="in-progress col"
                       @click="showSolution1()"
                       v-bind:style="{ backgroundColor: b1color }"
-                    >FSB Tech Notes</td>
-                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b1color }">65%</td> -->
+                    >Release Notes</td>
+                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b1color }">0</td>
                   </tr>
                   <tr>
                     <td
                       class="in-progress col"
                       @click="showSolution3()"
                       v-bind:style="{ backgroundColor: b3color }"
-                    >Wiki Links</td>
-                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b3color }">45%</td> -->
+                    >Salesforce Data</td>
+                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b3color }">0</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td
                       class="in-progress col"
                       @click="showSolution4()"
                       v-bind:style="{ backgroundColor: b4color }"
                     >Configurations</td>
-                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b4color }">45%</td> -->
+                     <td @click="showSolution()" v-bind:style="{ backgroundColor: b4color }">45%</td> 
                   </tr>
                   <tr>
                     <td
@@ -195,8 +500,8 @@
                       @click="showSolution5()"
                       v-bind:style="{ backgroundColor: b5color }"
                     >TOI Area</td>
-                    <!-- <td @click="showSolution()" v-bind:style="{ backgroundColor: b5color }">44%</td> -->
-                  </tr> 
+                    <td @click="showSolution()" v-bind:style="{ backgroundColor: b5color }">44%</td> 
+                  </tr>  -->
                 </tbody>
               </table>
             </div>
@@ -416,7 +721,7 @@ export default {
       p2color: "",
       rl1color: "",
       rl2color: "",
-      descriptionContent:"",
+      devTrackContent:"",
       problemDescriptionPlaceholder:"Enter the Problem Description",
       valueIndex:"",
       releaseFlag: true,
@@ -475,9 +780,30 @@ export default {
               for(var i=0;i<data.data.devTrack.length;i++)
               {
                 if(i<5){
+                  
                   this.devTrackData.push({ids:data.data.devTrack[i].id,index:i,
                 description:data.data.devTrack[i].description,
-                severity:data.data.devTrack[i].severity});
+                severity:data.data.devTrack[i].severity,
+                caseReason:data.data.devTrack[i].caseReason,
+                currentOwner:data.data.devTrack[i].currentOwner,
+                dateClosed:data.data.devTrack[i].dateClosed,
+                dateSubmitted:data.data.devTrack[i].dateSubmitted,
+                finalTestRootCauseAnalysisComments:data.data.devTrack[i].finalTestRootCauseAnalysisComments,
+                fixedinRelease:data.data.devTrack[i].fixedinRelease,
+                foundInBuild:data.data.devTrack[i].foundInBuild,
+                foundOnPlatform:data.data.devTrack[i].foundOnPlatform,
+                group:data.data.devTrack[i].group,
+                product:data.data.devTrack[i].product,
+                progressStatus:data.data.devTrack[i].progressStatus,
+                reportingCustomer:data.data.devTrack[i].reportingCustomer,
+                resolution:data.data.devTrack[i].resolution,
+                serviceAccount:data.data.devTrack[i].serviceAccount,
+                submittedBy:data.data.devTrack[i].submittedBy,
+                symptoms:data.data.devTrack[i].symptoms,
+                title:data.data.devTrack[i].title,
+                tragetRelease:data.data.devTrack[i].tragetRelease,
+                type:data.data.devTrack[i].type,
+                workaround:data.data.devTrack[i].workaround});
                 }
                 
               }
@@ -512,7 +838,7 @@ export default {
     },
     showPatchModal(index) {
       this.patchFlag = true;
-      this.descriptionContent=this.devTrackData[index].description;
+      this.devTrackContent=this.devTrackData[index];
       this.releaseFlag = false;
       this.$modals.myModal.$show();
     },
@@ -666,13 +992,21 @@ export default {
   background-color: white;
   color: #71869e;
 }
-.modal-content1{
+.contentwidth{
   width: 80%;
 }
 
 .textOverlay
 {
   word-break: break-all;
+}
+.navHeaderColor{
+  color: #495057;
+}
+
+.labelweight
+{
+  font-weight: 800;
 }
 </style>
 
