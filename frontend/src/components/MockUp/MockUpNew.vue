@@ -530,11 +530,11 @@
       
       <div>
         <!-- Footer -->
-        <footer class="footer fixed-bottom font-small blue">
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
+       <footer class="footer  font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
         <!-- Footer -->
       </div>
     </div>
@@ -576,6 +576,8 @@ export default {
       b2color: "",
       b3color: "",
       textcolor1:"",
+      textcolor2:"",
+      textcolor3:"",
       rl1color: "",
       rl2color: "",
       devTrackContent: "",
@@ -704,7 +706,7 @@ export default {
     getMlKeywords()
     {
       fetch(constant.APIURL + "api/get_ml_keywords?search_param="+this.problemDescription, {
-         body: formData,
+         
          headers: {
            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
          }
