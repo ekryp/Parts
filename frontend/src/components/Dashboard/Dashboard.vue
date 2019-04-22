@@ -36,7 +36,8 @@
                           class="all-success"
                           @click="selectAll('customer')"
                         >
-                          <i class="fas fa-check-circle"></i> &nbsp;{{dashboardConstants.filterButtons[0]}}
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{dashboardConstants.filterButtons[0]}}
                         </button>
 
                         <button
@@ -45,7 +46,8 @@
                           class="all-success"
                           @click="clearAll('customer')"
                         >
-                          <i class="fas fa-minus-circle"></i> &nbsp; {{dashboardConstants.filterButtons[1]}}
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{dashboardConstants.filterButtons[1]}}
                         </button>
                       </div>
                     </div>
@@ -75,7 +77,8 @@
                           class="all-success"
                           @click="selectAll('depot')"
                         >
-                          <i class="fas fa-check-circle"></i> &nbsp;{{dashboardConstants.filterButtons[0]}}
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{dashboardConstants.filterButtons[0]}}
                         </button>
 
                         <button
@@ -84,7 +87,8 @@
                           class="all-success"
                           @click="clearAll('depot')"
                         >
-                          <i class="fas fa-minus-circle"></i> &nbsp; {{dashboardConstants.filterButtons[1]}}
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{dashboardConstants.filterButtons[1]}}
                         </button>
                       </div>
                     </div>
@@ -218,7 +222,7 @@
       <div class="row-two">
         <div class="row">
           <div class="col-lg-4">
-            <div class="card">
+            <div class="card-dashboard">
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
@@ -246,7 +250,7 @@
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="card">
+            <div class="card-dashboard">
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
@@ -274,7 +278,7 @@
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="card">
+            <div class="card-dashboard">
               <div class="card-header">
                 <div class="row">
                   <div class="col-lg-11">
@@ -306,7 +310,7 @@
       <div class="row-two">
         <div class="row">
           <div class="col-lg-4">
-            <div class="card">
+            <div class="card-dashboard">
               <div class="card-body">
                 <div id="container" style="height:250px"></div>
               </div>
@@ -320,7 +324,7 @@
             </div>
           </div>-->
           <div class="col-lg-8">
-            <div class="card">
+            <div class="card-dashboard">
               <div class="card-body">
                 <GmapMap :center="gmap.center" :zoom="3" style="width: 100%; height: 36vh">
                   <GmapCluster :icon="icon" :zoomOnClick="true">
@@ -340,17 +344,16 @@
         </div>
       </div>
       <br>
-      
     </div>
     <div>
-        <!-- Footer -->
-        <footer class="footer  font-small blue">
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-      </div>
+      <!-- Footer -->
+      <footer class="footer font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
 </template>
 
@@ -370,7 +373,7 @@ import VTooltip from "v-tooltip";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import Multiselect from "vue-multiselect";
-import axios from 'axios'
+import axios from "axios";
 
 Vue.use(VTooltip);
 
@@ -405,47 +408,44 @@ export default {
     });
     this.getFilterMainDashboard();
 
-     var filterFlag=localStorage.getItem("filter_flag");
-          
-         if(filterFlag=== "true")
-         {
-         var depotValue=JSON.parse(localStorage.getItem("depot_details"));
-          var customerValue=JSON.parse(localStorage.getItem("customer_details"));
-           this.toggle= localStorage.getItem("toggle");
-         
-          if(customerValue.length>0 || depotValue.length>0 ||( this.toggle ==='total_stock'))
-          {
-           
-         
-          if(this.toggle === 'total_stock')
-          {
-            this.state=false;
-          }
-          this.filterFLag=true;
-           for(var i=0;i<customerValue.length;i++)
-           {
-             this.customerValue.push(customerValue[i]);
-           }
-           
-            for(var i=0;i<depotValue.length;i++)
-           {
-             this.depotValue.push(depotValue[i]);
-           }
-           }
-           }
-           this.applyFilter();
+    var filterFlag = localStorage.getItem("filter_flag");
+
+    if (filterFlag === "true") {
+      var depotValue = JSON.parse(localStorage.getItem("depot_details"));
+      var customerValue = JSON.parse(localStorage.getItem("customer_details"));
+      this.toggle = localStorage.getItem("toggle");
+
+      if (
+        customerValue.length > 0 ||
+        depotValue.length > 0 ||
+        this.toggle === "total_stock"
+      ) {
+        if (this.toggle === "total_stock") {
+          this.state = false;
+        }
+        this.filterFLag = true;
+        for (var i = 0; i < customerValue.length; i++) {
+          this.customerValue.push(customerValue[i]);
+        }
+
+        for (var i = 0; i < depotValue.length; i++) {
+          this.depotValue.push(depotValue[i]);
+        }
+      }
+    }
+    this.applyFilter();
     // this.customerValue=localStorage.getItem("customer_details");
-    
+
     // this.depotValue=localStorage.getItem("depot_details");
     // this.toggle= localStorage.getItem("toggle");
-    
+
     //this.applyFilter();
     //  this.getMainDashboardCount();
     //  this.getTopPons();
     //  this.getTopDepots();
     //  this.getTopCustomer();
     //  this.getPieChart();
-     
+
     //  this.getMapLocations(this.markers);
   },
   data() {
@@ -455,7 +455,7 @@ export default {
         center: { lat: 48.1667, lng: -100.1667 }
       },
       data: data,
-      dashboardConstants:constant.Dashboard,
+      dashboardConstants: constant.Dashboard,
       isLoading: false,
       fullPage: true,
       dashboardData: [],
@@ -763,7 +763,6 @@ export default {
       })
         .then(response => {
           response.text().then(text => {
-            
             const data = text && JSON.parse(text);
             if (data.code === "token_expired") {
               this.logout();
@@ -776,7 +775,6 @@ export default {
             for (var i = 0; i < data.depot_list.length; i++) {
               this.depotOptions.push({ name: data.depot_list[i] });
             }
-           
           });
           // this.isLoading = false;
         })
@@ -800,7 +798,7 @@ export default {
         this.filterURL =
           this.filterURL + `&depot_filter=` + this.depotValue[i].name;
       }
-      
+
       this.getMainDashboardCount();
       this.getPieChart();
       this.getTopDepots();
@@ -810,39 +808,49 @@ export default {
       this.getMapLocations(this.markers);
       console.log(this.filterURL);
     },
-    addFavourites()
-    {
-      
-      localStorage.setItem("customer_details",JSON.stringify(this.customerValue))
-      localStorage.setItem("depot_details",JSON.stringify(this.depotValue))
-      localStorage.setItem("toggle",this.toggle)
-      var user_metadata=JSON.parse(JSON.stringify({filterDetails:{
-        customerFilters:this.customerValue,
-        depotFilter:this.depotValue,
-        toggle:this.toggle
-      }}
-));
+    addFavourites() {
+      localStorage.setItem(
+        "customer_details",
+        JSON.stringify(this.customerValue)
+      );
+      localStorage.setItem("depot_details", JSON.stringify(this.depotValue));
+      localStorage.setItem("toggle", this.toggle);
+      var user_metadata = JSON.parse(
+        JSON.stringify({
+          filterDetails: {
+            customerFilters: this.customerValue,
+            depotFilter: this.depotValue,
+            toggle: this.toggle
+          }
+        })
+      );
 
-
-      axios.patch('https://ekryp.auth0.com/api/v2/users/'+localStorage.getItem("userInfo"), {
-        
-        user_metadata: user_metadata},{headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_id_token"),
-          'Content-Type': "application/json"
-        }
-      }).then(response => {
-       if(response.status === 200)
-       {
-          swal({
-                title: "Success",
-                text: "Favourites Updated Successfully",
-                icon: "success"
-              });
-       }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      axios
+        .patch(
+          "https://ekryp.auth0.com/api/v2/users/" +
+            localStorage.getItem("userInfo"),
+          {
+            user_metadata: user_metadata
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("auth0_id_token"),
+              "Content-Type": "application/json"
+            }
+          }
+        )
+        .then(response => {
+          if (response.status === 200) {
+            swal({
+              title: "Success",
+              text: "Favourites Updated Successfully",
+              icon: "success"
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     logout() {
       console.log("logout");
@@ -879,7 +887,7 @@ export default {
   width: 100% !important;
   height: 100%;
 }
-.card {
+.card-dashboard {
   position: relative;
   display: -ms-flexbox;
   display: flex;
