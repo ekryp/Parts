@@ -68,4 +68,4 @@ class GetMLKeyWords(Resource):
                     category.append(x)
 
             #return ans
-            return jsonify(ml_kewords=category, http_status_code=200)
+            return jsonify(ml_keywords=category, http_status_code=200)

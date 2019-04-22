@@ -363,14 +363,14 @@
                     style="fontSize:0.75vw;"
                     type="button"
                     class="btn btn-success btn-block"
-                    @click="onAnalyze()"
+                    @click="getMlKeywords()"
                   >{{solutionScreenConstants.buttons[0]}}</button>
                   <button
                     v-if="problemDescription === ''"
                     style="fontSize:0.75vw;"
                     type="button"
                     class="btn btn-success btn-block"
-                    @click="onAnalyze()"
+                    @click="getMlKeywords()"
                     disabled
                   >{{solutionScreenConstants.buttons[0]}}</button>
                 </div>
@@ -631,13 +631,12 @@ export default {
           this.textcolor1="";
       },
       onAnalyze() {
-        this.getMlKeywords();
       this.isLoading=true;
       this.errorFlag=false;
       this.devTrackData=[];
       
      
-      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription, {
+      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+this.mlKeywords, {
       
       headers: {
         'Content-Type': 'application/json'
@@ -705,7 +704,8 @@ export default {
     },
     getMlKeywords()
     {
-      fetch(constant.APIURL + "api/get_ml_keywords?search_param="+this.problemDescription, {
+      this.mlKeywords = ''
+      fetch(constant.ELKURL + "api/get_ml_keywords?search_param="+this.problemDescription, {
          
          headers: {
            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -720,9 +720,16 @@ export default {
              }
              if (data.http_status_code === 200) {
               this.isLoading=false;
-              for(var i=0;i<data.ml_kewords.length;i++)
+              let count = 0
+              for(var i=0;i<data.ml_keywords.length;i++)
               {
-                this.mlKeywords=this.ml.mlKeywords+data.ml_kewords[i];
+                count ++
+                console.log("count ----->",count)
+                this.mlKeywords=this.mlKeywords+data.ml_keywords[i];
+                 console.log("count ----->",this.ml_keywords)
+              }
+              if(data.ml_keywords.length === count){
+                this.onAnalyze()
               }
              }
              
