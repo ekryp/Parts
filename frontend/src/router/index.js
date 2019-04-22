@@ -138,7 +138,7 @@ export default new Router({
       }
     },
     {
-      path: '/solution',
+      path: '/mockuptest',
       name: 'SolutionScreen',
       component: SolutionScreen,
       meta: {
@@ -146,7 +146,7 @@ export default new Router({
       }
     },
     {
-      path: '/mockuptest',
+      path: '/solution',
       name: 'MockUpNew',
       component: MockUpNew,
       meta: {

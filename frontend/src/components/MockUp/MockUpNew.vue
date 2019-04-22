@@ -339,26 +339,25 @@
                     :placeholder="problemDescriptionPlaceholder"
                   ></textarea>
                 </div>
-
-                <div class="col-md-6">
-                   <Multiselect
-                        v-model="filterValue"
-                        tag-placeholder="Add this as new tag"
-                        placeholder="Add Filter"
-                        label="name"
-                        track-by="name"
-                        :options="filterOptions"
-                        :close-on-select="false"
-                        :multiple="true"
-                        :clear-on-select="false"
-                        :hide-selected="true"
-                        :taggable="true"
-                      ></Multiselect>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-11"></div>
-                <div class="col-lg-1">
+                <div class="col-md-6"> 
+                <div class="row">
+                  <div class="col-md-12">
+                    <Multiselect
+                          v-model="filterValue"
+                          tag-placeholder="Add this as new tag"
+                          placeholder="Add Filter"
+                          label="name"
+                          track-by="name"
+                          :options="filterOptions"
+                          :close-on-select="false"
+                          :multiple="true"
+                          :clear-on-select="false"
+                          :hide-selected="true"
+                          :taggable="true"
+                        ></Multiselect>
+                  </div>
+                  <div class="col-lg-10"></div>
+                <div class="col-lg-2" style="paddingTop:1.89em">
                   <button
                     v-if="problemDescription !== ''"
                     style="fontSize:0.75vw;"
@@ -375,7 +374,29 @@
                     disabled
                   >{{solutionScreenConstants.buttons[0]}}</button>
                 </div>
+                </div>
+                </div>
               </div>
+              <!-- <div class="row">
+                <div class="col-lg-10"></div>
+                <div class="col-lg-2">
+                  <button
+                    v-if="problemDescription !== ''"
+                    style="fontSize:0.75vw;"
+                    type="button"
+                    class="btn btn-success btn-block"
+                    @click="onAnalyze()"
+                  >{{solutionScreenConstants.buttons[0]}}</button>
+                  <button
+                    v-if="problemDescription === ''"
+                    style="fontSize:0.75vw;"
+                    type="button"
+                    class="btn btn-success btn-block"
+                    @click="onAnalyze()"
+                    disabled
+                  >{{solutionScreenConstants.buttons[0]}}</button>
+                </div>
+              </div> -->
             </div>
           </div>
         </div>
