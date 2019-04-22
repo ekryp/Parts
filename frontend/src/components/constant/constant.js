@@ -4,7 +4,7 @@ export let ELKURL = "";
 if (process.env.NODE_ENV === 'local') {
     APIURL = "https://staging-ib-services.ekryp.com/";
     APPURL = "http://localhost:2323/";
-    ELKURL = "https://staging-elk.ekryp.com/"
+    ELKURL = "http://localhost:5002/"
 } else if (process.env.NODE_ENV === 'uat') {
     APIURL = "https://staging-ib-services.ekryp.com/";
     APPURL = "https://staging-ib.ekryp.com/";
@@ -123,7 +123,7 @@ export const SolutionScreen = {
     tags: "Tags",
     tarBall: "TAR Ball",
     labAvailablity: "Lab Availablity",
-    buttons: ["Analyze", "Reserve"],
+    buttons: ["Analyze", "Reserve", "Search"],
     potentialSolutionHeader: "Potential Solutions",
     errorMessage: "No Data Found ",
     suggestionsHeader: "Solution Links",
