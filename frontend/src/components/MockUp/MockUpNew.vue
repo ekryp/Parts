@@ -589,7 +589,8 @@ export default {
       analyzeFlag: false,
       devTrackFlag: false,
       releaseNotesFlag: false,
-      sdfcFlag: false
+      sdfcFlag: false,
+      mlKeywords:""
     };
   },
   methods: {
@@ -628,11 +629,13 @@ export default {
           this.textcolor1="";
       },
       onAnalyze() {
+        this.getMlKeywords();
       this.isLoading=true;
       this.errorFlag=false;
       this.devTrackData=[];
+      
      
-      fetch("http://localhost:5002/api/getDevTrackData?search_param="+this.problemDescription, {
+      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription, {
       
       headers: {
         'Content-Type': 'application/json'
@@ -691,6 +694,35 @@ export default {
                 this.isLoading=false;
              }
              console.log("data -- response-->", data);
+             
+           });
+         })
+         .catch(handleError => {
+           console.log(" Error Response ------->", handleError);
+         });
+    },
+    getMlKeywords()
+    {
+      fetch(constant.APIURL + "api/get_ml_keywords?search_param="+this.problemDescription, {
+         body: formData,
+         headers: {
+           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+         }
+       })
+         .then(response => {
+           response.text().then(text => {
+             const data = text && JSON.parse(text);
+             if(data.code === "token_expired")
+             {
+               this.logout();
+             }
+             if (data.http_status_code === 200) {
+              this.isLoading=false;
+              for(var i=0;i<data.ml_kewords.length;i++)
+              {
+                this.mlKeywords=this.ml.mlKeywords+data.ml_kewords[i];
+              }
+             }
              
            });
          })
