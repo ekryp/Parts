@@ -332,6 +332,7 @@
               <div class="row align">
                 <div class="col-md-6">
                   <textarea
+                  @change="problemDescriptionChange()"
                     v-model="problemDescription"
                     class="form-control"
                     rows="4"
@@ -356,8 +357,8 @@
                           :taggable="true"
                         ></Multiselect>
                   </div>
-                  <div class="col-lg-10"></div>
-                <div class="col-lg-2" style="paddingTop:1.89em">
+                  <div class="col-lg-8"></div>
+                  <div class="col-lg-2" style="paddingTop:1.89em">
                   <button
                     v-if="problemDescription !== ''"
                     style="fontSize:0.75vw;"
@@ -373,6 +374,23 @@
                     @click="getMlKeywords()"
                     disabled
                   >{{solutionScreenConstants.buttons[0]}}</button>
+                </div>
+                <div class="col-lg-2" style="paddingTop:1.89em">
+                  <button
+                    v-if="searchFlag "
+                    style="fontSize:0.75vw;"
+                    type="button"
+                    class="btn btn-success btn-block"
+                    @click="onAnalyze()"
+                  >{{solutionScreenConstants.buttons[2]}}</button>
+                  <button
+                    v-if="!searchFlag "
+                    style="fontSize:0.75vw;"
+                    type="button"
+                    class="btn btn-success btn-block"
+                    @click="onAnalyze()"
+                    disabled
+                  >{{solutionScreenConstants.buttons[2]}}</button>
                 </div>
                 </div>
                 </div>
@@ -568,6 +586,7 @@ export default {
       tags: [],
       solutionScreenConstants: constant.SolutionScreen,
       showGreen: true,
+      searchFlag:false,
       devTrackData: [],
       errorFlag: false,
       tarFileName: "",
@@ -634,9 +653,18 @@ export default {
       this.isLoading=true;
       this.errorFlag=false;
       this.devTrackData=[];
-      
+      if(this.filterValue.length>0)
+      {
+        this.mlKeywords="OR";
+      }else{
+        this.mlKeywords="";
+      }
+      for(var i=0;i<this.filterValue.length;i++)
+      {
+        this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
+      }
      
-      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+this.mlKeywords, {
+      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+" "+this.mlKeywords, {
       
       headers: {
         'Content-Type': 'application/json'
@@ -695,7 +723,7 @@ export default {
                 this.isLoading=false;
              }
              console.log("data -- response-->", data);
-             
+             this.mlKeywords = "";
            });
          })
          .catch(handleError => {
@@ -723,14 +751,17 @@ export default {
               let count = 0
               for(var i=0;i<data.ml_keywords.length;i++)
               {
-                count ++
+                this.filterOptions.push({
+                  name:data.ml_keywords[i]
+                });
+                 this.filterValue.push({
+                  name:data.ml_keywords[i]
+                });
                 console.log("count ----->",count)
-                this.mlKeywords=this.mlKeywords+data.ml_keywords[i];
-                 console.log("count ----->",this.ml_keywords)
+                
+                
               }
-              if(data.ml_keywords.length === count){
-                this.onAnalyze()
-              }
+              this.searchFlag=true;
              }
              
            });
@@ -749,6 +780,13 @@ export default {
     },
     routeDashboard() {
       router.push("/");
+    },
+    problemDescriptionChange()
+    {
+      if(this.problemDescription === "")
+      {
+        this.searchFlag=false;
+      }
     }
   }
 };
