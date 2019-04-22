@@ -123,7 +123,7 @@ export const SolutionScreen = {
     tags: "Tags",
     tarBall: "TAR Ball",
     labAvailablity: "Lab Availablity",
-    buttons: ["Analyze", "Reserve", "Search"],
+    buttons: ["Predict", "Reserve", "Refine"],
     potentialSolutionHeader: "Potential Solutions",
     errorMessage: "No Data Found ",
     suggestionsHeader: "Solution Links",
