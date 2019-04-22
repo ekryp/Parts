@@ -323,10 +323,21 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="p-3 mb-3 bg-white">
-                
+                 <div class="row align">
+            <div class="col-md-2">
+              <label>{{solutionScreenConstants.labAvailablity}}</label>
+            </div>
+            <div class="col-md-2" align="left">
+              <i class="fas fa-dot-circle" style="color:green" v-if="showGreen"></i>
+              <i class="fas fa-dot-circle" style="color:#d62828f7" v-if="!showGreen"></i>
+            </div>
+            <div class="col-md-4" v-if="analyzeFlag">
+              <button type="button" style="fontSize:0.75vw;" class="btn btn-success" @click="onReserve()">{{solutionScreenConstants.buttons[1]}}</button>
+            </div>
+          </div>
               <div class="row align">
                 <label class="col-md-6 labelweight">{{solutionScreenConstants.problemDescriptionName}}</label>
-                <label class="col-md-6 labelweight">Filter</label>
+                <label class="col-md-6 labelweight">Problem Area</label>
               </div>
 
               <div class="row align">
@@ -346,7 +357,7 @@
                     <Multiselect
                           v-model="filterValue"
                           tag-placeholder="Add this as new tag"
-                          placeholder="Add Filter"
+                          placeholder="Problem Area"
                           label="name"
                           track-by="name"
                           :options="filterOptions"
@@ -357,7 +368,16 @@
                           :taggable="true"
                         ></Multiselect>
                   </div>
-                  <div class="col-lg-8"></div>
+                  <div class="col-lg-8">
+                    <br/>
+              <!-- <tagsinput
+                class="tags form-control"
+                style="color: #495057"
+                :tags="tags"
+                placeholder="Add Tags"
+                @tags-change="handleChange"
+              ></tagsinput> -->
+                  </div>
                   <div class="col-lg-2" style="paddingTop:1.89em">
                   <button
                     v-if="problemDescription !== ''"
@@ -393,6 +413,7 @@
                   >{{solutionScreenConstants.buttons[2]}}</button>
                 </div>
                 </div>
+               
                 </div>
               </div>
               <!-- <div class="row">
@@ -427,7 +448,6 @@
             <div class="col-lg-4" >
               <div class="card  shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b1color , color:textcolor1}">
                 <div class="card-body in-progress labelweight cardFontChange"
-                
                 @click="showDevTrack()"> <span class="float-left">Dev Track</span>
                 <span class="float-right">{{this.devTrackData.length}}</span> </div>
               </div>
@@ -566,6 +586,8 @@ import * as constant from "../constant/constant";
 import swal from "sweetalert";
 import Vudal from "vudal";
 import Multiselect from "vue-multiselect";
+import tagsinput from "vue-tagsinput";
+
 //import * as data from "../../utilies/tabledata.json";
 
 export default {
@@ -574,6 +596,7 @@ export default {
     SideNav,
     headernav,
     Multiselect,
+    tagsinput,
     Vudal
   },
   created() {
@@ -615,6 +638,24 @@ export default {
     };
   },
   methods: {
+    onReserve() {
+      console.log(this.showGreen);
+      if (this.showGreen) {
+        this.showGreen = false;
+      } else {
+        this.showGreen = true;
+      }
+    },
+        handleChange(removeIndex, tag) {
+      if (this.tags.length == removeIndex) {
+        console.log(removeIndex);
+        this.tags.push(tag);
+      } else {
+        this.tags.splice(removeIndex, 1);
+      }
+      console.log(removeIndex);
+      console.log(tag);
+    },
       showDevTrack(){
           this.devTrackFlag=true;
           this.b1color="#2a629a";
@@ -675,6 +716,9 @@ export default {
              const data = text && JSON.parse(text);
              if (data.http_status_code === 200) {
               this.isLoading=false;
+              if(data.data.devTrack.length < 0){
+                 this.analyzeFlag = true;
+              }
              
               for(var i=0;i<data.data.devTrack.length;i++)
               {
