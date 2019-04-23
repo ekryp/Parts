@@ -142,7 +142,7 @@ export default new Router({
       name: 'SolutionScreen',
       component: SolutionScreen,
       meta: {
-        permission: 'SolutionPrediction'
+        permission: 'none'
       }
     },
     {
