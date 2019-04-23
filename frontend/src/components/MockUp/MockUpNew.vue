@@ -8,8 +8,8 @@
     <vudal name="myModal">
       <div class="header">
         <i class="close icon"></i>
-        <h4 v-if="releaseFlag">Release Notes</h4>
-        <h4 v-if="patchFlag">Patches</h4>
+        
+        <h4 v-if="patchFlag">{{solutionScreenConstants.modalHeader}}</h4>
       </div>
       <div class="content contentwidth">
         <nav>
@@ -22,7 +22,7 @@
             role="tab"
             aria-controls="nav-Details"
             aria-selected="true"
-          >Details</a>
+          >{{solutionScreenConstants.modalTabHeaders[0]}}</a>
           <a
             class="nav-item nav-link navHeaderColor"
             id="nav-Description-tab"
@@ -31,7 +31,7 @@
             role="tab"
             aria-controls="nav-Description"
             aria-selected="true"
-          >Description</a>
+          >{{solutionScreenConstants.modalTabHeaders[0]}}</a>
 
           
         </div>
@@ -49,14 +49,14 @@
         <br>
         <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Title:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[0]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.title}}</span>
             </div>
           </div>
           <br>
-          <label class="labelweight">Description:</label>
+          <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[1]}}</label>
           <br>
           <span class="textOverlay">{{devTrackContent.description}}</span>
         </div>
@@ -70,7 +70,7 @@
           <br>
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Progress Status:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[2]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.progressStatus}}</span>
@@ -79,7 +79,7 @@
 
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Group:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[3]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.group}}</span>
@@ -88,7 +88,7 @@
 
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Severity:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[4]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.severity}}</span>
@@ -98,7 +98,7 @@
 
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Found In Build:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[5]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.foundInBuild}}</span>
@@ -107,7 +107,7 @@
 
            <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Traget Release:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[6]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.tragetRelease}}</span>
@@ -117,7 +117,7 @@
 
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Date Closed:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[7]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.dateClosed}}</span>
@@ -126,7 +126,7 @@
 
            <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Product:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[8]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.product}}</span>
@@ -135,7 +135,7 @@
 
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Service Account:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[9]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.serviceAccount}}</span>
@@ -144,7 +144,7 @@
 
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">Fixed In Release:</label>
+              <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[10]}}</label>
             </div>
             <div class="col-lg-7">
               <span>{{devTrackContent.fixedinRelease}}</span>
@@ -317,13 +317,13 @@
       <div class="row-one" style="paddingBo">
         <div class="myBreadCrumb">
           <p>
-            <span style="font-size: 14px;">Solution</span>
+            <span style="font-size: 14px;">{{solutionScreenConstants.breadcrumb}}</span>
           </p>
         </div>
         <div class="row">
           <div class="col-lg-12">
             <div class="p-3 mb-3 bg-white">
-                 <div class="row align">
+                 <!-- <div class="row align">
             <div class="col-md-2">
               <label>{{solutionScreenConstants.labAvailablity}}</label>
             </div>
@@ -334,10 +334,10 @@
             <div class="col-md-4" v-if="analyzeFlag">
               <button type="button" style="fontSize:0.75vw;" class="btn btn-success" @click="onReserve()">{{solutionScreenConstants.buttons[1]}}</button>
             </div>
-          </div>
+          </div> -->
               <div class="row align">
                 <label class="col-md-6 labelweight">{{solutionScreenConstants.problemDescriptionName}}</label>
-                <label class="col-md-6 labelweight">Problem Area</label>
+                <label class="col-md-6 labelweight">{{solutionScreenConstants.problemAreaHeader}}</label>
               </div>
 
               <div class="row align">
@@ -368,15 +368,24 @@
                           :taggable="true"
                         ></Multiselect>
                   </div>
+                   <br/>
+                   
+                   <div class="col-lg-1" style="marginTop:2%">
+                      <input type="checkbox" id="checkbox" v-model="checked">
+                   </div>
+                   <div class="col-lg-11  " style="marginTop:2.5%;fontSize:0.88em">
+                      <label for="checkbox" >{{solutionScreenConstants.checkBoxLabel}}</label>
+                   </div>
                   <div class="col-lg-8">
-                    <br/>
-              <!-- <tagsinput
-                class="tags form-control"
-                style="color: #495057"
-                :tags="tags"
-                placeholder="Add Tags"
-                @tags-change="handleChange"
-              ></tagsinput> -->
+                   
+                   
+                  <!-- <tagsinput
+                    class="tags form-control"
+                    style="color: #495057"
+                    :tags="tags"
+                    placeholder="Add Tags"
+                    @tags-change="handleChange"
+                  ></tagsinput> -->
                   </div>
                   <div class="col-lg-2" style="paddingTop:1.89em">
                   <button
@@ -448,7 +457,7 @@
             <div class="col-lg-4" >
               <div class="card  shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b1color , color:textcolor1}">
                 <div class="card-body in-progress labelweight cardFontChange"
-                @click="showDevTrack()"> <span class="float-left">Dev Track</span>
+                @click="showDevTrack()"> <span class="float-left">{{solutionScreenConstants.cardLables[0]}}</span>
                 <span class="float-right">{{this.devTrackData.length}}</span> </div>
               </div>
             </div>
@@ -457,7 +466,7 @@
               <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b2color , color:textcolor2}">
                 <div class="card-body in-progress labelweight cardFontChange"
                 @click="showReleaseNotes()">
-                <span class="float-left">Release Notes</span>
+                <span class="float-left">{{solutionScreenConstants.cardLables[1]}}</span>
                 <span class="float-right">0</span> </div>
               </div>
             </div>
@@ -466,7 +475,7 @@
               <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b3color , color:textcolor3}">
                 <div class="card-body in-progress labelweight cardFontChange"
                 v-bind:style="{ backgroundColor: b3color }"
-                @click="showSDFC()"><span class="float-left">SDFC</span>
+                @click="showSDFC()"><span class="float-left">{{solutionScreenConstants.cardLables[2]}}</span>
                 <span class="float-right">0</span> </div>
               </div>
             </div>
@@ -489,11 +498,11 @@
                 <div class="col-md-12" align="center">
               <table class="table responsive table-hover">
                 <thead>
-                  <th>Issue Id</th>
-                  <th style="width: 55.66%">Title</th>
-                  <th >Severity</th>
-                  <th>Found In Release</th>
-                  <th>Date Submitted</th>
+                  <th>{{solutionScreenConstants.tableHeaders[0]}}</th>
+                  <th style="width: 55.66%">{{solutionScreenConstants.tableHeaders[1]}}</th>
+                  <th >{{solutionScreenConstants.tableHeaders[2]}}</th>
+                  <th>{{solutionScreenConstants.tableHeaders[3]}}</th>
+                  <th>{{solutionScreenConstants.tableHeaders[4]}}</th>
                 </thead>
                 <tbody>
                   <tr v-for="item in devTrackData" :key="item.ids"
@@ -609,6 +618,7 @@ export default {
       tags: [],
       solutionScreenConstants: constant.SolutionScreen,
       showGreen: true,
+      checked:true,
       searchFlag:false,
       devTrackData: [],
       errorFlag: false,
@@ -696,7 +706,13 @@ export default {
       this.devTrackData=[];
       if(this.filterValue.length>0)
       {
-        this.mlKeywords="OR";
+        if(this.checked)
+        {
+          this.mlKeywords="AND";
+        }else{
+           this.mlKeywords="OR";
+        }
+       
       }else{
         this.mlKeywords="";
       }
