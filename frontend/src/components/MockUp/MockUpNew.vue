@@ -454,7 +454,15 @@
         <div class="col-lg-12">
           <div class="row  ">
            
-            <div class="col-lg-4" >
+           <div class="col-lg-3" >
+              <div class="card  shadow p-2 mb-5  rounded" >
+                <div class="card-body in-progress labelweight cardFontChange"
+                > <span class="float-left">Total Hits</span>
+                <span class="float-right">{{estotalhits}}</span> </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3" >
               <div class="card  shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b1color , color:textcolor1}">
                 <div class="card-body in-progress labelweight cardFontChange"
                 @click="showDevTrack()"> <span class="float-left">{{solutionScreenConstants.cardLables[0]}}</span>
@@ -462,7 +470,7 @@
               </div>
             </div>
             
-            <div class="col-lg-4">
+            <div class="col-lg-3">
               <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b2color , color:textcolor2}">
                 <div class="card-body in-progress labelweight cardFontChange"
                 @click="showReleaseNotes()">
@@ -471,7 +479,7 @@
               </div>
             </div>
             
-            <div class="col-lg-4">
+            <div class="col-lg-3">
               <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b3color , color:textcolor3}">
                 <div class="card-body in-progress labelweight cardFontChange"
                 v-bind:style="{ backgroundColor: b3color }"
@@ -644,7 +652,8 @@ export default {
       devTrackFlag: false,
       releaseNotesFlag: false,
       sdfcFlag: false,
-      mlKeywords:""
+      mlKeywords:"",
+      estotalhits: 0
     };
   },
   methods: {
@@ -732,6 +741,8 @@ export default {
              const data = text && JSON.parse(text);
              if (data.http_status_code === 200) {
               this.isLoading=false;
+              this.estotalhits = data.data.totalhits
+              console.log('estotal hits ----->',this.estotalhits)
               if(data.data.devTrack.length < 0){
                  this.analyzeFlag = true;
               }
@@ -818,8 +829,6 @@ export default {
                   name:data.ml_keywords[i]
                 });
                 console.log("count ----->",count)
-                
-                
               }
               this.searchFlag=true;
              }
