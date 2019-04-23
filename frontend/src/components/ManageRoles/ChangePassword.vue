@@ -3,6 +3,12 @@
 <headernav msg="Dashboard"/>
     <side-nav/>
 
+
+    <Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        :is-full-page="fullPage"></Loading>
+
     <div>
     <div class="custom-container" style="paddingTop: 15%" align="center">
 
@@ -21,10 +27,21 @@
                 <label class="col" for="usrname">{{changePasswordConstant.table.tableHeaders[0]}}</label>
                 <input class="col"  type="password" id="usrname" v-model="new_password" required>
                 </div>
-                <br>
+                <div class="row" style="text-align:left">
+                  <div class="col"></div>
+                  <div class="col">
+                   <p style="font-size: 11px;"> *Password Constraints
+                  <br>Allowed special characters (!@#$%^&*)
+                  <br>Lower case (a-z), upper case (A-Z) and numbers (0-9)
+                  <br>Length should be greater than 8 
+                </p>
+                </div>
+                </div>
+                
                 <div class="row">
                 <label for="psw" class="col">{{changePasswordConstant.table.tableHeaders[1]}} </label>
                 <input class="col" type="password" id="psw" name="psw" v-model="cnrf_password"  required>
+                
                 </div>
                 <br>
                 <input type="submit" value="Submit" @click="changePass()" class="btn btn-success">
@@ -54,12 +71,15 @@ import headernav from "@/components/header/header";
 import * as constant from "../constant/constant";
 import swal from "sweetalert";
 //import * as data from "../../utilies/tabledata.json";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: "ChangePassword",
   components: {
     SideNav,
-    headernav
+    headernav,
+    Loading
   },
   created() {
     clearInterval(window.intervalObj);
@@ -71,6 +91,7 @@ export default {
   data() {
     console.log("dashboard", this.data);
     return {
+    isLoading: false,
      cnrf_password:"",
      new_password:"",
      changePasswordConstant:constant.ChangePasswordScreen
@@ -87,6 +108,7 @@ export default {
     },
     changePass()
     {
+      this.isLoading=true;
       var isSocial=localStorage.getItem('isSocial');
       if((this.new_password !== '' )&&(this.cnrf_password !== ''))
       {
@@ -108,19 +130,27 @@ export default {
       })
         .then(response => {
           response.text().then(text => {
+            this.isLoading=false;
             const data = text && JSON.parse(text);
             if(data.code === "token_expired")
             {
               this.logout();
             }
            if (data.http_status_code === 200) {
-              
+              this.cnrf_password="";
+              this.new_password="";
               swal({
                 title: "SUCCESS",
                 text: data.msg,
                 icon: "success"
+              }).then(ok => {
+                if (ok) {
+                 router.push("/dashboard");
+                  }
               });
             } else {
+              this.cnrf_password="";
+            this.new_password="";
               swal({
                 title: "Error",
                 text: data.msg,
@@ -135,6 +165,7 @@ export default {
         });
       }else
       {
+        this.isLoading=false;
         swal({
               title: "Info",
               text: "Password Entered in Both the Fields are Different",
@@ -145,6 +176,7 @@ export default {
       }
     }
     else{
+      this.isLoading=false;
       swal({
               title: "Info",
               text: "You logged in through social account ,We can't change your password",
