@@ -45,6 +45,10 @@ class ResetPassword(Resource):
             if response.json().get('message') == "The connection does not exist.":
                 return jsonify(msg="You logged in through social account ,We can't change your password", http_status_code=400)
 
+            if response.json().get('message') == "PasswordHistoryError: Password has previously been used":
+                return jsonify(msg="New Password Cannot be the same as previously used last 5 passwords",
+                               http_status_code=400)
+
             return jsonify(msg=response.json().get('message'), http_status_code=400)
         else:
             return jsonify(msg="Password changed Sucessfully", http_status_code=200)
