@@ -713,22 +713,22 @@ export default {
       this.isLoading=true;
       this.errorFlag=false;
       this.devTrackData=[];
-      if(this.filterValue.length>0)
-      {
-        if(this.checked)
-        {
-          this.mlKeywords="AND";
-        }else{
-           this.mlKeywords="OR";
-        }
+      // if(this.filterValue.length>0)
+      // {
+      //   if(this.checked)
+      //   {
+      //     this.mlKeywords="AND";
+      //   }else{
+      //      this.mlKeywords="OR";
+      //   }
        
-      }else{
-        this.mlKeywords="";
-      }
-      for(var i=0;i<this.filterValue.length;i++)
-      {
-        this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
-      }
+      // }else{
+      //   this.mlKeywords="";
+      // }
+      // for(var i=0;i<this.filterValue.length;i++)
+      // {
+      //   this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
+      // }
      
       fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+" "+this.mlKeywords, {
       
@@ -775,7 +775,13 @@ export default {
                 type:data.data.devTrack[i].type,
                 workaround:data.data.devTrack[i].workaround});
                 
-                
+                this.devTrackFlag=true;
+                this.b1color="#2a629a";
+                this.textcolor1="#f8f9fa";
+                this.b2color="";
+                this.textcolor2="";
+                this.b3color="";
+                this.textcolor3="";
               }
               console.log('asdasd',this.devTrackData);
               if(data.data.devTrack.length>0)
@@ -803,7 +809,9 @@ export default {
     },
     getMlKeywords()
     {
-      this.mlKeywords = ''
+      this.mlKeywords = '';
+      this.filterOptions=[];
+      this.filterValue=[];
       fetch(constant.ELKURL + "api/get_ml_keywords?search_param="+this.problemDescription, {
          
          headers: {
@@ -829,6 +837,16 @@ export default {
                   name:data.ml_keywords[i]
                 });
                 console.log("count ----->",count)
+              }
+              for(var j=0;j<data.ml_synonym.length;j++)
+              {
+                if(this.checked)
+                {
+                  this.mlKeywords=this.mlKeywords+"AND "+data.ml_synonym[j];
+                }else{
+                  this.mlKeywords=this.mlKeywords+"OR "+data.ml_synonym[j];
+                }
+                 
               }
               this.searchFlag=true;
              }
