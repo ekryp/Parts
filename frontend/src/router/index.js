@@ -17,14 +17,14 @@ import UserRoleManagement from '@/components/ManageRoles/UserRoleManagement'
 import ChangePassword from '@/components/ManageRoles/ChangePassword'
 import ManageUser from '@/components/ManageRoles/ManageUser'
 import SolutionScreen from '@/components/MockUp/SolutionScreen'
+import MockUpNew from '@/components/MockUp/MockUpNew'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
 
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Home',
       component: Home
@@ -51,14 +51,14 @@ export default new Router({
       meta: {
         permission: 'CreateAnalysis'
       }
-    },{
+    }, {
       path: '/parts/analysis/view',
       name: 'PartsAnalysis',
       component: PartsAnalysis,
       meta: {
         permission: 'ViewAnalysis'
       }
-    },{
+    }, {
       path: '/parts/analysis/dashboard',
       name: 'PartsAnalysisList',
       component: PartsAnalysisList,
@@ -138,11 +138,19 @@ export default new Router({
       }
     },
     {
-      path: '/solution',
+      path: '/mockuptest',
       name: 'SolutionScreen',
       component: SolutionScreen,
       meta: {
-        permission: 'SolutionPrediction'
+        permission: 'none'
+      }
+    },
+    {
+      path: '/solution',
+      name: 'MockUpNew',
+      component: MockUpNew,
+      meta: {
+        permission: 'Dashboard'
       }
     }
   ]
