@@ -370,11 +370,12 @@
                   </div>
                    <br/>
                    
-                   <div class="col-lg-1" style="marginTop:2%">
+                   <div class="col-lg-3" style="marginTop:2%">
                       <input type="checkbox" id="checkbox" v-model="checked">
-                   </div>
-                   <div class="col-lg-11  " style="marginTop:2.5%;fontSize:0.88em">
                       <label for="checkbox" >{{solutionScreenConstants.checkBoxLabel}}</label>
+                   </div>
+                   <div class="col-lg-9  " style="marginTop:2.5%;fontSize:0.88em">
+                      <!-- <label for="checkbox" >{{solutionScreenConstants.checkBoxLabel}}</label> -->
                    </div>
                   <div class="col-lg-8">
                    
@@ -511,6 +512,7 @@
                   <th >{{solutionScreenConstants.tableHeaders[2]}}</th>
                   <th>{{solutionScreenConstants.tableHeaders[3]}}</th>
                   <th>{{solutionScreenConstants.tableHeaders[4]}}</th>
+                  <th>{{solutionScreenConstants.tableHeaders[5]}}</th>
                 </thead>
                 <tbody>
                   <tr v-for="item in devTrackData" :key="item.ids"
@@ -524,6 +526,7 @@
                       <td class=" in-progress">{{item.severity}}</td>
                       <td class=" in-progress">{{item.fixedinRelease}}</td>
                       <td class=" in-progress">{{item.dateSubmitted}}</td>
+                      <td class=" in-progress">{{item.probability}}</td>
                     </tr>
                 </tbody>
                 <!-- <tbody>
@@ -626,7 +629,7 @@ export default {
       tags: [],
       solutionScreenConstants: constant.SolutionScreen,
       showGreen: true,
-      checked:true,
+      checked:false,
       searchFlag:false,
       devTrackData: [],
       errorFlag: false,
@@ -764,6 +767,7 @@ export default {
                 foundOnPlatform:data.data.devTrack[i].foundOnPlatform,
                 group:data.data.devTrack[i].group,
                 product:data.data.devTrack[i].product,
+                probability:data.data.devTrack[i].probability,
                 progressStatus:data.data.devTrack[i].progressStatus,
                 reportingCustomer:data.data.devTrack[i].reportingCustomer,
                 resolution:data.data.devTrack[i].resolution,
@@ -842,9 +846,9 @@ export default {
               {
                 if(this.checked)
                 {
-                  this.mlKeywords=this.mlKeywords+"AND "+data.ml_synonym[j];
+                  this.mlKeywords=this.mlKeywords+" AND "+data.ml_synonym[j];
                 }else{
-                  this.mlKeywords=this.mlKeywords+"OR "+data.ml_synonym[j];
+                  this.mlKeywords=this.mlKeywords+" OR "+data.ml_synonym[j];
                 }
                  
               }
