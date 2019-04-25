@@ -317,7 +317,7 @@
 
         </div>
         <div class="actions">
-          <button type="button" class="btn btn-danger" @click="hideModal()">OK</button>
+          <!-- <button type="button" class="btn btn-danger" @click="hideModal()">OK</button> -->
         </div>
       </vudal>
 
