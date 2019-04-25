@@ -377,16 +377,22 @@
                    <div class="col-lg-9  " style="marginTop:2.5%;fontSize:0.88em">
                       <!-- <label for="checkbox" >{{solutionScreenConstants.checkBoxLabel}}</label> -->
                    </div>
-                  <div class="col-lg-8">
-                   
-                   
-                  <!-- <tagsinput
-                    class="tags form-control"
-                    style="color: #495057"
-                    :tags="tags"
-                    placeholder="Add Tags"
-                    @tags-change="handleChange"
-                  ></tagsinput> -->
+                   <label class="col-md-6 labelweight">{{solutionScreenConstants.tagHeader}}</label>
+                  <div class="col-md-12">
+                    <Multiselect
+                          v-model="tagValue"
+                          tag-placeholder="Add this as new tag"
+                          placeholder="Filters"
+                          label="name"
+                          track-by="name"
+                          :options="tagOptions"
+                          :close-on-select="false"
+                          :multiple="true"
+                          :clear-on-select="false"
+                          :hide-selected="true"
+                          :taggable="true"
+                          @tag="addTag"
+                        ></Multiselect>
                   </div>
                   <div class="col-lg-2" style="paddingTop:1.89em">
                   <button
@@ -621,6 +627,32 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
+    // this.tagOptions.push({name:'Issue ID',value:'issueId'});
+    // this.tagOptions.push({name:'Title',value:'title'});
+    // this.tagOptions.push({name:'Current Owner',value:'currentOwner'});
+    // this.tagOptions.push({name:'Progress Status',value:'progressStatus'});
+    // this.tagOptions.push({name:'Group',value:'group'});
+    // this.tagOptions.push({value:'severity',name:'Severity'});
+    // this.tagOptions.push({value:'dateSubmitted',name:'Date Submitted'});
+    // this.tagOptions.push({value:'submittedBy',name:'Submitted By'});
+    // this.tagOptions.push({value:'description',name:'Description'});
+    // this.tagOptions.push({value:'foundInBuild',name:'Found in Build'});
+    // this.tagOptions.push({value:'tragetRelease',name:'Target Release'});
+    // this.tagOptions.push({value:'dateClosed',name:'Date Closed'});
+    // this.tagOptions.push({value:'hwPON',name:'HW PON'});
+    // this.tagOptions.push({value:'caseReason',name:'Case Reason'});
+    // this.tagOptions.push({value:'finalTestRootCauseAnalysisComments',name:'Final Test Root Cause Analysis Comments'});
+    // this.tagOptions.push({name:'Priority',value:'priority'});
+    // this.tagOptions.push({name:'Found on Platform',value:'foundOnPlatform'});
+    // this.tagOptions.push({name:'Problem Description/Systems Impacted',value:'problemDescriptionImpacted'});
+    // this.tagOptions.push({name:'Workaround',value:'workaround'});
+    // this.tagOptions.push({name:'Symptoms',value:'symptoms'});
+    // this.tagOptions.push({name:'Reporting Customer',value:'reportingCustomer'});
+    // this.tagOptions.push({name:'Service Account',value:'serviceAccount'});
+    // this.tagOptions.push({name:'Fixed in Release',value:'fixedinRelease'});
+    // this.tagOptions.push({name:'Found in Release',value:'Found in Release'});
+    // this.tagOptions.push({name:'Resolution',value:'resolution'});  
+    // this.tagOptions.push({name:'Product',value:'product'});
   },
   data() {
     console.log("dashboard", this.data);
@@ -646,6 +678,8 @@ export default {
       devTrackContent: "",
       filterOptions:[],
       filterValue:[],
+      tagValue:[],
+      tagOptions:[],
       problemDescriptionPlaceholder: "Enter the Problem Description",
       valueIndex: "",
       releaseFlag: true,
@@ -656,7 +690,8 @@ export default {
       releaseNotesFlag: false,
       sdfcFlag: false,
       mlKeywords:"",
-      estotalhits: 0
+      estotalhits: 0,
+      filterValues:""
     };
   },
   methods: {
@@ -676,7 +711,7 @@ export default {
         this.tags.splice(removeIndex, 1);
       }
       console.log(removeIndex);
-      console.log(tag);
+      console.log(this.tags);
     },
       showDevTrack(){
           this.devTrackFlag=true;
@@ -716,6 +751,11 @@ export default {
       this.isLoading=true;
       this.errorFlag=false;
       this.devTrackData=[];
+      this.filterValues='';
+      for(var i=0;i<this.tagValue.length;i++)
+      {
+        this.filterValues=this.filterValues+" AND "+this.tagValue[i].value;
+      }
       // if(this.filterValue.length>0)
       // {
       //   if(this.checked)
@@ -733,7 +773,7 @@ export default {
       //   this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
       // }
      
-      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+" "+this.mlKeywords, {
+      fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+" "+this.mlKeywords+this.filterValues, {
       
       headers: {
         'Content-Type': 'application/json'
@@ -860,6 +900,14 @@ export default {
          .catch(handleError => {
            console.log(" Error Response ------->", handleError);
          });
+    },
+    addTag (newTag) {
+      const tag = {
+        name: newTag,
+        value: newTag
+      }
+      this.tagOptions.push(tag)
+      this.tagValue.push(tag)
     },
      hideModal() {
       this.$modals.myModal.$hide();
