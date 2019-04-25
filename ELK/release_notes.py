@@ -43,14 +43,27 @@ for each_pdf in glob.glob("*.pdf"):
     flag = True
     while flag:
         for r, g, b, t in grouper(result, 4):
+
+            print(r, g, b, t)
             if i >= len(result):
                 flag = False
-            i= i + 4
             try:
-                if t[0] != 'Workaround':
-                    result.insert(result.index(t), ('Workaround', ''))
-                    break
+                if r[0] != 'Issue ID':
+                    result.insert(i, ('Issue ID', ''))
+                i = i + 1
 
+                if g[0] != 'Severity':
+                    result.insert(i, ('Severity', ''))
+                i = i + 1
+
+                if b[0] != 'Description':
+                    result.insert(i, ('Description', ''))
+                i = i + 1
+
+                if t[0] != 'Workaround':
+                    result.insert(i, ('Workaround', ''))
+                i = i + 1
+                break
             except:
                 pass
 
@@ -68,43 +81,70 @@ for each_pdf in glob.glob("*.pdf"):
     count = time.time()
     for item in new_result:
         dd = defaultdict(dict)
-        '''
+
         try:
-            dd[count]['Issue ID'] = item[0][1]
-        except:
-            dd[count]['Issue ID'] = ''
-        try:
-            dd[count]['Severity'] = item[1][1]
-        except:
-            dd[count]['Severity'] = ''
-        try:
-            dd[count]['Description'] = item[2][1]
-        except:
-            dd[count]['Description'] = ''
-        try:
-            dd[count]['Workaround'] = item[3][1]
-        except:
-            dd[count]['Workaround'] = ''
-        count = count + 1
-        '''
-        try:
-            dd['Issue ID'] = item[0][1]
+            if 'Issue ID' in item[0]:
+                dd['Issue ID'] = item[0][1]
+
+            if 'Severity' in item[0]:
+                dd['Severity'] = item[0][1]
+
+            if 'Description' in item[0]:
+                dd['Description'] = item[0][1]
+
+            if 'Workaround' in item[0]:
+                dd['Workaround'] = item[0][1]
         except:
             dd['Issue ID'] = ''
         try:
-            dd['Severity'] = item[1][1]
+            if 'Issue ID' in item[1]:
+                dd['Issue ID'] = item[1][1]
+
+            if 'Severity' in item[1]:
+                dd['Severity'] = item[1][1]
+
+            if 'Description' in item[1]:
+                dd['Description'] = item[1][1]
+
+            if 'Workaround' in item[1]:
+                dd['Workaround'] = item[1][1]
+
         except:
             dd['Severity'] = ''
         try:
-            dd['Description'] = item[2][1]
+            if 'Issue ID' in item[2]:
+                dd['Issue ID'] = item[2][1]
+
+            if 'Severity' in item[2]:
+                dd['Severity'] = item[2][1]
+
+            if 'Description' in item[2]:
+                dd['Description'] = item[2][1]
+
+            if 'Workaround' in item[2]:
+                dd['Workaround'] = item[2][1]
+
         except:
             dd['Description'] = ''
         try:
-            dd['Workaround'] = item[3][1]
+            if 'Issue ID' in item[3]:
+                dd['Issue ID'] = item[3][1]
+
+            if 'Severity' in item[3]:
+                dd['Severity'] = item[3][1]
+
+            if 'Description' in item[3]:
+                dd['Description'] = item[3][1]
+
+            if 'Workaround' in item[3]:
+                dd['Workaround'] = item[3][1]
         except:
             dd['Workaround'] = ''
         dd['file_name'] = each_pdf
-
+        print('###')
+        print(item)
+        print("dict is : {0} & count is {1}".format(dd,len(dd)))
+        print('***')
         response = requests.post("http://34.83.90.206:9200/infinera/release_notes/", json=dd,
                                  headers={"content-type": "application/json"})
 
