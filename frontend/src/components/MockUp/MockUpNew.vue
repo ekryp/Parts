@@ -980,6 +980,7 @@ export default {
 
 .textOverlay {
   word-break: break-all;
+  white-space:pre-wrap;
 }
 .navHeaderColor {
   color: #495057;
