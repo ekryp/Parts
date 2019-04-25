@@ -34,6 +34,7 @@
                   <br>Allowed special characters (!@#$%^&*)
                   <br>Lower case (a-z), upper case (A-Z) and numbers (0-9)
                   <br>Length should be greater than 8 
+                  <br>Cannot be the same as previously used last five passwords
                 </p>
                 </div>
                 </div>

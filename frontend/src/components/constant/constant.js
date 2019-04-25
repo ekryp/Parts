@@ -124,7 +124,7 @@ export const SolutionScreen = {
   problemDescriptionName: "Problem Description",
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
-  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted"],
+  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Probability"],
   cardLables: ["Dev Track", "Release Notes", "SDFC"],
   logInfo: "Log Info",
   tags: "Tags",
@@ -132,6 +132,7 @@ export const SolutionScreen = {
   labAvailablity: "Lab Availablity",
   buttons: ["Predict", "Reserve", "Refine"],
   potentialSolutionHeader: "Potential Solutions",
+  tagHeader: "Keywords",
   errorMessage: "No Data Found ",
   suggestionsHeader: "Solution Links",
 }
