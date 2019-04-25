@@ -2,9 +2,9 @@ export let APIURL = "";
 export let APPURL = "";
 export let ELKURL = "";
 if (process.env.NODE_ENV === 'local') {
-    APIURL = "https://staging-ib-services.ekryp.com/";
-    APPURL = "http://localhost:2323/";
-    ELKURL = "http://localhost:5002/"
+  APIURL = "http://localhost:5000/";
+  APPURL = "http://localhost:2323/";
+  ELKURL = "https://staging-elk.ekryp.com/"
 } else if (process.env.NODE_ENV === 'uat') {
   APIURL = "https://staging-ib-services.ekryp.com/";
   APPURL = "https://staging-ib.ekryp.com/";
@@ -117,18 +117,24 @@ export const ReferenceViewScreen = {
   ]
 }
 export const SolutionScreen = {
-    breadcrumb: "Solution",
-    problemDescriptionName: "Problem Description",
-    logInfo: "Log Info",
-    tags: "Tags",
-    tarBall: "TAR Ball",
-    labAvailablity: "Lab Availablity",
-    buttons: ["Predict", "Reserve", "Refine"],
-    potentialSolutionHeader: "Potential Solutions",
-    errorMessage: "No Data Found ",
-    suggestionsHeader: "Solution Links",
-
-
+  breadcrumb: "Solution",
+  modalHeader: "Patches",
+  modalTabHeaders: ["Details", "Description"],
+  modalContentsLabels: ["Title:", "Description:", "Progress Status:", "Group:", "Severity:", "Found In Build:", "Traget Release:", "Date Closed:", "Product:", "Service Account:", "Fixed In Release:"],
+  problemDescriptionName: "Problem Description",
+  problemAreaHeader: "Problem Area",
+  checkBoxLabel: "Exact Match",
+  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Probability"],
+  cardLables: ["Dev Track", "Release Notes", "SDFC"],
+  logInfo: "Log Info",
+  tags: "Tags",
+  tarBall: "TAR Ball",
+  labAvailablity: "Lab Availablity",
+  buttons: ["Predict", "Reserve", "Refine"],
+  potentialSolutionHeader: "Potential Solutions",
+  tagHeader: "Keywords",
+  errorMessage: "No Data Found ",
+  suggestionsHeader: "Solution Links",
 }
 
 
