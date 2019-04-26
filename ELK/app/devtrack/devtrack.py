@@ -3,11 +3,14 @@ from flask import request
 import requests
 from flask_restful import Resource
 from flask_restful import reqparse
+import csv, json
 
 class DevTrackData(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('search_param', required=False, help='search_param', location='args')
+        self.reqparse.add_argument('issue_id',required=False,help='issue_id',location='args')
+        self.reqparse.add_argument('data',required=False,help='data',location='form')
         super(DevTrackData, self).__init__()
 
     def get(self):
@@ -52,3 +55,21 @@ class DevTrackData(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
         
+
+    def put(self):
+        try:
+            args = self.reqparse.parse_args()
+            issue_id = args['issue_id']
+            data = args['data']
+            doc=json.loads(data)
+            
+            response = requests.put("http://54.191.115.241:9200/infinera/devtrack/"+doc["issueId"],json=doc,headers={"content-type":"application/json"})
+            print(response)
+            return jsonify(msg=response.json(),http_status_code=200)
+        except Exception as e:
+            print(e)
+            return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
+
+    
+    def options(self):
+         pass
