@@ -580,7 +580,7 @@
                     <th>{{solutionScreenConstants.tableHeaders[6]}}</th>
                   </thead>
                   <tbody>
-                    <tr v-for="item in devTrackData" :key="item.issueId"
+                    <tr v-for="item in devTrackData" :key="item.index"
                     
                     
                     
@@ -592,10 +592,20 @@
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.fixedinRelease}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateSubmitted}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.probability}}</td>
-                        <td>
+
+                        <td v-if="item.upvotedUsers.length>0" >
                           
-                          <i  v-if="!item.voteFlag" @click="upVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
-                          <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
+                          <span  v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)" :key="index" >
+                            <!-- <p>SSDSD {{userFlag}}</p> -->
+                             <i  v-if="userFlag !== currentUserEMailId" @click="updatedVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
+                             <i  v-if="userFlag === currentUserEMailId" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> 
+                          </span>
+                        </td>
+
+                        <td v-else>
+                          
+                          <i class="far fa-thumbs-up " @click="updatedVote(item)" style="cursor:pointer;color:#293f55;"></i>
+                          <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
                         </td>
                       </tr>
                   </tbody>
@@ -691,7 +701,7 @@
     },
     created() {
       clearInterval(window.intervalObj);
-      this.userName=localStorage.getItem("first_name");
+      this.currentUserEMailId=localStorage.getItem("email_id");
       // this.tagOptions.push({name:'Issue ID',value:'issueId'});
       // this.tagOptions.push({name:'Title',value:'title'});
       // this.tagOptions.push({name:'Current Owner',value:'currentOwner'});
@@ -740,7 +750,7 @@
         textcolor3:"",
         rl1color: "",
         rl2color: "",
-        userName:"",
+        currentUserEMailId:"",
         devTrackContent: "",
         filterOptions:[],
         filterValue:[],
@@ -861,15 +871,10 @@
                   let upvotedUserFlag=false;
                   if(data.data.devTrack[i].upvotedUsers !== undefined)
                   {
-                    
-                     upvotedUsers=data.data.devTrack[i].upvotedUsers;
-                    for(var i=0;i<upvotedUsers.length;i++)
-                    {
-                      if(this.userName === upvotedUsers[i])
-                      {
-                        upvotedUserFlag=true;
-                      }
-                    }
+                    upvotedUsers=data.data.devTrack[i].upvotedUsers;
+
+                  }else{
+                    upvotedUsers=[];
                   }
                   
                   
@@ -897,7 +902,6 @@
                   tragetRelease:data.data.devTrack[i].tragetRelease,
                   type:data.data.devTrack[i].type,
                   workaround:data.data.devTrack[i].workaround,
-                  voteFlag:upvotedUserFlag,
                   upvotedUsers:upvotedUsers});
                   
                   this.devTrackFlag=true;
@@ -984,6 +988,25 @@
             console.log(" Error Response ------->", handleError);
           });
       },
+      getCurrentUser(userList)
+      {
+        debugger;
+        var localList=[];
+        var userFlag=false;
+        for(var i=0;i<userList.length;i++)
+        {
+         if(userList[i]=== this.currentUserEMailId)
+         {
+           localList.push(this.currentUserEMailId);
+           userFlag=true;
+         }
+        }
+        if(!userFlag)
+        {
+          localList.push(userList[0]);
+        }
+        return localList;
+      },
       addTag (newTag) {
         const tag = {
           name: newTag,
@@ -1003,24 +1026,21 @@
       routeDashboard() {
         router.push("/");
       },
-      upVote(item){
-        this.devTrackData[item.index].voteFlag=true;
-        console.log(this.devTrackData);
-        item.upvotedUsers.push(this.userName);
-        delete item['voteFlag'];
-        
-        //item.pop('voteFlag');
-        console.log(item)
-        //this.postDevTrackData(item);
-        
+      updatedVote(item){
+        console.log("-----------------",item);
+       // item.updatedUsers = []
+        item.upvotedUsers.push(this.currentUserEMailId);
+        console.log('dev track',item)
+        this.postDevTrackData(item);
       },
       downVote(item)
       {
-        this.devTrackData[item.index].voteFlag=false;
-        item.upvotedUsers.push(this.userName);
         
-        item.upvotedUsers.pop(this.userName);
-        //this.postDevTrackData(item);
+       // item.upvotedUsers.push(this.userName);
+        
+        item.upvotedUsers.pop(this.currentUserEMailId);
+        console.log(item);
+        this.postDevTrackData(item);
 
       },
       postDevTrackData(item)
