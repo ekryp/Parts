@@ -249,7 +249,7 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
             pass
         try:
             if row['high_spare_no_std_cost'] == False:
-                df.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} do not have stadard cost'.format(row['high_spare'], row['part_name'])  # error 7
+                df.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} do not have standard cost'.format(row['high_spare'], row['part_name'])  # error 7
         except KeyError:
             pass
     df = df.drop(['node_depot_belongs'], 1)
