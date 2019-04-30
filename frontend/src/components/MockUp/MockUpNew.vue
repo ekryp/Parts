@@ -564,7 +564,9 @@
             </div>
           </div>
         </div>
-
+        <div class=" align card   p-2 mb-5  rounded text-center" v-if="errorFlag" >
+         
+        </div>
         <div class="row" v-if="devTrackFlag" style="marginTop:-1.8%">
             <div class="col-lg-12">
               <div class="p-3 mb-3 bg-white">
@@ -577,17 +579,17 @@
 
                 <div class="row align">
                   <div class="col-md-12" align="center">
-                <table class="table responsive table-hover">
+                <table  class="table responsive table-hover">
                   <thead>
                     <th>{{solutionScreenConstants.tableHeaders[0]}}</th>
                     <th style="width: 55.66%">{{solutionScreenConstants.tableHeaders[1]}}</th>
                     <th >{{solutionScreenConstants.tableHeaders[2]}}</th>
-                    <th>{{solutionScreenConstants.tableHeaders[3]}}</th>
+                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[3]}}</th>
                     <th>{{solutionScreenConstants.tableHeaders[4]}}</th>
-                    <th>{{solutionScreenConstants.tableHeaders[5]}}</th>
-                    <th>{{solutionScreenConstants.tableHeaders[6]}}</th>
+                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[5]}}</th>
+                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[6]}}</th>
                   </thead>
-                  <tbody>
+                  <tbody v-if ="devTrackData.length >0" >
                     <tr v-for="item in devTrackData" :key="item.index"
                     
                     
@@ -607,12 +609,13 @@
                             <!-- <p>SSDSD {{userFlag}}</p> -->
                              <i  v-if="userFlag !== currentUserEMailId" @click="updatedVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
                              <i  v-if="userFlag === currentUserEMailId" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> 
+                             &nbsp;{{item.upvotedUsers.length}}
                           </span>
                         </td>
 
                         <td v-else>
                           
-                          <i class="far fa-thumbs-up " @click="updatedVote(item)" style="cursor:pointer;color:#293f55;"></i>
+                          <i class="far fa-thumbs-up " @click="updatedVote(item)" style="cursor:pointer;color:#293f55;"></i>&nbsp;{{item.upvotedUsers.length}}
                           <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
                         </td>
                       </tr>
@@ -659,6 +662,9 @@
                     
                   </tbody> -->
                 </table>
+                <div v-if ="devTrackData.length==0" class="text-centered">
+                  No Data
+                </div>
               </div>
                   </div>
 
@@ -693,6 +699,7 @@
   import * as constant from "../constant/constant";
   import swal from "sweetalert";
   import Vudal from "vudal";
+  import accounting from "../../utilies/accounting";
   import Multiselect from "vue-multiselect";
   import tagsinput from "vue-tagsinput";
 
@@ -772,6 +779,7 @@
         analyzeFlag: false,
         devTrackFlag: false,
         releaseNotesFlag: false,
+        errorFlag:false,
         sdfcFlag: false,
         mlKeywords:"",
         estotalhits: 0,
@@ -899,7 +907,7 @@
                   foundOnPlatform:data.data.devTrack[i].foundOnPlatform,
                   group:data.data.devTrack[i].group,
                   product:data.data.devTrack[i].product,
-                  probability:data.data.devTrack[i].probability,
+                  probability:accounting.formatMoney(data.data.devTrack[i].probability),
                   progressStatus:data.data.devTrack[i].progressStatus,
                   reportingCustomer:data.data.devTrack[i].reportingCustomer,
                   resolution:data.data.devTrack[i].resolution,
@@ -926,11 +934,15 @@
                   this.analyzeFlag = true;
                 }
                 else{
-                  this.analyzeFlag = false;
+                  
+                  
+                  this.analyzeFlag = true;
+                  this.devTrackFlag=true;
+                  
                   this.problem2Flag = false;
-                  this.errorFlag=true;
-                  this.problemDescriptionPlaceholder="Sorry ...No Data is Present for the Specified Issue";
-                  this.problemDescription="";
+                    
+                  //this.problemDescriptionPlaceholder="Sorry ...No Data is Present for the Specified Issue";
+                  //this.problemDescription="";
                 }
                 
               } else {
