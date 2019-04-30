@@ -317,7 +317,7 @@
 
         </div>
         <div class="actions">
-          <button type="button" class="btn btn-danger" @click="hideModal()">OK</button>
+          <!-- <button type="button" class="btn btn-danger" @click="hideModal()">OK</button> -->
         </div>
       </vudal>
 
@@ -577,20 +577,36 @@
                     <th>{{solutionScreenConstants.tableHeaders[3]}}</th>
                     <th>{{solutionScreenConstants.tableHeaders[4]}}</th>
                     <th>{{solutionScreenConstants.tableHeaders[5]}}</th>
+                    <th>{{solutionScreenConstants.tableHeaders[6]}}</th>
                   </thead>
                   <tbody>
-                    <tr v-for="item in devTrackData" :key="item.ids"
+                    <tr v-for="item in devTrackData" :key="item.index"
                     
                     
-                    @click="showPatchModal(item.index)"
+                    
                     >
-                    <td class=" in-progress">
-                      {{item.ids}}</td>
-                      <td class=" in-progress">{{item.title}}</td>
-                        <td class=" in-progress">{{item.severity}}</td>
-                        <td class=" in-progress">{{item.fixedinRelease}}</td>
-                        <td class=" in-progress">{{item.dateSubmitted}}</td>
-                        <td class=" in-progress">{{item.probability}}</td>
+                    <td @click="showPatchModal(item.index)" class=" in-progress">
+                      {{item.issueId}}</td>
+                      <td class=" in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.fixedinRelease}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateSubmitted}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.probability}}</td>
+
+                        <td v-if="item.upvotedUsers.length>0" >
+                          
+                          <span  v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)" :key="index" >
+                            <!-- <p>SSDSD {{userFlag}}</p> -->
+                             <i  v-if="userFlag !== currentUserEMailId" @click="updatedVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
+                             <i  v-if="userFlag === currentUserEMailId" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> 
+                          </span>
+                        </td>
+
+                        <td v-else>
+                          
+                          <i class="far fa-thumbs-up " @click="updatedVote(item)" style="cursor:pointer;color:#293f55;"></i>
+                          <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                        </td>
                       </tr>
                   </tbody>
                   <!-- <tbody>
@@ -685,6 +701,7 @@
     },
     created() {
       clearInterval(window.intervalObj);
+      this.currentUserEMailId=localStorage.getItem("email_id");
       // this.tagOptions.push({name:'Issue ID',value:'issueId'});
       // this.tagOptions.push({name:'Title',value:'title'});
       // this.tagOptions.push({name:'Current Owner',value:'currentOwner'});
@@ -733,6 +750,7 @@
         textcolor3:"",
         rl1color: "",
         rl2color: "",
+        currentUserEMailId:"",
         devTrackContent: "",
         filterOptions:[],
         filterValue:[],
@@ -847,11 +865,20 @@
                 if(data.data.devTrack.length < 0){
                   this.analyzeFlag = true;
                 }
-              
+                var upvotedUsers=[];
                 for(var i=0;i<data.data.devTrack.length;i++)
                 {
+                  let upvotedUserFlag=false;
+                  if(data.data.devTrack[i].upvotedUsers !== undefined)
+                  {
+                    upvotedUsers=data.data.devTrack[i].upvotedUsers;
+
+                  }else{
+                    upvotedUsers=[];
+                  }
                   
-                    this.devTrackData.push({ids:data.data.devTrack[i].id,index:i,
+                  
+                this.devTrackData.push({issueId:data.data.devTrack[i].issueId,index:i,
                   description:data.data.devTrack[i].description,
                   severity:data.data.devTrack[i].severity,
                   caseReason:data.data.devTrack[i].caseReason,
@@ -874,7 +901,8 @@
                   title:data.data.devTrack[i].title,
                   tragetRelease:data.data.devTrack[i].tragetRelease,
                   type:data.data.devTrack[i].type,
-                  workaround:data.data.devTrack[i].workaround});
+                  workaround:data.data.devTrack[i].workaround,
+                  upvotedUsers:upvotedUsers});
                   
                   this.devTrackFlag=true;
                   this.b1color="#2a629a";
@@ -913,6 +941,8 @@
         this.mlKeywords = '';
         this.filterOptions=[];
         this.filterValue=[];
+        this.tagValue=[];
+        this.tagOptions=[];
         fetch(constant.ELKURL + "api/get_ml_keywords?search_param="+this.problemDescription, {
           
           headers: {
@@ -958,6 +988,25 @@
             console.log(" Error Response ------->", handleError);
           });
       },
+      getCurrentUser(userList)
+      {
+        debugger;
+        var localList=[];
+        var userFlag=false;
+        for(var i=0;i<userList.length;i++)
+        {
+         if(userList[i]=== this.currentUserEMailId)
+         {
+           localList.push(this.currentUserEMailId);
+           userFlag=true;
+         }
+        }
+        if(!userFlag)
+        {
+          localList.push(userList[0]);
+        }
+        return localList;
+      },
       addTag (newTag) {
         const tag = {
           name: newTag,
@@ -976,6 +1025,47 @@
       },
       routeDashboard() {
         router.push("/");
+      },
+      updatedVote(item){
+        console.log("-----------------",item);
+       // item.updatedUsers = []
+        item.upvotedUsers.push(this.currentUserEMailId);
+        console.log('dev track',item)
+        this.postDevTrackData(item);
+      },
+      downVote(item)
+      {
+        
+       // item.upvotedUsers.push(this.userName);
+        
+        item.upvotedUsers.pop(this.currentUserEMailId);
+        console.log(item);
+        this.postDevTrackData(item);
+
+      },
+      postDevTrackData(item)
+      {
+         let formData = new FormData();
+         formData.append("data",JSON.stringify(item));
+         fetch(constant.ELKURL + "api/getDevTrackData", {
+           method: 'PUT',
+          body: formData
+         }).then(response => {
+             response.text().then(text => {
+               const data = text && JSON.parse(text);
+               if(data.code === "token_expired")
+               {
+                 this.logout();
+               }
+               if (data.http_status_code === 200) {
+               
+               }
+             
+             });
+           })
+           .catch(handleError => {
+             console.log(" Error Response ------->", handleError);
+           });
       },
       problemDescriptionChange()
       {

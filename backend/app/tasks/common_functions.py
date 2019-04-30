@@ -247,6 +247,11 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
                 df.loc[index, 'error_reason'] = 'Depot {0} for Part {1} not present in SAP file'.format(row['node_depot_belongs'], row['Product Ordering Name'])  # error 4
         except KeyError:
             pass
+        try:
+            if row['high_spare_no_std_cost'] == False:
+                df.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} do not have standard cost'.format(row['high_spare'], row['part_name'])  # error 7
+        except KeyError:
+            pass
     df = df.drop(['node_depot_belongs'], 1)
     df.rename(columns={
         'Product Ordering Name': 'PON',
@@ -318,6 +323,11 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
     except KeyError:
         # conditions like checking parts in sap file df do not have 'Source', 'Valid' as columns
         # ignore such logical issue
+        pass
+
+    try:
+        df = df.drop(['high_spare_no_std_cost'], 1)
+    except KeyError:
         pass
     df.to_sql(name=table_name, con=engine, index=False, if_exists='append')
     print("Loaded Data into table : {0}".format(table_name))
