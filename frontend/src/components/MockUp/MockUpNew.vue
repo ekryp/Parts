@@ -2,7 +2,10 @@
     <div>
       <headernav msg="Dashboard"/>
       <side-nav/>
-
+<Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        ></Loading>
 
 
       <vudal name="myModal">
@@ -20,6 +23,14 @@
         
         </div>
         <div class="content contentwidth">
+          <div class="row">
+              <div class="col-lg-5 ">
+                <label class="labelweightIssueId"> Issue Id:</label>
+              </div>
+              <div class="col-lg-7 ">
+                <span class="col-lg-5 labelweightIssueId">{{devTrackContent.issueId}}</span>
+              </div>
+            </div>
           <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a
@@ -39,7 +50,7 @@
               role="tab"
               aria-controls="nav-Description"
               aria-selected="true"
-            >{{solutionScreenConstants.modalTabHeaders[0]}}</a>
+            >{{solutionScreenConstants.modalTabHeaders[1]}}</a>
 
             
           </div>
@@ -317,7 +328,7 @@
 
         </div>
         <div class="actions">
-          <button type="button" class="btn btn-danger" @click="hideModal()">OK</button>
+          <!-- <button type="button" class="btn btn-danger" @click="hideModal()">OK</button> -->
         </div>
       </vudal>
 
@@ -519,15 +530,15 @@
           <div class="col-lg-12">
             <div class="row  ">
             
-            <div class="col-lg-3" >
+            <!-- <div class="col-lg-3" >
                 <div class="card  shadow p-2 mb-5  rounded" >
                   <div class="card-body in-progress labelweight cardFontChange"
                   > <span class="float-left">Total Hits</span>
                   <span class="float-right">{{estotalhits}}</span> </div>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-lg-3" >
+              <div class="col-lg-4" >
                 <div class="card  shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b1color , color:textcolor1}">
                   <div class="card-body in-progress labelweight cardFontChange"
                   @click="showDevTrack()"> <span class="float-left">{{solutionScreenConstants.cardLables[0]}}</span>
@@ -535,7 +546,7 @@
                 </div>
               </div>
               
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b2color , color:textcolor2}">
                   <div class="card-body in-progress labelweight cardFontChange"
                   @click="showReleaseNotes()">
@@ -544,7 +555,7 @@
                 </div>
               </div>
               
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b3color , color:textcolor3}">
                   <div class="card-body in-progress labelweight cardFontChange"
                   v-bind:style="{ backgroundColor: b3color }"
@@ -556,7 +567,9 @@
             </div>
           </div>
         </div>
-
+        <div class=" align card   p-2 mb-5  rounded text-center" v-if="errorFlag" >
+         
+        </div>
         <div class="row" v-if="devTrackFlag" style="marginTop:-1.8%">
             <div class="col-lg-12">
               <div class="p-3 mb-3 bg-white">
@@ -569,28 +582,71 @@
 
                 <div class="row align">
                   <div class="col-md-12" align="center">
-                <table class="table responsive table-hover">
-                  <thead>
-                    <th>{{solutionScreenConstants.tableHeaders[0]}}</th>
-                    <th style="width: 55.66%">{{solutionScreenConstants.tableHeaders[1]}}</th>
+                <table  class="table responsive table-hover">
+                  <thead class="text-center">
+                    <th >{{solutionScreenConstants.tableHeaders[0]}}</th>
+                    <th style="width: 45.66%">{{solutionScreenConstants.tableHeaders[1]}}</th>
                     <th >{{solutionScreenConstants.tableHeaders[2]}}</th>
-                    <th>{{solutionScreenConstants.tableHeaders[3]}}</th>
+                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[3]}}</th>
                     <th>{{solutionScreenConstants.tableHeaders[4]}}</th>
-                    <th>{{solutionScreenConstants.tableHeaders[5]}}</th>
+                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[5]}}</th>
+                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[6]}}</th>
                   </thead>
-                  <tbody>
-                    <tr v-for="item in devTrackData" :key="item.ids"
-                    
-                    
-                    @click="showPatchModal(item.index)"
+                  <tbody v-if ="devTrackData.length >0 && moreFlag" class="text-center">
+                    <tr v-for="item in devTrackData" :key="item.index"
                     >
-                    <td class=" in-progress">
-                      {{item.ids}}</td>
-                      <td class=" in-progress">{{item.title}}</td>
-                        <td class=" in-progress">{{item.severity}}</td>
-                        <td class=" in-progress">{{item.fixedinRelease}}</td>
-                        <td class=" in-progress">{{item.dateSubmitted}}</td>
-                        <td class=" in-progress">{{item.probability}}</td>
+                    <td @click="showPatchModal(item.index)" class=" in-progress">
+                      {{item.issueId}}</td>
+                      <td class=" in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.fixedinRelease}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateSubmitted}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.probability}}</td>
+
+                        <td v-if="item.upvotedUsers.length>0" >
+                          
+                          <span  v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)" :key="index" >
+                            <!-- <p>SSDSD {{userFlag}}</p> -->
+                             <i  v-if="userFlag !== currentUserEMailId" @click="updatedVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
+                             <i  v-if="userFlag === currentUserEMailId" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> 
+                             &nbsp;{{item.upvotedUsers.length}}
+                          </span>
+                        </td>
+
+                        <td v-else>
+                          
+                          <i class="far fa-thumbs-up " @click="updatedVote(item)" style="cursor:pointer;color:#293f55;"></i>&nbsp;{{item.upvotedUsers.length}}
+                          <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                        </td>
+                      </tr>
+                  </tbody>
+
+                   <tbody v-if ="devTrackData.length >0 && !moreFlag" class="text-center">
+                    <tr v-for="item in filterDevTrackData(devTrackData)" :key="item.index"
+                    >
+                    <td @click="showPatchModal(item.index)" class=" in-progress">
+                      {{item.issueId}}</td>
+                      <td class=" in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.fixedinRelease}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateSubmitted}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.probability}}</td>
+
+                        <td v-if="item.upvotedUsers.length>0" >
+                          
+                          <span  v-for="(userFlag, index)  in  item.upvotedUsers" :key="index" >
+                            <!-- <p>SSDSD {{userFlag}}</p> -->
+                             <i  v-if="userFlag !== currentUserEMailId" @click="updatedVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
+                             <i  v-if="userFlag === currentUserEMailId" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> 
+                             &nbsp;{{item.upvotedUsers.length}}
+                          </span>
+                        </td>
+
+                        <td v-else>
+                          
+                          <i class="far fa-thumbs-up " @click="updatedVote(item)" style="cursor:pointer;color:#293f55;"></i>&nbsp;{{item.upvotedUsers.length}}
+                          <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                        </td>
                       </tr>
                   </tbody>
                   <!-- <tbody>
@@ -634,7 +690,17 @@
                   
                     
                   </tbody> -->
+                 
                 </table>
+                 <div v-if ="devTrackData.length>0 && !moreFlag" class="text-centered in-progress" @click="showAll()">
+                  More
+                </div>
+                <!-- <div v-if ="devTrackData.length>0 && moreFlag" class="text-centered" @click="showAbove80()">
+                  Hide
+                </div> -->
+                <div v-if ="devTrackData.length==0" class="text-centered">
+                  No Data
+                </div>
               </div>
                   </div>
 
@@ -669,9 +735,11 @@
   import * as constant from "../constant/constant";
   import swal from "sweetalert";
   import Vudal from "vudal";
+  import accounting from "../../utilies/accounting";
   import Multiselect from "vue-multiselect";
   import tagsinput from "vue-tagsinput";
-
+  import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
   //import * as data from "../../utilies/tabledata.json";
 
   export default {
@@ -681,10 +749,12 @@
       headernav,
       Multiselect,
       tagsinput,
-      Vudal
+      Vudal,
+      Loading
     },
     created() {
       clearInterval(window.intervalObj);
+      this.currentUserEMailId=localStorage.getItem("email_id");
       // this.tagOptions.push({name:'Issue ID',value:'issueId'});
       // this.tagOptions.push({name:'Title',value:'title'});
       // this.tagOptions.push({name:'Current Owner',value:'currentOwner'});
@@ -733,6 +803,8 @@
         textcolor3:"",
         rl1color: "",
         rl2color: "",
+        moreFlag:false,
+        currentUserEMailId:"",
         devTrackContent: "",
         filterOptions:[],
         filterValue:[],
@@ -746,6 +818,7 @@
         analyzeFlag: false,
         devTrackFlag: false,
         releaseNotesFlag: false,
+        errorFlag:false,
         sdfcFlag: false,
         mlKeywords:"",
         estotalhits: 0,
@@ -814,22 +887,22 @@
         {
           this.filterValues=this.filterValues+" AND "+this.tagValue[i].value;
         }
-        // if(this.filterValue.length>0)
-        // {
-        //   if(this.checked)
-        //   {
-        //     this.mlKeywords="AND";
-        //   }else{
-        //      this.mlKeywords="OR";
-        //   }
+         if(this.filterValue.length>0)
+         {
+           if(this.checked)
+           {
+             this.mlKeywords="AND";
+           }else{
+              this.mlKeywords="OR";
+           }
         
-        // }else{
-        //   this.mlKeywords="";
-        // }
-        // for(var i=0;i<this.filterValue.length;i++)
-        // {
-        //   this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
-        // }
+         }else{
+           this.mlKeywords="";
+         }
+         for(var i=0;i<this.filterValue.length;i++)
+         {
+           this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
+         }
       
         fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+" "+this.mlKeywords+this.filterValues, {
         
@@ -847,11 +920,20 @@
                 if(data.data.devTrack.length < 0){
                   this.analyzeFlag = true;
                 }
-              
+                var upvotedUsers=[];
                 for(var i=0;i<data.data.devTrack.length;i++)
                 {
+                  let upvotedUserFlag=false;
+                  if(data.data.devTrack[i].upvotedUsers !== undefined)
+                  {
+                    upvotedUsers=data.data.devTrack[i].upvotedUsers;
+
+                  }else{
+                    upvotedUsers=[];
+                  }
                   
-                    this.devTrackData.push({ids:data.data.devTrack[i].id,index:i,
+                  
+                this.devTrackData.push({issueId:data.data.devTrack[i].issueId,index:i,
                   description:data.data.devTrack[i].description,
                   severity:data.data.devTrack[i].severity,
                   caseReason:data.data.devTrack[i].caseReason,
@@ -864,7 +946,7 @@
                   foundOnPlatform:data.data.devTrack[i].foundOnPlatform,
                   group:data.data.devTrack[i].group,
                   product:data.data.devTrack[i].product,
-                  probability:data.data.devTrack[i].probability,
+                  probability:accounting.formatMoney(data.data.devTrack[i].probability),
                   progressStatus:data.data.devTrack[i].progressStatus,
                   reportingCustomer:data.data.devTrack[i].reportingCustomer,
                   resolution:data.data.devTrack[i].resolution,
@@ -874,8 +956,9 @@
                   title:data.data.devTrack[i].title,
                   tragetRelease:data.data.devTrack[i].tragetRelease,
                   type:data.data.devTrack[i].type,
-                  workaround:data.data.devTrack[i].workaround});
-                  
+                  workaround:data.data.devTrack[i].workaround,
+                  upvotedUsers:upvotedUsers});
+                  this.moreFlag=false;
                   this.devTrackFlag=true;
                   this.b1color="#2a629a";
                   this.textcolor1="#f8f9fa";
@@ -890,11 +973,15 @@
                   this.analyzeFlag = true;
                 }
                 else{
-                  this.analyzeFlag = false;
+                  
+                  
+                  this.analyzeFlag = true;
+                  this.devTrackFlag=true;
+                  
                   this.problem2Flag = false;
-                  this.errorFlag=true;
-                  this.problemDescriptionPlaceholder="Sorry ...No Data is Present for the Specified Issue";
-                  this.problemDescription="";
+                    
+                  //this.problemDescriptionPlaceholder="Sorry ...No Data is Present for the Specified Issue";
+                  //this.problemDescription="";
                 }
                 
               } else {
@@ -910,9 +997,12 @@
       },
       getMlKeywords()
       {
+        this.isLoading = true;
         this.mlKeywords = '';
         this.filterOptions=[];
         this.filterValue=[];
+        this.tagValue=[];
+        this.tagOptions=[];
         fetch(constant.ELKURL + "api/get_ml_keywords?search_param="+this.problemDescription, {
           
           headers: {
@@ -949,6 +1039,7 @@
                   }
                   
                 }
+                this.onAnalyze();
                 this.searchFlag=true;
               }
               
@@ -957,6 +1048,24 @@
           .catch(handleError => {
             console.log(" Error Response ------->", handleError);
           });
+      },
+      getCurrentUser(userList)
+      {
+        var localList=[];
+        var userFlag=false;
+        for(var i=0;i<userList.length;i++)
+        {
+         if(userList[i]=== this.currentUserEMailId)
+         {
+           localList.push(this.currentUserEMailId);
+           userFlag=true;
+         }
+        }
+        if(!userFlag)
+        {
+          localList.push(userList[0]);
+        }
+        return localList;
       },
       addTag (newTag) {
         const tag = {
@@ -976,6 +1085,67 @@
       },
       routeDashboard() {
         router.push("/");
+      },
+      updatedVote(item){
+        console.log("-----------------",item);
+       // item.updatedUsers = []
+        item.upvotedUsers.push(this.currentUserEMailId);
+        console.log('dev track',item)
+        this.postDevTrackData(item);
+      },
+      downVote(item)
+      {
+        
+       // item.upvotedUsers.push(this.userName);
+        
+        item.upvotedUsers.pop(this.currentUserEMailId);
+        console.log(item);
+        this.postDevTrackData(item);
+
+      },
+      filterDevTrackData(devTrackList)
+      {
+        console.log(devTrackList);
+        var tempList=[]
+        for(var i=0;i<devTrackList.length;i++)
+        {
+          if(devTrackList[i].probability>80)
+          {
+            tempList.push(devTrackList[i]);
+          }
+        }
+        return tempList;
+      },
+      postDevTrackData(item)
+      {
+         let formData = new FormData();
+         formData.append("data",JSON.stringify(item));
+         fetch(constant.ELKURL + "api/getDevTrackData", {
+           method: 'PUT',
+          body: formData
+         }).then(response => {
+             response.text().then(text => {
+               const data = text && JSON.parse(text);
+               if(data.code === "token_expired")
+               {
+                 this.logout();
+               }
+               if (data.http_status_code === 200) {
+               
+               }
+             
+             });
+           })
+           .catch(handleError => {
+             console.log(" Error Response ------->", handleError);
+           });
+      },
+      showAll(){
+        this.moreFlag=true;
+      },
+      showAbove80()
+      {
+        this.moreFlag=false;
       },
       problemDescriptionChange()
       {
@@ -1049,6 +1219,9 @@
   }
 
   .labelweight {
-    font-weight: 800;
+    font-weight: 600;
+  }
+   .labelweightIssueId{
+    font-weight: 900;
   }
   </style>
