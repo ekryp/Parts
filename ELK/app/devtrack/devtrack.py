@@ -29,6 +29,7 @@ class DevTrackData(Resource):
             devTrack = []
             releaseNotes = []
             salesForces = []
+            maxScore = data['hits']['max_score']
             response= {
                     "totalhits": data['hits']['total']['value'],
                     "devTrack": [],
@@ -38,13 +39,13 @@ class DevTrackData(Resource):
             for doc in esResponses:
                 data = doc["_source"]
                 if(doc["_type"] == "devtrack"):
-                    data["probability"]= doc["_score"]
+                    data["probability"]= (doc["_score"]/maxScore)*100
                     devTrack.append(data)
                 if(doc["_type"] == "releasenotes"):
-                    data["probability"]= doc["_score"]
+                    data["probability"]= (doc["_score"]/maxScore)*100
                     releaseNotes.append(data)
                 if(doc["_type"] == "salesforce"):
-                    data["probability"]= doc["_score"]
+                    data["probability"]= (doc["_score"]/maxScore)*100
                     salesForces.append(data)
             response['devTrack'] = devTrack
             response['releaseNotes'] = releaseNotes

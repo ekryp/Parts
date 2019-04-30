@@ -27,11 +27,29 @@ for each_pdf in glob.glob("*.pdf"):
                                                   'Severity' in x or
                                                   'Description' in x or
                                                   'Workaround' in x)]
+    # Take records from issue id only
     for item in result:
         if 'Issue' in item:
             index = result.index(item)
             break
     result = result[index:]
+
+    # Remove duplicate Description or Workaround in one record of 4
+    for index, item in enumerate(result):
+        print(index, item)
+        if 'Description' in item:
+            try:
+                if 'Description' in result[index + 1]:
+                    del result[index + 1]
+            except:
+                pass
+
+        if 'Workaround' in item:
+            try:
+                if 'Workaround' in result[index + 1]:
+                    del result[index + 1]
+            except:
+                pass
 
     if len(result) == 0:
         print(each_pdf)
