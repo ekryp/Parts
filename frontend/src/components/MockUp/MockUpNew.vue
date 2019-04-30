@@ -2,7 +2,10 @@
     <div>
       <headernav msg="Dashboard"/>
       <side-nav/>
-
+<Loading :active="isLoading" 
+        :can-cancel="false" 
+        color=#15ba9a
+        ></Loading>
 
 
       <vudal name="myModal">
@@ -527,15 +530,15 @@
           <div class="col-lg-12">
             <div class="row  ">
             
-            <div class="col-lg-3" >
+            <!-- <div class="col-lg-3" >
                 <div class="card  shadow p-2 mb-5  rounded" >
                   <div class="card-body in-progress labelweight cardFontChange"
                   > <span class="float-left">Total Hits</span>
                   <span class="float-right">{{estotalhits}}</span> </div>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-lg-3" >
+              <div class="col-lg-4" >
                 <div class="card  shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b1color , color:textcolor1}">
                   <div class="card-body in-progress labelweight cardFontChange"
                   @click="showDevTrack()"> <span class="float-left">{{solutionScreenConstants.cardLables[0]}}</span>
@@ -543,7 +546,7 @@
                 </div>
               </div>
               
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b2color , color:textcolor2}">
                   <div class="card-body in-progress labelweight cardFontChange"
                   @click="showReleaseNotes()">
@@ -552,7 +555,7 @@
                 </div>
               </div>
               
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                 <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b3color , color:textcolor3}">
                   <div class="card-body in-progress labelweight cardFontChange"
                   v-bind:style="{ backgroundColor: b3color }"
@@ -580,20 +583,17 @@
                 <div class="row align">
                   <div class="col-md-12" align="center">
                 <table  class="table responsive table-hover">
-                  <thead>
-                    <th>{{solutionScreenConstants.tableHeaders[0]}}</th>
-                    <th style="width: 55.66%">{{solutionScreenConstants.tableHeaders[1]}}</th>
+                  <thead class="text-center">
+                    <th >{{solutionScreenConstants.tableHeaders[0]}}</th>
+                    <th style="width: 45.66%">{{solutionScreenConstants.tableHeaders[1]}}</th>
                     <th >{{solutionScreenConstants.tableHeaders[2]}}</th>
                     <th style="width: 10%">{{solutionScreenConstants.tableHeaders[3]}}</th>
                     <th>{{solutionScreenConstants.tableHeaders[4]}}</th>
                     <th style="width: 10%">{{solutionScreenConstants.tableHeaders[5]}}</th>
                     <th style="width: 10%">{{solutionScreenConstants.tableHeaders[6]}}</th>
                   </thead>
-                  <tbody v-if ="devTrackData.length >0" >
+                  <tbody v-if ="devTrackData.length >0 && moreFlag" class="text-center">
                     <tr v-for="item in devTrackData" :key="item.index"
-                    
-                    
-                    
                     >
                     <td @click="showPatchModal(item.index)" class=" in-progress">
                       {{item.issueId}}</td>
@@ -606,6 +606,35 @@
                         <td v-if="item.upvotedUsers.length>0" >
                           
                           <span  v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)" :key="index" >
+                            <!-- <p>SSDSD {{userFlag}}</p> -->
+                             <i  v-if="userFlag !== currentUserEMailId" @click="updatedVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
+                             <i  v-if="userFlag === currentUserEMailId" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> 
+                             &nbsp;{{item.upvotedUsers.length}}
+                          </span>
+                        </td>
+
+                        <td v-else>
+                          
+                          <i class="far fa-thumbs-up " @click="updatedVote(item)" style="cursor:pointer;color:#293f55;"></i>&nbsp;{{item.upvotedUsers.length}}
+                          <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                        </td>
+                      </tr>
+                  </tbody>
+
+                   <tbody v-if ="devTrackData.length >0 && !moreFlag" class="text-center">
+                    <tr v-for="item in filterDevTrackData(devTrackData)" :key="item.index"
+                    >
+                    <td @click="showPatchModal(item.index)" class=" in-progress">
+                      {{item.issueId}}</td>
+                      <td class=" in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.fixedinRelease}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateSubmitted}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.probability}}</td>
+
+                        <td v-if="item.upvotedUsers.length>0" >
+                          
+                          <span  v-for="(userFlag, index)  in  item.upvotedUsers" :key="index" >
                             <!-- <p>SSDSD {{userFlag}}</p> -->
                              <i  v-if="userFlag !== currentUserEMailId" @click="updatedVote(item)" class="far fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i>
                              <i  v-if="userFlag === currentUserEMailId" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> 
@@ -661,7 +690,14 @@
                   
                     
                   </tbody> -->
+                 
                 </table>
+                 <div v-if ="devTrackData.length>0 && !moreFlag" class="text-centered in-progress" @click="showAll()">
+                  More
+                </div>
+                <!-- <div v-if ="devTrackData.length>0 && moreFlag" class="text-centered" @click="showAbove80()">
+                  Hide
+                </div> -->
                 <div v-if ="devTrackData.length==0" class="text-centered">
                   No Data
                 </div>
@@ -702,7 +738,8 @@
   import accounting from "../../utilies/accounting";
   import Multiselect from "vue-multiselect";
   import tagsinput from "vue-tagsinput";
-
+  import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
   //import * as data from "../../utilies/tabledata.json";
 
   export default {
@@ -712,7 +749,8 @@
       headernav,
       Multiselect,
       tagsinput,
-      Vudal
+      Vudal,
+      Loading
     },
     created() {
       clearInterval(window.intervalObj);
@@ -765,6 +803,7 @@
         textcolor3:"",
         rl1color: "",
         rl2color: "",
+        moreFlag:false,
         currentUserEMailId:"",
         devTrackContent: "",
         filterOptions:[],
@@ -919,7 +958,7 @@
                   type:data.data.devTrack[i].type,
                   workaround:data.data.devTrack[i].workaround,
                   upvotedUsers:upvotedUsers});
-                  
+                  this.moreFlag=false;
                   this.devTrackFlag=true;
                   this.b1color="#2a629a";
                   this.textcolor1="#f8f9fa";
@@ -958,6 +997,7 @@
       },
       getMlKeywords()
       {
+        this.isLoading = true;
         this.mlKeywords = '';
         this.filterOptions=[];
         this.filterValue=[];
@@ -999,6 +1039,7 @@
                   }
                   
                 }
+                this.onAnalyze();
                 this.searchFlag=true;
               }
               
@@ -1062,6 +1103,19 @@
         this.postDevTrackData(item);
 
       },
+      filterDevTrackData(devTrackList)
+      {
+        console.log(devTrackList);
+        var tempList=[]
+        for(var i=0;i<devTrackList.length;i++)
+        {
+          if(devTrackList[i].probability>80)
+          {
+            tempList.push(devTrackList[i]);
+          }
+        }
+        return tempList;
+      },
       postDevTrackData(item)
       {
          let formData = new FormData();
@@ -1085,6 +1139,13 @@
            .catch(handleError => {
              console.log(" Error Response ------->", handleError);
            });
+      },
+      showAll(){
+        this.moreFlag=true;
+      },
+      showAbove80()
+      {
+        this.moreFlag=false;
       },
       problemDescriptionChange()
       {
