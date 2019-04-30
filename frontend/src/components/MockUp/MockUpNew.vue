@@ -840,22 +840,22 @@
         {
           this.filterValues=this.filterValues+" AND "+this.tagValue[i].value;
         }
-        // if(this.filterValue.length>0)
-        // {
-        //   if(this.checked)
-        //   {
-        //     this.mlKeywords="AND";
-        //   }else{
-        //      this.mlKeywords="OR";
-        //   }
+         if(this.filterValue.length>0)
+         {
+           if(this.checked)
+           {
+             this.mlKeywords="AND";
+           }else{
+              this.mlKeywords="OR";
+           }
         
-        // }else{
-        //   this.mlKeywords="";
-        // }
-        // for(var i=0;i<this.filterValue.length;i++)
-        // {
-        //   this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
-        // }
+         }else{
+           this.mlKeywords="";
+         }
+         for(var i=0;i<this.filterValue.length;i++)
+         {
+           this.mlKeywords=this.mlKeywords+" "+this.filterValue[i].name;
+         }
       
         fetch(constant.ELKURL+"api/getDevTrackData?search_param="+this.problemDescription+" "+this.mlKeywords+this.filterValues, {
         
