@@ -125,7 +125,7 @@ export const SolutionScreen = {
   problemDescriptionName: "Problem Description",
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
-  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Probability", "Vote"],
+  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Confidence", "Vote"],
   cardLables: ["Dev Track", "Release Notes", "SDFC"],
   logInfo: "Log Info",
   tags: "Tags",

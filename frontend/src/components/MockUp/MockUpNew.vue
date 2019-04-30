@@ -20,6 +20,14 @@
         
         </div>
         <div class="content contentwidth">
+          <div class="row">
+              <div class="col-lg-5 ">
+                <label class="labelweightIssueId"> Issue Id:</label>
+              </div>
+              <div class="col-lg-7 ">
+                <span class="col-lg-5 labelweightIssueId">{{devTrackContent.issueId}}</span>
+              </div>
+            </div>
           <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a
@@ -39,7 +47,7 @@
               role="tab"
               aria-controls="nav-Description"
               aria-selected="true"
-            >{{solutionScreenConstants.modalTabHeaders[0]}}</a>
+            >{{solutionScreenConstants.modalTabHeaders[1]}}</a>
 
             
           </div>
@@ -990,7 +998,6 @@
       },
       getCurrentUser(userList)
       {
-        debugger;
         var localList=[];
         var userFlag=false;
         for(var i=0;i<userList.length;i++)
@@ -1139,6 +1146,9 @@
   }
 
   .labelweight {
-    font-weight: 800;
+    font-weight: 600;
+  }
+   .labelweightIssueId{
+    font-weight: 900;
   }
   </style>
