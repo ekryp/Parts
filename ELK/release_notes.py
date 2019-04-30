@@ -29,9 +29,9 @@ for each_pdf in glob.glob("*.pdf"):
                                                   'Workaround' in x)]
     for item in result:
         if 'Issue' in item:
-            print(result.index(item))
+            index = result.index(item)
             break
-    result = result[2:]
+    result = result[index:]
 
     if len(result) == 0:
         print(each_pdf)
@@ -56,7 +56,6 @@ for each_pdf in glob.glob("*.pdf"):
                 print("something wrong with pdf {0}".format(each_pdf))
                 shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/failure')
                 sys.exit(2)
-
 
             print(r, g, b, t)
             print(i)
