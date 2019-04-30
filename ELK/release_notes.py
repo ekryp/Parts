@@ -6,6 +6,7 @@ import requests
 import os
 import shutil
 import glob
+import sys
 
 
 def grouper(iterable, n, fillvalue=None):
@@ -19,18 +20,22 @@ for each_pdf in glob.glob("*.pdf"):
     print(each_pdf)
     raw = parser.from_file(each_pdf)
     raw = raw.get('content')
-    str_list = raw.splitlines()
-    str_list = list(filter(None, str_list))
 
-    # keep only useful info
-    search = ':'
-    result = [str_list for str_list in str_list if search in str_list]
-    result = [tuple(line.split(':')) for line in result]
-    result = [x for x in result if len(x)==2 and ('Issue ID' in x or
+    str_list = raw.split('\n\n')
+    result = [x for x in str_list if ':' in x and ('Issue ID' in x or
+                                                    'IssueID' in x or
                                                   'Severity' in x or
                                                   'Description' in x or
                                                   'Workaround' in x)]
+    for item in result:
+        if 'Issue' in item:
+            index = result.index(item)
+            break
+    result = result[index:]
+
     if len(result) == 0:
+        print(each_pdf)
+        print("nothing")
         print("sleep for 5 sec")
         shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/processed')
         time.sleep(5)
@@ -41,123 +46,88 @@ for each_pdf in glob.glob("*.pdf"):
 
     i = 0
     flag = True
+    start = time.time()
     while flag:
         for r, g, b, t in grouper(result, 4):
 
+            end = time.time()
+
+            if end - start > 60:
+                print("something wrong with pdf {0}".format(each_pdf))
+                shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/failure')
+                sys.exit(2)
+
             print(r, g, b, t)
+            print(i)
+            print(each_pdf)
             if i >= len(result):
                 flag = False
+
             try:
-                if r[0] != 'Issue ID':
-                    result.insert(i, ('Issue ID', ''))
-                i = i + 1
-
-                if g[0] != 'Severity':
-                    result.insert(i, ('Severity', ''))
-                i = i + 1
-
-                if b[0] != 'Description':
-                    result.insert(i, ('Description', ''))
-                i = i + 1
-
-                if t[0] != 'Workaround':
-                    result.insert(i, ('Workaround', ''))
-                i = i + 1
-                break
+                if 'Issue' not in r:
+                    result.insert(i, 'Issue ID: ')
             except:
-                pass
+                result.insert(i, 'Issue ID: ')
+            i = i + 1
 
-    # group long list into seperate group of 4 Issue ID , Severity , Description, Workaround
-    new_result=[]
-    count=0
-    for element in grouper(result, 4):
+            try:
+                if 'Severity' not in g:
+                    result.insert(i, 'Severity: ')
+            except:
+                result.insert(i, 'Severity: ')
+            i = i + 1
 
-        count = count + 1
-        new_result.append(element)
+            try:
+                if 'Description' not in b:
+                    result.insert(i, 'Description: ')
+            except:
+                result.insert(i, 'Description: ')
 
-    # Convert group of Issue ID , Severity , Description, Workaround into dictionary
-    # We cant have duplicate key in dict hence created a 2D array with unique 2d keys
-    dd = defaultdict(dict)
-    count = time.time()
-    for item in new_result:
+            i = i + 1
+
+            try:
+                if 'Workaround' not in t:
+                    result.insert(i, 'Workaround: ')
+            except:
+                result.insert(i, 'Workaround: ')
+
+            i = i + 1
+            old_row = set()
+
+            continue
+
+    for r, g, b, t in grouper(result, 4):
+        #print(r, g, b, t)
         dd = defaultdict(dict)
-
         try:
-            if 'Issue ID' in item[0]:
-                dd['Issue ID'] = item[0][1]
-
-            if 'Severity' in item[0]:
-                dd['Severity'] = item[0][1]
-
-            if 'Description' in item[0]:
-                dd['Description'] = item[0][1]
-
-            if 'Workaround' in item[0]:
-                dd['Workaround'] = item[0][1]
+            if 'Issue' in r:
+                dd['Issue ID'] = r.split(':')[1]
         except:
             dd['Issue ID'] = ''
         try:
-            if 'Issue ID' in item[1]:
-                dd['Issue ID'] = item[1][1]
-
-            if 'Severity' in item[1]:
-                dd['Severity'] = item[1][1]
-
-            if 'Description' in item[1]:
-                dd['Description'] = item[1][1]
-
-            if 'Workaround' in item[1]:
-                dd['Workaround'] = item[1][1]
-
+            if 'Severity' in g:
+                dd['Severity'] = g.split(':')[1]
         except:
             dd['Severity'] = ''
         try:
-            if 'Issue ID' in item[2]:
-                dd['Issue ID'] = item[2][1]
-
-            if 'Severity' in item[2]:
-                dd['Severity'] = item[2][1]
-
-            if 'Description' in item[2]:
-                dd['Description'] = item[2][1]
-
-            if 'Workaround' in item[2]:
-                dd['Workaround'] = item[2][1]
-
+            if 'Description' in b:
+                dd['Description'] = b.split(':')[1]
         except:
             dd['Description'] = ''
+
         try:
-            if 'Issue ID' in item[3]:
-                dd['Issue ID'] = item[3][1]
-
-            if 'Severity' in item[3]:
-                dd['Severity'] = item[3][1]
-
-            if 'Description' in item[3]:
-                dd['Description'] = item[3][1]
-
-            if 'Workaround' in item[3]:
-                dd['Workaround'] = item[3][1]
+            if 'Workaround' in t:
+                dd['Workaround'] = t.split(':')[1]
         except:
             dd['Workaround'] = ''
         dd['file_name'] = each_pdf
-        print('###')
-        print(item)
-        print("dict is : {0} & count is {1}".format(dd,len(dd)))
-        print('***')
+        print(dd)
         response = requests.post("http://34.83.90.206:9200/infinera/release_notes/", json=dd,
-                                 headers={"content-type": "application/json"})
-
-    print("sleep for 5 sec")
+                                headers={"content-type": "application/json"})
+    #print(each_pdf)
+    #print("sleep for 5 sec")
     shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/processed')
-
     time.sleep(5)
-
-    '''
-    import json
-    jj = json.dumps(dd)
-    print(jj)
-    '''
 
 
 
