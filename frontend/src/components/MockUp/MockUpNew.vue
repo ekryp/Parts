@@ -1,12 +1,11 @@
   <template>
     <div>
-      <headernav msg="Dashboard"/>
+      <headernav msg="SolutionScreen"/>
       <side-nav/>
 <Loading :active="isLoading" 
         :can-cancel="false" 
         color=#15ba9a
         ></Loading>
-
 
       <vudal name="myModal">
         <div class="header">
@@ -332,13 +331,388 @@
         </div>
       </vudal>
 
-      <div class="custom-container" style="paddingTop: 6%">
-        <div class="row-one" style="paddingBo">
+      <div class="custom-container" >
+        <div class="row-one" >
           <div class="myBreadCrumb">
             <p>
               <span style="font-size: 14px;">{{solutionScreenConstants.breadcrumb}}</span>
             </p>
           </div>
+
+          <!-- Filter Section -->
+
+           <div class="row text-center">
+          <div class="col-lg-1" v-if="!filterFLag" @click="changeFilter()" align="left">
+            <i class="fas fa-filter fa-lg" style="color:#169f85"></i>
+          </div>
+          <div class="col-lg-1" v-if="filterFLag" @click="changeFilter()" align="left">
+            <i class="fas fa-times fa-lg" style="color:#169f85"></i>
+          </div>
+
+          <div class="col"></div>
+        </div>
+        <br>
+
+        <transition name="fade">
+          <div class="row" style="paddingTop:0.6em" v-if="filterFLag">
+            <div class="col-lg-12">
+              <div class="p-3 mb-3 bg-white">
+                <div class="row align">
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-4">{{solutionScreenConstants.filterNames[0]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('product')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('product')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                      <Multiselect
+                        v-model="productValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Customer"
+                        label="name"
+                        track-by="name"
+                        :options="productOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row ">
+                      <div class="col-lg-4">{{solutionScreenConstants.filterNames[1]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('group')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('group')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                      <Multiselect
+                        v-model="groupValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Group"
+                        label="name"
+                        track-by="name"
+                        :options="groupOptions"
+                        :multiple="true"
+                        :taggable="true"
+                        :clear-on-select="false"
+                        :close-on-select="false"
+                        :hide-selected="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                 <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-4">{{solutionScreenConstants.filterNames[2]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('severity')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('severity')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                       <Multiselect
+                        v-model="severityValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Severity"
+                        label="name"
+                        track-by="name"
+                        :options="severityOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                </div>
+                <div class="row align">
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-4">{{solutionScreenConstants.filterNames[3]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('priority')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('priority')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                     <Multiselect
+                        v-model="priorityValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Priority"
+                        label="name"
+                        track-by="name"
+                        :options="priorityOptions"
+                        :multiple="true"
+                        :taggable="true"
+                        :clear-on-select="false"
+                        :close-on-select="false"
+                        :hide-selected="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-5">{{solutionScreenConstants.filterNames[4]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('foundOnPlatform')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('foundOnPlatform')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                       <Multiselect
+                        v-model="foundOnPlatformValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Found On Platform"
+                        label="name"
+                        track-by="name"
+                        :options="foundOnPlatformOptions"
+                        :multiple="true"
+                        :taggable="true"
+                        :clear-on-select="false"
+                        :close-on-select="false"
+                        :hide-selected="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-4">{{solutionScreenConstants.filterNames[5]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('fixedInRelease')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('fixedInRelease')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                      <Multiselect
+                        v-model="fixedInReleaseValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Fixed In Release"
+                        label="name"
+                        track-by="name"
+                        :options="fixedInReleaseOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                </div>
+                <div class="row align">
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-4">{{solutionScreenConstants.filterNames[6]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('foundInRelease')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('foundInRelease')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                      <Multiselect
+                        v-model="foundInReleaseValue"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Search Found In Release"
+                        label="name"
+                        track-by="name"
+                        :options="foundInReleaseOptions"
+                        :multiple="true"
+                        :taggable="true"
+                        :clear-on-select="false"
+                        :close-on-select="false"
+                        :hide-selected="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row">
+                      <div class="col-lg-4">{{solutionScreenConstants.filterNames[7]}}</div>
+                      <div class="col" align="right">
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="selectAll('depot')"
+                        >
+                          <i class="fas fa-check-circle"></i>
+                          &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                        </button>
+
+                        <button
+                          style="fontSize:1vw;"
+                          type="button"
+                          class="all-success"
+                          @click="clearAll('depot')"
+                        >
+                          <i class="fas fa-minus-circle"></i>
+                          &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                        </button>
+                      </div>
+                    </div>
+                    <div style="paddingTop:0.5em">
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="row">
+                  <div class="col-lg-10"></div>
+                  <div class="col-lg-1">
+                    <button
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="addFavourites()"
+                    >
+                      <i class="far fa-star"></i> &nbsp;Favourites
+                    </button>
+                  </div>
+                  <div class="col-lg-1">
+                    <button
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="applyFilter()"
+                    >
+                      <i class="far fa-chart-bar"></i> &nbsp;Run
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+
+
+
+
+
+
           <div class="row">
             <div class="col-lg-12">
               <div class="p-3 mb-3 bg-white">
@@ -739,7 +1113,8 @@
   import Multiselect from "vue-multiselect";
   import tagsinput from "vue-tagsinput";
   import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+  import 'vue-loading-overlay/dist/vue-loading.css';
+  import * as solutionFilterData from "../../utilies/solutionfiltersample.json";
   //import * as data from "../../utilies/tabledata.json";
 
   export default {
@@ -790,6 +1165,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         solutionScreenConstants: constant.SolutionScreen,
         showGreen: true,
         checked:false,
+        filterFLag:false,
         searchFlag:false,
         devTrackData: [],
         errorFlag: false,
@@ -810,8 +1186,23 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         filterValue:[],
         tagValue:[],
         tagOptions:[],
+        productValue: [],
+        productOptions: solutionFilterData.productValues,
+        groupValue: [],
+        groupOptions: solutionFilterData.group,
+        severityValue: [],
+        severityOptions: solutionFilterData.severity,
+        priorityValue: [],
+        priorityOptions: solutionFilterData.priority,
+        foundOnPlatformValue:[],
+        foundOnPlatformOptions: solutionFilterData.foundOnPlatform,
+        fixedInReleaseValue: [],
+        fixedInReleaseOptions: solutionFilterData.fixedInRelease,
+        foundInReleaseValue: [],
+        foundInReleaseOptions: solutionFilterData.foundInRelease,
         problemDescriptionPlaceholder: "Enter the Problem Description",
         valueIndex: "",
+        filterURL:"",
         releaseFlag: true,
         patchFlag: false,
         problemDescription: "",
@@ -883,6 +1274,40 @@ import 'vue-loading-overlay/dist/vue-loading.css';
         this.errorFlag=false;
         this.devTrackData=[];
         this.filterValues='';
+
+        this.filterURL = "";
+      for (var i = 0; i < this.productValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&product_filter=` + this.productValue[i].name;
+      }
+
+      for (var i = 0; i < this.groupValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&group_filter=` + this.groupValue[i].name;
+      }
+       for (var i = 0; i < this.foundInReleaseValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&found_in_release_filter=` + this.foundInReleaseValue[i].name;
+      }
+       for (var i = 0; i < this.fixedInReleaseValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&fixed_in_release_filter=` + this.fixedInReleaseValue[i].name;
+      }
+       for (var i = 0; i < this.severityValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&severity_filter=` + this.severityValue[i].name;
+      }
+       for (var i = 0; i < this.priorityValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&priority_filter=` + this.priorityValue[i].name;
+      }
+      for (var i = 0; i < this.foundOnPlatformValue.length; i++) {
+        this.filterURL =
+          this.filterURL + `&found_on_platform_filter=` + this.foundOnPlatformValue[i].name;
+      }
+
+
+
         for(var i=0;i<this.tagValue.length;i++)
         {
           this.filterValues=this.filterValues+" AND "+this.tagValue[i].value;
@@ -994,6 +1419,10 @@ import 'vue-loading-overlay/dist/vue-loading.css';
           .catch(handleError => {
             console.log(" Error Response ------->", handleError);
           });
+      },
+
+      changeFilter() {
+        this.filterFLag = !this.filterFLag;
       },
       getMlKeywords()
       {
@@ -1140,6 +1569,52 @@ import 'vue-loading-overlay/dist/vue-loading.css';
              console.log(" Error Response ------->", handleError);
            });
       },
+      clearAll(param) {
+       if (param === "product") {
+        this.productValue = [];
+      } else if (param === "group") {
+        this.groupValue = [];
+      }
+      else if (param === "foundInRelease") {
+        this.foundInReleaseValue = [];
+      }
+      else if (param === "fixedInRelease") {
+        this.fixedInReleaseValue = [];
+      }
+      else if (param === "severity") {
+        this.severityValue = [];
+      }
+      else if (param === "priority") {
+        this.priorityValue = [];
+      }
+      else if (param === "foundOnPlatform") {
+        this.foundOnPlatformValue = [];
+      }
+    },
+    selectAll(param) {
+
+      if (param === "product") {
+        this.productValue = this.productOptions;
+      } else if (param === "group") {
+        this.groupValue = this.groupOptions;
+      }
+      else if (param === "foundInRelease") {
+        this.foundInReleaseValue = this.foundInReleaseOptions;
+      }
+      else if (param === "fixedInRelease") {
+        this.fixedInReleaseValue = this.fixedInReleaseOptions;
+      }
+      else if (param === "severity") {
+        this.severityValue = this.severityOptions;
+      }
+      else if (param === "priority") {
+        this.priorityValue = this.priorityOptions;
+      }
+      else if (param === "foundOnPlatform") {
+        this.foundOnPlatformValue = this.foundOnPlatformOptions;
+      }
+      
+    },
       showAll(){
         this.moreFlag=true;
       },
@@ -1173,7 +1648,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
   }
   .myBreadCrumb {
     margin-top: -2%;
-    margin-bottom: 2%;
+   
   }
   .align-rl {
     padding-left: 8em;
@@ -1214,6 +1689,35 @@ import 'vue-loading-overlay/dist/vue-loading.css';
     word-break: break-all;
     white-space:pre-wrap;
   }
+
+  .all-success {
+  font-size: 0.63em !important;
+  color: #169f85;
+  letter-spacing: 0.063em;
+
+  border: 0.125em solid #169f85;
+  border-radius: 2.5em;
+  background: transparent;
+  transition: all 0.3s ease 0s;
+}
+
+.all-success:hover {
+  color: #fff;
+  background: #169f85;
+  border: 2px solid #169f85;
+}
+  .fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in <2.1.8 */
+ {
+  opacity: 0;
+}
+
   .navHeaderColor {
     color: #495057;
   }
@@ -1224,4 +1728,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
    .labelweightIssueId{
     font-weight: 900;
   }
+  .row-one {
+  padding-top: 5%;
+}
   </style>

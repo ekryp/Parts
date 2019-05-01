@@ -129,6 +129,8 @@ export const SolutionScreen = {
   cardLables: ["Dev Track", "Release Notes", "FSB"],
   logInfo: "Log Info",
   tags: "Tags",
+  filterButtons: ["All", "Clear"],
+  filterNames: ["Product", "Group", " Severity", "Priority", "Found on Platform", "Fixed in Release", "Found in Release", "Date Closed"],
   tarBall: "TAR Ball",
   labAvailablity: "Lab Availablity",
   buttons: ["Predict", "Reserve", "Refine"],
