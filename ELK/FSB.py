@@ -11,7 +11,8 @@ import sys
 
 os.chdir(r'/Users/anup/Downloads/FSB')
 
-for each_pdf in ['FSB_180813-A.pdf']:
+for each_pdf in glob.glob("*.pdf"):
+
     # read input file
     print(each_pdf)
     raw = parser.from_file(each_pdf)
@@ -19,19 +20,27 @@ for each_pdf in ['FSB_180813-A.pdf']:
     str_list = raw.split('\n\n')
     result = list(filter(None, str_list))
 
+
     # Take records from Issue # only
     for item in result:
         if 'Issue #' in item:
             start_index = result.index(item)
             break
 
+
     # Take records till Recommended Actions only
     for item in result:
         if 'Recommended Actions' in item:
             end_index = result.index(item)
             break
-    result = result[start_index:end_index]
-    print(result)
+
+    try:
+        result = result[start_index:end_index]
+        print(result)
+    except NameError:
+        print("Cant find either Issue #  or Recommended Actions in pdf {0}".format(each_pdf))
+        shutil.move(each_pdf, r'/Users/anup/Downloads/FSB/failed')
+        continue
 
 
     def predicate_grouper(li, predicate='Issue #'):
@@ -50,6 +59,11 @@ for each_pdf in ['FSB_180813-A.pdf']:
         dd['Problem Description'] = each_issue.split('Problem Description')[1].split('Symptoms')[0]
         dd['Symptoms'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[0]
         dd['Root Cause'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[1]
+        dd['file_name'] = each_pdf
         print('=' * 70)
         print(dd)
         print('=' * 70)
+        response = requests.post("http://34.83.90.206:9200/fsb/records", json=dd,
+                                 headers={"content-type": "application/json"})
+
+    shutil.move(each_pdf, r'/Users/anup/Downloads/FSB/processed')
