@@ -140,8 +140,9 @@ for each_pdf in glob.glob("*.pdf"):
             dd['Workaround'] = ''
         dd['file_name'] = each_pdf
         print(dd)
-        response = requests.post("http://34.83.90.206:9200/infinera/release_notes/", json=dd,
+        response = requests.post("http://54.191.115.241:9200/release_notes/records", json=dd,
                                 headers={"content-type": "application/json"})
+
     #print(each_pdf)
     #print("sleep for 5 sec")
     shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/processed')
