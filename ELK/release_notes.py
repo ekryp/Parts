@@ -14,7 +14,7 @@ def grouper(iterable, n, fillvalue=None):
     return zip_longest(*args, fillvalue=fillvalue)
 
 
-os.chdir(r'/Users/anup/Downloads/Release_Notes')
+os.chdir(r'/Users/khalisarankannan/Downloads/Release_Notes')
 for each_pdf in glob.glob("*.pdf"):
     # read input file
     print(each_pdf)
@@ -55,7 +55,7 @@ for each_pdf in glob.glob("*.pdf"):
         print(each_pdf)
         print("nothing")
         print("sleep for 5 sec")
-        shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/processed')
+        shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/Release_Notes/processed')
         time.sleep(5)
         continue
 
@@ -72,7 +72,7 @@ for each_pdf in glob.glob("*.pdf"):
 
             if end - start > 60:
                 print("something wrong with pdf {0}".format(each_pdf))
-                shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/failure')
+                shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/Release_Notes/failure')
                 sys.exit(2)
 
             print(r, g, b, t)
@@ -119,33 +119,33 @@ for each_pdf in glob.glob("*.pdf"):
         dd = defaultdict(dict)
         try:
             if 'Issue' in r:
-                dd['Issue ID'] = r.split(':')[1]
+                dd['issueId'] = r.split(':')[1]
         except:
-            dd['Issue ID'] = ''
+            dd['issueId'] = ''
         try:
             if 'Severity' in g:
-                dd['Severity'] = g.split(':')[1]
+                dd['severity'] = g.split(':')[1]
         except:
-            dd['Severity'] = ''
+            dd['severity'] = ''
         try:
             if 'Description' in b:
-                dd['Description'] = b.split(':')[1]
+                dd['description'] = b.split(':')[1]
         except:
-            dd['Description'] = ''
+            dd['description'] = ''
 
         try:
             if 'Workaround' in t:
-                dd['Workaround'] = t.split(':')[1]
+                dd['workaround'] = t.split(':')[1]
         except:
-            dd['Workaround'] = ''
+            dd['workaround'] = ''
         dd['file_name'] = each_pdf
         print(dd)
-        response = requests.post("http://54.191.115.241:9200/release_notes/records", json=dd,
+        response = requests.post("http://34.83.90.206:9200/release_notes/release_notes", json=dd,
                                 headers={"content-type": "application/json"})
 
     #print(each_pdf)
     #print("sleep for 5 sec")
-    shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/processed')
+    shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/Release_Notes/processed')
     time.sleep(5)
 
 
