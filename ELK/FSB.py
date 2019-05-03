@@ -104,7 +104,7 @@ for each_pdf in glob.glob("*.pdf"):
         dd.update(common_attribute)
         print(dd)
         print('=' * 70)
-        response = requests.post("http://34.83.90.206:9200/fsb/records", json=dd,
+        response = requests.post("http://54.191.115.241:9200/fsb/records", json=dd,
                                  headers={"content-type": "application/json"})
 
     shutil.move(each_pdf, r'/Users/anup/Downloads/FSB/processed')
