@@ -9,7 +9,7 @@ import glob
 import sys
 
 
-os.chdir(r'/Users/anup/Downloads/FSB')
+os.chdir(r'/Users/khalisarankannan/Downloads/fsb')
 
 for each_pdf in glob.glob("*.pdf"):
 
@@ -38,26 +38,26 @@ for each_pdf in glob.glob("*.pdf"):
         print(field_service_bulletin)
     except NameError:
         print("cant find either FSB Number #  or Synopsis in pdf {0}".format(each_pdf))
-        shutil.move(each_pdf, r'/users/anup/downloads/fsb/failed')
+        shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/fsb/failed')
         continue
 
     common_attribute = defaultdict(dict)
     for item in field_service_bulletin:
         if 'FSB Number' in item:
-            common_attribute['FSB Number'] = item.split('FSB Number')[1]
-            print("item in FSB Number is {0}".format(common_attribute.get('FSB Number')))
+            common_attribute['FSBNumber'] = item.split('FSB Number')[1]
+            print("item in FSB Number is {0}".format(common_attribute.get('FSBNumber')))
 
         elif 'FSB Title' in item:
-            common_attribute['FSB Title'] = item.split('FSB Title')[1]
-            print("item in FSB Title is {0}".format(common_attribute.get('FSB Title')))
+            common_attribute['title'] = item.split('FSB Title')[1]
+            print("item in FSB Title is {0}".format(common_attribute.get('title')))
 
         elif 'Date Created' in item:
-            common_attribute['Date Created'] = item.split('Date Created')[1]
-            print("item in Date Created is {0}".format(common_attribute.get('Date Created')))
+            common_attribute['dateCreated'] = item.split('Date Created')[1]
+            print("item in Date Created is {0}".format(common_attribute.get('dateCreated')))
 
         elif 'Date Revised' in item:
-            common_attribute['Date Revised'] = item.split('Date Revised')[1]
-            print("item in Date Revised is {0}".format(common_attribute.get('Date Revised')))
+            common_attribute['dateRevised'] = item.split('Date Revised')[1]
+            print("item in Date Revised is {0}".format(common_attribute.get('dateRevised')))
 
 
 
@@ -79,7 +79,7 @@ for each_pdf in glob.glob("*.pdf"):
         print(result)
     except NameError:
         print("Cant find either Issue #  or Recommended Actions in pdf {0}".format(each_pdf))
-        shutil.move(each_pdf, r'/Users/anup/Downloads/FSB/failed')
+        shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/fsb//failed')
         continue
 
 
@@ -94,17 +94,17 @@ for each_pdf in glob.glob("*.pdf"):
 
     for each_issue in result:
         dd = defaultdict(dict)
-        dd['Issue Id'] = each_issue.split('Problem Description')[0].split(':')[0].split('#')[1]
-        dd['Issue Title'] = each_issue.split('Problem Description')[0].split(':')[1]
-        dd['Problem Description'] = each_issue.split('Problem Description')[1].split('Symptoms')[0]
-        dd['Symptoms'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[0]
-        dd['Root Cause'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[1]
+        dd['issueId'] = each_issue.split('Problem Description')[0].split(':')[0].split('#')[1]
+        dd['title'] = each_issue.split('Problem Description')[0].split(':')[1]
+        dd['description'] = each_issue.split('Problem Description')[1].split('Symptoms')[0]
+        dd['symptoms'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[0]
+        dd['rootCause'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[1]
         dd['file_name'] = each_pdf
         print('=' * 70)
         dd.update(common_attribute)
         print(dd)
         print('=' * 70)
-        response = requests.post("http://54.191.115.241:9200/fsb/records", json=dd,
+        response = requests.post("http://34.83.90.206:9200/fsb/fsb", json=dd,
                                  headers={"content-type": "application/json"})
 
-    shutil.move(each_pdf, r'/Users/anup/Downloads/FSB/processed')
+    shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/fsb/processed')

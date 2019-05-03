@@ -45,6 +45,21 @@ class DevTrackData(Resource):
                 releaseNotes.append(data)
             return releaseNotes
 
+        def fsb(search_param):
+            URL="http://34.83.90.206:9200/fsb/_search"
+            headers = {'Content-type': 'application/json'}
+            PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"issueId\", \"title\",\"description\",\"symptoms\",\"rootCause\", \"file_name\",\"FSBNumber\",\"dateCreated\",\"dateRevised\"]}}}"
+            r = requests.get(url = URL, data = PARAMS, headers=headers) 
+            data = r.json()
+            fsbmaxScore = data['hits']['max_score']
+            fsbList = data['hits']['hits']
+            fsb = []
+            for doc in fsbList:
+                data = doc["_source"]
+                data["probability"]= (doc["_score"]/fsbmaxScore)*100
+                fsb.append(data)
+            return fsb
+
 
         try:
             args = self.reqparse.parse_args()
@@ -52,7 +67,7 @@ class DevTrackData(Resource):
             search_param = "*"+args['search_param']+"*"
             devTrack = devtrack(search_param)
             releaseNotes = releaseNotes(search_param)
-            fsb = []
+            fsb = fsb(search_param)
             response= {
                     "devTrack": [],
                     "releaseNotes": [],
