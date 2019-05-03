@@ -19,6 +19,46 @@ for each_pdf in glob.glob("*.pdf"):
     raw = raw.get('content')
     str_list = raw.split('\n\n')
     result = list(filter(None, str_list))
+    field_service_bulletin = []
+
+    # Take records from Field Service Bulletin only
+    for item in result:
+        if 'FSB Number' in item:
+            start = result.index(item)
+            break
+
+    # Take records till Synopsis only
+    for item in result:
+        if 'Synopsis' in item:
+            end = result.index(item)
+            break
+
+    try:
+        field_service_bulletin = result[start:end]
+        print(field_service_bulletin)
+    except NameError:
+        print("cant find either FSB Number #  or Synopsis in pdf {0}".format(each_pdf))
+        shutil.move(each_pdf, r'/users/anup/downloads/fsb/failed')
+        continue
+
+    common_attribute = defaultdict(dict)
+    for item in field_service_bulletin:
+        if 'FSB Number' in item:
+            common_attribute['FSB Number'] = item.split('FSB Number')[1]
+            print("item in FSB Number is {0}".format(common_attribute.get('FSB Number')))
+
+        elif 'FSB Title' in item:
+            common_attribute['FSB Title'] = item.split('FSB Title')[1]
+            print("item in FSB Title is {0}".format(common_attribute.get('FSB Title')))
+
+        elif 'Date Created' in item:
+            common_attribute['Date Created'] = item.split('Date Created')[1]
+            print("item in Date Created is {0}".format(common_attribute.get('Date Created')))
+
+        elif 'Date Revised' in item:
+            common_attribute['Date Revised'] = item.split('Date Revised')[1]
+            print("item in Date Revised is {0}".format(common_attribute.get('Date Revised')))
+
 
 
     # Take records from Issue # only
@@ -61,6 +101,7 @@ for each_pdf in glob.glob("*.pdf"):
         dd['Root Cause'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[1]
         dd['file_name'] = each_pdf
         print('=' * 70)
+        dd.update(common_attribute)
         print(dd)
         print('=' * 70)
         response = requests.post("http://34.83.90.206:9200/fsb/records", json=dd,
