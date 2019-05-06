@@ -189,7 +189,7 @@ class DevTrackData(Resource):
             devTrack = []
             for doc in devtrackList:
                 data = doc["_source"]
-                data["probability"]= (doc["_score"]/devtrackmaxScore)*100
+                data["probability"]= round((doc["_score"]/devtrackmaxScore)*100)
                 devTrack.append(data)
             return devTrack
         
@@ -204,7 +204,7 @@ class DevTrackData(Resource):
             releaseNotes = []
             for doc in releaseNotesList:
                 data = doc["_source"]
-                data["probability"]= (doc["_score"]/releaseNotesmaxScore)*100
+                data["probability"]= round((doc["_score"]/releaseNotesmaxScore)*100)
                 releaseNotes.append(data)
             return releaseNotes
 
@@ -219,7 +219,7 @@ class DevTrackData(Resource):
             fsb = []
             for doc in fsbList:
                 data = doc["_source"]
-                data["probability"]= (doc["_score"]/fsbmaxScore)*100
+                data["probability"]= round((doc["_score"]/fsbmaxScore)*100)
                 fsb.append(data)
             return fsb
 
