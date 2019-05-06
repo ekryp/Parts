@@ -30,6 +30,11 @@ body {
 .btn-success:hover {
   background-color: #169f85;
 }
+.btn-success:disabled {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
 .breadcrumb {
   display: -ms-flexbox;
   display: flex;

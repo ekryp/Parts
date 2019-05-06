@@ -1,0 +1,103 @@
+{
+  "productValues": [{
+    "name": "CX"
+  }],
+  "foundOnPlatform": [{
+    "name": "NA"
+  }, {
+    "name": "NPS"
+  }, {
+    "name": "ppc"
+  }, {
+    "name": "x86"
+  }, {
+    "name": "SIM"
+  }],
+  "group": [{
+      "name": "Tools"
+    }, {
+      "name": "Third Party"
+    }, {
+      "name": "CX IQNOS"
+    }, {
+      "name": "CX DIAG"
+    }, {
+      "name": "TechPubs"
+    },
+    {
+      "name": "ASIC"
+    },
+    {
+      "name": "CX HW"
+    },
+    {
+      "name": "CX FW"
+    }
+  ],
+  "priority": [{
+    "name": "1 - Urgent"
+  }, {
+    "name": "2 - High"
+  }, {
+    "name": "3 - Medium"
+  }, {
+    "name": "4 - Low"
+  }, {
+    "name": "5 - Release Blocker"
+  }],
+  "severity": [{
+      "name": "1 - Critical"
+    }, {
+      "name": "2 - Major"
+    }, {
+      "name": "3 - Minor"
+    }, {
+      "name": "4 - Cosmetic"
+    }, {
+      "name": "6 - Feature Request"
+    },
+    {
+      "name": "7 - Internal Improvement"
+    }
+  ],
+  "foundInRelease": [{
+      "name": "CX R17.2.1"
+    }, {
+      "name": "CX R17.0"
+    }, {
+      "name": "CX R17.3"
+    }, {
+      "name": "CX R1.1.1"
+    }, {
+      "name": "DNA R16.1"
+    },
+    {
+      "name": "DNA R16.2"
+    }, {
+      "name": "DNA R17.1"
+    },
+    {
+      "name": "DNA R17.2"
+    }, {
+      "name": "DNA R17.1.1"
+    },
+    {
+      "name": "DNA R18.2"
+    }
+  ],
+  "fixedInRelease": [{
+    "name": "ATN R1.0"
+  }, {
+    "name": "CX R16.0, CX R16.0.1, CX R16.1"
+  }, {
+    "name": "DNA R16.1, DNA R16.1 S"
+  }, {
+    "name": "CLS-T R17.1"
+  }, {
+    "name": "CLS-T R17.1, R17.1"
+  }, {
+    "name": "CX 15.3, CX R1.1.1"
+  }, {
+    "name": "CX 15.3"
+  }]
+}
