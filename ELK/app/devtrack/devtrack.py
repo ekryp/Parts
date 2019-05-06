@@ -1,6 +1,7 @@
 from flask import jsonify
 from flask import request
 import requests
+import re
 from flask_restful import Resource
 from flask_restful import reqparse
 import csv, json
@@ -40,6 +41,8 @@ class DevTrackData(Resource):
                 found_on_platform_filter=[]
             if not(isinstance(date_filter,list)):
                 date_filter=[]
+
+            print('date ',date_filter)
             
             URL="http://34.83.90.206:9200/devtrack/_search"
             headers = {'Content-type': 'application/json'}
@@ -50,104 +53,127 @@ class DevTrackData(Resource):
 
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
-                    PRODUCT_PARAMS+="{\"terms\" : { \"product\" : ["
+                    
                     for loc in product_filter:
                         if loc == product_filter[-1]:
-                            PRODUCT_PARAMS+="\""+loc.lower()+"\"] } }"
+                            PRODUCT_PARAMS+="{\"term\" : { \"product\" :\""+loc.lower()+"\" } }"
                         else:
-                            PRODUCT_PARAMS+="\""+loc.lower()+"\","
+                            PRODUCT_PARAMS+="{\"term\" : { \"product\" :\""+loc.lower()+"\"} },"
 
                 if(len(group_filter)>0):
                     GROUP_PARAMS=""
-                    GROUP_PARAMS+="{\"terms\" : { \"group\" : ["
                     for loc in group_filter:
-                        if loc == group_filter[-1]:
-                            GROUP_PARAMS+="\""+loc.lower()+"\"] } }"
-                        else:
-                            GROUP_PARAMS+="\""+loc.lower()+"\","
+                        for tmp in loc.split():
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split()[-1]:
+                                    GROUP_PARAMS+="{\"term\" : { \"group\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    GROUP_PARAMS+="{\"term\" : { \"group\" :\""+tmp.lower()+"\"} },"
 
 
                 if(len(found_in_release_filter)>0):
                     FOUND_IN_RELEASE_PARAMS=""
-                    FOUND_IN_RELEASE_PARAMS+="{\"terms\" : { \"foundinRelease\" : ["
+                    
                     for loc in found_in_release_filter:
-                        if loc == found_in_release_filter[-1]:
-                            FOUND_IN_RELEASE_PARAMS+="\""+loc.lower()+"\"] } }"
-                        else:
-                            FOUND_IN_RELEASE_PARAMS+="\""+loc.lower()+"\","
+                        for tmp in loc.split():
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split()[-1]:
+                                    FOUND_IN_RELEASE_PARAMS+="{\"term\" : { \"foundinRelease\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    FOUND_IN_RELEASE_PARAMS+="{\"term\" : { \"foundinRelease\" :\""+tmp.lower()+"\"} },"
 
                 if(len(fixed_in_release_filter)>0):
                     FIXED_IN_RELEASE_PARAMS = ""
-                    FIXED_IN_RELEASE_PARAMS+="{\"terms\" : { \"fixedinRelease\" : ["
+                    
                     for loc in fixed_in_release_filter:
-                        if loc == fixed_in_release_filter[-1]:
-                            FIXED_IN_RELEASE_PARAMS+="\""+loc.lower()+"\"] } }"
-                        else:
-                            FIXED_IN_RELEASE_PARAMS+="\""+loc.lower()+"\","
+                        for tmp in loc.split():
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split()[-1]:
+                                    FIXED_IN_RELEASE_PARAMS+="{\"term\" : { \"fixedinRelease\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    FIXED_IN_RELEASE_PARAMS+="{\"term\" : { \"fixedinRelease\" :\""+tmp.lower()+"\"} },"
 
                 if(len(severity_filter)>0):
                     SEVERITY_PARAMS = ""
-                    SEVERITY_PARAMS+="{\"terms\" : { \"severity\" : ["
+                   
                     for loc in severity_filter:
-                        if loc == severity_filter[-1]:
-                            SEVERITY_PARAMS+="\""+loc.lower()+"\"] } }"
-                        else:
-                            SEVERITY_PARAMS+="\""+loc.lower()+"\","
+                        for tmp in loc.split():
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split()[-1]:
+                                    SEVERITY_PARAMS+="{\"term\" : { \"severity\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    SEVERITY_PARAMS+="{\"term\" : { \"severity\" :\""+tmp.lower()+"\"} },"
 
              
 
                 if(len(priority_filter)>0):
                     PRIORITY_PARAMS = ""
-                    PRIORITY_PARAMS+="{\"terms\" : { \"priority\" : ["
+                   
                     for loc in priority_filter:
-                        if loc == priority_filter[-1]:
-                            PRIORITY_PARAMS+="\""+loc.lower()+"\"] } }"
-                        else:
-                            PRIORITY_PARAMS+="\""+loc.lower()+"\","
+                        for tmp in loc.split():
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split()[-1]:
+                                    PRIORITY_PARAMS+="{\"term\" : { \"priority\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    PRIORITY_PARAMS+="{\"term\" : { \"priority\" :\""+tmp.lower()+"\"} },"
 
 
                 if(len(found_on_platform_filter)>0):
                     FOUND_ON_PLATFORM_PARAMS=""
-                    FOUND_ON_PLATFORM_PARAMS+="{\"terms\" : { \"foundOnPlatform\" : ["
+                    
                     for loc in found_on_platform_filter:
-                        if loc == found_on_platform_filter[-1]:
-                            FOUND_ON_PLATFORM_PARAMS+="\""+loc.lower()+"\"] } }"
-                        else:
-                            FOUND_ON_PLATFORM_PARAMS+="\""+loc.lower()+"\","
+                        for tmp in loc.split():
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split()[-1]:
+                                    FOUND_ON_PLATFORM_PARAMS+="{\"term\" : { \"foundOnPlatform\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    FOUND_ON_PLATFORM_PARAMS+="{\"term\" : { \"foundOnPlatform\" :\""+tmp.lower()+"\"} },"
+
+
 
                 if(len(date_filter)>0):
                     DATE_FILTER_PARAMS=""
-                    DATE_FILTER_PARAMS+="{\"terms\" : { \"dateClosed\" : ["
+                    
                     for loc in date_filter:
-                        if loc == date_filter[-1]:
-                            DATE_FILTER_PARAMS+="\""+loc.lower()+"\"] } }"
-                        else:
-                            DATE_FILTER_PARAMS+="\""+loc.lower()+"\","
+                        for tmp in loc.split('-'):
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split('-')[-1]:
+                                    DATE_FILTER_PARAMS+="{\"term\" : { \"dateClosed\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    DATE_FILTER_PARAMS+="{\"term\" : { \"dateClosed\" :\""+tmp.lower()+"\"} },"
 
                 
             
+
             if (len(product_filter)>0):
                 PARAMS+=PRODUCT_PARAMS+","
                 
-            elif (len(group_filter)>0):
+            if (len(group_filter)>0):
                 PARAMS+=GROUP_PARAMS+","
                 
-            elif (len(found_in_release_filter)>0):
+            if (len(found_in_release_filter)>0):
                 PARAMS+=FOUND_IN_RELEASE_PARAMS+","
                 
-            elif (len(fixed_in_release_filter)>0):
+            if (len(fixed_in_release_filter)>0):
                 PARAMS+=FIXED_IN_RELEASE_PARAMS+","
                 
-            elif (len(severity_filter)>0):
+            if (len(severity_filter)>0):
                 PARAMS+=SEVERITY_PARAMS+","
                 
-            elif (len(priority_filter)>0):
+            if (len(priority_filter)>0):
                 PARAMS+=PRIORITY_PARAMS+","
                 
-            elif (len(found_on_platform_filter)>0):
+            if (len(found_on_platform_filter)>0):
                 PARAMS+=FOUND_ON_PLATFORM_PARAMS+","
                 
-            elif (len(date_filter)>0):
+            if (len(date_filter)>0):
                 PARAMS+=DATE_FILTER_PARAMS+","
                 
 
