@@ -1092,7 +1092,7 @@
                 <table  class="table responsive table-hover">
                   <thead class="text-center">
                     <th >Issue Id</th>
-                    <th style="width: 45.66%">File Name</th>
+                    <th >File Name</th>
                     <th >Severity</th>
                     
                      <th style="width: 10%">Confidence (%)</th>
@@ -1162,7 +1162,7 @@
                   <thead class="text-center">
                     <th >FSBNumber</th>
                     <th >Issue Id</th>
-                    <th style="width: 45.66%">File Name</th>
+                    <th >File Name</th>
                     <th >Date Created</th>
                     
                      <th >Title</th>
@@ -1547,7 +1547,7 @@
                   foundOnPlatform:data.data.devTrack[i].foundOnPlatform,
                   group:data.data.devTrack[i].group,
                   product:data.data.devTrack[i].product,
-                  probability:accounting.formatMoney(data.data.devTrack[i].probability),
+                  probability:data.data.devTrack[i].probability,
                   progressStatus:data.data.devTrack[i].progressStatus,
                   reportingCustomer:data.data.devTrack[i].reportingCustomer,
                   resolution:data.data.devTrack[i].resolution,
