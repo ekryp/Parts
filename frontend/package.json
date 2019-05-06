@@ -42,6 +42,7 @@
     "vue-router": "^3.0.1",
     "vue-sidebar-menu": "^2.1.0",
     "vue-tagsinput": "^2.0.1",
+    "vue2-datepicker": "^2.11.1",
     "vue2-filters": "^0.4.1",
     "vue2-google-maps": "^0.10.5",
     "vuejs-datepicker": "^1.5.4",
