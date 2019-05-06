@@ -390,7 +390,248 @@
 
           <!-- Filter Section -->
 
-           <div class="row text-center">
+          
+
+
+
+
+
+
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="p-3 mb-3 bg-white">
+                  <!-- <div class="row align">
+              <div class="col-md-2">
+                <label>{{solutionScreenConstants.labAvailablity}}</label>
+              </div>
+              <div class="col-md-2" align="left">
+                <i class="fas fa-dot-circle" style="color:green" v-if="showGreen"></i>
+                <i class="fas fa-dot-circle" style="color:#d62828f7" v-if="!showGreen"></i>
+              </div>
+              <div class="col-md-4" v-if="analyzeFlag">
+                <button type="button" style="fontSize:0.75vw;" class="btn btn-success" @click="onReserve()">{{solutionScreenConstants.buttons[1]}}</button>
+              </div>
+            </div> -->
+                <div class="row align">
+                  <label class="col-md-6 labelweight">{{solutionScreenConstants.problemDescriptionName}}</label>
+                  <label class="col-md-6 labelweight">{{solutionScreenConstants.problemAreaHeader}}</label>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-12">
+                    <textarea
+                    @change="problemDescriptionChange()"
+                      v-model="problemDescription"
+                      class="form-control"
+                      rows="3"
+                      id="email"
+                      :placeholder="problemDescriptionPlaceholder"
+                    ></textarea>
+                    </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-10"></div>
+                    <div class="col-lg-2 alignButton" >
+                    <button
+                      v-if="problemDescription !== ''"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="getMlKeywords()"
+                    >{{solutionScreenConstants.buttons[0]}}</button>
+                    <button
+                      v-if="problemDescription === ''"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="getMlKeywords()"
+                      disabled
+                    >{{solutionScreenConstants.buttons[0]}}</button>
+                  </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6"> 
+                  <div class="row">
+                    <div class="col-md-9">
+                      <Multiselect
+                            v-model="filterValue"
+                            tag-placeholder="Add this as new tag"
+                            placeholder="Problem Area"
+                            label="name"
+                            track-by="name"
+                            :options="filterOptions"
+                            :close-on-select="false"
+                            :multiple="true"
+                            :clear-on-select="false"
+                            :hide-selected="true"
+                            :taggable="true"
+                          ></Multiselect>
+                    </div>
+                    <br/>
+                    
+                    <div class="col-lg-3" style="marginTop:2%">
+                        <input type="checkbox" id="checkbox" v-model="checked">
+                        <label for="checkbox" >{{solutionScreenConstants.checkBoxLabel}}</label>
+                    </div>
+                   
+                    <label class="col-md-6 labelweight align">{{solutionScreenConstants.tagHeader}}</label>
+                    
+                    <div class="col-md-10 ">
+                      
+                      <Multiselect
+                      
+                            v-model="tagValue"
+                            tag-placeholder="Add this as new tag"
+                            placeholder="Filters"
+                            label="name"
+                            track-by="name"
+                            :options="tagOptions"
+                            :close-on-select="false"
+                            :multiple="true"
+                            :clear-on-select="false"
+                            :hide-selected="true"
+                            :taggable="true"
+                            @tag="addTag"
+                          ></Multiselect>
+                          
+                    </div>
+                    <div class="col-lg-2" style="paddingTop:0.35em" >
+                    <button
+                      v-if="searchFlag "
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="onAnalyze()"
+                    >{{solutionScreenConstants.buttons[2]}}</button>
+                    <button
+                      v-if="!searchFlag "
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="onAnalyze()"
+                      disabled
+                    >{{solutionScreenConstants.buttons[2]}}</button>
+                  </div>
+                    </div>
+                    </div>
+                    </div>
+                    <!-- <div class="row" style="paddingTop:0.45em"> 
+                      <div class="col-lg-5"></div>
+                      <div class="col-lg-1" >
+                    <button
+                      v-if="problemDescription !== ''"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="getMlKeywords()"
+                    >{{solutionScreenConstants.buttons[0]}}</button>
+                    <button
+                      v-if="problemDescription === ''"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="getMlKeywords()"
+                      disabled
+                    >{{solutionScreenConstants.buttons[0]}}</button>
+                  </div>
+                  <div class="col-lg-5"></div>
+                  <div class="col-lg-1" >
+                    <button
+                      v-if="searchFlag "
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="onAnalyze()"
+                    >{{solutionScreenConstants.buttons[2]}}</button>
+                    <button
+                      v-if="!searchFlag "
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="onAnalyze()"
+                      disabled
+                    >{{solutionScreenConstants.buttons[2]}}</button>
+                  </div>
+                  </div> -->
+                   
+                
+                  
+                
+                <!-- <div class="row">
+                  <div class="col-lg-10"></div>
+                  <div class="col-lg-2">
+                    <button
+                      v-if="problemDescription !== ''"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="onAnalyze()"
+                    >{{solutionScreenConstants.buttons[0]}}</button>
+                    <button
+                      v-if="problemDescription === ''"
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block"
+                      @click="onAnalyze()"
+                      disabled
+                    >{{solutionScreenConstants.buttons[0]}}</button>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <div class="row" style="textAlign:center" v-if="analyzeFlag">
+          <div class="col-lg-12">
+            <div class="row  ">
+            
+            <!-- <div class="col-lg-3" >
+                <div class="card  shadow p-2 mb-5  rounded" >
+                  <div class="card-body in-progress labelweight cardFontChange"
+                  > <span class="float-left">Total Hits</span>
+                  <span class="float-right">{{estotalhits}}</span> </div>
+                </div>
+              </div> -->
+
+              <div class="col-lg-4" >
+                <div class="card  shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b1color , color:textcolor1}">
+                  <div class="card-body in-progress labelweight cardFontChange"
+                  @click="showDevTrack()"> <span class="float-left">{{solutionScreenConstants.cardLables[0]}}</span>
+                  <span class="float-right">{{this.devTrackData.length}}</span> </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-4">
+                <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b2color , color:textcolor2}">
+                  <div class="card-body in-progress labelweight cardFontChange"
+                  @click="showReleaseNotes()">
+                  <span class="float-left">{{solutionScreenConstants.cardLables[1]}}</span>
+                  <span class="float-right">{{this.releaseNotesData.length}}</span> </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-4">
+                <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b3color , color:textcolor3}">
+                  <div class="card-body in-progress labelweight cardFontChange"
+                  v-bind:style="{ backgroundColor: b3color }"
+                  @click="showFSB()"><span class="float-left">{{solutionScreenConstants.cardLables[2]}}</span>
+                  <span class="float-right">{{this.fsbData.length}}</span> </div>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+
+<!-- FIlter Section -->
+          <div class="row text-center" v-if="analyzeFlag">
           <div class="col-lg-1" v-if="!filterFLag" @click="changeFilter()" align="left">
             <i class="fas fa-filter fa-lg" style="color:#169f85"></i>
           </div>
@@ -401,7 +642,7 @@
           <div class="col"></div>
         </div>
         <br>
-
+        <br v-if="!analyzeFlag">
         <transition name="fade">
           <div class="row" style="paddingTop:0.6em" v-if="filterFLag">
             <div class="col-lg-12">
@@ -707,6 +948,30 @@
                       <date-picker style="height:40px;paddingTop:1.1em" v-model="time1" lang="en" valueType="format" :format="format" :first-day-of-week="1"  @change="showTime()"></date-picker>
                     </div>
                   </div>
+                  <div class="col-lg-4">
+                    
+                    <div class="row">
+                      
+                      <div class="col-lg-9"></div>
+                      <div class="col-lg-3" style="marginTop:8%">
+                      <button
+                      v-if="searchFlag "
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block pull-right"
+                      @click="onAnalyze()"
+                    >{{solutionScreenConstants.buttons[2]}}</button>
+                    <button
+                      v-if="!searchFlag "
+                      style="fontSize:0.75vw;"
+                      type="button"
+                      class="btn btn-success btn-block pull-right"
+                      @click="onAnalyze()"
+                      disabled
+                    >{{solutionScreenConstants.buttons[2]}}</button>
+                    </div>
+                    </div>
+                  </div>
                   
                 </div>
                
@@ -714,240 +979,7 @@
             </div>
           </div>
         </transition>
-
-
-
-
-
-
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="p-3 mb-3 bg-white">
-                  <!-- <div class="row align">
-              <div class="col-md-2">
-                <label>{{solutionScreenConstants.labAvailablity}}</label>
-              </div>
-              <div class="col-md-2" align="left">
-                <i class="fas fa-dot-circle" style="color:green" v-if="showGreen"></i>
-                <i class="fas fa-dot-circle" style="color:#d62828f7" v-if="!showGreen"></i>
-              </div>
-              <div class="col-md-4" v-if="analyzeFlag">
-                <button type="button" style="fontSize:0.75vw;" class="btn btn-success" @click="onReserve()">{{solutionScreenConstants.buttons[1]}}</button>
-              </div>
-            </div> -->
-                <div class="row align">
-                  <label class="col-md-6 labelweight">{{solutionScreenConstants.problemDescriptionName}}</label>
-                  <label class="col-md-6 labelweight">{{solutionScreenConstants.problemAreaHeader}}</label>
-                </div>
-
-                <div class="row ">
-                  <div class="col-md-6">
-                    <div class="row">
-                      <div class="col-md-12">
-                    <textarea
-                    @change="problemDescriptionChange()"
-                      v-model="problemDescription"
-                      class="form-control"
-                      rows="3"
-                      id="email"
-                      :placeholder="problemDescriptionPlaceholder"
-                    ></textarea>
-                    </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-10"></div>
-                    <div class="col-lg-2 alignButton" >
-                    <button
-                      v-if="problemDescription !== ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                    <button
-                      v-if="problemDescription === ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                  </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6"> 
-                  <div class="row">
-                    <div class="col-md-9">
-                      <Multiselect
-                            v-model="filterValue"
-                            tag-placeholder="Add this as new tag"
-                            placeholder="Problem Area"
-                            label="name"
-                            track-by="name"
-                            :options="filterOptions"
-                            :close-on-select="false"
-                            :multiple="true"
-                            :clear-on-select="false"
-                            :hide-selected="true"
-                            :taggable="true"
-                          ></Multiselect>
-                    </div>
-                    <br/>
-                    
-                    <div class="col-lg-3" style="marginTop:2%">
-                        <input type="checkbox" id="checkbox" v-model="checked">
-                        <label for="checkbox" >{{solutionScreenConstants.checkBoxLabel}}</label>
-                    </div>
-                   
-                    <label class="col-md-6 labelweight align">{{solutionScreenConstants.tagHeader}}</label>
-                    
-                    <div class="col-md-10 ">
-                      
-                      <Multiselect
-                      
-                            v-model="tagValue"
-                            tag-placeholder="Add this as new tag"
-                            placeholder="Filters"
-                            label="name"
-                            track-by="name"
-                            :options="tagOptions"
-                            :close-on-select="false"
-                            :multiple="true"
-                            :clear-on-select="false"
-                            :hide-selected="true"
-                            :taggable="true"
-                            @tag="addTag"
-                          ></Multiselect>
-                          
-                    </div>
-                    <div class="col-lg-2" style="paddingTop:0.35em" >
-                    <button
-                      v-if="searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                    <button
-                      v-if="!searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                  </div>
-                    </div>
-                    </div>
-                    </div>
-                    <!-- <div class="row" style="paddingTop:0.45em"> 
-                      <div class="col-lg-5"></div>
-                      <div class="col-lg-1" >
-                    <button
-                      v-if="problemDescription !== ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                    <button
-                      v-if="problemDescription === ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                  </div>
-                  <div class="col-lg-5"></div>
-                  <div class="col-lg-1" >
-                    <button
-                      v-if="searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                    <button
-                      v-if="!searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                  </div>
-                  </div> -->
-                   
-                
-                  
-                
-                <!-- <div class="row">
-                  <div class="col-lg-10"></div>
-                  <div class="col-lg-2">
-                    <button
-                      v-if="problemDescription !== ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                    <button
-                      v-if="problemDescription === ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row" style="textAlign:center" v-if="analyzeFlag">
-          <div class="col-lg-12">
-            <div class="row  ">
-            
-            <!-- <div class="col-lg-3" >
-                <div class="card  shadow p-2 mb-5  rounded" >
-                  <div class="card-body in-progress labelweight cardFontChange"
-                  > <span class="float-left">Total Hits</span>
-                  <span class="float-right">{{estotalhits}}</span> </div>
-                </div>
-              </div> -->
-
-              <div class="col-lg-4" >
-                <div class="card  shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b1color , color:textcolor1}">
-                  <div class="card-body in-progress labelweight cardFontChange"
-                  @click="showDevTrack()"> <span class="float-left">{{solutionScreenConstants.cardLables[0]}}</span>
-                  <span class="float-right">{{this.devTrackData.length}}</span> </div>
-                </div>
-              </div>
-              
-              <div class="col-lg-4">
-                <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b2color , color:textcolor2}">
-                  <div class="card-body in-progress labelweight cardFontChange"
-                  @click="showReleaseNotes()">
-                  <span class="float-left">{{solutionScreenConstants.cardLables[1]}}</span>
-                  <span class="float-right">{{this.releaseNotesData.length}}</span> </div>
-                </div>
-              </div>
-              
-              <div class="col-lg-4">
-                <div class="card shadow p-2 mb-5  rounded" v-bind:style="{ backgroundColor: b3color , color:textcolor3}">
-                  <div class="card-body in-progress labelweight cardFontChange"
-                  v-bind:style="{ backgroundColor: b3color }"
-                  @click="showFSB()"><span class="float-left">{{solutionScreenConstants.cardLables[2]}}</span>
-                  <span class="float-right">{{this.fsbData.length}}</span> </div>
-                </div>
-              </div>
-            
-            </div>
-          </div>
-        </div>
+        <br>
         <div class=" align card   p-2 mb-5  rounded text-center" v-if="errorFlag" >
          
         </div>

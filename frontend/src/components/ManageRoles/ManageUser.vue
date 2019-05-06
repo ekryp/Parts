@@ -594,9 +594,11 @@ export default {
               let rolesString = "";
               let roleId = [];
               doc.roles.forEach(function(role) {
-                rolesString += role.name;
+                rolesString += role.name + ",";
                 roleId.push(role._id);
               });
+              rolesString = rolesString.substring(0, rolesString.length - 1);
+
               let object = {
                 email: doc.email,
                 username: doc.username,
@@ -610,7 +612,7 @@ export default {
             console.log("All users -- ------->", this.allusers.length);
             if (array.length > 0) {
               $(document).ready(function() {
-                 $("#userdata").DataTable();
+                $("#userdata").DataTable();
               });
             }
             this.isLoading = false;
