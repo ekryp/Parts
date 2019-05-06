@@ -19,12 +19,13 @@ class GetMLKeyWords(Resource):
             input_ = search_param.lower()
             print("Received Input is {0}".format(input_))
 
+
             # Read keywords
             df = pd.read_excel('Keyword_UI.xlsx')
             df_e = pd.read_excel('UI_Elastic.xlsx')
 
             df[df.columns[1]] = df[df.columns[1]].astype(str)
-            df[df.columns[0]] = ' ' + df[df.columns[0]].astype(str) + ' '
+            df[df.columns[0]] = df[df.columns[0]].astype(str)
             df[df.columns[0]] = df[df.columns[0]].str.lower()
             list_keywords = list(df[df.columns[0]])
             list_tags = list(df[df.columns[1]])
