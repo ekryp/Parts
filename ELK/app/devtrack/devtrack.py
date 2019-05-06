@@ -49,7 +49,7 @@ class DevTrackData(Resource):
             if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)):
                 PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"Found in Release\"]}}}"
             else:
-                PARAMS="{\"query\": {\"bool\": {\"should\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
 
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
@@ -77,7 +77,7 @@ class DevTrackData(Resource):
                     
                     for loc in found_in_release_filter:
                         for tmp in loc.split():
-                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            tmp=re.sub('[^A-Za-z0-9.]+', '', tmp)
                             if not(tmp == ""):
                                 if tmp == loc.split()[-1]:
                                     FOUND_IN_RELEASE_PARAMS+="{\"term\" : { \"foundinRelease\" :\""+tmp.lower()+"\" } }"
@@ -89,7 +89,7 @@ class DevTrackData(Resource):
                     
                     for loc in fixed_in_release_filter:
                         for tmp in loc.split():
-                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            tmp=re.sub('[^A-Za-z0-9.]+', '', tmp)
                             if not(tmp == ""):
                                 if tmp == loc.split()[-1]:
                                     FIXED_IN_RELEASE_PARAMS+="{\"term\" : { \"fixedinRelease\" :\""+tmp.lower()+"\" } }"

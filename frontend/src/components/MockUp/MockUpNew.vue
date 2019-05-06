@@ -631,7 +631,7 @@
         </div>
 
 <!-- FIlter Section -->
-          <div class="row text-center" v-if="analyzeFlag">
+          <div class="row text-center" v-if="analyzeFlag && devTrackFlag">
           <div class="col-lg-1" v-if="!filterFLag" @click="changeFilter()" align="left">
             <i class="fas fa-filter fa-lg" style="color:#169f85"></i>
           </div>
@@ -643,7 +643,7 @@
         </div>
         <br>
         <br v-if="!analyzeFlag">
-        <transition name="fade">
+        <transition name="fade" v-if="analyzeFlag && devTrackFlag">
           <div class="row" style="paddingTop:0.6em" v-if="filterFLag">
             <div class="col-lg-12">
               <div class="p-3 mb-3 bg-white">
