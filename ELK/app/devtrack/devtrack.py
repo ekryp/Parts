@@ -6,6 +6,7 @@ from flask_restful import Resource
 from flask_restful import reqparse
 import csv, json
 
+
 class DevTrackData(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -261,7 +262,7 @@ class DevTrackData(Resource):
             data = args['data']
             doc=json.loads(data)
             
-            response = requests.put("http://54.191.115.241:9200/infinera/devtrack/"+doc["issueId"],json=doc,headers={"content-type":"application/json"})
+            response = requests.put("http://34.83.90.206:9200/infinera/devtrack/"+doc["issueId"],json=doc,headers={"content-type":"application/json"})
             print(response)
             return jsonify(msg=response.json(),http_status_code=200)
         except Exception as e:
