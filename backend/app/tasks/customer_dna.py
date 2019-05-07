@@ -2,6 +2,7 @@ import pandas as pd
 import sys
 import os
 from sqlalchemy import create_engine
+
 from app import app
 from app import Configuration
 from app.tasks.common_functions import clean_pon_names, to_sql_customer_dna_record
@@ -10,6 +11,7 @@ engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configura
 
 
 def check_file_validity(file):
+
     name, extension = os.path.splitext(file)
 
     if extension.lower() == '.txt':
@@ -18,6 +20,31 @@ def check_file_validity(file):
         data = pd.read_csv(file,  keep_default_na=False, na_values=[""])
     elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
         data = pd.read_excel(file,  keep_default_na=False, na_values=[""])
+    elif extension.lower() == '.tsv':
+        lookup = '#Type'
+        lines = []
+        with open(file) as myFile:
+            for num, line in enumerate(myFile, 1):
+                if lookup in line:
+                    lines.append(num)
+
+        data_frame_list = []
+        data = pd.DataFrame()
+        print(lines)
+        columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name', 'Part#', 'Serial#']
+        for index, line in enumerate(lines):
+            data_frame = pd.DataFrame()
+            try:
+                print("getting data from {0} to {1}".format(lines[index] - 1, lines[index+1] - lines[index] - 2))
+                data_frame = pd.read_csv(file, sep='\t', skiprows=lines[index] - 1, nrows=lines[index+1] - lines[index] - 2, usecols=columns)
+
+            except:
+                print("getting data from {0} to end ".format(lines[index] - 1))
+                data_frame = pd.read_csv(file, sep='\t', skiprows=lines[index] - 1, usecols=columns)
+
+            data_frame_list.append(data_frame)
+
+        data = pd.concat(data_frame_list)
     else:
         print('unsupported type')
         exit()
@@ -70,7 +97,6 @@ def clean_file(file):
         return new_data
 
 
-
 def cleaned_dna_file(dna_file):
 
     # Read the input dna file
@@ -81,7 +107,6 @@ def cleaned_dna_file(dna_file):
 
     input_db = clean_pon_names(input_db)
     return input_db
-
 
 
 
