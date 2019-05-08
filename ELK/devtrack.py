@@ -1,5 +1,7 @@
 import csv, json
 import requests
+from requests.auth import HTTPBasicAuth 
+import config
 
 
 def csvParse():
@@ -55,7 +57,7 @@ def csvParse():
 
     for doc in data:
         doc["id"]= doc["issueId"]
-        response = requests.post("http://34.83.90.206:9200/devtrack/devtrack/"+doc["issueId"],json=doc,headers={"content-type":"application/json"})
+        response = requests.post(config.ELK_URI+"devtrack/_doc/"+doc["issueId"],auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),json=doc,headers={"content-type":"application/json"})
         print('ELK response ----->',response.content)
 
 csvParse()
