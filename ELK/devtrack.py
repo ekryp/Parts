@@ -6,7 +6,7 @@ import config
 
 def csvParse():
     # Open the CSV
-    f = open( '/Users/khalisarankannan/Downloads/elktest.csv', 'rU' )
+    f = open( '/Users/nageshwara/Downloads/elktest .csv', 'rU' )
         # Change each fieldname to the appropriate field name. 
     reader = csv.DictReader( f, fieldnames = ( "Issue ID","Title","Type","Current Owner",
      "Progress Status", "Group", "Severity", "Date Submitted", "Submitted By", "Description",
@@ -59,5 +59,4 @@ def csvParse():
         doc["id"]= doc["issueId"]
         response = requests.post(config.ELK_URI+"devtrack/_doc/"+doc["issueId"],auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),json=doc,headers={"content-type":"application/json"})
         print('ELK response ----->',response.content)
-
 csvParse()
