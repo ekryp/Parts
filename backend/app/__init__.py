@@ -45,6 +45,7 @@ csvs = UploadSet('csv', DATA)
 mytext = UploadSet('text', TEXT)
 excel = UploadSet('excel', DOCUMENTS)
 images = UploadSet('image', IMAGES)
+my_tsvs = UploadSet('tsv', ('tsv',))
 
 if platform.system() == 'Windows':
     app.config['UPLOADED_CSV_DEST'] = 'static\csvs'
@@ -58,11 +59,13 @@ else:
     app.config['UPLOADED_SQLS_DEST'] = 'static/'
     app.config['UPLOADED_EXCEL_DEST'] = 'static/'
     app.config['UPLOADED_IMAGE_DEST'] = 'static/'
+    app.config['UPLOADED_TSV_DEST'] = 'static/'
 
 configure_uploads(app, csvs)
 configure_uploads(app, images)
 configure_uploads(app, mytext)
 configure_uploads(app, excel)
+configure_uploads(app, my_tsvs)
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 app.config.from_object(Configuration)
