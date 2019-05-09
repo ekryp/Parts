@@ -50,7 +50,7 @@ class GetstepsAllUsers(Resource):
                 "on c.step_id = b.prospects_step " \
                 "right join analysis_request as d on " \
                 "d.analysis_request_time = b.analysis_request_time " \
-                "where prospects_email is NOT NULL order by prospects_email"
+                "where prospects_email is NOT NULL order by d.analysis_request_time desc"
 
 
         result = get_df_from_sql_query(
