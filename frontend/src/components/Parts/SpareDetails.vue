@@ -9,7 +9,10 @@
       <div>
         <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
-            <span class="in-progress" @click="redirectToAnalysis()">{{spareDetailsConstant.breadcrumbs[0]}}</span>
+            <span
+              class="in-progress"
+              @click="redirectToAnalysis()"
+            >{{spareDetailsConstant.breadcrumbs[0]}}</span>
             <span style="font-size: 14px;">{{spareDetailsConstant.breadcrumbs[1]}}</span>
           </p>
         </div>
@@ -391,17 +394,16 @@
           </div>
         </div>
       </div>
-      
     </div>
     <div>
-        <!-- Footer -->
-        <footer class="footer  font-small blue" >
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-      </div>
+      <!-- Footer -->
+      <footer class="footer font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
 </template>
 
@@ -450,7 +452,7 @@ export default {
     return {
       requestID: "",
       data: data,
-      spareDetailsConstant:constant.SpareSummaryScreen,
+      spareDetailsConstant: constant.SpareSummaryScreen,
       state: true,
       isLoading: false,
       fullPage: true,
@@ -552,6 +554,7 @@ export default {
     // },
     get_current_inventory_specific_request(requestId) {
       this.isLoading = true;
+      this.currRowData = [];
       fetch(
         constant.APIURL +
           "api/v1/get_current_inventory_specific_request?request_id=" +
@@ -594,6 +597,7 @@ export default {
     },
     get_gross_specific_request(requestId) {
       this.isLoading = true;
+      this.grossRowData = [];
       fetch(
         constant.APIURL +
           "api/v1/get_gross_specific_request?request_id=" +
@@ -631,6 +635,7 @@ export default {
     },
     get_error_records(requestId) {
       this.isLoading = true;
+      this.errorRowData = [];
       fetch(
         constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
         {
@@ -666,6 +671,7 @@ export default {
     },
     get_current_net_specific_request(requestId) {
       this.isLoading = true;
+      this.netRowData = [];
       fetch(
         constant.APIURL +
           "api/v1/get_current_net_specific_request?request_id=" +
@@ -1067,7 +1073,7 @@ a {
   color: #71869e;
 }
 .count {
-  font-size: 2.500em;
+  font-size: 2.5em;
   font-weight: 600;
 }
 </style>
