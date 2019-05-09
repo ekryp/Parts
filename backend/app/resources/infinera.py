@@ -5,7 +5,7 @@ from app.auth.authorization import requires_auth
 import pandas as pd
 from app import Configuration
 from app import app
-from app import csvs, excel, mytext
+from app import csvs, excel, mytext, my_tsvs
 from app.tasks import celery, add_prospect, update_prospect_step
 from app.utils.utils import get_df_from_sql_query
 from flask import jsonify
@@ -50,7 +50,7 @@ class GetstepsAllUsers(Resource):
                 "on c.step_id = b.prospects_step " \
                 "right join analysis_request as d on " \
                 "d.analysis_request_time = b.analysis_request_time " \
-                "where prospects_email is NOT NULL order by prospects_email"
+                "where prospects_email is NOT NULL order by d.analysis_request_time desc"
 
 
         result = get_df_from_sql_query(
@@ -1222,6 +1222,7 @@ class PostSparePartAnalysis(Resource):
             '''
 
         def check_dna_file(dna_file, extension):
+
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file, nrows=200)
 
@@ -1230,6 +1231,19 @@ class PostSparePartAnalysis(Resource):
 
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 dna_df = pd.read_excel(dna_file)
+
+            elif extension.lower() == '.tsv':
+                lookup = '#Type'
+                lines = 0
+                with open(dna_file) as myFile:
+                    for num, line in enumerate(myFile, 1):
+                        if lookup in line:
+                            lines=num
+                            break
+
+                columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name', 'Part#',
+                           'Serial#']
+                dna_df = pd.read_csv(dna_file, sep='\t', skiprows=lines, names=columns)
 
             dna_row, dna_cols = dna_df.shape
             if dna_row < 1:
@@ -1286,6 +1300,13 @@ class PostSparePartAnalysis(Resource):
                     file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
                     customer_dna_file = file.filename
                     mytext.save(file, folder=dest_folder)
+
+                elif extension.lower() == '.tsv':
+                    dir_path = os.path.join(app.config.get("UPLOADED_TSV_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                    customer_dna_file = file.filename
+                    my_tsvs.save(file, folder=dest_folder)
 
                 dna_file = os.path.join(full_path, customer_dna_file)
                 check_dna_file(dna_file, extension)

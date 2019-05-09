@@ -2,6 +2,8 @@ from flask import jsonify
 from flask import request
 import requests
 import re
+import config
+from requests.auth import HTTPBasicAuth
 from flask_restful import Resource
 from flask_restful import reqparse
 import csv, json
@@ -43,12 +45,12 @@ class DevTrackData(Resource):
             if not(isinstance(date_filter,list)):
                 date_filter=[]
 
-            print('date ',date_filter)
+            DATE_FILTER_PARAMS=""
             
-            URL="http://34.83.90.206:9200/devtrack/_search"
+            URL=config.ELK_URI+"devtrack/_doc/_search"
             headers = {'Content-type': 'application/json'}
-            if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)):
-                PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"Found in Release\"]}}}"
+            if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)):
+                PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
             else:
                 PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
 
@@ -136,19 +138,18 @@ class DevTrackData(Resource):
                                 else:
                                     FOUND_ON_PLATFORM_PARAMS+="{\"term\" : { \"foundOnPlatform\" :\""+tmp.lower()+"\"} },"
 
-
-
                 if(len(date_filter)>0):
-                    DATE_FILTER_PARAMS=""
                     
                     for loc in date_filter:
-                        for tmp in loc.split('-'):
-                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
-                            if not(tmp == ""):
-                                if tmp == loc.split('-')[-1]:
-                                    DATE_FILTER_PARAMS+="{\"term\" : { \"dateClosed\" :\""+tmp.lower()+"\" } }"
-                                else:
-                                    DATE_FILTER_PARAMS+="{\"term\" : { \"dateClosed\" :\""+tmp.lower()+"\"} },"
+                        
+                        DATE_FILTER_PARAMS+="{\"range\" : { \"dateClosed\" :{ \"lte\": \""+loc.lower()+"\"}} }"
+                        # for tmp in loc.split('-'):
+                        #     tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                        #     if not(tmp == ""):
+                        #         if tmp == loc.split('-')[-1]:
+                        #             DATE_FILTER_PARAMS+="{\"term\" : { \"dateClosed\" :\""+tmp.lower()+"\" } }"
+                        #         else:
+                        #             DATE_FILTER_PARAMS+="{\"term\" : { \"dateClosed\" :\""+tmp.lower()+"\"} },"
 
                 
             
@@ -178,12 +179,12 @@ class DevTrackData(Resource):
                 PARAMS+=DATE_FILTER_PARAMS+","
                 
 
-            if((len(product_filter)>0) or (len(group_filter)>0)or (len(found_in_release_filter)>0)or (len(fixed_in_release_filter)>0)or (len(severity_filter)>0)or (len(priority_filter)>0)or (len(found_on_platform_filter)>0)):
+            if((len(product_filter)>0) or (len(group_filter)>0)or (len(found_in_release_filter)>0)or (len(fixed_in_release_filter)>0)or (len(severity_filter)>0)or (len(priority_filter)>0)or (len(found_on_platform_filter)>0)or (len(date_filter)>0)):
                 PARAMS = PARAMS[:-1]
                 PARAMS+="]}}}}}"
-            print(PARAMS)
-            r = requests.get(url = URL, data = PARAMS, headers=headers) 
+            r = requests.get(url = URL, data = PARAMS,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD), headers=headers) 
             data = r.json()
+            
             devtrackmaxScore = data['hits']['max_score']
             devtrackList = data['hits']['hits']
             devTrack = []
@@ -194,10 +195,11 @@ class DevTrackData(Resource):
             return devTrack
         
         def releaseNotes(search_param):
-            URL="http://34.83.90.206:9200/release_notes/_search"
+            
+            URL=config.ELK_URI+"release_notes/_search"
             headers = {'Content-type': 'application/json'}
             PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"issueId\", \"severity\",\"description\",\"workaround\",\"file_name\"]}}}"
-            r = requests.get(url = URL, data = PARAMS, headers=headers) 
+            r = requests.get(url = URL, data = PARAMS,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD), headers=headers) 
             data = r.json()
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
@@ -209,10 +211,10 @@ class DevTrackData(Resource):
             return releaseNotes
 
         def fsb(search_param):
-            URL="http://34.83.90.206:9200/fsb/_search"
+            URL=config.ELK_URI+"fsb/_search"
             headers = {'Content-type': 'application/json'}
             PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"issueId\", \"title\",\"description\",\"symptoms\",\"rootCause\", \"file_name\",\"FSBNumber\",\"dateCreated\",\"dateRevised\"]}}}"
-            r = requests.get(url = URL, data = PARAMS, headers=headers) 
+            r = requests.get(url = URL,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),data = PARAMS, headers=headers) 
             data = r.json()
             fsbmaxScore = data['hits']['max_score']
             fsbList = data['hits']['hits']
@@ -261,9 +263,7 @@ class DevTrackData(Resource):
             issue_id = args['issue_id']
             data = args['data']
             doc=json.loads(data)
-            
-            response = requests.put("http://34.83.90.206:9200/infinera/devtrack/"+doc["issueId"],json=doc,headers={"content-type":"application/json"})
-            print(response)
+            response = requests.put(config.ELK_URI+"devtrack/_doc/"+doc["issueId"],json=doc,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
             return jsonify(msg=response.json(),http_status_code=200)
         except Exception as e:
             print(e)
