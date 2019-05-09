@@ -2,7 +2,7 @@ export let APIURL = "";
 export let APPURL = "";
 export let ELKURL = "";
 if (process.env.NODE_ENV === 'local') {
-  APIURL = "http://localhost:5000/";
+  APIURL = "https://staging-ib-services.ekryp.com/";
   ELKURL = "http://localhost:5002/";
   APPURL = "http://localhost:2323/";
   //ELKURL = "https://staging-elk.ekryp.com/"
@@ -125,7 +125,7 @@ export const SolutionScreen = {
   problemDescriptionName: "Problem Description",
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
-  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Confidence (%)", "Confirm"],
+  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Date Closed", "Confidence (%)", "Confirm"],
   cardLables: ["Dev Track", "Release Notes", "FSB"],
   logInfo: "Log Info",
   tags: "Tags",
