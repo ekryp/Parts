@@ -555,6 +555,54 @@ export default {
     get_current_inventory_specific_request(requestId) {
       this.isLoading = true;
       this.currRowData = [];
+      if (this.toggle === "reorder") {
+        this.currColumnDefs = [];
+        this.currentInventoryTitle = [
+          "Part Name",
+          "Depot Name",
+          "Reorder Point"
+        ];
+        this.currColumnDefs = [
+          {
+            headerName: "Part Name",
+            field: "part_name",
+            width: 250
+          },
+          {
+            headerName: "Depot Name",
+            field: "depot_name",
+            width: 150
+          },
+          {
+            headerName: "Reorder Point",
+            field: "curr_quantity",
+            width: 150,
+            cellStyle: { "text-align": "right" }
+          }
+        ];
+      } else if (this.toggle === "total_stock") {
+        this.currColumnDefs = [];
+        this.currentInventoryTitle = ["Part Name", "Depot Name", "Total Point"];
+        this.currColumnDefs = [
+          {
+            headerName: "Part Name",
+            field: "part_name",
+            width: 250
+          },
+          {
+            headerName: "Depot Name",
+            field: "depot_name",
+            width: 150
+          },
+          {
+            headerName: "Total Point",
+            field: "curr_quantity",
+            width: 150,
+            cellStyle: { "text-align": "right" }
+          }
+        ];
+      }
+
       fetch(
         constant.APIURL +
           "api/v1/get_current_inventory_specific_request?request_id=" +
@@ -579,7 +627,9 @@ export default {
               "data -- get_current_inventory_specific_request-->",
               data
             );
+            this.currOnReady(this.gridOptions3);
             this.currentInventory = data;
+
             for (let i = 0; i < this.currentInventory.length; i++) {
               this.currRowData.push({
                 part_name: this.currentInventory[i].part_name,
