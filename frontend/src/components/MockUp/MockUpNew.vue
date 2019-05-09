@@ -1002,8 +1002,9 @@
                     <th >{{solutionScreenConstants.tableHeaders[2]}}</th>
                     <th style="width: 10%">{{solutionScreenConstants.tableHeaders[3]}}</th>
                     <th>{{solutionScreenConstants.tableHeaders[4]}}</th>
-                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[5]}}</th>
+                    <th>{{solutionScreenConstants.tableHeaders[5]}}</th>
                     <th style="width: 10%">{{solutionScreenConstants.tableHeaders[6]}}</th>
+                    <th style="width: 10%">{{solutionScreenConstants.tableHeaders[7]}}</th>
                   </thead>
                   <tbody v-if ="devTrackData.length >0 && moreFlag1" class="text-center">
                     <tr v-for="item in devTrackData" :key="item.index"
@@ -1014,6 +1015,7 @@
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.fixedinRelease}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateSubmitted}}</td>
+                        <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateClosed}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.probability}}</td>
 
                         <td v-if="item.upvotedUsers.length>0" >
@@ -1043,6 +1045,7 @@
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.fixedinRelease}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateSubmitted}}</td>
+                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.dateClosed}}</td>
                         <td class=" in-progress" @click="showPatchModal(item.index)">{{item.probability}}</td>
 
                         <td v-if="item.upvotedUsers.length>0" >
@@ -1142,10 +1145,6 @@
                 </div> 
               </div>
                   </div>
-
-                  
-                
-              
               </div>
             </div>
           </div>
@@ -1322,7 +1321,7 @@
         b1color: "",
         b2color: "",
         b3color: "",
-        format:"DD-MM-YYYY",
+        format:"MM/DD/YYYY",
         textcolor1:"",
         textcolor2:"",
         textcolor3:"",
