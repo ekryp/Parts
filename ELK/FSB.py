@@ -7,6 +7,9 @@ import os
 import shutil
 import glob
 import sys
+from requests.auth import HTTPBasicAuth 
+from datetime import date, timezone
+import config
 
 
 os.chdir(r'/Users/khalisarankannan/Downloads/fsb')
@@ -100,11 +103,12 @@ for each_pdf in glob.glob("*.pdf"):
         dd['symptoms'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[0]
         dd['rootCause'] = each_issue.split('Problem Description')[1].split('Symptoms')[1].split('Root Cause')[1]
         dd['file_name'] = each_pdf
+        dd['timestamp'] = date.today().isoformat()
         print('=' * 70)
         dd.update(common_attribute)
         print(dd)
         print('=' * 70)
-        response = requests.post("http://34.83.90.206:9200/fsb/fsb", json=dd,
+        response = requests.post(config.ELK_URI+"fsb/_doc", json=dd,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),
                                  headers={"content-type": "application/json"})
 
     shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/fsb/processed')
