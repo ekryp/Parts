@@ -528,12 +528,10 @@ export default {
         this.get_analysis_dashboard_count(this.requestID);
         this.get_current_net_specific_request(this.requestID);
         this.get_current_inventory_specific_request(this.requestID);
-        this.get_current_inventory_specific_request(this.requestID);
       } else {
         this.toggle = "total_stock";
         this.get_analysis_dashboard_count(this.requestID);
         this.get_current_net_specific_request(this.requestID);
-        this.get_current_inventory_specific_request(this.requestID);
         this.get_current_inventory_specific_request(this.requestID);
       }
     },
