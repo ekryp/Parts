@@ -165,7 +165,7 @@
                   @click="showAddRole()"
                 >{{userConstants.addButton}}</button>
                 <div class="table-responsive">
-                  <table
+                  <!-- <table
                     id="userdata"
                     class="table table-bordered"
                     align="center"
@@ -192,8 +192,7 @@
                                 class="fas fa-edit"
                                 style="cursor:pointer;color:#4481bb;"
                               ></i>
-                              <!-- <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
-                              </button>-->
+                             
                             </div>
                             <div class="col">
                               <i
@@ -201,14 +200,41 @@
                                 class="fas fa-trash-alt"
                                 style="cursor:pointer;color:#de3341;"
                               ></i>
-                              <!-- <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
-                              </button>-->
+                             
                             </div>
                           </div>
                         </td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table>-->
+                  <el-col :span="6">
+                    <el-input placeholder="search NO." v-model="filters[0].value"></el-input>
+                  </el-col>
+                  <data-tables :data="allusers" :filters="filters">
+                    <el-table-column
+                      v-for="title in titles"
+                      :prop="title.prop"
+                      :label="title.label"
+                      :key="title.prop"
+                      sortable="custom"
+                    ></el-table-column>
+                    <el-table-column label="Manage Roles" min-width="100px">
+                      <template slot-scope="scope">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <i
+                          @click="showEditRole(scope.row)"
+                          class="fas fa-edit"
+                          style="cursor:pointer;color:#4481bb;"
+                        ></i>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <i
+                          @click="deleteRole(scope.row)"
+                          class="fas fa-trash-alt"
+                          style="cursor:pointer;color:#de3341;"
+                        ></i>
+                      </template>
+                    </el-table-column>
+                  </data-tables>
                 </div>
               </div>
             </div>
@@ -238,6 +264,18 @@ import Vudal from "vudal";
 import generator from "generate-password";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+import { DataTables, DataTablesServer } from "vue-data-tables";
+import Vue from "vue";
+import lang from "element-ui/lib/locale/lang/en";
+import locale from "element-ui/lib/locale";
+
+locale.use(lang);
+
+Vue.use(DataTables);
+Vue.use(DataTablesServer);
+Vue.use(ElementUI);
 
 export default {
   name: "ManageUser",
@@ -268,13 +306,34 @@ export default {
       loaderFlag: false,
       permissionValue: [],
       options: [],
+      filters: [
+        {
+          prop: ["roles", "username", "email"],
+          value: ""
+        }
+      ],
       state: true,
+      titles: [
+        {
+          prop: "email",
+          label: "User Mail Id."
+        },
+        {
+          prop: "username",
+          label: "Username"
+        },
+        {
+          prop: "roles",
+          label: "Roles"
+        }
+      ],
       user: {
         username: "",
         password: "",
         email: "",
         cnf_password: ""
       },
+
       regPass: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_])[A-Za-z\d@$!%*?&_]{8,}$/,
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
     };
