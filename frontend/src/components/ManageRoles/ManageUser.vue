@@ -428,6 +428,12 @@ export default {
       let formData = new FormData();
       formData.append("userId", this.userId);
       for (var i = 0; i < this.permissionValue.length; i++) {
+        if (this.permissionValue[i].role_name === "EditReference") {
+          formData.append(
+            "checkedRoles",
+            "b3b2d5d2-badf-4473-90b0-5e50f65f5b1a"
+          );
+        }
         formData.append("checkedRoles", this.permissionValue[i].role_id);
       }
 
