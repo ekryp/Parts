@@ -671,7 +671,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
-                      @select="onAnalyze()"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -713,7 +713,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
-                      @select="onAnalyze()"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -755,7 +755,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
-                      @select="onAnalyze()"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -799,7 +799,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
-                      @select="onAnalyze()"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -841,7 +841,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
-                      @select="onAnalyze()"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -883,7 +883,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
-                      @select="onAnalyze()"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -927,7 +927,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
-                      @select="onAnalyze()"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
