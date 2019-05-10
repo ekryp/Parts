@@ -173,49 +173,6 @@
             </div>
 
             <div class="table-responsive">
-              <!-- <table
-                    id="userdata"
-                    class="table table-bordered"
-                    align="center"
-                    style="fontSize:14px"
-                  >
-                    <thead align="left">
-                      <tr>
-                        <th scope="col">{{userConstants.table.tableHeaders[0]}}</th>
-                        <th scope="col">{{userConstants.table.tableHeaders[1]}}</th>
-                        <th scope="col">{{userConstants.table.tableHeaders[2]}}</th>
-                        <th align="center">{{userConstants.table.tableHeaders[3]}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="user in allusers" :key="user.name">
-                        <td scope="col">{{user.email}}</td>
-                        <td scope="col">{{user.username}}</td>
-                        <td scope="col">{{user.roles}}</td>
-                        <td scope="col">
-                          <div class="row">
-                            <div class="col">
-                              <i
-                                @click="showEditRole(user)"
-                                class="fas fa-edit"
-                                style="cursor:pointer;color:#4481bb;"
-                              ></i>
-                             
-                            </div>
-                            <div class="col">
-                              <i
-                                @click="deleteRole(user)"
-                                class="fas fa-trash-alt"
-                                style="cursor:pointer;color:#de3341;"
-                              ></i>
-                             
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-              </table>-->
-
               <data-tables :data="allusers" :filters="filters">
                 <el-table-column
                   v-for="title in titles"
@@ -226,16 +183,6 @@
                 ></el-table-column>
                 <el-table-column align="right">
                   <template slot-scope="scope">
-                    <!-- <i
-                          @click="showEditRole(scope.row)"
-                          class="fas fa-edit"
-                          style="cursor:pointer;color:#4481bb;"
-                        ></i>
-                        <i
-                          @click="deleteRole(scope.row)"
-                          class="fas fa-trash-alt"
-                          style="cursor:pointer;color:#de3341;"
-                    ></i>-->
                     <el-button size="mini" @click="showEditRole(scope.row)">Edit</el-button>
                     <el-button size="mini" type="danger" @click="deleteRole(scope.row)">Delete</el-button>
                   </template>
