@@ -671,6 +671,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
+                      @select="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -712,6 +713,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @select="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -753,6 +755,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
+                      @select="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -796,6 +799,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @select="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -837,6 +841,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @select="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -878,6 +883,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
+                      @select="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -921,6 +927,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @select="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -936,11 +943,11 @@
                       valuetype="format"
                       :format="format"
                       :first-day-of-week="1"
-                      @change="showTime()"
+                      @change="onAnalyze()"
                     ></date-picker>
                   </div>
                 </div>
-                <div class="col-lg-4">
+                <!-- <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-9"></div>
                     <div class="col-lg-3" style="marginTop:8%">
@@ -961,7 +968,7 @@
                       >{{solutionScreenConstants.buttons[2]}}</button>
                     </div>
                   </div>
-                </div>
+                </div>-->
               </div>
             </div>
           </div>
@@ -1282,32 +1289,6 @@ export default {
   created() {
     clearInterval(window.intervalObj);
     this.currentUserEMailId = localStorage.getItem("email_id");
-    // this.tagOptions.push({name:'Issue ID',value:'issueId'});
-    // this.tagOptions.push({name:'Title',value:'title'});
-    // this.tagOptions.push({name:'Current Owner',value:'currentOwner'});
-    // this.tagOptions.push({name:'Progress Status',value:'progressStatus'});
-    // this.tagOptions.push({name:'Group',value:'group'});
-    // this.tagOptions.push({value:'severity',name:'Severity'});
-    // this.tagOptions.push({value:'dateSubmitted',name:'Date Submitted'});
-    // this.tagOptions.push({value:'submittedBy',name:'Submitted By'});
-    // this.tagOptions.push({value:'description',name:'Description'});
-    // this.tagOptions.push({value:'foundInBuild',name:'Found in Build'});
-    // this.tagOptions.push({value:'tragetRelease',name:'Target Release'});
-    // this.tagOptions.push({value:'dateClosed',name:'Date Closed'});
-    // this.tagOptions.push({value:'hwPON',name:'HW PON'});
-    // this.tagOptions.push({value:'caseReason',name:'Case Reason'});
-    // this.tagOptions.push({value:'finalTestRootCauseAnalysisComments',name:'Final Test Root Cause Analysis Comments'});
-    // this.tagOptions.push({name:'Priority',value:'priority'});
-    // this.tagOptions.push({name:'Found on Platform',value:'foundOnPlatform'});
-    // this.tagOptions.push({name:'Problem Description/Systems Impacted',value:'problemDescriptionImpacted'});
-    // this.tagOptions.push({name:'Workaround',value:'workaround'});
-    // this.tagOptions.push({name:'Symptoms',value:'symptoms'});
-    // this.tagOptions.push({name:'Reporting Customer',value:'reportingCustomer'});
-    // this.tagOptions.push({name:'Service Account',value:'serviceAccount'});
-    // this.tagOptions.push({name:'Fixed in Release',value:'fixedinRelease'});
-    // this.tagOptions.push({name:'Found in Release',value:'Found in Release'});
-    // this.tagOptions.push({name:'Resolution',value:'resolution'});
-    // this.tagOptions.push({name:'Product',value:'product'});
   },
   data() {
     console.log("dashboard", this.data);
@@ -1497,9 +1478,9 @@ export default {
       }
       if (this.filterValue.length > 0) {
         if (this.checked) {
-          this.mlKeywords = "AND";
+          this.mlKeywords = " AND";
         } else {
-          this.mlKeywords = "OR";
+          this.mlKeywords = " OR";
         }
       } else {
         this.mlKeywords = "";
