@@ -355,25 +355,34 @@
         <div class="tab-pane fade" id="nav-error" role="tabpanel" aria-labelledby="nav-error-tab">
           <br>
           <div class="shadow p-3 mb-5 bg-white rounded" id="ErrorDiv">
-            <!-- <div class="float-right">
-              <toggle-button
+            <div class="float-right">
+              <!--<toggle-button
                 :value="state"
                 :color="{checked: 'green', unchecked: 'green'}"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
                 :width="80"
                 @change="stateChange()"
-              />
-              <button type="button" class="btn btn-success">
-                <download-excel :data="currentNet" type="csv">
+              />-->
+              <button
+                type="button"
+                class="btn btn-success"
+                v-tooltip.top.hover.focus="'Click to Download'"
+              >
+                <DownloadExcel
+                  :data="errorRowData"
+                  type="csv"
+                  name="ErrorData.csv"
+                  :columnHeaders="errorTitle"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
-            <br>-->
+            <br>
             <br>
             <ag-grid-vue
               style="width: 100%; height: 400px;"
@@ -458,12 +467,14 @@ export default {
       fullPage: true,
       toggle: "reorder",
       currentInventory: [],
+      errorTitle: ["Part Name", "Error Reason", "Node Name", "Type"],
       currentInventoryTitle: ["Part Name", "Depot Name", "Reorder Point"],
       currentGross: [],
       currentNet: [],
       netTitle: ["Part Name", "Depot Name", "Net Quantity"],
       currentib: [],
       errorData: [],
+
       grossColumnDefs: null,
       grossRowData: [],
       grossTitle: ["Part Name", "Depot Name", "Gross Quantity"],
@@ -710,6 +721,7 @@ export default {
                 type: this.errorData[i].type
               });
             }
+
             this.isLoading = false;
           });
         })

@@ -7,7 +7,8 @@ from requests.auth import HTTPBasicAuth
 from flask_restful import Resource
 from flask_restful import reqparse
 import csv, json
-
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from elasticsearch import Elasticsearch
 
 class DevTrackData(Resource):
     def __init__(self):
@@ -182,9 +183,9 @@ class DevTrackData(Resource):
             if((len(product_filter)>0) or (len(group_filter)>0)or (len(found_in_release_filter)>0)or (len(fixed_in_release_filter)>0)or (len(severity_filter)>0)or (len(priority_filter)>0)or (len(found_on_platform_filter)>0)or (len(date_filter)>0)):
                 PARAMS = PARAMS[:-1]
                 PARAMS+="]}}}}}"
-            r = requests.get(url = URL, data = PARAMS,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD), headers=headers) 
-            data = r.json()
-            
+            print("Devtrack Params : ",json.loads(PARAMS))
+            es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
+            data = es.search(index="devtrack", body=json.loads(PARAMS))
             devtrackmaxScore = data['hits']['max_score']
             devtrackList = data['hits']['hits']
             devTrack = []
@@ -195,12 +196,10 @@ class DevTrackData(Resource):
             return devTrack
         
         def releaseNotes(search_param):
-            
-            URL=config.ELK_URI+"release_notes/_search"
-            headers = {'Content-type': 'application/json'}
-            PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"issueId\", \"severity\",\"description\",\"workaround\",\"file_name\"]}}}"
-            r = requests.get(url = URL, data = PARAMS,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD), headers=headers) 
-            data = r.json()
+
+            print("Release Notes  Params : ", search_param)
+            es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
+            data = es.search(index="release_notes", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
             releaseNotes = []
@@ -211,11 +210,10 @@ class DevTrackData(Resource):
             return releaseNotes
 
         def fsb(search_param):
-            URL=config.ELK_URI+"fsb/_search"
-            headers = {'Content-type': 'application/json'}
-            PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"issueId\", \"title\",\"description\",\"symptoms\",\"rootCause\", \"file_name\",\"FSBNumber\",\"dateCreated\",\"dateRevised\"]}}}"
-            r = requests.get(url = URL,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),data = PARAMS, headers=headers) 
-            data = r.json()
+
+            print("FSB  Params : ", search_param)
+            es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
+            data = es.search(index="fsb", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
             fsbmaxScore = data['hits']['max_score']
             fsbList = data['hits']['hits']
             fsb = []
@@ -228,7 +226,8 @@ class DevTrackData(Resource):
 
         try:
             args = self.reqparse.parse_args()
-           
+            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
             search_param = "*"+args['search_param']+"*"
             product_filter = args.get('product_filter')
             group_filter = args.get('group_filter')
@@ -252,6 +251,7 @@ class DevTrackData(Resource):
             response['fsb'] = fsb
             
             return jsonify(data=response, http_status_code=200)
+           
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=500)

@@ -158,63 +158,41 @@
             <br>
 
             <div class="row">
-              <div class="col-lg-12">
+              <div class="col-lg-6">
                 <button
                   class="btn btn-sm btn-success"
                   style="margin-bottom: 2%;marginLeft:1%"
                   @click="showAddRole()"
                 >{{userConstants.addButton}}</button>
-                <div class="table-responsive">
-                  <table
-                    id="userdata"
-                    class="table table-bordered"
-                    align="center"
-                    style="fontSize:14px"
-                  >
-                    <thead align="left">
-                      <tr>
-                        <th scope="col">{{userConstants.table.tableHeaders[0]}}</th>
-                        <th scope="col">{{userConstants.table.tableHeaders[1]}}</th>
-                        <th scope="col">{{userConstants.table.tableHeaders[2]}}</th>
-                        <th align="center">{{userConstants.table.tableHeaders[3]}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="user in allusers" :key="user.name">
-                        <td scope="col">{{user.email}}</td>
-                        <td scope="col">{{user.username}}</td>
-                        <td scope="col">{{user.roles}}</td>
-                        <td scope="col">
-                          <div class="row">
-                            <div class="col">
-                              <i
-                                @click="showEditRole(user)"
-                                class="fas fa-edit"
-                                style="cursor:pointer;color:#4481bb;"
-                              ></i>
-                              <!-- <button class="btn btn-sm btn-primary" @click="showEditRole(user)">Manage
-                              </button>-->
-                            </div>
-                            <div class="col">
-                              <i
-                                @click="deleteRole(user)"
-                                class="fas fa-trash-alt"
-                                style="cursor:pointer;color:#de3341;"
-                              ></i>
-                              <!-- <button class="btn btn-sm btn-danger" @click="deleteRole(user)">Delete
-                              </button>-->
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
               </div>
+              <div class="col-lg-6">
+                <el-col :span="12" class="float-right">
+                  <el-input placeholder="Search " v-model="filters[0].value"></el-input>
+                </el-col>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <data-tables :data="allusers" :filters="filters">
+                <el-table-column
+                  v-for="title in titles"
+                  :prop="title.prop"
+                  :label="title.label"
+                  :key="title.prop"
+                  sortable="custom"
+                ></el-table-column>
+                <el-table-column align="right">
+                  <template slot-scope="scope">
+                    <el-button size="mini" @click="showEditRole(scope.row)">Edit</el-button>
+                    <el-button size="mini" type="danger" @click="deleteRole(scope.row)">Delete</el-button>
+                  </template>
+                </el-table-column>
+              </data-tables>
             </div>
           </div>
         </div>
       </div>
+      <!-- </div> -->
     </div>
     <div>
       <!-- Footer -->
@@ -238,6 +216,18 @@ import Vudal from "vudal";
 import generator from "generate-password";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+import { DataTables, DataTablesServer } from "vue-data-tables";
+import Vue from "vue";
+import lang from "element-ui/lib/locale/lang/en";
+import locale from "element-ui/lib/locale";
+
+locale.use(lang);
+
+Vue.use(DataTables);
+Vue.use(DataTablesServer);
+Vue.use(ElementUI);
 
 export default {
   name: "ManageUser",
@@ -268,13 +258,34 @@ export default {
       loaderFlag: false,
       permissionValue: [],
       options: [],
+      filters: [
+        {
+          prop: ["roles", "username", "email"],
+          value: ""
+        }
+      ],
       state: true,
+      titles: [
+        {
+          prop: "email",
+          label: "User Mail Id."
+        },
+        {
+          prop: "username",
+          label: "Username"
+        },
+        {
+          prop: "roles",
+          label: "Roles"
+        }
+      ],
       user: {
         username: "",
         password: "",
         email: "",
         cnf_password: ""
       },
+
       regPass: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_])[A-Za-z\d@$!%*?&_]{8,}$/,
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
     };
@@ -428,6 +439,12 @@ export default {
       let formData = new FormData();
       formData.append("userId", this.userId);
       for (var i = 0; i < this.permissionValue.length; i++) {
+        if (this.permissionValue[i].role_name === "EditReference") {
+          formData.append(
+            "checkedRoles",
+            "b3b2d5d2-badf-4473-90b0-5e50f65f5b1a"
+          );
+        }
         formData.append("checkedRoles", this.permissionValue[i].role_id);
       }
 
