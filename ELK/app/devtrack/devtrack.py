@@ -142,8 +142,8 @@ class DevTrackData(Resource):
                 if(len(date_filter)>0):
                     
                     for loc in date_filter:
-                        
-                        DATE_FILTER_PARAMS+="{\"range\" : { \"dateClosed\" :{ \"lte\": \""+loc.lower()+"\"}} }"
+                        if not(loc == ""):
+                            DATE_FILTER_PARAMS+="{\"range\" : { \"dateClosed\" :{ \"lte\": \""+loc.lower()+"\"}} }"
                         # for tmp in loc.split('-'):
                         #     tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
                         #     if not(tmp == ""):
