@@ -158,14 +158,22 @@
             <br>
 
             <div class="row">
-              <div class="col-lg-12">
+              <div class="col-lg-6">
                 <button
                   class="btn btn-sm btn-success"
                   style="margin-bottom: 2%;marginLeft:1%"
                   @click="showAddRole()"
                 >{{userConstants.addButton}}</button>
-                <div class="table-responsive">
-                  <!-- <table
+              </div>
+              <div class="col-lg-6">
+                <el-col :span="12" class="float-right">
+                  <el-input placeholder="Search " v-model="filters[0].value"></el-input>
+                </el-col>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <!-- <table
                     id="userdata"
                     class="table table-bordered"
                     align="center"
@@ -206,41 +214,38 @@
                         </td>
                       </tr>
                     </tbody>
-                  </table>-->
-                  <el-col :span="6">
-                    <el-input placeholder="search NO." v-model="filters[0].value"></el-input>
-                  </el-col>
-                  <data-tables :data="allusers" :filters="filters">
-                    <el-table-column
-                      v-for="title in titles"
-                      :prop="title.prop"
-                      :label="title.label"
-                      :key="title.prop"
-                      sortable="custom"
-                    ></el-table-column>
-                    <el-table-column label="Manage Roles" min-width="100px">
-                      <template slot-scope="scope">
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <i
+              </table>-->
+
+              <data-tables :data="allusers" :filters="filters">
+                <el-table-column
+                  v-for="title in titles"
+                  :prop="title.prop"
+                  :label="title.label"
+                  :key="title.prop"
+                  sortable="custom"
+                ></el-table-column>
+                <el-table-column align="right">
+                  <template slot-scope="scope">
+                    <!-- <i
                           @click="showEditRole(scope.row)"
                           class="fas fa-edit"
                           style="cursor:pointer;color:#4481bb;"
                         ></i>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <i
                           @click="deleteRole(scope.row)"
                           class="fas fa-trash-alt"
                           style="cursor:pointer;color:#de3341;"
-                        ></i>
-                      </template>
-                    </el-table-column>
-                  </data-tables>
-                </div>
-              </div>
+                    ></i>-->
+                    <el-button size="mini" @click="showEditRole(scope.row)">Edit</el-button>
+                    <el-button size="mini" type="danger" @click="deleteRole(scope.row)">Delete</el-button>
+                  </template>
+                </el-table-column>
+              </data-tables>
             </div>
           </div>
         </div>
       </div>
+      <!-- </div> -->
     </div>
     <div>
       <!-- Footer -->
