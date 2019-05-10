@@ -2,6 +2,7 @@ import csv, json
 import requests
 from requests.auth import HTTPBasicAuth 
 import config
+from datetime import date
 
 
 def csvParse():
@@ -43,7 +44,8 @@ def csvParse():
         "serviceAccount": row["Service Account"].replace(u'\xa0', u''),
         "fixedinRelease":row['Fixed in Release'].replace(u'\xa0', u''),
         "foundinRelease":row['Found in Release'].replace(u'\xa0', u''),
-        "resolution":row['Resolution'].replace(u'\xa0', u'')
+        "resolution":row['Resolution'].replace(u'\xa0', u''),
+        "timestamp": date.today().isoformat()
         }
         if row["Issue ID"] not in issueId:
             issueId.append(row["Issue ID"])

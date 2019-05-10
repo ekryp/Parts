@@ -7,7 +7,13 @@ import os
 import shutil
 import glob
 import sys
+from datetime import date, timezone
+from requests.auth import HTTPBasicAuth 
+import config
+import pytz
 
+# date = datetime.now(pytz.utc)
+# print(datetime.now(timezone.utc).isoformat())
 
 def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
@@ -139,8 +145,9 @@ for each_pdf in glob.glob("*.pdf"):
         except:
             dd['workaround'] = ''
         dd['file_name'] = each_pdf
+        dd['timestamp'] = date.today().isoformat()
         print(dd)
-        response = requests.post("http://34.83.90.206:9200/release_notes/release_notes", json=dd,
+        response = requests.post(config.ELK_URI+"release_notes/_doc",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD), json=dd,
                                 headers={"content-type": "application/json"})
 
     #print(each_pdf)
