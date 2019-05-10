@@ -142,7 +142,8 @@ class DevTrackData(Resource):
                 if(len(date_filter)>0):
                     
                     for loc in date_filter:
-                        if not(loc == ""):
+                        
+                        if not ("null" == str(loc)):
                             DATE_FILTER_PARAMS+="{\"range\" : { \"dateClosed\" :{ \"lte\": \""+loc.lower()+"\"}} }"
                         # for tmp in loc.split('-'):
                         #     tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
@@ -176,7 +177,7 @@ class DevTrackData(Resource):
             if (len(found_on_platform_filter)>0):
                 PARAMS+=FOUND_ON_PLATFORM_PARAMS+","
                 
-            if (len(date_filter)>0):
+            if ((len(date_filter)>0) and  not("null" == str(date_filter[0]))):
                 PARAMS+=DATE_FILTER_PARAMS+","
                 
 
