@@ -940,7 +940,7 @@
                       style="height:40px;paddingTop:1.1em"
                       v-model="time1"
                       lang="en"
-                      valuetype="format"
+                      value-type="format"
                       :format="format"
                       :first-day-of-week="1"
                       @change="onAnalyze()"
