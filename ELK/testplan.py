@@ -9,6 +9,7 @@ import glob
 import sys
 from requests.auth import HTTPBasicAuth
 from datetime import date, timezone
+import config
 
 
 os.chdir(r'/tmp')
@@ -66,6 +67,7 @@ for each_record in final_items:
             try:
                 dd['file_name'] = each_doc
                 # If record field does not have Expected Result, we capture procedure till end
+                print('#' * 50)
                 if not is_result:
                     dd['Objective'] = each_record[objective_index + 1]
                     dd['Procedure'] = each_record[procedure_index + 1:]
@@ -76,6 +78,11 @@ for each_record in final_items:
                     dd['Objective'] = each_record[objective_index + 1]
                     dd['Procedure'] = each_record[procedure_index + 1:result_index]
                     print(dd)
+                print('#' * 50)
+                response = requests.post(config.ELK_URI + "testplan/_doc", json=dd,
+                                         auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
+                                         headers={"content-type": "application/json"})
+                print(response.json())
             except:
                 break
 
