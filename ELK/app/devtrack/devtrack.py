@@ -190,11 +190,22 @@ class DevTrackData(Resource):
             devtrackmaxScore = data['hits']['max_score']
             devtrackList = data['hits']['hits']
             devTrack = []
+            filterList=[]
+            filterKeys=devtrackList[0].keys()
+            for key in filterKeys:
+                filterList[key]=[]
             for doc in devtrackList:
                 data = doc["_source"]
+
                 data["probability"]= round((doc["_score"]/devtrackmaxScore)*100)
+                for key in filterKeys:
+                    filterList[key].append(doc[key])
                 devTrack.append(data)
-            return devTrack
+            devTrackResponse={
+                "devtrack":devTrack,
+                "devtrackFilters":filterList
+            }
+            return devTrackResponse
         
         def releaseNotes(search_param):
 
@@ -218,6 +229,7 @@ class DevTrackData(Resource):
             fsbmaxScore = data['hits']['max_score']
             fsbList = data['hits']['hits']
             fsb = []
+
             for doc in fsbList:
                 data = doc["_source"]
                 data["probability"]= round((doc["_score"]/fsbmaxScore)*100)
