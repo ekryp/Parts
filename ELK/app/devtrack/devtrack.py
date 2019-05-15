@@ -9,6 +9,7 @@ from flask_restful import reqparse
 import csv, json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from elasticsearch import Elasticsearch
+import logging
 
 class DevTrackData(Resource):
     def __init__(self):
@@ -185,17 +186,46 @@ class DevTrackData(Resource):
                 PARAMS = PARAMS[:-1]
                 PARAMS+="]}}}}}"
             print("Devtrack Params : ",json.loads(PARAMS))
-            es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            data = es.search(index="devtrack", body=json.loads(PARAMS))
-            devtrackmaxScore = data['hits']['max_score']
-            devtrackList = data['hits']['hits']
-            devTrack = []
-            for doc in devtrackList:
-                data = doc["_source"]
-                data["probability"]= round((doc["_score"]/devtrackmaxScore)*100)
-                devTrack.append(data)
-            return devTrack
-        
+            try:
+
+                es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
+                data = es.search(index="devtrack", body=json.loads(PARAMS))
+                devtrackmaxScore = data['hits']['max_score']
+                devtrackList = data['hits']['hits']
+                devTrack = []
+                filterList={}
+                filterKeys=devtrackList[0]["_source"].keys()
+                for key in filterKeys:
+                    filterList[key]=[]
+                print('Filter Keys',filterKeys)
+                for doc in devtrackList:
+                    for key in filterKeys:
+                        filterList[key].append(doc["_source"][key])
+                    
+                for key in filterKeys:
+                        tempSet=list(set(filterList[key]))
+                        filterList[key]=[]
+                        for temp in tempSet:
+                            if not (temp == ""):
+                                filterList[key].append({"name":temp})
+
+                for doc in devtrackList:
+                    data = doc["_source"]
+                    # print('DATA',data)
+                    data["probability"]= round((doc["_score"]/devtrackmaxScore)*100)
+                    devTrack.append(data)
+
+                devTrackResponse={
+                    "devtrack":devTrack,
+                    "devtrackFilters":filterList
+                }
+                return devTrackResponse
+            except Exception as e:
+                devTrackResponse={}
+                logging.error('...', exc_info=True)
+                print('exception is ',e)
+                return devTrackResponse
+                
         def releaseNotes(search_param):
 
             print("Release Notes  Params : ", search_param)
@@ -218,6 +248,7 @@ class DevTrackData(Resource):
             fsbmaxScore = data['hits']['max_score']
             fsbList = data['hits']['hits']
             fsb = []
+
             for doc in fsbList:
                 data = doc["_source"]
                 data["probability"]= round((doc["_score"]/fsbmaxScore)*100)
