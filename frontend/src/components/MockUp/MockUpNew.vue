@@ -671,6 +671,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -712,6 +713,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -753,6 +755,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -796,6 +799,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -837,6 +841,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -878,6 +883,7 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -921,6 +927,7 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
+                      @close="onAnalyze()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -933,14 +940,14 @@
                       style="height:40px;paddingTop:1.1em"
                       v-model="time1"
                       lang="en"
-                      valuetype="format"
+                      value-type="format"
                       :format="format"
                       :first-day-of-week="1"
-                      @change="showTime()"
+                      @change="onAnalyze()"
                     ></date-picker>
                   </div>
                 </div>
-                <div class="col-lg-4">
+                <!-- <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-9"></div>
                     <div class="col-lg-3" style="marginTop:8%">
@@ -961,7 +968,7 @@
                       >{{solutionScreenConstants.buttons[2]}}</button>
                     </div>
                   </div>
-                </div>
+                </div>-->
               </div>
             </div>
           </div>
@@ -1282,32 +1289,6 @@ export default {
   created() {
     clearInterval(window.intervalObj);
     this.currentUserEMailId = localStorage.getItem("email_id");
-    // this.tagOptions.push({name:'Issue ID',value:'issueId'});
-    // this.tagOptions.push({name:'Title',value:'title'});
-    // this.tagOptions.push({name:'Current Owner',value:'currentOwner'});
-    // this.tagOptions.push({name:'Progress Status',value:'progressStatus'});
-    // this.tagOptions.push({name:'Group',value:'group'});
-    // this.tagOptions.push({value:'severity',name:'Severity'});
-    // this.tagOptions.push({value:'dateSubmitted',name:'Date Submitted'});
-    // this.tagOptions.push({value:'submittedBy',name:'Submitted By'});
-    // this.tagOptions.push({value:'description',name:'Description'});
-    // this.tagOptions.push({value:'foundInBuild',name:'Found in Build'});
-    // this.tagOptions.push({value:'tragetRelease',name:'Target Release'});
-    // this.tagOptions.push({value:'dateClosed',name:'Date Closed'});
-    // this.tagOptions.push({value:'hwPON',name:'HW PON'});
-    // this.tagOptions.push({value:'caseReason',name:'Case Reason'});
-    // this.tagOptions.push({value:'finalTestRootCauseAnalysisComments',name:'Final Test Root Cause Analysis Comments'});
-    // this.tagOptions.push({name:'Priority',value:'priority'});
-    // this.tagOptions.push({name:'Found on Platform',value:'foundOnPlatform'});
-    // this.tagOptions.push({name:'Problem Description/Systems Impacted',value:'problemDescriptionImpacted'});
-    // this.tagOptions.push({name:'Workaround',value:'workaround'});
-    // this.tagOptions.push({name:'Symptoms',value:'symptoms'});
-    // this.tagOptions.push({name:'Reporting Customer',value:'reportingCustomer'});
-    // this.tagOptions.push({name:'Service Account',value:'serviceAccount'});
-    // this.tagOptions.push({name:'Fixed in Release',value:'fixedinRelease'});
-    // this.tagOptions.push({name:'Found in Release',value:'Found in Release'});
-    // this.tagOptions.push({name:'Resolution',value:'resolution'});
-    // this.tagOptions.push({name:'Product',value:'product'});
   },
   data() {
     console.log("dashboard", this.data);
@@ -1345,22 +1326,21 @@ export default {
       filterValue: [],
       tagValue: [],
       tagOptions: [],
-      productValue: [],
-
       time1: "",
-      productOptions: solutionFilterData.productValues,
+      productValue: [],
+      productOptions: [],
       groupValue: [],
-      groupOptions: solutionFilterData.group,
+      groupOptions: [],
       severityValue: [],
-      severityOptions: solutionFilterData.severity,
+      severityOptions: [],
       priorityValue: [],
-      priorityOptions: solutionFilterData.priority,
+      priorityOptions: [],
       foundOnPlatformValue: [],
-      foundOnPlatformOptions: solutionFilterData.foundOnPlatform,
+      foundOnPlatformOptions: [],
       fixedInReleaseValue: [],
-      fixedInReleaseOptions: solutionFilterData.fixedInRelease,
+      fixedInReleaseOptions: [],
       foundInReleaseValue: [],
-      foundInReleaseOptions: solutionFilterData.foundInRelease,
+      foundInReleaseOptions: [],
       problemDescriptionPlaceholder: "Enter the Problem Description",
       valueIndex: "",
       filterURL: "",
@@ -1497,9 +1477,9 @@ export default {
       }
       if (this.filterValue.length > 0) {
         if (this.checked) {
-          this.mlKeywords = "AND";
+          this.mlKeywords = " AND";
         } else {
-          this.mlKeywords = "OR";
+          this.mlKeywords = " OR";
         }
       } else {
         this.mlKeywords = "";
@@ -1528,45 +1508,60 @@ export default {
               this.isLoading = false;
               this.estotalhits = data.data.totalhits;
               console.log("estotal hits ----->", this.estotalhits);
-              if (data.data.devTrack.length < 0) {
+              if (data.data.devTrack.devtrack.length < 0) {
                 this.analyzeFlag = true;
               }
               var upvotedUsers = [];
-              for (var i = 0; i < data.data.devTrack.length; i++) {
+              this.productOptions = data.data.devTrack.devtrackFilters.product;
+              this.groupOptions = data.data.devTrack.devtrackFilters.group;
+              this.severityOptions =
+                data.data.devTrack.devtrackFilters.severity;
+              this.priorityOptions =
+                data.data.devTrack.devtrackFilters.priority;
+              this.foundOnPlatformOptions =
+                data.data.devTrack.devtrackFilters.foundOnPlatform;
+              this.fixedInReleaseOptions =
+                data.data.devTrack.devtrackFilters.fixedinRelease;
+              this.foundInReleaseOptions =
+                data.data.devTrack.devtrackFilters.foundinRelease;
+              for (var i = 0; i < data.data.devTrack.devtrack.length; i++) {
                 let upvotedUserFlag = false;
-                if (data.data.devTrack[i].upvotedUsers !== undefined) {
+                if (data.data.devTrack.devtrack[i].upvotedUsers !== undefined) {
                   upvotedUsers = data.data.devTrack[i].upvotedUsers;
                 } else {
                   upvotedUsers = [];
                 }
 
                 this.devTrackData.push({
-                  issueId: data.data.devTrack[i].issueId,
+                  issueId: data.data.devTrack.devtrack[i].issueId,
                   index: i,
-                  description: data.data.devTrack[i].description,
-                  severity: data.data.devTrack[i].severity,
-                  caseReason: data.data.devTrack[i].caseReason,
-                  currentOwner: data.data.devTrack[i].currentOwner,
-                  dateClosed: data.data.devTrack[i].dateClosed,
-                  dateSubmitted: data.data.devTrack[i].dateSubmitted,
+                  description: data.data.devTrack.devtrack[i].description,
+                  severity: data.data.devTrack.devtrack[i].severity,
+                  caseReason: data.data.devTrack.devtrack[i].caseReason,
+                  currentOwner: data.data.devTrack.devtrack[i].currentOwner,
+                  dateClosed: data.data.devTrack.devtrack[i].dateClosed,
+                  dateSubmitted: data.data.devTrack.devtrack[i].dateSubmitted,
                   finalTestRootCauseAnalysisComments:
-                    data.data.devTrack[i].finalTestRootCauseAnalysisComments,
-                  fixedinRelease: data.data.devTrack[i].fixedinRelease,
-                  foundInBuild: data.data.devTrack[i].foundInBuild,
-                  foundOnPlatform: data.data.devTrack[i].foundOnPlatform,
-                  group: data.data.devTrack[i].group,
-                  product: data.data.devTrack[i].product,
-                  probability: data.data.devTrack[i].probability,
-                  progressStatus: data.data.devTrack[i].progressStatus,
-                  reportingCustomer: data.data.devTrack[i].reportingCustomer,
-                  resolution: data.data.devTrack[i].resolution,
-                  serviceAccount: data.data.devTrack[i].serviceAccount,
-                  submittedBy: data.data.devTrack[i].submittedBy,
-                  symptoms: data.data.devTrack[i].symptoms,
-                  title: data.data.devTrack[i].title,
-                  tragetRelease: data.data.devTrack[i].tragetRelease,
-                  type: data.data.devTrack[i].type,
-                  workaround: data.data.devTrack[i].workaround,
+                    data.data.devTrack.devtrack[i]
+                      .finalTestRootCauseAnalysisComments,
+                  fixedinRelease: data.data.devTrack.devtrack[i].fixedinRelease,
+                  foundInBuild: data.data.devTrack.devtrack[i].foundInBuild,
+                  foundOnPlatform:
+                    data.data.devTrack.devtrack[i].foundOnPlatform,
+                  group: data.data.devTrack.devtrack[i].group,
+                  product: data.data.devTrack.devtrack[i].product,
+                  probability: data.data.devTrack.devtrack[i].probability,
+                  progressStatus: data.data.devTrack.devtrack[i].progressStatus,
+                  reportingCustomer:
+                    data.data.devTrack.devtrack[i].reportingCustomer,
+                  resolution: data.data.devTrack.devtrack[i].resolution,
+                  serviceAccount: data.data.devTrack.devtrack[i].serviceAccount,
+                  submittedBy: data.data.devTrack.devtrack[i].submittedBy,
+                  symptoms: data.data.devTrack.devtrack[i].symptoms,
+                  title: data.data.devTrack.devtrack[i].title,
+                  tragetRelease: data.data.devTrack.devtrack[i].tragetRelease,
+                  type: data.data.devTrack.devtrack[i].type,
+                  workaround: data.data.devTrack.devtrack[i].workaround,
                   upvotedUsers: upvotedUsers
                 });
                 this.moreFlag1 = false;
