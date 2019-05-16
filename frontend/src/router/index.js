@@ -18,6 +18,7 @@ import ChangePassword from '@/components/ManageRoles/ChangePassword'
 import ManageUser from '@/components/ManageRoles/ManageUser'
 import SolutionScreen from '@/components/MockUp/SolutionScreen'
 import MockUpNew from '@/components/MockUp/MockUpNew'
+import KnowledgeMap from '@/components/KnowledgeMap/KnowledgeMap'
 
 Vue.use(Router)
 
@@ -151,6 +152,14 @@ export default new Router({
       component: MockUpNew,
       meta: {
         permission: 'Dashboard'
+      }
+    },
+    {
+      path: '/knowledge',
+      name: 'KnowledgeMap',
+      component: KnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
       }
     }
   ]
