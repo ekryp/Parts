@@ -29,10 +29,12 @@ app.config['SECRET_KEY'] = 'secret'
 compress.init_app(app)
 
 from app.devtrack.devtrack import DevTrackData
+from app.Testplan.testplan import TestPlan
 from app.Keywords.keywords import GetMLKeyWords
 
 api.add_resource(DevTrackData, '/getDevTrackData', endpoint='getDevTrackData')
 api.add_resource(GetMLKeyWords, '/get_ml_keywords', endpoint='get_ml_keywords')
+api.add_resource(TestPlan, '/get_test_plan', endpoint='get_test_plan')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)

@@ -412,14 +412,14 @@
                     <div class="col-lg-10"></div>
                     <div class="col-lg-2 alignButton">
                       <button
-                        v-if="problemDescription !== ''"
+                        v-if="problemDescription.trim() !== ''"
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
                         @click="getMlKeywords()"
                       >{{solutionScreenConstants.buttons[0]}}</button>
                       <button
-                        v-if="problemDescription === ''"
+                        v-if="problemDescription.trim() === ''"
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
@@ -473,14 +473,14 @@
                     </div>
                     <div class="col-lg-2" style="paddingTop:0.35em">
                       <button
-                        v-if="searchFlag "
+                        v-if="searchFlag &&problemDescription.trim() !== ''"
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
                         @click="onAnalyze()"
                       >{{solutionScreenConstants.buttons[2]}}</button>
                       <button
-                        v-if="!searchFlag "
+                        v-if="!searchFlag ||problemDescription.trim() === ''  "
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
@@ -675,6 +675,7 @@
                     ></Multiselect>
                   </div>
                 </div>
+
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-4">{{solutionScreenConstants.filterNames[1]}}</div>
@@ -803,6 +804,8 @@
                     ></Multiselect>
                   </div>
                 </div>
+
+                <!--                 
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-5">{{solutionScreenConstants.filterNames[4]}}</div>
@@ -844,7 +847,51 @@
                       @close="onAnalyze()"
                     ></Multiselect>
                   </div>
+                </div>-->
+
+                <div class="col-lg-4">
+                  <div class="row">
+                    <div class="col-lg-6">{{solutionScreenConstants.filterNames[6]}}</div>
+                    <div class="col" align="right">
+                      <button
+                        style="fontSize:1vw;"
+                        type="button"
+                        class="all-success"
+                        @click="selectAll('foundInRelease')"
+                      >
+                        <i class="fas fa-check-circle"></i>
+                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
+                      </button>
+
+                      <button
+                        style="fontSize:1vw;"
+                        type="button"
+                        class="all-success"
+                        @click="clearAll('foundInRelease')"
+                      >
+                        <i class="fas fa-minus-circle"></i>
+                        &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                      </button>
+                    </div>
+                  </div>
+                  <div style="paddingTop:0.5em">
+                    <Multiselect
+                      v-model="foundInReleaseValue"
+                      tag-placeholder="Add this as new tag"
+                      placeholder="Search Found In Release"
+                      label="name"
+                      track-by="name"
+                      :options="foundInReleaseOptions"
+                      :multiple="true"
+                      :taggable="true"
+                      :clear-on-select="false"
+                      :close-on-select="false"
+                      :hide-selected="true"
+                      @close="onAnalyze()"
+                    ></Multiselect>
+                  </div>
                 </div>
+
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-4">{{solutionScreenConstants.filterNames[5]}}</div>
@@ -889,7 +936,7 @@
                 </div>
               </div>
               <div class="row align">
-                <div class="col-lg-4">
+                <!-- <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-6">{{solutionScreenConstants.filterNames[6]}}</div>
                     <div class="col" align="right">
@@ -930,7 +977,7 @@
                       @close="onAnalyze()"
                     ></Multiselect>
                   </div>
-                </div>
+                </div>-->
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-12">{{solutionScreenConstants.filterNames[7]}}</div>
@@ -1809,7 +1856,7 @@ export default {
       this.moreFlag3 = false;
     },
     problemDescriptionChange() {
-      if (this.problemDescription === "") {
+      if (this.problemDescription.trim() === "") {
         this.searchFlag = false;
       }
     }

@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'local') {
   ELKURL = "https://infinera-elk.ekryp.com/"
 }
 
-export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction']
+export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction', 'knowledgeMap']
 
 
 export const Dashboard = {
@@ -158,6 +158,19 @@ export const editReferenceScreen = {
   exportButton: "Export",
   cancelButton: "Cancel",
   updateButton: "Update",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+export const testPlanScreen = {
+  breadcrumbs: ["Knowledge Map > Test Plan"],
+  PopUpHeaders: ["Test Plan Details"],
+  popUpFields: ["File Name :", "Objective :", "Procedure :"],
+  addButton: "Create Test Plan",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Test Plan Details",
   backButton: "Back",
   createButton: "Create"
 }
