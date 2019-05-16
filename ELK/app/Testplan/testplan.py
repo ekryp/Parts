@@ -41,7 +41,11 @@ class TestPlan(Resource):
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-        search_param = "*"+args['search_param']+"*"
+        search_param = args['search_param']
+        search_param=search_param.lower()
+        if (search_param == ""):
+            search_param = "*"
+        print(search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
         data = es.search(index="testplan", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param,"fields": ["file_name", "Objective","Procedure"]}}})
         test_max_score = data['hits']['max_score']
@@ -56,7 +60,7 @@ class TestPlan(Resource):
                     "test_plan": []
                 }
             
-            response['test_plan'] = test_plan
+        response['test_plan'] = test_plan
         return jsonify(data=response, http_status_code=200)
 
     
