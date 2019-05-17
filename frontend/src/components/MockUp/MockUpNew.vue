@@ -1336,6 +1336,7 @@ export default {
   created() {
     clearInterval(window.intervalObj);
     this.currentUserEMailId = localStorage.getItem("email_id");
+    this.internalFlag = localStorage.getItem("internalFlag");
   },
   data() {
     console.log("dashboard", this.data);
@@ -1386,6 +1387,7 @@ export default {
       foundOnPlatformOptions: [],
       fixedInReleaseValue: [],
       fixedInReleaseOptions: [],
+      internalFlag: false,
       foundInReleaseValue: [],
       foundInReleaseOptions: [],
       problemDescriptionPlaceholder: "Enter the Problem Description",
@@ -1541,7 +1543,9 @@ export default {
           this.problemDescription +
           this.mlKeywords +
           this.filterValues +
-          this.filterURL,
+          this.filterURL +
+          "&internal=" +
+          this.internalFlag,
         {
           headers: {
             "Content-Type": "application/json"
