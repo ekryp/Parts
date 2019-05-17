@@ -37,7 +37,56 @@
               </span>
             </div>
           </div>
-          <div v-if="addFlag"></div>
+          <div v-if="addFlag">
+            <div class="row">
+              <div class="col-lg-5">
+                <label style="{text-align}">File Name :</label>
+              </div>
+              <div class="col-lg-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="testPlan.file_name"
+                  :placeholder="testPlanPlaceHolders.fileNamePlaceHolder"
+                >
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-5">
+                <label style="{text-align}">Objective :</label>
+              </div>
+              <div class="col-lg-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="testPlan.Objective"
+                  :placeholder="testPlanPlaceHolders.objectivePlaceHolder"
+                >
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-5">
+                <label style="{text-align}">Procedure :</label>
+              </div>
+              <div class="col-lg-6">
+                <!-- <input
+                  type="text"
+                  class="form-control"
+                  v-model="testPlan.procedure"
+                  :placeholder="testPlan.procedurePlaceHolder"
+                >-->
+                <b-form-textarea
+                  id="textarea"
+                  v-model="testPlan.Procedure"
+                  :placeholder="testPlanPlaceHolders.procedurePlaceHolder"
+                  rows="3"
+                  max-rows="6"
+                ></b-form-textarea>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="actions">
@@ -46,7 +95,7 @@
           type="button"
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Create'"
-          @click="addUser()"
+          @click="addTestPlan()"
         >Create</button>
         <button v-if="editFlag" type="button" class="btn btn-success" @click="hideEntry()">Ok</button>
 
@@ -142,7 +191,9 @@ import { DataTables, DataTablesServer } from "vue-data-tables";
 import Vue from "vue";
 import lang from "element-ui/lib/locale/lang/en";
 import locale from "element-ui/lib/locale";
+import BootstrapVue from "bootstrap-vue";
 
+Vue.use(BootstrapVue);
 locale.use(lang);
 
 Vue.use(DataTables);
@@ -172,7 +223,16 @@ export default {
       testPlanContent: "",
       addFlag: false,
       editFlag: false,
-
+      testPlan: {
+        file_name: "",
+        Objective: "",
+        Procedure: ""
+      },
+      testPlanPlaceHolders: {
+        fileNamePlaceHolder: "",
+        objectivePlaceHolder: "",
+        procedurePlaceHolder: ""
+      },
       titles: [
         {
           prop: "file_name",
@@ -198,6 +258,7 @@ export default {
     },
     getTestPlan() {
       this.isLoading = true;
+      this.allTestPlan = [];
       fetch(
         constant.ELKURL + "api/get_test_plan?search_param=" + this.filterParam,
         {
@@ -223,6 +284,34 @@ export default {
               });
             }
             this.isLoading = false;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    addTestPlan() {
+      let formData = new FormData();
+      formData.append(
+        "data",
+        JSON.stringify({
+          file_name: this.testPlan.file_name,
+          Objective: this.testPlan.Objective,
+          Procedure: [this.testPlan.Procedure]
+        })
+      );
+      fetch(constant.ELKURL + "api/get_test_plan", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+            }
           });
         })
         .catch(handleError => {

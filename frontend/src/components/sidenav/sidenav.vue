@@ -29,7 +29,7 @@
             <br>
             <p class="upload-text">{{sidanavConstants.analysis}}</p>
           </div>
-          <div class="text-center" v-if="diasableFlag" >
+          <div class="text-center" v-if="diasableFlag">
             <i class="fas fa-list-ul" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">{{sidanavConstants.analysis}}</p>
@@ -47,11 +47,11 @@
         <li class="nav-custom" style="cursor:pointer" v-if="referenceDataFlag">
           <div class="text-center" v-if="!diasableFlag" @click="reference()">
             <i class="fas fa-file-alt" style="fontSize:2em"></i>
-            
+
             <br>
             <p class="upload-text">{{sidanavConstants.referenceData}}</p>
           </div>
-          <div class="text-center" v-if="diasableFlag" >
+          <div class="text-center" v-if="diasableFlag">
             <i class="fas fa-file-alt" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">{{sidanavConstants.referenceData}}</p>
@@ -60,12 +60,12 @@
         <hr v-if="solutionFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="solutionFlag">
           <div class="text-center" v-if="!diasableFlag" @click="mockup()">
-            <i class=" fa fa-puzzle-piece" style="fontSize:2em"></i>
-            
+            <i class="fa fa-puzzle-piece" style="fontSize:2em"></i>
+
             <br>
             <p class="upload-text">{{sidanavConstants.solutionPrediction}}</p>
           </div>
-          <div class="text-center" v-if="diasableFlag" >
+          <div class="text-center" v-if="diasableFlag">
             <i class="fa fa-puzzle-piece" style="fontSize:2em"></i>
             <br>
             <p class="upload-text">{{sidanavConstants.solutionPrediction}}</p>
@@ -78,70 +78,64 @@
 </template>
 
 <script>
-
 import router from "../../router";
 import * as constant from "../constant/constant";
 export default {
   name: "SideNav",
-  props: ["menu","diasableFlag"],
+  props: ["menu", "diasableFlag"],
   data() {
     console.log("props", this.$props);
     return {
-      sidanavConstants:constant.Sidenav,
+      sidanavConstants: constant.Sidenav,
       partsClose: true,
       showPartsChild: false,
       dashboardFlag: false,
       analysisFlag: false,
       createAnalysisFlag: false,
       referenceDataFlag: false,
-      groupFlag:false,
-      solutionFlag:false
+      groupFlag: false,
+      solutionFlag: false
     };
   },
-  created()
-  {
-    var authorization=localStorage.getItem("authorization");
-    var groups=localStorage.getItem("groups");
-    var groupList=groups.split(',');
-    var permissions=authorization.split(',');
+  created() {
+    var authorization = localStorage.getItem("authorization");
+    var groups = localStorage.getItem("groups");
+    var groupList = groups.split(",");
+    var permissions = authorization.split(",");
+    localStorage.setItem("internalFlag", false);
     console.log(constant.PERMISSIONS[0]);
-    for(var i=0;i<groupList.length;i++)
-    {
+    for (var i = 0; i < groupList.length; i++) {
       console.log(groupList[i]);
-      if(groupList[i] === 'infinera')
-    {
-      this.groupFlag=true;
-     
+      if (groupList[i] === "infinera") {
+        this.groupFlag = true;
+      }
     }
+    if (!this.groupFlag) {
+      localStorage.clear();
+      router.push("/login");
     }
-    if(!this.groupFlag)
-     {
-        localStorage.clear();
-       router.push("/login");
-     }
-    for(var i=0;i<permissions.length;i++)
-    {
-      if(permissions[i] === constant.PERMISSIONS[0])
-     {
-       this.dashboardFlag=true;
-     }else if(permissions[i] === constant.PERMISSIONS[1])
-     {
-       this.createAnalysisFlag=true;
-     }else if(permissions[i] === constant.PERMISSIONS[2])
-     {
-       this.analysisFlag=true;
-     }else if( (permissions[i] === constant.PERMISSIONS[3])||(permissions[i] === constant.PERMISSIONS[4]))
-     {
-       this.referenceDataFlag=true;
-     }else if(permissions[i] === constant.PERMISSIONS[8])
-     {
-       this.solutionFlag=true;
-     }
-     if(permissions[i] === 'EditReference'){
-       localStorage.setItem('editFlag',true);
-     }
+    for (var i = 0; i < permissions.length; i++) {
+      if (permissions[i] === constant.PERMISSIONS[0]) {
+        this.dashboardFlag = true;
+      } else if (permissions[i] === constant.PERMISSIONS[1]) {
+        this.createAnalysisFlag = true;
+      } else if (permissions[i] === constant.PERMISSIONS[2]) {
+        this.analysisFlag = true;
+      } else if (
+        permissions[i] === constant.PERMISSIONS[3] ||
+        permissions[i] === constant.PERMISSIONS[4]
+      ) {
+        this.referenceDataFlag = true;
+      } else if (permissions[i] === constant.PERMISSIONS[8]) {
+        this.solutionFlag = true;
+      }
+      if (permissions[i] === "EditReference") {
+        localStorage.setItem("editFlag", true);
+      }
+      if (permissions[i] === "internal") {
+        localStorage.setItem("internalFlag", true);
+      }
     }
-     
   },
   beforeMount() {
     if (this.$props.menu === "analysis") {
@@ -235,14 +229,14 @@ hr {
 }
 
 .overlay {
-    background-color:#EFEFEF;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    top: 0px;
-    left: 0px;
-    opacity: .5; /* in FireFox */ 
-    filter: alpha(opacity=50); /* in IE */
+  background-color: #efefef;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  top: 0px;
+  left: 0px;
+  opacity: 0.5; /* in FireFox */
+  filter: alpha(opacity=50); /* in IE */
 }
 </style>
