@@ -25,6 +25,7 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('priority_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('found_on_platform_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('date_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('internal', required=False, location='args', default=True)
         super(DevTrackData, self).__init__()
 
     def get(self):
@@ -278,16 +279,51 @@ class DevTrackData(Resource):
                     "releaseNotes": [],
                     "fsb": []
                 }
-            response['devTrack'] = devTrack
-            response['releaseNotes'] = releaseNotes
-            response['fsb'] = fsb
-            
+
+            # For Internal Show All records ,For External Show Limited n conditions
+            # keep only matching issue id in releasenotes & devtrack or service account field in devtrack is nonempty
+            internal = args['internal']
+
+            if internal:
+                devTrack1={}
+
+                # service account field in devtrack is nonempty
+                devTrack1['devtrack'] = [a for a in devTrack.get('devtrack') if not a.get('serviceAccount').isspace()]
+                devTrack1['devtrackFilters'] = devTrack.get('devtrackFilters')
+
+                # keep only matching issue id in releasenotes & devtrack
+                issueids_devTrack = [a.get('issueId') for a in devTrack.get('devtrack')]
+
+                issueids_releaseNotes = [a.get('issueId').strip() for a in releaseNotes]
+                common_ids = list(set(issueids_devTrack).intersection(issueids_releaseNotes))
+                print("issueids_releaseNotes")
+                print(issueids_releaseNotes)
+                print("common")
+                print(common_ids)
+                print("devtrack with serviceAccount")
+                print(issueids_devTrack)
+
+                common_devTrack2= {}
+                common_devTrack2['devtrack'] = [a for a in devTrack.get('devtrack') if a.get('issueId') in common_ids]
+                common_releaseNotes = [a for a in releaseNotes if a.get('issueId') in common_ids]
+
+                # Merge devTracks one with serviceAccount & common issueid with releaseNotes
+
+                devTrack1['devtrack'].extend(common_devTrack2.get('devtrack'))
+                response['devTrack'] = devTrack1
+                response['releaseNotes'] = common_releaseNotes
+                response['fsb'] = fsb
+
+            else:
+                response['devTrack'] = devTrack
+                response['releaseNotes'] = releaseNotes
+                response['fsb'] = fsb
+
             return jsonify(data=response, http_status_code=200)
            
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=500)
-        
 
     def put(self):
         try:
