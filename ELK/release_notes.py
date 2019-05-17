@@ -20,7 +20,7 @@ def grouper(iterable, n, fillvalue=None):
     return zip_longest(*args, fillvalue=fillvalue)
 
 
-os.chdir(r'/Users/khalisarankannan/Downloads/Release_Notes')
+os.chdir(r'/Users/anup/Downloads/Release_Notes')
 for each_pdf in glob.glob("*.pdf"):
     # read input file
     print(each_pdf)
@@ -61,7 +61,7 @@ for each_pdf in glob.glob("*.pdf"):
         print(each_pdf)
         print("nothing")
         print("sleep for 5 sec")
-        shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/Release_Notes/processed')
+        shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/processed')
         time.sleep(5)
         continue
 
@@ -78,7 +78,7 @@ for each_pdf in glob.glob("*.pdf"):
 
             if end - start > 60:
                 print("something wrong with pdf {0}".format(each_pdf))
-                shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/Release_Notes/failure')
+                shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/failure')
                 sys.exit(2)
 
             print(r, g, b, t)
@@ -125,23 +125,23 @@ for each_pdf in glob.glob("*.pdf"):
         dd = defaultdict(dict)
         try:
             if 'Issue' in r:
-                dd['issueId'] = r.split(':')[1]
+                dd['issueId'] = r.split(':')[1].strip()
         except:
             dd['issueId'] = ''
         try:
             if 'Severity' in g:
-                dd['severity'] = g.split(':')[1]
+                dd['severity'] = g.split(':')[1].strip()
         except:
             dd['severity'] = ''
         try:
             if 'Description' in b:
-                dd['description'] = b.split(':')[1]
+                dd['description'] = b.split(':')[1].strip()
         except:
             dd['description'] = ''
 
         try:
             if 'Workaround' in t:
-                dd['workaround'] = t.split(':')[1]
+                dd['workaround'] = t.split(':')[1].strip()
         except:
             dd['workaround'] = ''
         dd['file_name'] = each_pdf
@@ -152,7 +152,7 @@ for each_pdf in glob.glob("*.pdf"):
 
     #print(each_pdf)
     #print("sleep for 5 sec")
-    shutil.move(each_pdf, r'/Users/khalisarankannan/Downloads/Release_Notes/processed')
+    shutil.move(each_pdf, r'/Users/anup/Downloads/Release_Notes/processed')
     time.sleep(5)
 
 
