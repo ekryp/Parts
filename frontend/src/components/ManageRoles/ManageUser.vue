@@ -538,6 +538,7 @@ export default {
     showEditRole(user) {
       this.editFlag = true;
       this.addFlag = false;
+      this.permissionValue=[];
       this.userId = user.user_id;
       console.log(user);
       for (let i = 0; i < user.role_ids.length; i++) {
