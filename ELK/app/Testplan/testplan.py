@@ -46,10 +46,11 @@ class TestPlan(Resource):
         print(search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
         if (search_param != ""):
-            data = es.search(index="testplan", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param.lower(),"fields": ["file_name", "Objective","Procedure"]}}})
+            data = es.search(index="testplan", body={"from" : 0, "size" : 100,"query": {"query_string": {"query": search_param.lower(),"fields": ["file_name", "Objective","Procedure"]}}})
         else:
-            data = requests.get(config.ELK_URI+"testplan/_doc/_search",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
-            data = data.json()
+            # data = requests.get(config.ELK_URI+"testplan/_doc/_search",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
+            # data = data.json()
+            data = es.search(index="testplan", body={"from" : 0, "size" : 100,"query": { "match_all": {}}})
         test_max_score = data['hits']['max_score']
         test_plan_list = data['hits']['hits']
         test_plan = []
