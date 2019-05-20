@@ -333,6 +333,36 @@
           </div>
         </div>
 
+
+      <div v-if="testPlanFlag">
+            <br>
+            <div class="row">
+              <div class="col-lg-5">
+                <label class="labelweight">File Name :</label>
+              </div>
+              <div class="col-lg-7">
+                <span>{{testPlanContent.file_name}}</span>
+              </div>
+            </div>
+            <br>
+            <label class="labelweight">Objective :</label>
+            <br>
+            <span class="textOverlay">{{testPlanContent.Objective}}</span>
+            <br>
+            <br>
+            <div>
+              <label class="labelweight">Procedure :</label>
+
+              <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
+                {{item}}
+              </span>
+            </div>
+          </div>
+
+
+
+
+
         <div v-if="fsbFlag">
           <br>
           <div class="row">
@@ -566,7 +596,7 @@
                 </div>
             </div>-->
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b1color , color:textcolor1}"
@@ -581,7 +611,7 @@
               </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b2color , color:textcolor2}"
@@ -596,7 +626,25 @@
               </div>
             </div>
 
-            <div class="col-lg-4">
+
+            <div class="col-lg-3">
+              <div
+                class="card shadow p-2 mb-5 rounded"
+                v-bind:style="{ backgroundColor: b4color , color:textcolor4}"
+              >
+                <div
+                  class="card-body in-progress labelweight cardFontChange"
+                  @click="showTestPlans()"
+                >
+                  <span class="float-left">{{solutionScreenConstants.cardLables[3]}}</span>
+                  <span class="float-right">{{this.testPlanData.length}}</span>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="col-lg-3">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b3color , color:textcolor3}"
@@ -632,6 +680,24 @@
         <div class="row" style="paddingTop:0.6em" v-if="filterFLag">
           <div class="col-lg-12">
             <div class="p-3 mb-3 bg-white">
+            <div class="row ">
+           <div class="col-lg-12  ">
+           <div class="float-right">
+            <toggle-button
+              :value="state"
+              :color="{checked: 'green', unchecked: 'green'}"
+              :sync="true"
+              cssColors:true
+              :labels="{checked: 'Check Title', unchecked: 'Check All'}"
+              :width="90"
+              v-tooltip.top.hover.focus="'Click to Toggle'"
+              @change="stateChange()"
+            /></div>
+
+            </div>
+            </div>
+            
+           
               <div class="row align">
                 <div class="col-lg-4">
                   <div class="row">
@@ -1224,6 +1290,67 @@
         </div>
       </div>
 
+
+     <!--  Test Plan Flag-->
+
+      <div class="row" v-if="testPlanFlag" style="marginTop:-1.8%">
+        <div class="col-lg-12">
+          <div class="p-3 mb-3 bg-white">
+            <div class="row align">
+              <div class="col-md-12" align="center">
+                <table class="table responsive table-hover">
+                  <thead class="text-center">
+                    <th>File Name</th>
+                    
+                    <th>Objective</th>
+
+                    <th style="width: 10%">Confidence (%)</th>
+                  </thead>
+                  <tbody class="text-center" v-if="testPlanData.length >0 && moreFlag4">
+                    <tr v-for="item in testPlanData" :key="item.index">
+                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.Objective}}</td>
+                     
+
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index)"
+                      >{{item.probability}}</td>
+                    </tr>
+                  </tbody>
+
+                  <tbody class="text-center" v-if="testPlanData.length >0 && !moreFlag4">
+                    <tr v-for="item in filterDevTrackData(testPlanData)" :key="item.index">
+                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.Objective}}</td>
+                      
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index)"
+                      >{{item.probability}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  v-if="testPlanData.length>0 && !moreFlag4"
+                  class="text-centered in-progress"
+                  @click="showAllTestPlan()"
+                >More</div>
+                <!-- <div v-if ="releaseNotesData.length>0 && moreFlag2" class="text-centered" @click="showAbove80Rl()">
+                  Hide
+                </div>-->
+                <div v-if="testPlanData.length==0" class="text-centered">No Data</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
       <div class="row" v-if="fsbFlag" style="marginTop:-1.8%">
         <div class="col-lg-12">
           <div class="p-3 mb-3 bg-white">
@@ -1346,26 +1473,30 @@ export default {
       solutionScreenConstants: constant.SolutionScreen,
       showGreen: true,
       checked: false,
+      state:false,
       filterFLag: false,
       searchFlag: false,
       devTrackData: [],
       releaseNotesData: [],
       fsbData: [],
+      testPlanData:[],
       errorFlag: false,
       tarFileName: "",
       tarFile: "",
       b1color: "",
       b2color: "",
       b3color: "",
+      b4color: "",
       format: "MM/DD/YYYY",
       textcolor1: "",
       textcolor2: "",
       textcolor3: "",
-      rl1color: "",
-      rl2color: "",
+      textcolor4: "",
+      testPlanContent:"",
       moreFlag1: false,
       moreFlag2: false,
       moreFlag3: false,
+      moreFlag4: false,
       currentUserEMailId: "",
       devTrackContent: "",
       releaseNoteContent: "",
@@ -1400,6 +1531,7 @@ export default {
       devTrackFlag: false,
       releaseNotesFlag: false,
       fsbFlag: false,
+      testPlanFlag:false,
       errorFlag: false,
       sdfcFlag: false,
       mlKeywords: "",
@@ -1432,6 +1564,7 @@ export default {
     showDevTrack() {
       this.devTrackFlag = true;
       this.releaseNotesFlag = false;
+       this.testPlanFlag = false;
       this.fsbFlag = false;
       this.b1color = "#2a629a";
       this.textcolor1 = "#f8f9fa";
@@ -1439,10 +1572,16 @@ export default {
       this.textcolor2 = "";
       this.b3color = "";
       this.textcolor3 = "";
+      this.b4color = "";
+      this.textcolor4 = "";
+    },
+    stateChange()
+    {
+      this.state=!this.state;
     },
     showPatchModal(index) {
       this.patchFlag = true;
-
+      this.testPlanContent=this.testPlanData[index];
       this.devTrackContent = this.devTrackData[index];
       console.log(index);
       this.releaseNoteContent = this.releaseNotesData[index];
@@ -1453,6 +1592,7 @@ export default {
     showReleaseNotes() {
       this.devTrackFlag = false;
       this.releaseNotesFlag = true;
+      this.testPlanFlag = false;
       this.fsbFlag = false;
       this.b2color = "#2a629a";
       this.textcolor2 = "#f8f9fa";
@@ -1460,10 +1600,28 @@ export default {
       this.textcolor1 = "";
       this.b3color = "";
       this.textcolor3 = "";
+       this.b4color = "";
+      this.textcolor4 = "";
+    },
+    showTestPlans()
+    {
+      this.devTrackFlag = false;
+      this.releaseNotesFlag = false;
+      this.testPlanFlag = true;
+      this.fsbFlag = false;
+      this.b2color = "";
+      this.textcolor2 = "";
+      this.b1color = "";
+      this.textcolor1 = "";
+      this.b3color = "";
+      this.textcolor3 = "";
+      this.b4color = "#2a629a";
+      this.textcolor4 = "#f8f9fa";
     },
     showFSB() {
       this.devTrackFlag = false;
       this.releaseNotesFlag = false;
+        this.testPlanFlag = false;
       this.fsbFlag = true;
       this.b3color = "#2a629a";
       this.textcolor3 = "#f8f9fa";
@@ -1471,6 +1629,8 @@ export default {
       this.textcolor2 = "";
       this.b1color = "";
       this.textcolor1 = "";
+       this.b4color = "";
+      this.textcolor4 = "";
     },
     onAnalyze() {
       this.isLoading = true;
@@ -1545,7 +1705,7 @@ export default {
           this.filterValues +
           this.filterURL +
           "&internal=" +
-          this.internalFlag,
+          this.internalFlag+"&check_title="+this.state,
         {
           headers: {
             "Content-Type": "application/json"
@@ -1664,6 +1824,53 @@ export default {
             }
             console.log("data -- response-->", data);
             this.mlKeywords = "";
+            this.getTestPlan();
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+
+    getTestPlan() {
+      this.isLoading = true;
+      this.testPlanData = [];
+      fetch(
+        constant.ELKURL + "api/get_test_plan?search_param=" + this.problemDescription,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            let array = [];
+            for (let i = 0; i < data.data.test_plan.length; i++) {
+
+             let tempJson={ Objective: data.data.test_plan[i].Objective,
+                index:i,
+                Procedure: data.data.test_plan[i].Procedure,
+                file_name: data.data.test_plan[i].file_name,
+                probability:data.data.test_plan[i].probability}
+
+              if (typeof data.data.test_plan[i].setup !== 'undefined'){
+                tempJson['setup']=data.data.test_plan[i].setup
+              }
+              if (typeof data.data.test_plan[i].expectedResult !== 'undefined'){
+                tempJson['expectedResult']=data.data.test_plan[i].expectedResult
+              }
+
+              this.testPlanData.push(tempJson);
+              tempJson={}
+            }
+            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -1753,6 +1960,7 @@ export default {
     hideModal() {
       this.$modals.myModal.$hide();
     },
+    
     logout() {
       console.log("logout");
       router.push("/");
@@ -1850,9 +2058,17 @@ export default {
     showAllRl() {
       this.moreFlag2 = true;
     },
-    showAbove80Rl() {
+     showAbove80Rl() {
       this.moreFlag2 = false;
     },
+    showAllTestPlan()
+    {
+      this.moreFlag4 = true;
+    },
+    showAbove80TestPlan() {
+      this.moreFlag4 = false;
+    },
+   
     showAllfsb() {
       this.moreFlag3 = true;
     },

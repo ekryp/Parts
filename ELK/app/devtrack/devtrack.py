@@ -25,12 +25,13 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('priority_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('found_on_platform_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('date_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('check_title',required=False,help='check_title',location='args')
         self.reqparse.add_argument('internal', required=True, location='args')
         super(DevTrackData, self).__init__()
 
     def get(self):
 
-        def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter):
+        def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,checkTitle):
             if not(isinstance(product_filter,list)):
                 product_filter=[]
             if not(isinstance(group_filter,list)):
@@ -53,10 +54,16 @@ class DevTrackData(Resource):
             URL=config.ELK_URI+"devtrack/_doc/_search"
             headers = {'Content-type': 'application/json'}
             if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)):
-                PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
-            else:
-                PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                if(check_title):
+                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
+                else:
+                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
 
+            else:
+                if(check_title):
+                    PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
+                else:
+                    PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
                     
@@ -270,8 +277,9 @@ class DevTrackData(Resource):
             priority_filter = args.get('priority_filter')
             found_on_platform_filter = args.get('found_on_platform_filter')
             date_filter = args.get('date_filter')
+            check_title = args.get('check_title')
             date_filter
-            devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter)
+            devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,check_title)
             releaseNotes = releaseNotes(search_param)
             fsb = fsb(search_param)
             response= {
