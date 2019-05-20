@@ -52,6 +52,21 @@
               </div>
             </div>
             <br>
+             <div class="row">
+              <div class="col-lg-5">
+                <label style="{text-align}">Setup :</label>
+              </div>
+              <div class="col-lg-6">
+                <textarea
+                  type="text"
+                  class="form-control"
+                  col=3 
+                  v-model="testPlan.setup"
+                  :placeholder="testPlanPlaceHolders.setupPlaceHolder"
+                ></textarea>
+              </div>
+            </div>
+            <br>
             <div class="row">
               <div class="col-lg-5">
                 <label style="{text-align}">Objective :</label>
@@ -81,6 +96,28 @@
                   id="textarea"
                   v-model="testPlan.Procedure"
                   :placeholder="testPlanPlaceHolders.procedurePlaceHolder"
+                  rows="3"
+                  max-rows="10"
+                ></b-form-textarea>
+              </div>
+            </div>
+           
+            <br>
+            <div class="row">
+              <div class="col-lg-5">
+                <label style="{text-align}">Expected result :</label>
+              </div>
+              <div class="col-lg-6">
+                <!-- <input
+                  type="text"
+                  class="form-control"
+                  v-model="testPlan.procedure"
+                  :placeholder="testPlan.procedurePlaceHolder"
+                >-->
+                <b-form-textarea
+                  id="textarea"
+                  v-model="testPlan.expectedResult"
+                  :placeholder="testPlanPlaceHolders.expectedResultPlaceHolder"
                   rows="3"
                   max-rows="6"
                 ></b-form-textarea>
@@ -226,12 +263,17 @@ export default {
       testPlan: {
         file_name: "",
         Objective: "",
-        Procedure: ""
+        Procedure: "",
+        expectedResult:"",
+        setup:""
+
       },
       testPlanPlaceHolders: {
-        fileNamePlaceHolder: "",
-        objectivePlaceHolder: "",
-        procedurePlaceHolder: ""
+        fileNamePlaceHolder: "Enter the File Name Here",
+        objectivePlaceHolder: "Enter the Objective Here",
+        procedurePlaceHolder: "Enter the Procedure",
+        setupPlaceHolder:"Enter the Setup ",
+        expectedResultPlaceHolder:"Enter the Expected Result"
       },
       titles: [
         {
@@ -277,11 +319,20 @@ export default {
             }
             let array = [];
             for (let i = 0; i < data.data.test_plan.length; i++) {
-              this.allTestPlan.push({
-                Objective: data.data.test_plan[i].Objective,
+
+             let tempJson={ Objective: data.data.test_plan[i].Objective,
                 Procedure: data.data.test_plan[i].Procedure,
-                file_name: data.data.test_plan[i].file_name
-              });
+                file_name: data.data.test_plan[i].file_name}
+
+              if (typeof data.data.test_plan[i].setup !== 'undefined'){
+                tempJson['setup']=data.data.test_plan[i].setup
+              }
+              if (typeof data.data.test_plan[i].expectedResult !== 'undefined'){
+                tempJson['expectedResult']=data.data.test_plan[i].expectedResult
+              }
+
+              this.allTestPlan.push(tempJson);
+              tempJson={}
             }
             this.isLoading = false;
           });
@@ -291,13 +342,16 @@ export default {
         });
     },
     addTestPlan() {
+      this.isLoading = true;
       let formData = new FormData();
       formData.append(
         "data",
         JSON.stringify({
           file_name: this.testPlan.file_name,
           Objective: this.testPlan.Objective,
-          Procedure: [this.testPlan.Procedure]
+          Procedure: [this.testPlan.Procedure],
+          setup:this.testPlan.setup,
+          expectedResult:this.testPlan.expectedResult
         })
       );
       fetch(constant.ELKURL + "api/get_test_plan", {
@@ -310,7 +364,15 @@ export default {
             if (data.code === "token_expired") {
               this.logout();
             }
+            
             if (data.http_status_code === 200) {
+              this.isLoading = false;
+              swal({
+                  title: "Success",
+                  text: "Test Plan Added Successfully",
+                  icon: "success"
+                });
+              this.$modals.myModal.$hide();
             }
           });
         })

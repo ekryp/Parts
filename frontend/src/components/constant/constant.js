@@ -126,7 +126,7 @@ export const SolutionScreen = {
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
   tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Date Closed", "Confidence (%)", "Confirm"],
-  cardLables: ["Dev Track", "Release Notes", "FSB"],
+  cardLables: ["Dev Track", "Release Notes", "FSB", "Test Plan"],
   logInfo: "Log Info",
   tags: "Tags",
   filterButtons: ["All", "Clear"],
@@ -147,6 +147,7 @@ export const Sidenav = {
   createAnalysisRequest: "Create Analysis Request",
   referenceData: "Reference Data",
   solutionPrediction: "Solution Prediction",
+  knowledgeMap: "Knowledge Map"
 
 
 }

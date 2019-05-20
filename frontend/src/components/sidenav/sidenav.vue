@@ -71,6 +71,20 @@
             <p class="upload-text">{{sidanavConstants.solutionPrediction}}</p>
           </div>
         </li>
+         <hr v-if="knowledgeMapFlag">
+        <li class="nav-custom" style="cursor:pointer" v-if="knowledgeMapFlag">
+          <div class="text-center" v-if="!diasableFlag" @click="knowledgeMap()">
+            <i class="fa fa-dice-d6" style="fontSize:2em"></i>
+
+            <br>
+            <p class="upload-text">{{sidanavConstants.knowledgeMap}}</p>
+          </div>
+          <div class="text-center" v-if="diasableFlag">
+            <i class="fa fa-dice-d6" style="fontSize:2em"></i>
+            <br>
+            <p class="upload-text">{{sidanavConstants.knowledgeMap}}</p>
+          </div>
+        </li>
         <hr>
       </ul>
     </nav>
@@ -94,7 +108,8 @@ export default {
       createAnalysisFlag: false,
       referenceDataFlag: false,
       groupFlag: false,
-      solutionFlag: false
+      solutionFlag: false,
+      knowledgeMapFlag:false
     };
   },
   created() {
@@ -129,6 +144,9 @@ export default {
       } else if (permissions[i] === constant.PERMISSIONS[8]) {
         this.solutionFlag = true;
       }
+      else if (permissions[i] === constant.PERMISSIONS[9]) {
+        this.knowledgeMapFlag = true;
+      }
       if (permissions[i] === "EditReference") {
         localStorage.setItem("editFlag", true);
       }
@@ -161,6 +179,10 @@ export default {
     },
     mockup() {
       router.push("/solution");
+    },
+    knowledgeMap()
+    {
+      router.push("/knowledge");
     }
   }
 };
