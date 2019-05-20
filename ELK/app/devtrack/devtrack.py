@@ -25,7 +25,7 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('priority_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('found_on_platform_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('date_filter', required=False, location='args', action='append')
-        self.reqparse.add_argument('internal', required=False, location='args', default=True)
+        self.reqparse.add_argument('internal', required=True, location='args')
         super(DevTrackData, self).__init__()
 
     def get(self):
@@ -282,9 +282,14 @@ class DevTrackData(Resource):
 
             # For Internal Show All records ,For External Show Limited n conditions
             # keep only matching issue id in releasenotes & devtrack or service account field in devtrack is nonempty
-            internal = args['internal']
+            internal = True if args['internal'] =='true' else False
+            print("internal: {0}".format(internal))
 
             if internal:
+                response['devTrack'] = devTrack
+                response['releaseNotes'] = releaseNotes
+                response['fsb'] = fsb
+            else:
                 devTrack1={}
 
                 # service account field in devtrack is nonempty
@@ -312,11 +317,6 @@ class DevTrackData(Resource):
                 devTrack1['devtrack'].extend(common_devTrack2.get('devtrack'))
                 response['devTrack'] = devTrack1
                 response['releaseNotes'] = common_releaseNotes
-                response['fsb'] = fsb
-
-            else:
-                response['devTrack'] = devTrack
-                response['releaseNotes'] = releaseNotes
                 response['fsb'] = fsb
 
             return jsonify(data=response, http_status_code=200)
