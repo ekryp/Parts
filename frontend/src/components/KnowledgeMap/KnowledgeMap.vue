@@ -355,7 +355,7 @@ export default {
         })
       );
       fetch(constant.ELKURL + "api/get_test_plan", {
-        method: "PUT",
+        method: "POST",
         body: formData
       })
         .then(response => {

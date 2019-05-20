@@ -1142,13 +1142,13 @@
                           <!-- <p>SSDSD {{userFlag}}</p> -->
                           <i
                             v-if="userFlag !== currentUserEMailId"
-                            @click="updatedVote(item)"
+                            @click="updatedVote(item,'devtrack')"
                             class="far fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
                           <i
                             v-if="userFlag === currentUserEMailId"
-                            @click="downVote(item)"
+                            @click="downVote(item,'devtrack')"
                             class="fas fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
@@ -1159,7 +1159,7 @@
                       <td v-else>
                         <i
                           class="far fa-thumbs-up"
-                          @click="updatedVote(item)"
+                          @click="updatedVote(item,'devtrack')"
                           style="cursor:pointer;color:#293f55;"
                         ></i>
                         &nbsp;{{item.upvotedUsers.length}}
@@ -1195,13 +1195,13 @@
                           <!-- <p>SSDSD {{userFlag}}</p> -->
                           <i
                             v-if="userFlag !== currentUserEMailId"
-                            @click="updatedVote(item)"
+                            @click="updatedVote(item,'devtrack')"
                             class="far fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
                           <i
                             v-if="userFlag === currentUserEMailId"
-                            @click="downVote(item)"
+                            @click="downVote(item,'devtrack')"
                             class="fas fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
@@ -1212,7 +1212,7 @@
                       <td v-else>
                         <i
                           class="far fa-thumbs-up"
-                          @click="updatedVote(item)"
+                          @click="updatedVote(item,'devtrack')"
                           style="cursor:pointer;color:#293f55;"
                         ></i>
                         &nbsp;{{item.upvotedUsers.length}}
@@ -1248,6 +1248,7 @@
                     <th>Severity</th>
 
                     <th style="width: 10%">Confidence (%)</th>
+                    <th>Confirm</th>
                   </thead>
                   <tbody class="text-center" v-if="releaseNotesData.length >0 && moreFlag2">
                     <tr v-for="item in releaseNotesData" :key="item.index">
@@ -1259,6 +1260,38 @@
                         class="in-progress"
                         @click="showPatchModal(item.index)"
                       >{{item.probability}}</td>
+
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'releasenotes')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'releasenotes')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'releasenotes')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
                     </tr>
                   </tbody>
 
@@ -1272,6 +1305,38 @@
                         class="in-progress"
                         @click="showPatchModal(item.index)"
                       >{{item.probability}}</td>
+
+                       <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'releasenotes')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'releasenotes')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'releasenotes')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -1305,6 +1370,7 @@
                     <th>Objective</th>
 
                     <th style="width: 10%">Confidence (%)</th>
+                    <th>Confirm</th>
                   </thead>
                   <tbody class="text-center" v-if="testPlanData.length >0 && moreFlag4">
                     <tr v-for="item in testPlanData" :key="item.index">
@@ -1316,6 +1382,38 @@
                         class="in-progress"
                         @click="showPatchModal(item.index)"
                       >{{item.probability}}</td>
+
+                       <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'testplan')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'testplan')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'testplan')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
                     </tr>
                   </tbody>
 
@@ -1328,6 +1426,37 @@
                         class="in-progress"
                         @click="showPatchModal(item.index)"
                       >{{item.probability}}</td>
+                       <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'testplan')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'testplan')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'testplan')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -1365,6 +1494,7 @@
 
                     <th>Title</th>
                     <th style="width: 10%">Confidence (%)</th>
+                    <th>Confirm</th>
                   </thead>
                   <tbody class="text-center" v-if="fsbData.length >0 && moreFlag3">
                     <tr v-for="item in fsbData" :key="item.index">
@@ -1383,6 +1513,38 @@
                         class="in-progress"
                         @click="showPatchModal(item.index)"
                       >{{item.probability}}</td>
+
+                       <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'fsb')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'fsb')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'fsb')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
                     </tr>
                   </tbody>
 
@@ -1403,6 +1565,37 @@
                         class="in-progress"
                         @click="showPatchModal(item.index)"
                       >{{item.probability}}</td>
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'fsb')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'fsb')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'fsb')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -1719,9 +1912,9 @@ export default {
               this.isLoading = false;
               this.estotalhits = data.data.totalhits;
               console.log("estotal hits ----->", this.estotalhits);
-              if (data.data.devTrack.devtrack.length < 0) {
-                this.analyzeFlag = true;
-              }
+              // if (data.data.devTrack.devtrack.length < 0) {
+              //   this.analyzeFlag = true;
+              // }
               var upvotedUsers = [];
               this.productOptions = data.data.devTrack.devtrackFilters.product;
               this.groupOptions = data.data.devTrack.devtrackFilters.group;
@@ -1738,7 +1931,7 @@ export default {
               for (var i = 0; i < data.data.devTrack.devtrack.length; i++) {
                 let upvotedUserFlag = false;
                 if (data.data.devTrack.devtrack[i].upvotedUsers !== undefined) {
-                  upvotedUsers = data.data.devTrack[i].upvotedUsers;
+                  upvotedUsers = data.data.devTrack.devtrack[i].upvotedUsers;
                 } else {
                   upvotedUsers = [];
                 }
@@ -1776,16 +1969,18 @@ export default {
                   upvotedUsers: upvotedUsers
                 });
                 this.moreFlag1 = false;
-                this.devTrackFlag = true;
-                this.b1color = "#2a629a";
-                this.textcolor1 = "#f8f9fa";
-                this.b2color = "";
-                this.textcolor2 = "";
-                this.b3color = "";
-                this.textcolor3 = "";
+                this.moreFlag2 = false;
+                this.moreFlag3 = false;
+                this.moreFlag4 = false;
+                
               }
-
+              this.showDevTrack();
               for (var j = 0; j < data.data.releaseNotes.length; j++) {
+                if (data.data.releaseNotes[j].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.releaseNotes[j].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
                 this.releaseNotesData.push({
                   description: data.data.releaseNotes[j].description,
                   index: j,
@@ -1793,11 +1988,19 @@ export default {
                   issueId: data.data.releaseNotes[j].issueId,
                   probability: data.data.releaseNotes[j].probability,
                   severity: data.data.releaseNotes[j].severity,
-                  workaround: data.data.releaseNotes[j].workaround
+                  workaround: data.data.releaseNotes[j].workaround,
+                  key: data.data.releaseNotes[j].key,
+                   upvotedUsers: upvotedUsers
                 });
               }
 
               for (var k = 0; k < data.data.fsb.length; k++) {
+
+                if (data.data.fsb[k].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.fsb[k].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
                 this.fsbData.push({
                   FSBNumber: data.data.fsb[k].FSBNumber,
                   index: k,
@@ -1809,7 +2012,9 @@ export default {
                   probability: data.data.fsb[k].probability,
                   rootCause: data.data.fsb[k].rootCause,
                   symptoms: data.data.fsb[k].symptoms,
-                  title: data.data.fsb[k].title
+                  title: data.data.fsb[k].title,
+                  key: data.data.fsb[k].key,
+                   upvotedUsers: upvotedUsers
                 });
               }
               console.log("asdasd", this.devTrackData);
@@ -1852,13 +2057,22 @@ export default {
               this.logout();
             }
             let array = [];
+            var upvotedUsers = [];
             for (let i = 0; i < data.data.test_plan.length; i++) {
+
+              if (data.data.test_plan[i].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.test_plan[i].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
 
              let tempJson={ Objective: data.data.test_plan[i].Objective,
                 index:i,
                 Procedure: data.data.test_plan[i].Procedure,
                 file_name: data.data.test_plan[i].file_name,
-                probability:data.data.test_plan[i].probability}
+                probability:data.data.test_plan[i].probability,
+                key:data.data.test_plan[i].key,
+                upvotedUsers: upvotedUsers}
 
               if (typeof data.data.test_plan[i].setup !== 'undefined'){
                 tempJson['setup']=data.data.test_plan[i].setup
@@ -1969,20 +2183,45 @@ export default {
     routeDashboard() {
       router.push("/");
     },
-    updatedVote(item) {
+    updatedVote(item,type) {
       console.log("-----------------", item);
       // item.updatedUsers = []
       item.upvotedUsers.push(this.currentUserEMailId);
       console.log("dev track", item);
+      if(type === 'devtrack')
+      {
       this.postDevTrackData(item);
+      }else if(type === 'releasenotes')
+      {
+      this.postReleaseNotesData(item);
+      }else if(type === 'testplan')
+      {
+      this.postTestPlanData(item);
+      }else if(type === 'fsb')
+      {
+      this.postFsbData(item);
+      }
     },
-    downVote(item) {
+    downVote(item,type) {
       // item.upvotedUsers.push(this.userName);
 
       item.upvotedUsers.pop(this.currentUserEMailId);
       console.log(item);
+      if(type === 'devtrack')
+      {
       this.postDevTrackData(item);
+      }else if(type === 'releasenotes')
+      {
+      this.postReleaseNotesData(item);
+      }else if(type === 'testplan')
+      {
+      this.postTestPlanData(item);
+      }else if(type === 'fsb')
+      {
+      this.postFsbData(item);
+      }
     },
+
     filterDevTrackData(devTrackList) {
       console.log(devTrackList);
       var tempList = [];
@@ -1998,6 +2237,69 @@ export default {
       let formData = new FormData();
       formData.append("data", JSON.stringify(item));
       fetch(constant.ELKURL + "api/getDevTrackData", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    postReleaseNotesData(item) {
+      let formData = new FormData();
+      formData.append("data", JSON.stringify(item));
+      fetch(constant.ELKURL + "api/get_release_notes", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    postFsbData(item) {
+      let formData = new FormData();
+      formData.append("data", JSON.stringify(item));
+      fetch(constant.ELKURL + "api/get_fsb", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    postTestPlanData(item) {
+      let formData = new FormData();
+      formData.append("data", JSON.stringify(item));
+      fetch(constant.ELKURL + "api/get_test_plan", {
         method: "PUT",
         body: formData
       })
