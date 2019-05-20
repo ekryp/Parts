@@ -208,7 +208,8 @@ class DevTrackData(Resource):
                 print('Filter Keys',filterKeys)
                 for doc in devtrackList:
                     for key in filterKeys:
-                        filterList[key].append(doc["_source"][key])
+                        if not (key == 'upvotedUsers' or key == 'probability' or key =='index'):
+                            filterList[key].append(doc["_source"][key])
                     
                 for key in filterKeys:
                         tempSet=list(set(filterList[key]))
@@ -241,9 +242,11 @@ class DevTrackData(Resource):
             data = es.search(index="release_notes", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
+            print('data',data)
             releaseNotes = []
             for doc in releaseNotesList:
                 data = doc["_source"]
+                data['key']=doc['_id'] 
                 data["probability"]= round((doc["_score"]/releaseNotesmaxScore)*100)
                 releaseNotes.append(data)
             return releaseNotes
@@ -259,6 +262,7 @@ class DevTrackData(Resource):
 
             for doc in fsbList:
                 data = doc["_source"]
+                data['key']=doc['_id']
                 data["probability"]= round((doc["_score"]/fsbmaxScore)*100)
                 fsb.append(data)
             return fsb
