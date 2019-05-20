@@ -26,7 +26,7 @@ class TestPlan(Resource):
         self.reqparse.add_argument('data',required=False,help='data',location='form')
         super(TestPlan, self).__init__()
 
-    def put(self):
+    def post(self):
        
         try:
             args = self.reqparse.parse_args()
@@ -38,6 +38,19 @@ class TestPlan(Resource):
             #logging.error('...', exc_info=True)
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
+
+    def put(self):
+        try:
+            args = self.reqparse.parse_args()
+            
+            data = args['data']
+            doc=json.loads(data)
+            response = requests.put(config.ELK_URI+"testplan/_doc/"+doc["key"],json=doc,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
+            return jsonify(msg=response.json(),http_status_code=200)
+        except Exception as e:
+            print(e)
+            return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
+
             
     def get(self):
         args = self.reqparse.parse_args()
@@ -57,6 +70,7 @@ class TestPlan(Resource):
 
         for doc in test_plan_list:
             data = doc["_source"]
+            data['key']=doc['_id']
             data["probability"]= round((doc["_score"]/test_max_score)*100)
             test_plan.append(data)
         response= {
