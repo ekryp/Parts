@@ -205,7 +205,7 @@ class DevTrackData(Resource):
                 filterKeys=devtrackList[0]["_source"].keys()
                 for key in filterKeys:
                     filterList[key]=[]
-                print('Filter Keys',filterKeys)
+                
                 for doc in devtrackList:
                     for key in filterKeys:
                         if not (key == 'upvotedUsers' or key == 'probability' or key =='index'):
@@ -242,7 +242,7 @@ class DevTrackData(Resource):
             data = es.search(index="release_notes", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
-            print('data',data)
+           
             releaseNotes = []
             for doc in releaseNotesList:
                 data = doc["_source"]
@@ -282,7 +282,7 @@ class DevTrackData(Resource):
             found_on_platform_filter = args.get('found_on_platform_filter')
             date_filter = args.get('date_filter')
             check_title = args.get('check_title')
-            date_filter
+            search_param=re.sub('[^A-Za-z0-9*. ]+', '', search_param)
             devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,check_title)
             releaseNotes = releaseNotes(search_param)
             fsb = fsb(search_param)
@@ -313,12 +313,7 @@ class DevTrackData(Resource):
 
                 issueids_releaseNotes = [a.get('issueId').strip() for a in releaseNotes]
                 common_ids = list(set(issueids_devTrack).intersection(issueids_releaseNotes))
-                print("issueids_releaseNotes")
-                print(issueids_releaseNotes)
-                print("common")
-                print(common_ids)
-                print("devtrack with serviceAccount")
-                print(issueids_devTrack)
+                
 
                 common_devTrack2= {}
                 common_devTrack2['devtrack'] = [a for a in devTrack.get('devtrack') if a.get('issueId') in common_ids]
