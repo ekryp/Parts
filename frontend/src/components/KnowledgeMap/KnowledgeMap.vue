@@ -24,6 +24,10 @@
               </div>
             </div>
             <br>
+            <label class="labelweight">{{testPlanConstants.popUpFields[4]}}</label>
+            <br>
+            <span class="textOverlay">{{testPlanContent.setup}}</span>
+            <br>
             <label class="labelweight">{{testPlanConstants.popUpFields[1]}}</label>
             <br>
             <span class="textOverlay">{{testPlanContent.Objective}}</span>
@@ -36,6 +40,11 @@
                 {{item}}
               </span>
             </div>
+            <br>
+            <label class="labelweight">{{testPlanConstants.popUpFields[3]}}</label>
+            <br>
+            <span class="textOverlay">{{testPlanContent.expectedResult}}</span>
+            <br>
           </div>
           <div v-if="addFlag">
             <div class="row">
@@ -180,14 +189,15 @@
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allTestPlan">
+              <data-tables :data="allTestPlan" style="width: 100%">
                 <el-table-column
+                 :min-width="120"
                   v-for="title in titles"
                   :prop="title.prop"
                   :label="title.label"
                   :key="title.prop"
                   sortable="custom"
-                ></el-table-column>
+                ></el-table-column :min-width="20">
                 <el-table-column align="right">
                   <template slot-scope="scope">
                     <el-button size="mini" @click="showEditRole(scope.row)">View</el-button>
@@ -277,8 +287,8 @@ export default {
       },
       titles: [
         {
-          prop: "file_name",
-          label: "File Name"
+          prop: "Objective",
+          label: "Objective"
         }
       ]
     };
@@ -372,6 +382,7 @@ export default {
                   text: "Test Plan Added Successfully",
                   icon: "success"
                 });
+                this.getTestPlan();
               this.$modals.myModal.$hide();
             }
           });
