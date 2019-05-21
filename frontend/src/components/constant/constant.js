@@ -166,7 +166,7 @@ export const editReferenceScreen = {
 export const testPlanScreen = {
   breadcrumbs: ["Knowledge Map > Test Plan"],
   PopUpHeaders: ["Test Plan Details"],
-  popUpFields: ["File Name :", "Objective :", "Procedure :"],
+  popUpFields: ["File Name :", "Objective :", "Procedure :", "Expected Result :", "Setup :"],
   addButton: "Create Test Plan",
   exportButton: "Export",
   cancelButton: "Cancel",

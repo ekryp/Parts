@@ -1114,24 +1114,24 @@
                   </thead>
                   <tbody v-if="devTrackData.length >0 && moreFlag1" class="text-center">
                     <tr v-for="item in devTrackData" :key="item.index">
-                      <td @click="showPatchModal(item.index)" class="in-progress">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                      <td @click="showPatchModal(item.index,'devtrack')" class="in-progress">{{item.issueId}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.title}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.severity}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.foundinRelease}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.dateSubmitted}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.dateClosed}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.probability}}</td>
 
                       <td v-if="item.upvotedUsers.length>0">
@@ -1170,24 +1170,24 @@
 
                   <tbody v-if="devTrackData.length >0 && !moreFlag1" class="text-center">
                     <tr v-for="item in filterDevTrackData(devTrackData)" :key="item.index">
-                      <td @click="showPatchModal(item.index)" class="in-progress">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                      <td @click="showPatchModal(item.index,'devtrack')" class="in-progress">{{item.issueId}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.title}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.severity}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.foundinRelease}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.dateSubmitted}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.dateClosed}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'devtrack')"
                       >{{item.probability}}</td>
 
                       <td v-if="item.upvotedUsers.length>0">
@@ -1252,13 +1252,13 @@
                   </thead>
                   <tbody class="text-center" v-if="releaseNotesData.length >0 && moreFlag2">
                     <tr v-for="item in releaseNotesData" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.issueId}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.severity}}</td>
 
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'releaseNotes')"
                       >{{item.probability}}</td>
 
                       <td v-if="item.upvotedUsers.length>0">
@@ -1297,13 +1297,13 @@
 
                   <tbody class="text-center" v-if="releaseNotesData.length >0 && !moreFlag2">
                     <tr v-for="item in filterDevTrackData(releaseNotesData)" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.severity}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.issueId}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.severity}}</td>
 
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'releaseNotes')"
                       >{{item.probability}}</td>
 
                        <td v-if="item.upvotedUsers.length>0">
@@ -1374,13 +1374,13 @@
                   </thead>
                   <tbody class="text-center" v-if="testPlanData.length >0 && moreFlag4">
                     <tr v-for="item in testPlanData" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.Objective}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.Objective}}</td>
                      
 
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'testPlan')"
                       >{{item.probability}}</td>
 
                        <td v-if="item.upvotedUsers.length>0">
@@ -1419,12 +1419,12 @@
 
                   <tbody class="text-center" v-if="testPlanData.length >0 && !moreFlag4">
                     <tr v-for="item in filterDevTrackData(testPlanData)" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.Objective}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.Objective}}</td>
                       
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'testPlan')"
                       >{{item.probability}}</td>
                        <td v-if="item.upvotedUsers.length>0">
                         <span
@@ -1498,20 +1498,20 @@
                   </thead>
                   <tbody class="text-center" v-if="fsbData.length >0 && moreFlag3">
                     <tr v-for="item in fsbData" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.FSBNumber}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.issueId}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.FSBNumber}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.issueId}}</td>
 
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.file_name}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'fsb')"
                       >{{item.dateCreated}}</td>
                       <!-- <td class=" in-progress" @click="showPatchModal(item.index)">{{item.symptoms}}</td> -->
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.title}}</td>
 
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'fsb')"
                       >{{item.probability}}</td>
 
                        <td v-if="item.upvotedUsers.length>0">
@@ -1550,20 +1550,20 @@
 
                   <tbody class="text-center" v-if="fsbData.length >0 && !moreFlag3">
                     <tr v-for="item in filterDevTrackData(fsbData)" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.FSBNumber}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.issueId}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.FSBNumber}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.issueId}}</td>
 
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.file_name}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.file_name}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'fsb')"
                       >{{item.dateCreated}}</td>
                       <!-- <td class=" in-progress" @click="showPatchModal(item.index)">{{item.symptoms}}</td> -->
-                      <td class="in-progress" @click="showPatchModal(item.index)">{{item.title}}</td>
+                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.title}}</td>
 
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index)"
+                        @click="showPatchModal(item.index,'fsb')"
                       >{{item.probability}}</td>
                       <td v-if="item.upvotedUsers.length>0">
                         <span
@@ -1773,21 +1773,41 @@ export default {
     {
       this.state=!this.state;
     },
-    showPatchModal(index) {
-      this.patchFlag = true;
-      this.testPlanContent=this.testPlanData[index];
+    showPatchModal(index,type) {
+
+      if(type === 'devtrack')
+      {
       this.devTrackContent = this.devTrackData[index];
+      }else if(type === 'releaseNotes')
+      {
+     this.releaseNoteContent = this.releaseNotesData[index];
+      }else if(type === 'testPlan')
+      {
+       this.testPlanContent=this.testPlanData[index];
+      }else if(type === 'fsb')
+      {
+     this.fsbContent = this.fsbData[index];
+      }
+      this.patchFlag = true;
+     
+      
       console.log(index);
-      this.releaseNoteContent = this.releaseNotesData[index];
-      this.fsbContent = this.fsbData[index];
+      
+      
 
       this.$modals.myModal.$show();
     },
     showReleaseNotes() {
+      console.log('Release Notes',this.releaseNotesData)
       this.devTrackFlag = false;
       this.releaseNotesFlag = true;
       this.testPlanFlag = false;
       this.fsbFlag = false;
+      
+      if(this.releaseNotesData.length=== 0)
+      {
+        this.releaseNotesData=[];
+      }
       this.b2color = "#2a629a";
       this.textcolor2 = "#f8f9fa";
       this.b1color = "";
