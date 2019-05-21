@@ -56,7 +56,9 @@ class GetMLKeyWords(Resource):
                 if not matched_elastic_search_words.empty:
                     for each_elastic_word in matched_elastic_search_words['Elastic Search Map'].tolist():
                         if each_elastic_word not in found_elastic_search_words:
-                            found_elastic_search_words.append(each_elastic_word)
+                            # split multiple words into seperate list item
+                            for each_word in each_elastic_word.split(','):
+                                found_elastic_search_words.append(each_word)
 
             print("elastic search words found are {0}".format(found_elastic_search_words))
 
