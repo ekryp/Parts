@@ -1675,6 +1675,7 @@ export default {
       testPlanData:[],
       errorFlag: false,
       tarFileName: "",
+      filterSynonym:"",
       tarFile: "",
       b1color: "",
       b2color: "",
@@ -1895,6 +1896,7 @@ export default {
           "api/getDevTrackData?search_param=" +
           this.problemDescription +
           this.mlKeywords +
+          this.filterSynonym+
           this.filterValues +
           this.filterURL +
           "&internal=" +
@@ -2029,6 +2031,7 @@ export default {
             }
             console.log("data -- response-->", data);
             this.mlKeywords = "";
+            this.filterSynonym = "";
             this.getTestPlan();
           });
         })
@@ -2098,6 +2101,7 @@ export default {
     getMlKeywords() {
       this.isLoading = true;
       this.mlKeywords = "";
+      this.filterSynonym = "";
       this.filterOptions = [];
       this.filterValue = [];
       this.tagValue = [];
@@ -2133,11 +2137,11 @@ export default {
               }
               for (var j = 0; j < data.ml_synonym.length; j++) {
                 if (this.checked) {
-                  this.mlKeywords =
-                    this.mlKeywords + " AND " + data.ml_synonym[j];
+                  this.filterSynonym =
+                    this.filterSynonym + " AND " + data.ml_synonym[j];
                 } else {
-                  this.mlKeywords =
-                    this.mlKeywords + " OR " + data.ml_synonym[j];
+                  this.filterSynonym =
+                    this.filterSynonym + " OR " + data.ml_synonym[j];
                 }
               }
               this.onAnalyze();
