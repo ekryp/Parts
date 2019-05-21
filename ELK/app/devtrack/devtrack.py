@@ -317,13 +317,13 @@ class DevTrackData(Resource):
 
                 common_devTrack2= {}
                 common_devTrack2['devtrack'] = [a for a in devTrack.get('devtrack') if a.get('issueId') in common_ids]
-                common_releaseNotes = [a for a in releaseNotes if a.get('issueId') in common_ids]
+                # common_releaseNotes = [a for a in releaseNotes if a.get('issueId') in common_ids]
 
                 # Merge devTracks one with serviceAccount & common issueid with releaseNotes
 
                 devTrack1['devtrack'].extend(common_devTrack2.get('devtrack'))
                 response['devTrack'] = devTrack1
-                response['releaseNotes'] = common_releaseNotes
+                response['releaseNotes'] = releaseNotes
                 response['fsb'] = fsb
 
             return jsonify(data=response, http_status_code=200)
