@@ -24,9 +24,14 @@ class GetMLKeyWords(Resource):
             keywords = keyword_df[0].tolist()
 
             # get keywords from input
+            def contains_word(s, w):
+                return (' ' + w + ' ') in (' ' + s + ' ')
+
             found_keyword = []
             for keyword in keywords:
-                if keyword.lower() in input_:
+                # contains_word('the quick brown fox', 'brown')  # True
+                # contains_word('the quick brown fox', 'row')    # False
+                if contains_word(input_, keyword.lower()):
                     if keyword not in found_keyword:
                         found_keyword.append(keyword)
 
@@ -61,5 +66,4 @@ class GetMLKeyWords(Resource):
                                 found_elastic_search_words.append(each_word)
 
             print("elastic search words found are {0}".format(found_elastic_search_words))
-
             return jsonify(ml_keywords=found_problem_area,  ml_synonym=found_elastic_search_words, http_status_code=200)
