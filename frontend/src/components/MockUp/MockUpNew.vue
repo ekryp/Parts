@@ -1120,7 +1120,7 @@
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index)"
-                      >{{item.fixedinRelease}}</td>
+                      >{{item.foundinRelease}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index)"
