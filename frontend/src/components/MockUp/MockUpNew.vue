@@ -1176,7 +1176,7 @@
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index)"
-                      >{{item.fixedinRelease}}</td>
+                      >{{item.foundinRelease}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index)"
@@ -1955,6 +1955,7 @@ export default {
                   finalTestRootCauseAnalysisComments:
                     data.data.devTrack.devtrack[i]
                       .finalTestRootCauseAnalysisComments,
+                      foundinRelease:data.data.devTrack.devtrack[i].foundinRelease,
                   fixedinRelease: data.data.devTrack.devtrack[i].fixedinRelease,
                   foundInBuild: data.data.devTrack.devtrack[i].foundInBuild,
                   foundOnPlatform:
