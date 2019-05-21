@@ -1878,17 +1878,22 @@ export default {
         this.filterValues =
           this.filterValues + " AND " + this.tagValue[i].value;
       }
-      if (this.filterValue.length > 0) {
-        if (this.checked) {
-          this.mlKeywords = " AND";
-        } else {
-          this.mlKeywords = " OR";
-        }
-      } else {
+      // if (this.filterValue.length > 0) {
+      //   if (this.checked) {
+      //     this.mlKeywords = " AND";
+      //   } else {
+      //     this.mlKeywords = " OR";
+      //   }
+      // } else {
         this.mlKeywords = "";
-      }
+      // }
       for (var i = 0; i < this.filterValue.length; i++) {
-        this.mlKeywords = this.mlKeywords + " " + this.filterValue[i].name;
+        if (this.checked) {
+          this.mlKeywords = this.mlKeywords + " AND " + this.filterValue[i].name;
+        } else {
+          this.mlKeywords = this.mlKeywords + " OR " + this.filterValue[i].name;
+        }
+        
       }
 
       fetch(
