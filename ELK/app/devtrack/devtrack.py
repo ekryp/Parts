@@ -26,7 +26,7 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('found_on_platform_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('date_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('check_title',required=False,help='check_title',location='args')
-        self.reqparse.add_argument('internal', required=True, location='args')
+        self.reqparse.add_argument('internal', required=False, location='args')
         super(DevTrackData, self).__init__()
 
     def get(self):
