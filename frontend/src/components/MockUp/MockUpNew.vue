@@ -545,7 +545,7 @@
       <div class="row" style="textAlign:center" v-if="analyzeFlag">
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-2">
+            <!-- <div class="col-lg-2">
               <div class="card shadow p-2 mb-5 rounded">
                 <div class="card-body in-progress labelweight cardFontChange">
                   <span class="float-left">Total Hits</span>
@@ -554,8 +554,8 @@
                   >{{this.devTrackData.length+this.releaseNotesData.length+this.fsbData.length+this.testPlanData.length}}</span>
                 </div>
               </div>
-            </div>
-            <!-- <div class="col-lg-1"></div> -->
+            </div>-->
+            <div class="col-lg-1"></div>
             <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
@@ -632,7 +632,7 @@
               </div>
             </div>
 
-            <!-- <div class="col-lg-1"></div> -->
+            <div class="col-lg-1"></div>
           </div>
         </div>
       </div>
