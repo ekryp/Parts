@@ -54,13 +54,14 @@ class DevTrackData(Resource):
             URL=config.ELK_URI+"devtrack/_doc/_search"
             headers = {'Content-type': 'application/json'}
             if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)):
-                if(check_title):
+                print(check_title)
+                if(check_title == "true"):
                     PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
                 else:
-                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
+                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
 
             else:
-                if(check_title):
+                if(check_title == "true"):
                     PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
                 else:
                     PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
