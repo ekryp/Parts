@@ -209,7 +209,9 @@ class DevTrackData(Resource):
                 
                 for doc in devtrackList:
                     for key in filterKeys:
-                        if not (key == 'upvotedUsers' or key == 'probability' or key =='index' or key =='id' or key == 'timestamp'):
+                        
+                        # print('value ----->',doc["_source"][key])
+                        if not (key == 'upvotedUsers' or key == 'probability' or key =='index' or key =='id' or key == 'timestamp' or key == 'hwPON' or key == 'problemDescriptionImpacted'):
                             filterList[key].append(doc["_source"][key])
                     
                 for key in filterKeys:
