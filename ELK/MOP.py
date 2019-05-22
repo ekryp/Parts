@@ -26,9 +26,10 @@ for each_pdf in pdfs:
     # It present after METHOD OF PROCEDURE (MOP) line & before Rev. Line
 
     for item in result:
-        if 'METHOD OF PROCEDURE (MOP)' in item:
+        if 'MOP' in item:
             start = result.index(item)
             break
+
     for item in result:
         if 'Rev.' in item:
             end = result.index(item)
