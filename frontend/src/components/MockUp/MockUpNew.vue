@@ -101,7 +101,14 @@
                 <span>{{devTrackContent.severity}}</span>
               </div>
             </div>
-
+            <div class="row">
+              <div class="col-lg-5">
+                <label class="labelweight">Priority:</label>
+              </div>
+              <div class="col-lg-7">
+                <span>{{devTrackContent.priority}}</span>
+              </div>
+            </div>
             <div class="row">
               <div class="col-lg-5">
                 <label class="labelweight">{{solutionScreenConstants.modalContentsLabels[5]}}</label>
@@ -153,6 +160,15 @@
               </div>
               <div class="col-lg-7">
                 <span>{{devTrackContent.fixedinRelease}}</span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-5">
+                <label class="labelweight">Found in Release:</label>
+              </div>
+              <div class="col-lg-7">
+                <span>{{devTrackContent.foundinRelease}}</span>
               </div>
             </div>
 
@@ -523,14 +539,14 @@
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="onAnalyze()"
+                        @click="getMlKeywords()"
                       >{{solutionScreenConstants.buttons[2]}}</button>
                       <button
                         v-if="!searchFlag ||problemDescription.trim() === ''  "
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="onAnalyze()"
+                        @click="getMlKeywords()"
                         disabled
                       >{{solutionScreenConstants.buttons[2]}}</button>
                     </div>
@@ -701,7 +717,7 @@
                       :hide-selected="true"
                       :taggable="true"
                       @close="validateProductSelect()"
-                      @remove="validateProductSelect()"
+                      @remove="validateProductClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -735,7 +751,7 @@
                       :close-on-select="false"
                       :hide-selected="true"
                       @close="validateGroupSelect()"
-                      @remove="validateGroupSelect()"
+                      @remove="validateGroupClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -768,7 +784,7 @@
                       :hide-selected="true"
                       :taggable="true"
                       @close="validateSeveritySelect()"
-                      @remove="validateSeveritySelect()"
+                      @remove="validateSeverityClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -803,7 +819,7 @@
                       :close-on-select="false"
                       :hide-selected="true"
                       @close="validatePrioritySelect()"
-                      @remove="validatePrioritySelect()"
+                      @remove="validatePriorityClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -837,7 +853,7 @@
                       :close-on-select="false"
                       :hide-selected="true"
                       @close="validateFoundInReleaseSelect()"
-                      @remove="validateFoundInReleaseSelect()"
+                      @remove="validateFoundInReleaseClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -871,7 +887,7 @@
                       :hide-selected="true"
                       :taggable="true"
                       @close="validateFixedInReleaseSelect()"
-                      @remove="validateFixedInReleaseSelect()"
+                      @remove="validateFixedInReleaseClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -889,7 +905,7 @@
                       value-type="format"
                       :format="format"
                       :first-day-of-week="1"
-                      @change="onAnalyze()"
+                      @change="getMlKeywords()"
                     ></date-picker>
                   </div>
                 </div>
@@ -1788,7 +1804,7 @@ export default {
     },
     stateChange() {
       this.state = !this.state;
-      this.onAnalyze();
+      this.getMlKeywords();
     },
     showPatchModal(index, type) {
       if (type === "devtrack") {
@@ -1967,7 +1983,7 @@ export default {
           this.mlKeywords = this.mlKeywords + " OR " + this.filterValue[i].name;
         }
       }
-
+      console.log("Filter Values", this.filterValues);
       fetch(
         constant.ELKURL +
           "api/getDevTrackData?search_param=" +
@@ -2040,6 +2056,7 @@ export default {
                   progressStatus: data.data.devTrack.devtrack[i].progressStatus,
                   reportingCustomer:
                     data.data.devTrack.devtrack[i].reportingCustomer,
+                    priority:data.data.devTrack.devtrack[i].priority,
                   resolution: data.data.devTrack.devtrack[i].resolution,
                   serviceAccount: data.data.devTrack.devtrack[i].serviceAccount,
                   submittedBy: data.data.devTrack.devtrack[i].submittedBy,
@@ -2494,7 +2511,7 @@ export default {
       } else if (param === "foundOnPlatform") {
         this.foundOnPlatformValue = [];
       }
-      this.onAnalyze();
+      this.getMlKeywords();
     },
     selectAll(param) {
       if (param === "product") {
@@ -2539,94 +2556,60 @@ export default {
     },
     validateProductSelect() {
       if (this.productValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
-      if (
-        (this.productValue.length === 0 &&
-          (this.groupValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.priorityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateProductClose() {
+      this.isLoading = true;
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateGroupSelect() {
       if (this.groupValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
-      if (
-        (this.groupValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.priorityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateGroupClose() {
+      this.isLoading = true;
+
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateSeveritySelect() {
       if (this.severityValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
-      if (
-        (this.severityValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.groupValue.length !== 0 ||
-            this.priorityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateSeverityClose() {
+      this.isLoading = true;
+
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validatePrioritySelect() {
       if (this.priorityValue.length !== 0) {
-        this.onAnalyze();
-      }
-
-      if (
-        (this.priorityValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.groupValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
+    validatePriorityClose() {
+      setTimeout(() => this.getMlKeywords(), 1000);
+    },
     validateFoundInReleaseSelect() {
+      console.log("Product va", this.foundInReleaseValue);
+      //setTimeout(() => this.onAnalyze(), 1000);
       if (this.foundInReleaseValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
-      if (
-        (this.foundInReleaseValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.groupValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.priorityValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateFoundInReleaseClose() {
+      console.log("Product va", this.foundInReleaseValue);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateFixedInReleaseSelect() {
       if (this.fixedInReleaseValue.length !== 0) {
-        this.onAnalyze();
-        if (
-          (this.fixedInReleaseValue.length === 0 &&
-            (this.productValue.length !== 0 ||
-              this.groupValue.length !== 0 ||
-              this.severityValue.length !== 0 ||
-              this.foundInReleaseValue.length !== 0)) ||
-          this.priorityValue.length !== 0
-        ) {
-          this.onAnalyze();
-        }
+        this.getMlKeywords();
       }
+    },
+    validateFixedInReleaseClose() {
+      console.log("Product va", this.foundInReleaseValue);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     showAllfsb() {
       this.moreFlag3 = true;
@@ -2641,6 +2624,7 @@ export default {
     }
   }
 };
+0;
 </script>
   <style>
 .container {

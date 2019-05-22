@@ -26,7 +26,7 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('found_on_platform_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('date_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('check_title',required=False,help='check_title',location='args')
-        self.reqparse.add_argument('internal', required=True, location='args')
+        self.reqparse.add_argument('internal', required=False, location='args')
         super(DevTrackData, self).__init__()
 
     def get(self):
@@ -62,9 +62,9 @@ class DevTrackData(Resource):
 
             else:
                 if(check_title == "true"):
-                    PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
                 else:
-                    PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
                     
@@ -209,7 +209,7 @@ class DevTrackData(Resource):
                 
                 for doc in devtrackList:
                     for key in filterKeys:
-                        if not (key == 'upvotedUsers' or key == 'probability' or key =='index' or key =='id'):
+                        if not (key == 'upvotedUsers' or key == 'probability' or key =='index' or key =='id' or key == 'timestamp'):
                             filterList[key].append(doc["_source"][key])
                     
                 for key in filterKeys:
