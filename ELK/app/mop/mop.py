@@ -3,6 +3,8 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from flask import jsonify
 import requests
 from flask_restful import Resource
+import csv, json
+from requests.auth import HTTPBasicAuth
 from flask_restful import reqparse
 from elasticsearch import Elasticsearch
 
@@ -41,6 +43,20 @@ class MOP(Resource):
 
         response['mop'] = mop
         return jsonify(data=response, http_status_code=200)
+
+    def put(self):
+        try:
+            args = self.reqparse.parse_args()
+            
+            data = args['data']
+            doc=json.loads(data)
+            response = requests.put(config.ELK_URI+"mop/_doc/"+doc["key"],json=doc,auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
+            return jsonify(msg=response.json(),http_status_code=200)
+        except Exception as e:
+            print(e)
+            return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
+
+    
 
     def options(self):
         pass

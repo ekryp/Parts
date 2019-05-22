@@ -356,6 +356,29 @@
           </div>
         </div>
 
+        <div v-if="mopFlag">
+          <br>
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">File Name :</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{mopContent.file_name}}</span>
+            </div>
+          </div>
+          <br>
+          <label class="labelweight">Title :</label>
+          <br>
+          <span class="textOverlay">{{mopContent.title}}</span>
+          <br>
+
+          <div>
+            <label class="labelweight">Introduction :</label>
+
+            <span class="textOverlay">{{mopContent.introduction}}</span>
+          </div>
+        </div>
+
         <div v-if="fsbFlag">
           <br>
           <div class="row">
@@ -514,65 +537,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="row" style="paddingTop:0.45em"> 
-                      <div class="col-lg-5"></div>
-                      <div class="col-lg-1" >
-                    <button
-                      v-if="problemDescription !== ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                    <button
-                      v-if="problemDescription === ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                  </div>
-                  <div class="col-lg-5"></div>
-                  <div class="col-lg-1" >
-                    <button
-                      v-if="searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                    <button
-                      v-if="!searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                  </div>
-              </div>-->
-
-              <!-- <div class="row">
-                  <div class="col-lg-10"></div>
-                  <div class="col-lg-2">
-                    <button
-                      v-if="problemDescription !== ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                    <button
-                      v-if="problemDescription === ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                  </div>
-              </div>-->
             </div>
           </div>
         </div>
@@ -844,50 +808,6 @@
                   </div>
                 </div>
 
-                <!--                 
-                <div class="col-lg-4">
-                  <div class="row">
-                    <div class="col-lg-5">{{solutionScreenConstants.filterNames[4]}}</div>
-                    <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('foundOnPlatform')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="clearAll('foundOnPlatform')"
-                      >
-                        <i class="fas fa-minus-circle"></i>
-                        &nbsp; {{solutionScreenConstants.filterButtons[1]}}
-                      </button>
-                    </div>
-                  </div>
-                  <div style="paddingTop:0.5em">
-                    <Multiselect
-                      v-model="foundOnPlatformValue"
-                      tag-placeholder="Add this as new tag"
-                      placeholder="Search Found On Platform"
-                      label="name"
-                      track-by="name"
-                      :options="foundOnPlatformOptions"
-                      :multiple="true"
-                      :taggable="true"
-                      :clear-on-select="false"
-                      :close-on-select="false"
-                      :hide-selected="true"
-                      @close="onAnalyze()"
-                    ></Multiselect>
-                  </div>
-                </div>-->
-
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-6">{{solutionScreenConstants.filterNames[6]}}</div>
@@ -957,48 +877,6 @@
                 </div>
               </div>
               <div class="row align">
-                <!-- <div class="col-lg-4">
-                  <div class="row">
-                    <div class="col-lg-6">{{solutionScreenConstants.filterNames[6]}}</div>
-                    <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('foundInRelease')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="clearAll('foundInRelease')"
-                      >
-                        <i class="fas fa-minus-circle"></i>
-                        &nbsp; {{solutionScreenConstants.filterButtons[1]}}
-                      </button>
-                    </div>
-                  </div>
-                  <div style="paddingTop:0.5em">
-                    <Multiselect
-                      v-model="foundInReleaseValue"
-                      tag-placeholder="Add this as new tag"
-                      placeholder="Search Found In Release"
-                      label="name"
-                      track-by="name"
-                      :options="foundInReleaseOptions"
-                      :multiple="true"
-                      :taggable="true"
-                      :clear-on-select="false"
-                      :close-on-select="false"
-                      :hide-selected="true"
-                      @close="onAnalyze()"
-                    ></Multiselect>
-                  </div>
-                </div>-->
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-12">{{solutionScreenConstants.filterNames[7]}}</div>
@@ -1015,28 +893,6 @@
                     ></date-picker>
                   </div>
                 </div>
-                <!-- <div class="col-lg-4">
-                  <div class="row">
-                    <div class="col-lg-9"></div>
-                    <div class="col-lg-3" style="marginTop:8%">
-                      <button
-                        v-if="searchFlag "
-                        style="fontSize:0.75vw;"
-                        type="button"
-                        class="btn btn-success btn-block pull-right"
-                        @click="onAnalyze()"
-                      >{{solutionScreenConstants.buttons[2]}}</button>
-                      <button
-                        v-if="!searchFlag "
-                        style="fontSize:0.75vw;"
-                        type="button"
-                        class="btn btn-success btn-block pull-right"
-                        @click="onAnalyze()"
-                        disabled
-                      >{{solutionScreenConstants.buttons[2]}}</button>
-                    </div>
-                  </div>
-                </div>-->
               </div>
             </div>
           </div>
@@ -1487,25 +1343,25 @@
                   <thead class="text-center">
                     <th>File Name</th>
 
-                    <th>Objective</th>
+                    <th>Title</th>
 
                     <th style="width: 10%">Confidence (%)</th>
                     <th>Confirm</th>
                   </thead>
-                  <tbody class="text-center" v-if="testPlanData.length >0 && moreFlag4">
-                    <tr v-for="item in testPlanData" :key="item.index">
+                  <tbody class="text-center" v-if="mopData.length >0 && moreFlag5">
+                    <tr v-for="item in mopData" :key="item.index">
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index,'testPlan')"
+                        @click="showPatchModal(item.index,'mop')"
                       >{{item.file_name}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index,'testPlan')"
-                      >{{item.Objective}}</td>
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.title}}</td>
 
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index,'testPlan')"
+                        @click="showPatchModal(item.index,'mop')"
                       >{{item.probability}}</td>
 
                       <td v-if="item.upvotedUsers.length>0">
@@ -1516,13 +1372,13 @@
                           <!-- <p>SSDSD {{userFlag}}</p> -->
                           <i
                             v-if="userFlag !== currentUserEMailId"
-                            @click="updatedVote(item,'testplan')"
+                            @click="updatedVote(item,'mop')"
                             class="far fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
                           <i
                             v-if="userFlag === currentUserEMailId"
-                            @click="downVote(item,'testplan')"
+                            @click="downVote(item,'mop')"
                             class="fas fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
@@ -1533,7 +1389,7 @@
                       <td v-else>
                         <i
                           class="far fa-thumbs-up"
-                          @click="updatedVote(item,'testplan')"
+                          @click="updatedVote(item,'mop')"
                           style="cursor:pointer;color:#293f55;"
                         ></i>
                         &nbsp;{{item.upvotedUsers.length}}
@@ -1542,20 +1398,20 @@
                     </tr>
                   </tbody>
 
-                  <tbody class="text-center" v-if="testPlanData.length >0 && !moreFlag4">
-                    <tr v-for="item in filterDevTrackData(testPlanData)" :key="item.index">
+                  <tbody class="text-center" v-if="mopData.length >0 && !moreFlag5">
+                    <tr v-for="item in filterDevTrackData(mopData)" :key="item.index">
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index,'testPlan')"
+                        @click="showPatchModal(item.index,'mop')"
                       >{{item.file_name}}</td>
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index,'testPlan')"
-                      >{{item.Objective}}</td>
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.title}}</td>
 
                       <td
                         class="in-progress"
-                        @click="showPatchModal(item.index,'testPlan')"
+                        @click="showPatchModal(item.index,'mop')"
                       >{{item.probability}}</td>
                       <td v-if="item.upvotedUsers.length>0">
                         <span
@@ -1565,13 +1421,13 @@
                           <!-- <p>SSDSD {{userFlag}}</p> -->
                           <i
                             v-if="userFlag !== currentUserEMailId"
-                            @click="updatedVote(item,'testplan')"
+                            @click="updatedVote(item,'mop')"
                             class="far fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
                           <i
                             v-if="userFlag === currentUserEMailId"
-                            @click="downVote(item,'testplan')"
+                            @click="downVote(item,'mop')"
                             class="fas fa-thumbs-up"
                             style="cursor:pointer;color:#293f55;"
                           ></i>
@@ -1582,7 +1438,7 @@
                       <td v-else>
                         <i
                           class="far fa-thumbs-up"
-                          @click="updatedVote(item,'testplan')"
+                          @click="updatedVote(item,'mop')"
                           style="cursor:pointer;color:#293f55;"
                         ></i>
                         &nbsp;{{item.upvotedUsers.length}}
@@ -1592,14 +1448,14 @@
                   </tbody>
                 </table>
                 <div
-                  v-if="testPlanData.length>0 && !moreFlag4"
+                  v-if="mopData.length>0 && !moreFlag5"
                   class="text-centered in-progress"
-                  @click="showAllTestPlan()"
+                  @click="showAllMop()"
                 >More</div>
                 <!-- <div v-if ="releaseNotesData.length>0 && moreFlag2" class="text-centered" @click="showAbove80Rl()">
                   Hide
                 </div>-->
-                <div v-if="testPlanData.length==0" class="text-centered">No Data</div>
+                <div v-if="mopData.length==0" class="text-centered">No Data</div>
               </div>
             </div>
           </div>
@@ -1943,6 +1799,8 @@ export default {
         this.testPlanContent = this.testPlanData[index];
       } else if (type === "fsb") {
         this.fsbContent = this.fsbData[index];
+      } else if (type === "mop") {
+        this.mopContent = this.mopData[index];
       }
       this.patchFlag = true;
 
@@ -2253,6 +2111,7 @@ export default {
             this.mlKeywords = "";
             this.filterSynonym = "";
             this.getTestPlan();
+            this.getMopPlan();
           });
         })
         .catch(handleError => {
@@ -2263,6 +2122,10 @@ export default {
     getTestPlan() {
       this.isLoading = true;
       this.testPlanData = [];
+      this.problemDescription = this.problemDescription.replace(
+        /^\s+|\s+$/g,
+        ""
+      );
       fetch(
         constant.ELKURL +
           "api/get_test_plan?search_param=" +
@@ -2311,6 +2174,57 @@ export default {
               }
 
               this.testPlanData.push(tempJson);
+              tempJson = {};
+            }
+            this.isLoading = false;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    getMopPlan() {
+      this.isLoading = true;
+      this.mopData = [];
+      this.problemDescription = this.problemDescription.replace(
+        /^\s+|\s+$/g,
+        ""
+      );
+      fetch(
+        constant.ELKURL + "api/get_mop?search_param=" + this.problemDescription,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            let array = [];
+            var upvotedUsers = [];
+            for (let i = 0; i < data.data.mop.length; i++) {
+              if (data.data.mop[i].upvotedUsers !== undefined) {
+                upvotedUsers = data.data.mop[i].upvotedUsers;
+              } else {
+                upvotedUsers = [];
+              }
+
+              let tempJson = {
+                introduction: data.data.mop[i].introduction,
+                index: i,
+                title: data.data.mop[i].title,
+                file_name: data.data.mop[i].file_name,
+                probability: data.data.mop[i].probability,
+                key: data.data.mop[i].key,
+                upvotedUsers: upvotedUsers
+              };
+              this.mopData.push(tempJson);
               tempJson = {};
             }
             this.isLoading = false;
@@ -2426,6 +2340,8 @@ export default {
         this.postTestPlanData(item);
       } else if (type === "fsb") {
         this.postFsbData(item);
+      } else if (type === "mop") {
+        this.postMopData(item);
       }
     },
     downVote(item, type) {
@@ -2441,6 +2357,8 @@ export default {
         this.postTestPlanData(item);
       } else if (type === "fsb") {
         this.postFsbData(item);
+      } else if (type === "mop") {
+        this.postMopData(item);
       }
     },
 
@@ -2539,6 +2457,27 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    postMopData(item) {
+      let formData = new FormData();
+      formData.append("data", JSON.stringify(item));
+      fetch(constant.ELKURL + "api/get_mop", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
     clearAll(param) {
       if (param === "product") {
         this.productValue = [];
@@ -2589,8 +2528,14 @@ export default {
     showAllTestPlan() {
       this.moreFlag4 = true;
     },
+    showAllMop() {
+      this.moreFlag5 = true;
+    },
     showAbove80TestPlan() {
       this.moreFlag4 = false;
+    },
+    showAbove80Mop() {
+      this.moreFlag5 = false;
     },
     validateProductSelect() {
       if (this.productValue.length !== 0) {
