@@ -701,7 +701,7 @@
                       :hide-selected="true"
                       :taggable="true"
                       @close="validateProductSelect()"
-                      @remove="validateProductSelect()"
+                      @remove="validateProductClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -735,7 +735,7 @@
                       :close-on-select="false"
                       :hide-selected="true"
                       @close="validateGroupSelect()"
-                      @remove="validateGroupSelect()"
+                      @remove="validateGroupClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -768,7 +768,7 @@
                       :hide-selected="true"
                       :taggable="true"
                       @close="validateSeveritySelect()"
-                      @remove="validateSeveritySelect()"
+                      @remove="validateSeverityClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -803,7 +803,7 @@
                       :close-on-select="false"
                       :hide-selected="true"
                       @close="validatePrioritySelect()"
-                      @remove="validatePrioritySelect()"
+                      @remove="validatePriorityClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -837,7 +837,7 @@
                       :close-on-select="false"
                       :hide-selected="true"
                       @close="validateFoundInReleaseSelect()"
-                      @remove="validateFoundInReleaseSelect()"
+                      @remove="validateFoundInReleaseClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -871,7 +871,7 @@
                       :hide-selected="true"
                       :taggable="true"
                       @close="validateFixedInReleaseSelect()"
-                      @remove="validateFixedInReleaseSelect()"
+                      @remove="validateFixedInReleaseClose()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -1967,7 +1967,7 @@ export default {
           this.mlKeywords = this.mlKeywords + " OR " + this.filterValue[i].name;
         }
       }
-
+      console.log("Filter Values", this.filterValues);
       fetch(
         constant.ELKURL +
           "api/getDevTrackData?search_param=" +
@@ -2541,92 +2541,58 @@ export default {
       if (this.productValue.length !== 0) {
         this.onAnalyze();
       }
-      if (
-        (this.productValue.length === 0 &&
-          (this.groupValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.priorityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateProductClose() {
+      this.isLoading = true;
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateGroupSelect() {
       if (this.groupValue.length !== 0) {
         this.onAnalyze();
       }
-      if (
-        (this.groupValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.priorityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateGroupClose() {
+      this.isLoading = true;
+
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateSeveritySelect() {
       if (this.severityValue.length !== 0) {
         this.onAnalyze();
       }
-      if (
-        (this.severityValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.groupValue.length !== 0 ||
-            this.priorityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateSeverityClose() {
+      this.isLoading = true;
+
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validatePrioritySelect() {
       if (this.priorityValue.length !== 0) {
         this.onAnalyze();
       }
-
-      if (
-        (this.priorityValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.groupValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.foundInReleaseValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validatePriorityClose() {
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateFoundInReleaseSelect() {
+      console.log("Product va", this.foundInReleaseValue);
+      //setTimeout(() => this.onAnalyze(), 1000);
       if (this.foundInReleaseValue.length !== 0) {
         this.onAnalyze();
       }
-      if (
-        (this.foundInReleaseValue.length === 0 &&
-          (this.productValue.length !== 0 ||
-            this.groupValue.length !== 0 ||
-            this.severityValue.length !== 0 ||
-            this.fixedInReleaseValue.length !== 0)) ||
-        this.priorityValue.length !== 0
-      ) {
-        this.onAnalyze();
-      }
+    },
+    validateFoundInReleaseClose() {
+      console.log("Product va", this.foundInReleaseValue);
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateFixedInReleaseSelect() {
       if (this.fixedInReleaseValue.length !== 0) {
         this.onAnalyze();
-        if (
-          (this.fixedInReleaseValue.length === 0 &&
-            (this.productValue.length !== 0 ||
-              this.groupValue.length !== 0 ||
-              this.severityValue.length !== 0 ||
-              this.foundInReleaseValue.length !== 0)) ||
-          this.priorityValue.length !== 0
-        ) {
-          this.onAnalyze();
-        }
       }
+    },
+    validateFixedInReleaseClose() {
+      console.log("Product va", this.foundInReleaseValue);
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     showAllfsb() {
       this.moreFlag3 = true;
@@ -2641,6 +2607,7 @@ export default {
     }
   }
 };
+0;
 </script>
   <style>
 .container {
