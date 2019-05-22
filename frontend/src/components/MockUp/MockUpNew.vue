@@ -2056,6 +2056,7 @@ export default {
                   progressStatus: data.data.devTrack.devtrack[i].progressStatus,
                   reportingCustomer:
                     data.data.devTrack.devtrack[i].reportingCustomer,
+                    priority:data.data.devTrack.devtrack[i].priority,
                   resolution: data.data.devTrack.devtrack[i].resolution,
                   serviceAccount: data.data.devTrack.devtrack[i].serviceAccount,
                   submittedBy: data.data.devTrack.devtrack[i].submittedBy,
