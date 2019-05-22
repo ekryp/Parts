@@ -66,6 +66,7 @@ for each_record in final_items:
         if (index + 1) == size:
             try:
                 dd['file_name'] = each_doc
+                dd['timestamp'] = date.today().isoformat()
                 # If record field does not have Expected Result, we capture procedure till end
                 print('#' * 50)
                 if not is_result:

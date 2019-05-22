@@ -333,35 +333,28 @@
           </div>
         </div>
 
-
-      <div v-if="testPlanFlag">
-            <br>
-            <div class="row">
-              <div class="col-lg-5">
-                <label class="labelweight">File Name :</label>
-              </div>
-              <div class="col-lg-7">
-                <span>{{testPlanContent.file_name}}</span>
-              </div>
+        <div v-if="testPlanFlag">
+          <br>
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">File Name :</label>
             </div>
-            <br>
-            <label class="labelweight">Objective :</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.Objective}}</span>
-            <br>
-            <br>
-            <div>
-              <label class="labelweight">Procedure :</label>
-
-              <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
-                {{item}}
-              </span>
+            <div class="col-lg-7">
+              <span>{{testPlanContent.file_name}}</span>
             </div>
           </div>
+          <br>
+          <label class="labelweight">Objective :</label>
+          <br>
+          <span class="textOverlay">{{testPlanContent.Objective}}</span>
+          <br>
+          <br>
+          <div>
+            <label class="labelweight">Procedure :</label>
 
-
-
-
+            <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">{{item}}</span>
+          </div>
+        </div>
 
         <div v-if="fsbFlag">
           <br>
@@ -626,7 +619,6 @@
               </div>
             </div>
 
-
             <div class="col-lg-3">
               <div
                 class="card shadow p-2 mb-5 rounded"
@@ -641,8 +633,6 @@
                 </div>
               </div>
             </div>
-
-
 
             <div class="col-lg-3">
               <div
@@ -680,39 +670,28 @@
         <div class="row" style="paddingTop:0.6em" v-if="filterFLag">
           <div class="col-lg-12">
             <div class="p-3 mb-3 bg-white">
-            <div class="row ">
-           <div class="col-lg-12  ">
-           <div class="float-right">
-            <toggle-button
-              :value="state"
-              :color="{checked: 'green', unchecked: 'green'}"
-              :sync="true"
-              cssColors:true
-              :labels="{checked: 'Check Title', unchecked: 'Check All'}"
-              :width="90"
-              v-tooltip.top.hover.focus="'Click to Toggle'"
-              @change="stateChange()"
-            /></div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="float-right">
+                    <toggle-button
+                      :value="state"
+                      :color="{checked: 'green', unchecked: 'green'}"
+                      :sync="true"
+                      cssColors:true
+                      :labels="{checked: 'Check Title', unchecked: 'Check All'}"
+                      :width="90"
+                      v-tooltip.top.hover.focus="'Click to Toggle'"
+                      @change="stateChange()"
+                    />
+                  </div>
+                </div>
+              </div>
 
-            </div>
-            </div>
-            
-           
               <div class="row align">
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-4">{{solutionScreenConstants.filterNames[0]}}</div>
                     <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('product')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
                       <button
                         style="fontSize:1vw;"
                         type="button"
@@ -737,7 +716,8 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
-                      @close="onAnalyze()"
+                      @close="validateProductSelect()"
+                      @remove="validateProductSelect()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -746,16 +726,6 @@
                   <div class="row">
                     <div class="col-lg-4">{{solutionScreenConstants.filterNames[1]}}</div>
                     <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('group')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
                       <button
                         style="fontSize:1vw;"
                         type="button"
@@ -780,7 +750,8 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
-                      @close="onAnalyze()"
+                      @close="validateGroupSelect()"
+                      @remove="validateGroupSelect()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -788,16 +759,6 @@
                   <div class="row">
                     <div class="col-lg-4">{{solutionScreenConstants.filterNames[2]}}</div>
                     <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('severity')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
                       <button
                         style="fontSize:1vw;"
                         type="button"
@@ -822,7 +783,8 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
-                      @close="onAnalyze()"
+                      @close="validateSeveritySelect()"
+                      @remove="validateSeveritySelect()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -832,16 +794,6 @@
                   <div class="row">
                     <div class="col-lg-4">{{solutionScreenConstants.filterNames[3]}}</div>
                     <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('priority')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
                       <button
                         style="fontSize:1vw;"
                         type="button"
@@ -866,7 +818,8 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
-                      @close="onAnalyze()"
+                      @close="validatePrioritySelect()"
+                      @remove="validatePrioritySelect()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -923,16 +876,6 @@
                         style="fontSize:1vw;"
                         type="button"
                         class="all-success"
-                        @click="selectAll('foundInRelease')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
                         @click="clearAll('foundInRelease')"
                       >
                         <i class="fas fa-minus-circle"></i>
@@ -953,7 +896,8 @@
                       :clear-on-select="false"
                       :close-on-select="false"
                       :hide-selected="true"
-                      @close="onAnalyze()"
+                      @close="validateFoundInReleaseSelect()"
+                      @remove="validateFoundInReleaseSelect()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -962,16 +906,6 @@
                   <div class="row">
                     <div class="col-lg-4">{{solutionScreenConstants.filterNames[5]}}</div>
                     <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('fixedInRelease')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
                       <button
                         style="fontSize:1vw;"
                         type="button"
@@ -996,7 +930,8 @@
                       :clear-on-select="false"
                       :hide-selected="true"
                       :taggable="true"
-                      @close="onAnalyze()"
+                      @close="validateFixedInReleaseSelect()"
+                      @remove="validateFixedInReleaseSelect()"
                     ></Multiselect>
                   </div>
                 </div>
@@ -1114,9 +1049,18 @@
                   </thead>
                   <tbody v-if="devTrackData.length >0 && moreFlag1" class="text-center">
                     <tr v-for="item in devTrackData" :key="item.index">
-                      <td @click="showPatchModal(item.index,'devtrack')" class="in-progress">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.title}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.severity}}</td>
+                      <td
+                        @click="showPatchModal(item.index,'devtrack')"
+                        class="in-progress"
+                      >{{item.issueId}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'devtrack')"
+                      >{{item.title}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'devtrack')"
+                      >{{item.severity}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'devtrack')"
@@ -1170,9 +1114,18 @@
 
                   <tbody v-if="devTrackData.length >0 && !moreFlag1" class="text-center">
                     <tr v-for="item in filterDevTrackData(devTrackData)" :key="item.index">
-                      <td @click="showPatchModal(item.index,'devtrack')" class="in-progress">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.title}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'devtrack')">{{item.severity}}</td>
+                      <td
+                        @click="showPatchModal(item.index,'devtrack')"
+                        class="in-progress"
+                      >{{item.issueId}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'devtrack')"
+                      >{{item.title}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'devtrack')"
+                      >{{item.severity}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'devtrack')"
@@ -1252,9 +1205,18 @@
                   </thead>
                   <tbody class="text-center" v-if="releaseNotesData.length >0 && moreFlag2">
                     <tr v-for="item in releaseNotesData" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.severity}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'releaseNotes')"
+                      >{{item.issueId}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'releaseNotes')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'releaseNotes')"
+                      >{{item.severity}}</td>
 
                       <td
                         class="in-progress"
@@ -1297,16 +1259,25 @@
 
                   <tbody class="text-center" v-if="releaseNotesData.length >0 && !moreFlag2">
                     <tr v-for="item in filterDevTrackData(releaseNotesData)" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.issueId}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'releaseNotes')">{{item.severity}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'releaseNotes')"
+                      >{{item.issueId}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'releaseNotes')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'releaseNotes')"
+                      >{{item.severity}}</td>
 
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'releaseNotes')"
                       >{{item.probability}}</td>
 
-                       <td v-if="item.upvotedUsers.length>0">
+                      <td v-if="item.upvotedUsers.length>0">
                         <span
                           v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
                           :key="index"
@@ -1355,8 +1326,7 @@
         </div>
       </div>
 
-
-     <!--  Test Plan Flag-->
+      <!--  Test Plan Flag-->
 
       <div class="row" v-if="testPlanFlag" style="marginTop:-1.8%">
         <div class="col-lg-12">
@@ -1366,7 +1336,7 @@
                 <table class="table responsive table-hover">
                   <thead class="text-center">
                     <th>File Name</th>
-                    
+
                     <th>Objective</th>
 
                     <th style="width: 10%">Confidence (%)</th>
@@ -1374,16 +1344,21 @@
                   </thead>
                   <tbody class="text-center" v-if="testPlanData.length >0 && moreFlag4">
                     <tr v-for="item in testPlanData" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.Objective}}</td>
-                     
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.Objective}}</td>
 
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'testPlan')"
                       >{{item.probability}}</td>
 
-                       <td v-if="item.upvotedUsers.length>0">
+                      <td v-if="item.upvotedUsers.length>0">
                         <span
                           v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
                           :key="index"
@@ -1419,14 +1394,20 @@
 
                   <tbody class="text-center" v-if="testPlanData.length >0 && !moreFlag4">
                     <tr v-for="item in filterDevTrackData(testPlanData)" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.file_name}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'testPlan')">{{item.Objective}}</td>
-                      
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.Objective}}</td>
+
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'testPlan')"
                       >{{item.probability}}</td>
-                       <td v-if="item.upvotedUsers.length>0">
+                      <td v-if="item.upvotedUsers.length>0">
                         <span
                           v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
                           :key="index"
@@ -1475,11 +1456,6 @@
         </div>
       </div>
 
-
-
-
-
-
       <div class="row" v-if="fsbFlag" style="marginTop:-1.8%">
         <div class="col-lg-12">
           <div class="p-3 mb-3 bg-white">
@@ -1498,23 +1474,35 @@
                   </thead>
                   <tbody class="text-center" v-if="fsbData.length >0 && moreFlag3">
                     <tr v-for="item in fsbData" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.FSBNumber}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.issueId}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.FSBNumber}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.issueId}}</td>
 
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.file_name}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'fsb')"
                       >{{item.dateCreated}}</td>
                       <!-- <td class=" in-progress" @click="showPatchModal(item.index)">{{item.symptoms}}</td> -->
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.title}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.title}}</td>
 
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'fsb')"
                       >{{item.probability}}</td>
 
-                       <td v-if="item.upvotedUsers.length>0">
+                      <td v-if="item.upvotedUsers.length>0">
                         <span
                           v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
                           :key="index"
@@ -1550,16 +1538,28 @@
 
                   <tbody class="text-center" v-if="fsbData.length >0 && !moreFlag3">
                     <tr v-for="item in filterDevTrackData(fsbData)" :key="item.index">
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.FSBNumber}}</td>
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.issueId}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.FSBNumber}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.issueId}}</td>
 
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.file_name}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'fsb')"
                       >{{item.dateCreated}}</td>
                       <!-- <td class=" in-progress" @click="showPatchModal(item.index)">{{item.symptoms}}</td> -->
-                      <td class="in-progress" @click="showPatchModal(item.index,'fsb')">{{item.title}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'fsb')"
+                      >{{item.title}}</td>
 
                       <td
                         class="in-progress"
@@ -1666,16 +1666,16 @@ export default {
       solutionScreenConstants: constant.SolutionScreen,
       showGreen: true,
       checked: false,
-      state:false,
+      state: false,
       filterFLag: false,
       searchFlag: false,
       devTrackData: [],
       releaseNotesData: [],
       fsbData: [],
-      testPlanData:[],
+      testPlanData: [],
       errorFlag: false,
       tarFileName: "",
-      filterSynonym:"",
+      filterSynonym: "",
       tarFile: "",
       b1color: "",
       b2color: "",
@@ -1686,7 +1686,7 @@ export default {
       textcolor2: "",
       textcolor3: "",
       textcolor4: "",
-      testPlanContent:"",
+      testPlanContent: "",
       moreFlag1: false,
       moreFlag2: false,
       moreFlag3: false,
@@ -1725,7 +1725,7 @@ export default {
       devTrackFlag: false,
       releaseNotesFlag: false,
       fsbFlag: false,
-      testPlanFlag:false,
+      testPlanFlag: false,
       errorFlag: false,
       sdfcFlag: false,
       mlKeywords: "",
@@ -1758,55 +1758,49 @@ export default {
     showDevTrack() {
       this.devTrackFlag = true;
       this.releaseNotesFlag = false;
-       this.testPlanFlag = false;
+      this.testPlanFlag = false;
       this.fsbFlag = false;
       this.b1color = "#2a629a";
       this.textcolor1 = "#f8f9fa";
       this.b2color = "";
+      if (this.devTrackData.length === 0) {
+        this.devTrackData = [];
+      }
       this.textcolor2 = "";
       this.b3color = "";
       this.textcolor3 = "";
       this.b4color = "";
       this.textcolor4 = "";
     },
-    stateChange()
-    {
-      this.state=!this.state;
+    stateChange() {
+      this.state = !this.state;
+      this.onAnalyze();
     },
-    showPatchModal(index,type) {
-
-      if(type === 'devtrack')
-      {
-      this.devTrackContent = this.devTrackData[index];
-      }else if(type === 'releaseNotes')
-      {
-     this.releaseNoteContent = this.releaseNotesData[index];
-      }else if(type === 'testPlan')
-      {
-       this.testPlanContent=this.testPlanData[index];
-      }else if(type === 'fsb')
-      {
-     this.fsbContent = this.fsbData[index];
+    showPatchModal(index, type) {
+      if (type === "devtrack") {
+        this.devTrackContent = this.devTrackData[index];
+      } else if (type === "releaseNotes") {
+        this.releaseNoteContent = this.releaseNotesData[index];
+      } else if (type === "testPlan") {
+        this.testPlanContent = this.testPlanData[index];
+      } else if (type === "fsb") {
+        this.fsbContent = this.fsbData[index];
       }
       this.patchFlag = true;
-     
-      
+
       console.log(index);
-      
-      
 
       this.$modals.myModal.$show();
     },
     showReleaseNotes() {
-      console.log('Release Notes',this.releaseNotesData)
+      console.log("Release Notes", this.releaseNotesData);
       this.devTrackFlag = false;
       this.releaseNotesFlag = true;
       this.testPlanFlag = false;
       this.fsbFlag = false;
-      
-      if(this.releaseNotesData.length=== 0)
-      {
-        this.releaseNotesData=[];
+
+      if (this.releaseNotesData.length === 0) {
+        this.releaseNotesData = [];
       }
       this.b2color = "#2a629a";
       this.textcolor2 = "#f8f9fa";
@@ -1814,15 +1808,19 @@ export default {
       this.textcolor1 = "";
       this.b3color = "";
       this.textcolor3 = "";
-       this.b4color = "";
+      this.b4color = "";
       this.textcolor4 = "";
     },
-    showTestPlans()
-    {
+    showTestPlans() {
+      console.log("Test Plan", this.testPlanData);
       this.devTrackFlag = false;
       this.releaseNotesFlag = false;
       this.testPlanFlag = true;
       this.fsbFlag = false;
+
+      if (this.testPlanData.length === 0) {
+        this.testPlanData = [];
+      }
       this.b2color = "";
       this.textcolor2 = "";
       this.b1color = "";
@@ -1833,17 +1831,22 @@ export default {
       this.textcolor4 = "#f8f9fa";
     },
     showFSB() {
+      console.log("this.sfs", this.fsb);
       this.devTrackFlag = false;
       this.releaseNotesFlag = false;
-        this.testPlanFlag = false;
+      this.testPlanFlag = false;
       this.fsbFlag = true;
+
       this.b3color = "#2a629a";
       this.textcolor3 = "#f8f9fa";
       this.b2color = "";
       this.textcolor2 = "";
+      if (this.fsbData.length === 0) {
+        this.fsbData = [];
+      }
       this.b1color = "";
       this.textcolor1 = "";
-       this.b4color = "";
+      this.b4color = "";
       this.textcolor4 = "";
     },
     onAnalyze() {
@@ -1898,6 +1901,11 @@ export default {
         this.filterValues =
           this.filterValues + " AND " + this.tagValue[i].value;
       }
+
+      this.problemDescription = this.problemDescription.replace(
+        /^\s+|\s+$/g,
+        ""
+      );
       // if (this.filterValue.length > 0) {
       //   if (this.checked) {
       //     this.mlKeywords = " AND";
@@ -1905,15 +1913,15 @@ export default {
       //     this.mlKeywords = " OR";
       //   }
       // } else {
-        this.mlKeywords = "";
+      this.mlKeywords = "";
       // }
       for (var i = 0; i < this.filterValue.length; i++) {
         if (this.checked) {
-          this.mlKeywords = this.mlKeywords + " AND " + this.filterValue[i].name;
+          this.mlKeywords =
+            this.mlKeywords + " AND " + this.filterValue[i].name;
         } else {
           this.mlKeywords = this.mlKeywords + " OR " + this.filterValue[i].name;
         }
-        
       }
 
       fetch(
@@ -1921,11 +1929,13 @@ export default {
           "api/getDevTrackData?search_param=" +
           this.problemDescription +
           this.mlKeywords +
-          this.filterSynonym+
+          this.filterSynonym +
           this.filterValues +
           this.filterURL +
           "&internal=" +
-          this.internalFlag+"&check_title="+this.state,
+          this.internalFlag +
+          "&check_title=" +
+          this.state,
         {
           headers: {
             "Content-Type": "application/json"
@@ -1975,7 +1985,7 @@ export default {
                   finalTestRootCauseAnalysisComments:
                     data.data.devTrack.devtrack[i]
                       .finalTestRootCauseAnalysisComments,
-                      foundinRelease:data.data.devTrack.devtrack[i].foundinRelease,
+                  foundinRelease: data.data.devTrack.devtrack[i].foundinRelease,
                   fixedinRelease: data.data.devTrack.devtrack[i].fixedinRelease,
                   foundInBuild: data.data.devTrack.devtrack[i].foundInBuild,
                   foundOnPlatform:
@@ -2000,7 +2010,6 @@ export default {
                 this.moreFlag2 = false;
                 this.moreFlag3 = false;
                 this.moreFlag4 = false;
-                
               }
               this.showDevTrack();
               for (var j = 0; j < data.data.releaseNotes.length; j++) {
@@ -2018,12 +2027,11 @@ export default {
                   severity: data.data.releaseNotes[j].severity,
                   workaround: data.data.releaseNotes[j].workaround,
                   key: data.data.releaseNotes[j].key,
-                   upvotedUsers: upvotedUsers
+                  upvotedUsers: upvotedUsers
                 });
               }
 
               for (var k = 0; k < data.data.fsb.length; k++) {
-
                 if (data.data.fsb[k].upvotedUsers !== undefined) {
                   upvotedUsers = data.data.fsb[k].upvotedUsers;
                 } else {
@@ -2042,7 +2050,7 @@ export default {
                   symptoms: data.data.fsb[k].symptoms,
                   title: data.data.fsb[k].title,
                   key: data.data.fsb[k].key,
-                   upvotedUsers: upvotedUsers
+                  upvotedUsers: upvotedUsers
                 });
               }
               console.log("asdasd", this.devTrackData);
@@ -2070,7 +2078,9 @@ export default {
       this.isLoading = true;
       this.testPlanData = [];
       fetch(
-        constant.ELKURL + "api/get_test_plan?search_param=" + this.problemDescription,
+        constant.ELKURL +
+          "api/get_test_plan?search_param=" +
+          this.problemDescription,
         {
           method: "GET",
           headers: {
@@ -2088,30 +2098,34 @@ export default {
             let array = [];
             var upvotedUsers = [];
             for (let i = 0; i < data.data.test_plan.length; i++) {
-
               if (data.data.test_plan[i].upvotedUsers !== undefined) {
-                  upvotedUsers = data.data.test_plan[i].upvotedUsers;
-                } else {
-                  upvotedUsers = [];
-                }
+                upvotedUsers = data.data.test_plan[i].upvotedUsers;
+              } else {
+                upvotedUsers = [];
+              }
 
-             let tempJson={ Objective: data.data.test_plan[i].Objective,
-                index:i,
+              let tempJson = {
+                Objective: data.data.test_plan[i].Objective,
+                index: i,
                 Procedure: data.data.test_plan[i].Procedure,
                 file_name: data.data.test_plan[i].file_name,
-                probability:data.data.test_plan[i].probability,
-                key:data.data.test_plan[i].key,
-                upvotedUsers: upvotedUsers}
+                probability: data.data.test_plan[i].probability,
+                key: data.data.test_plan[i].key,
+                upvotedUsers: upvotedUsers
+              };
 
-              if (typeof data.data.test_plan[i].setup !== 'undefined'){
-                tempJson['setup']=data.data.test_plan[i].setup
+              if (typeof data.data.test_plan[i].setup !== "undefined") {
+                tempJson["setup"] = data.data.test_plan[i].setup;
               }
-              if (typeof data.data.test_plan[i].expectedResult !== 'undefined'){
-                tempJson['expectedResult']=data.data.test_plan[i].expectedResult
+              if (
+                typeof data.data.test_plan[i].expectedResult !== "undefined"
+              ) {
+                tempJson["expectedResult"] =
+                  data.data.test_plan[i].expectedResult;
               }
 
               this.testPlanData.push(tempJson);
-              tempJson={}
+              tempJson = {};
             }
             this.isLoading = false;
           });
@@ -2204,7 +2218,7 @@ export default {
     hideModal() {
       this.$modals.myModal.$hide();
     },
-    
+
     logout() {
       console.log("logout");
       router.push("/");
@@ -2213,42 +2227,34 @@ export default {
     routeDashboard() {
       router.push("/");
     },
-    updatedVote(item,type) {
+    updatedVote(item, type) {
       console.log("-----------------", item);
       // item.updatedUsers = []
       item.upvotedUsers.push(this.currentUserEMailId);
       console.log("dev track", item);
-      if(type === 'devtrack')
-      {
-      this.postDevTrackData(item);
-      }else if(type === 'releasenotes')
-      {
-      this.postReleaseNotesData(item);
-      }else if(type === 'testplan')
-      {
-      this.postTestPlanData(item);
-      }else if(type === 'fsb')
-      {
-      this.postFsbData(item);
+      if (type === "devtrack") {
+        this.postDevTrackData(item);
+      } else if (type === "releasenotes") {
+        this.postReleaseNotesData(item);
+      } else if (type === "testplan") {
+        this.postTestPlanData(item);
+      } else if (type === "fsb") {
+        this.postFsbData(item);
       }
     },
-    downVote(item,type) {
+    downVote(item, type) {
       // item.upvotedUsers.push(this.userName);
 
       item.upvotedUsers.pop(this.currentUserEMailId);
       console.log(item);
-      if(type === 'devtrack')
-      {
-      this.postDevTrackData(item);
-      }else if(type === 'releasenotes')
-      {
-      this.postReleaseNotesData(item);
-      }else if(type === 'testplan')
-      {
-      this.postTestPlanData(item);
-      }else if(type === 'fsb')
-      {
-      this.postFsbData(item);
+      if (type === "devtrack") {
+        this.postDevTrackData(item);
+      } else if (type === "releasenotes") {
+        this.postReleaseNotesData(item);
+      } else if (type === "testplan") {
+        this.postTestPlanData(item);
+      } else if (type === "fsb") {
+        this.postFsbData(item);
       }
     },
 
@@ -2363,6 +2369,7 @@ export default {
       } else if (param === "foundOnPlatform") {
         this.foundOnPlatformValue = [];
       }
+      this.onAnalyze();
     },
     selectAll(param) {
       if (param === "product") {
@@ -2390,17 +2397,106 @@ export default {
     showAllRl() {
       this.moreFlag2 = true;
     },
-     showAbove80Rl() {
+    showAbove80Rl() {
       this.moreFlag2 = false;
     },
-    showAllTestPlan()
-    {
+    showAllTestPlan() {
       this.moreFlag4 = true;
     },
     showAbove80TestPlan() {
       this.moreFlag4 = false;
     },
-   
+    validateProductSelect() {
+      if (this.productValue.length !== 0) {
+        this.onAnalyze();
+      }
+      if (
+        (this.productValue.length === 0 &&
+          (this.groupValue.length !== 0 ||
+            this.severityValue.length !== 0 ||
+            this.priorityValue.length !== 0 ||
+            this.fixedInReleaseValue.length !== 0)) ||
+        this.foundInReleaseValue.length !== 0
+      ) {
+        this.onAnalyze();
+      }
+    },
+    validateGroupSelect() {
+      if (this.groupValue.length !== 0) {
+        this.onAnalyze();
+      }
+      if (
+        (this.groupValue.length === 0 &&
+          (this.productValue.length !== 0 ||
+            this.severityValue.length !== 0 ||
+            this.priorityValue.length !== 0 ||
+            this.fixedInReleaseValue.length !== 0)) ||
+        this.foundInReleaseValue.length !== 0
+      ) {
+        this.onAnalyze();
+      }
+    },
+    validateSeveritySelect() {
+      if (this.severityValue.length !== 0) {
+        this.onAnalyze();
+      }
+      if (
+        (this.severityValue.length === 0 &&
+          (this.productValue.length !== 0 ||
+            this.groupValue.length !== 0 ||
+            this.priorityValue.length !== 0 ||
+            this.fixedInReleaseValue.length !== 0)) ||
+        this.foundInReleaseValue.length !== 0
+      ) {
+        this.onAnalyze();
+      }
+    },
+    validatePrioritySelect() {
+      if (this.priorityValue.length !== 0) {
+        this.onAnalyze();
+      }
+
+      if (
+        (this.priorityValue.length === 0 &&
+          (this.productValue.length !== 0 ||
+            this.groupValue.length !== 0 ||
+            this.severityValue.length !== 0 ||
+            this.fixedInReleaseValue.length !== 0)) ||
+        this.foundInReleaseValue.length !== 0
+      ) {
+        this.onAnalyze();
+      }
+    },
+    validateFoundInReleaseSelect() {
+      if (this.foundInReleaseValue.length !== 0) {
+        this.onAnalyze();
+      }
+      if (
+        (this.foundInReleaseValue.length === 0 &&
+          (this.productValue.length !== 0 ||
+            this.groupValue.length !== 0 ||
+            this.severityValue.length !== 0 ||
+            this.fixedInReleaseValue.length !== 0)) ||
+        this.priorityValue.length !== 0
+      ) {
+        this.onAnalyze();
+      }
+    },
+    validateFixedInReleaseSelect() {
+      if (this.fixedInReleaseValue.length !== 0) {
+        this.onAnalyze();
+        if (
+          (this.fixedInReleaseValue.length === 0 &&
+            (this.productValue.length !== 0 ||
+              this.groupValue.length !== 0 ||
+              this.severityValue.length !== 0 ||
+              this.foundInReleaseValue.length !== 0)) ||
+          this.priorityValue.length !== 0
+        ) {
+          this.onAnalyze();
+        }
+      }
+    },
     showAllfsb() {
       this.moreFlag3 = true;
     },
