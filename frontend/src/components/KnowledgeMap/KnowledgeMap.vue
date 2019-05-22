@@ -296,9 +296,19 @@ export default {
   },
   methods: {
     hideEntry() {
+      this.testPlan.file_name="";
+      this.testPlan.Objective="";
+      this.testPlan.Procedure="";
+      this.testPlan.expectedResult="";
+      this.testPlan.setup="";
       this.$modals.myModal.$hide();
     },
     showAddRole() {
+       this.testPlan.file_name="";
+      this.testPlan.Objective="";
+      this.testPlan.Procedure="";
+      this.testPlan.expectedResult="";
+      this.testPlan.setup="";
       this.editFlag = false;
       this.addFlag = true;
       this.$modals.myModal.$show();
