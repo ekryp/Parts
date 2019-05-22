@@ -34,7 +34,6 @@
             <br>
             <div>
               <label class="labelweight">{{testPlanConstants.popUpFields[2]}}</label>
-
               <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
                 <br>
                 {{item}}
@@ -103,6 +102,7 @@
                 >-->
                 <b-form-textarea
                   id="textarea"
+                  class="textOverlay"
                   v-model="testPlan.Procedure"
                   :placeholder="testPlanPlaceHolders.procedurePlaceHolder"
                   rows="3"
@@ -125,6 +125,7 @@
                 >-->
                 <b-form-textarea
                   id="textarea"
+                  class="textOverlay"
                   v-model="testPlan.expectedResult"
                   :placeholder="testPlanPlaceHolders.expectedResultPlaceHolder"
                   rows="3"
@@ -409,4 +410,9 @@ export default {
 .align {
   padding: 6px;
 }
+.textOverlay {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
 </style>

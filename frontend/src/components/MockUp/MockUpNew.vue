@@ -581,15 +581,18 @@
       <div class="row" style="textAlign:center" v-if="analyzeFlag">
         <div class="col-lg-12">
           <div class="row">
-            <!-- <div class="col-lg-3" >
-                <div class="card  shadow p-2 mb-5  rounded" >
-                  <div class="card-body in-progress labelweight cardFontChange"
-                  > <span class="float-left">Total Hits</span>
-                  <span class="float-right">{{estotalhits}}</span> </div>
+            <div class="col-lg-2">
+              <div class="card shadow p-2 mb-5 rounded">
+                <div class="card-body in-progress labelweight cardFontChange">
+                  <span class="float-left">Total Hits</span>
+                  <span
+                    class="float-right"
+                  >{{this.devTrackData.length+this.releaseNotesData.length+this.fsbData.length+this.testPlanData.length}}</span>
                 </div>
-            </div>-->
-
-            <div class="col-lg-3">
+              </div>
+            </div>
+            <!-- <div class="col-lg-1"></div> -->
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b1color , color:textcolor1}"
@@ -604,7 +607,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b2color , color:textcolor2}"
@@ -619,7 +622,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b4color , color:textcolor4}"
@@ -634,7 +637,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b3color , color:textcolor3}"
@@ -649,6 +652,23 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-2">
+              <div
+                class="card shadow p-2 mb-5 rounded"
+                v-bind:style="{ backgroundColor: b5color , color:textcolor5}"
+              >
+                <div
+                  class="card-body in-progress labelweight cardFontChange"
+                  v-bind:style="{ backgroundColor: b5color }"
+                  @click="showMOP()"
+                >
+                  <span class="float-left">{{solutionScreenConstants.cardLables[4]}}</span>
+                  <span class="float-right">{{this.mopData.length}}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-1"></div> -->
           </div>
         </div>
       </div>
@@ -1456,6 +1476,136 @@
         </div>
       </div>
 
+      <!--  Mop Flag-->
+
+      <div class="row" v-if="mopFlag" style="marginTop:-1.8%">
+        <div class="col-lg-12">
+          <div class="p-3 mb-3 bg-white">
+            <div class="row align">
+              <div class="col-md-12" align="center">
+                <table class="table responsive table-hover">
+                  <thead class="text-center">
+                    <th>File Name</th>
+
+                    <th>Objective</th>
+
+                    <th style="width: 10%">Confidence (%)</th>
+                    <th>Confirm</th>
+                  </thead>
+                  <tbody class="text-center" v-if="testPlanData.length >0 && moreFlag4">
+                    <tr v-for="item in testPlanData" :key="item.index">
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.Objective}}</td>
+
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.probability}}</td>
+
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'testplan')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'testplan')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'testplan')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <tbody class="text-center" v-if="testPlanData.length >0 && !moreFlag4">
+                    <tr v-for="item in filterDevTrackData(testPlanData)" :key="item.index">
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.Objective}}</td>
+
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'testPlan')"
+                      >{{item.probability}}</td>
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'testplan')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'testplan')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'testplan')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  v-if="testPlanData.length>0 && !moreFlag4"
+                  class="text-centered in-progress"
+                  @click="showAllTestPlan()"
+                >More</div>
+                <!-- <div v-if ="releaseNotesData.length>0 && moreFlag2" class="text-centered" @click="showAbove80Rl()">
+                  Hide
+                </div>-->
+                <div v-if="testPlanData.length==0" class="text-centered">No Data</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row" v-if="fsbFlag" style="marginTop:-1.8%">
         <div class="col-lg-12">
           <div class="p-3 mb-3 bg-white">
@@ -1673,6 +1823,7 @@ export default {
       releaseNotesData: [],
       fsbData: [],
       testPlanData: [],
+      mopData: [],
       errorFlag: false,
       tarFileName: "",
       filterSynonym: "",
@@ -1681,20 +1832,24 @@ export default {
       b2color: "",
       b3color: "",
       b4color: "",
+      b5color: "",
       format: "MM/DD/YYYY",
       textcolor1: "",
       textcolor2: "",
       textcolor3: "",
       textcolor4: "",
+      textcolor5: "",
       testPlanContent: "",
       moreFlag1: false,
       moreFlag2: false,
       moreFlag3: false,
       moreFlag4: false,
+      moreFlag5: false,
       currentUserEMailId: "",
       devTrackContent: "",
       releaseNoteContent: "",
       fsbContent: "",
+      mopContent: "",
       filterOptions: [],
       filterValue: [],
       tagValue: [],
@@ -1726,6 +1881,7 @@ export default {
       releaseNotesFlag: false,
       fsbFlag: false,
       testPlanFlag: false,
+      mopFlag: false,
       errorFlag: false,
       sdfcFlag: false,
       mlKeywords: "",
@@ -1771,6 +1927,8 @@ export default {
       this.textcolor3 = "";
       this.b4color = "";
       this.textcolor4 = "";
+      this.b5color = "";
+      this.textcolor5 = "";
     },
     stateChange() {
       this.state = !this.state;
@@ -1798,6 +1956,7 @@ export default {
       this.releaseNotesFlag = true;
       this.testPlanFlag = false;
       this.fsbFlag = false;
+      this.mopFlag = false;
 
       if (this.releaseNotesData.length === 0) {
         this.releaseNotesData = [];
@@ -1810,6 +1969,8 @@ export default {
       this.textcolor3 = "";
       this.b4color = "";
       this.textcolor4 = "";
+      this.b5color = "";
+      this.textcolor5 = "";
     },
     showTestPlans() {
       console.log("Test Plan", this.testPlanData);
@@ -1817,6 +1978,7 @@ export default {
       this.releaseNotesFlag = false;
       this.testPlanFlag = true;
       this.fsbFlag = false;
+      this.mopFlag = false;
 
       if (this.testPlanData.length === 0) {
         this.testPlanData = [];
@@ -1829,6 +1991,8 @@ export default {
       this.textcolor3 = "";
       this.b4color = "#2a629a";
       this.textcolor4 = "#f8f9fa";
+      this.b5color = "";
+      this.textcolor5 = "";
     },
     showFSB() {
       console.log("this.sfs", this.fsb);
@@ -1836,13 +2000,35 @@ export default {
       this.releaseNotesFlag = false;
       this.testPlanFlag = false;
       this.fsbFlag = true;
-
+      this.mopFlag = false;
       this.b3color = "#2a629a";
       this.textcolor3 = "#f8f9fa";
       this.b2color = "";
       this.textcolor2 = "";
       if (this.fsbData.length === 0) {
         this.fsbData = [];
+      }
+      this.b1color = "";
+      this.textcolor1 = "";
+      this.b4color = "";
+      this.textcolor4 = "";
+      this.b5color = "";
+      this.textcolor5 = "";
+    },
+    showMOP() {
+      this.devTrackFlag = false;
+      this.releaseNotesFlag = false;
+      this.testPlanFlag = false;
+      this.fsbFlag = false;
+      this.mopFlag = true;
+      this.b5color = "#2a629a";
+      this.textcolor5 = "#f8f9fa";
+      this.b2color = "";
+      this.textcolor2 = "";
+      this.b3color = "";
+      this.textcolor3 = "";
+      if (this.mopData.length === 0) {
+        this.mopData = [];
       }
       this.b1color = "";
       this.textcolor1 = "";
@@ -2578,7 +2764,9 @@ export default {
   background: transparent;
   transition: all 0.3s ease 0s;
 }
-
+.textWithSpace {
+  white-space: pre-wrap;
+}
 .all-success:hover {
   color: #fff;
   background: #169f85;
