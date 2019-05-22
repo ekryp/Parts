@@ -24,26 +24,18 @@
               </div>
             </div>
             <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[4]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.setup}}</span>
-            <br>
             <label class="labelweight">{{testPlanConstants.popUpFields[1]}}</label>
             <br>
             <span class="textOverlay">{{testPlanContent.Objective}}</span>
             <br>
             <div>
               <label class="labelweight">{{testPlanConstants.popUpFields[2]}}</label>
+
               <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
                 <br>
                 {{item}}
               </span>
             </div>
-            <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[3]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.expectedResult}}</span>
-            <br>
           </div>
           <div v-if="addFlag">
             <div class="row">
@@ -57,21 +49,6 @@
                   v-model="testPlan.file_name"
                   :placeholder="testPlanPlaceHolders.fileNamePlaceHolder"
                 >
-              </div>
-            </div>
-            <br>
-             <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Setup :</label>
-              </div>
-              <div class="col-lg-6">
-                <textarea
-                  type="text"
-                  class="form-control"
-                  col=3 
-                  v-model="testPlan.setup"
-                  :placeholder="testPlanPlaceHolders.setupPlaceHolder"
-                ></textarea>
               </div>
             </div>
             <br>
@@ -102,32 +79,8 @@
                 >-->
                 <b-form-textarea
                   id="textarea"
-                  class="textOverlay"
                   v-model="testPlan.Procedure"
                   :placeholder="testPlanPlaceHolders.procedurePlaceHolder"
-                  rows="3"
-                  max-rows="10"
-                ></b-form-textarea>
-              </div>
-            </div>
-           
-            <br>
-            <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Expected result :</label>
-              </div>
-              <div class="col-lg-6">
-                <!-- <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.procedure"
-                  :placeholder="testPlan.procedurePlaceHolder"
-                >-->
-                <b-form-textarea
-                  id="textarea"
-                  class="textOverlay"
-                  v-model="testPlan.expectedResult"
-                  :placeholder="testPlanPlaceHolders.expectedResultPlaceHolder"
                   rows="3"
                   max-rows="6"
                 ></b-form-textarea>
@@ -190,15 +143,14 @@
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allTestPlan" style="width: 100%">
+              <data-tables :data="allTestPlan">
                 <el-table-column
-                 :min-width="120"
                   v-for="title in titles"
                   :prop="title.prop"
                   :label="title.label"
                   :key="title.prop"
                   sortable="custom"
-                ></el-table-column :min-width="20">
+                ></el-table-column>
                 <el-table-column align="right">
                   <template slot-scope="scope">
                     <el-button size="mini" @click="showEditRole(scope.row)">View</el-button>
@@ -249,7 +201,7 @@ Vue.use(DataTablesServer);
 Vue.use(ElementUI);
 
 export default {
-  name: "KnowledgeMap",
+  name: "FsbKnowledgeMap",
   components: {
     SideNav,
     headernav,
@@ -271,25 +223,37 @@ export default {
       testPlanContent: "",
       addFlag: false,
       editFlag: false,
-      testPlan: {
-        file_name: "",
-        Objective: "",
-        Procedure: "",
-        expectedResult:"",
-        setup:""
-
-      },
+      fsbData: [],
       testPlanPlaceHolders: {
-        fileNamePlaceHolder: "Enter the File Name Here",
-        objectivePlaceHolder: "Enter the Objective Here",
-        procedurePlaceHolder: "Enter the Procedure",
-        setupPlaceHolder:"Enter the Setup ",
-        expectedResultPlaceHolder:"Enter the Expected Result"
+        fileNamePlaceHolder: "",
+        objectivePlaceHolder: "",
+        procedurePlaceHolder: ""
       },
       titles: [
         {
-          prop: "Objective",
-          label: "Objective"
+          prop: "FSBNumber",
+          label: "FSB Number"
+        },
+        {
+          prop: "issueId",
+          label: "Issue ID"
+        },
+        {
+          prop: "file_name",
+          label: "File Name"
+        },
+        {
+          prop: "title",
+          label: "Title"
+        },
+        {
+          prop: "title",
+          label: "Title"
+        },
+        ,
+        {
+          prop: "probability",
+          label: "Confidence"
         }
       ]
     };
@@ -311,7 +275,6 @@ export default {
     },
     getTestPlan() {
       this.isLoading = true;
-      this.allTestPlan = [];
       fetch(
         constant.ELKURL + "api/get_test_plan?search_param=" + this.filterParam,
         {
@@ -330,20 +293,11 @@ export default {
             }
             let array = [];
             for (let i = 0; i < data.data.test_plan.length; i++) {
-
-             let tempJson={ Objective: data.data.test_plan[i].Objective,
+              this.allTestPlan.push({
+                Objective: data.data.test_plan[i].Objective,
                 Procedure: data.data.test_plan[i].Procedure,
-                file_name: data.data.test_plan[i].file_name}
-
-              if (typeof data.data.test_plan[i].setup !== 'undefined'){
-                tempJson['setup']=data.data.test_plan[i].setup
-              }
-              if (typeof data.data.test_plan[i].expectedResult !== 'undefined'){
-                tempJson['expectedResult']=data.data.test_plan[i].expectedResult
-              }
-
-              this.allTestPlan.push(tempJson);
-              tempJson={}
+                file_name: data.data.test_plan[i].file_name
+              });
             }
             this.isLoading = false;
           });
@@ -353,20 +307,17 @@ export default {
         });
     },
     addTestPlan() {
-      this.isLoading = true;
       let formData = new FormData();
       formData.append(
         "data",
         JSON.stringify({
           file_name: this.testPlan.file_name,
           Objective: this.testPlan.Objective,
-          Procedure: [this.testPlan.Procedure],
-          setup:this.testPlan.setup,
-          expectedResult:this.testPlan.expectedResult
+          Procedure: this.testPlan.Procedure
         })
       );
       fetch(constant.ELKURL + "api/get_test_plan", {
-        method: "POST",
+        method: "PUT",
         body: formData
       })
         .then(response => {
@@ -375,16 +326,7 @@ export default {
             if (data.code === "token_expired") {
               this.logout();
             }
-            
             if (data.http_status_code === 200) {
-              this.isLoading = false;
-              swal({
-                  title: "Success",
-                  text: "Test Plan Added Successfully",
-                  icon: "success"
-                });
-                this.getTestPlan();
-              this.$modals.myModal.$hide();
             }
           });
         })
@@ -410,9 +352,4 @@ export default {
 .align {
   padding: 6px;
 }
-.textOverlay {
-  word-break: break-all;
-  white-space: pre-wrap;
-}
-
 </style>

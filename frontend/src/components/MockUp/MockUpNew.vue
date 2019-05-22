@@ -356,6 +356,29 @@
           </div>
         </div>
 
+        <div v-if="mopFlag">
+          <br>
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">File Name :</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{mopContent.file_name}}</span>
+            </div>
+          </div>
+          <br>
+          <label class="labelweight">Title :</label>
+          <br>
+          <span class="textOverlay">{{mopContent.title}}</span>
+          <br>
+
+          <div>
+            <label class="labelweight">Introduction :</label>
+
+            <span class="textOverlay">{{mopContent.introduction}}</span>
+          </div>
+        </div>
+
         <div v-if="fsbFlag">
           <br>
           <div class="row">
@@ -514,65 +537,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="row" style="paddingTop:0.45em"> 
-                      <div class="col-lg-5"></div>
-                      <div class="col-lg-1" >
-                    <button
-                      v-if="problemDescription !== ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                    <button
-                      v-if="problemDescription === ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="getMlKeywords()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                  </div>
-                  <div class="col-lg-5"></div>
-                  <div class="col-lg-1" >
-                    <button
-                      v-if="searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                    <button
-                      v-if="!searchFlag "
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[2]}}</button>
-                  </div>
-              </div>-->
-
-              <!-- <div class="row">
-                  <div class="col-lg-10"></div>
-                  <div class="col-lg-2">
-                    <button
-                      v-if="problemDescription !== ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                    <button
-                      v-if="problemDescription === ''"
-                      style="fontSize:0.75vw;"
-                      type="button"
-                      class="btn btn-success btn-block"
-                      @click="onAnalyze()"
-                      disabled
-                    >{{solutionScreenConstants.buttons[0]}}</button>
-                  </div>
-              </div>-->
             </div>
           </div>
         </div>
@@ -581,15 +545,18 @@
       <div class="row" style="textAlign:center" v-if="analyzeFlag">
         <div class="col-lg-12">
           <div class="row">
-            <!-- <div class="col-lg-3" >
-                <div class="card  shadow p-2 mb-5  rounded" >
-                  <div class="card-body in-progress labelweight cardFontChange"
-                  > <span class="float-left">Total Hits</span>
-                  <span class="float-right">{{estotalhits}}</span> </div>
+            <div class="col-lg-2">
+              <div class="card shadow p-2 mb-5 rounded">
+                <div class="card-body in-progress labelweight cardFontChange">
+                  <span class="float-left">Total Hits</span>
+                  <span
+                    class="float-right"
+                  >{{this.devTrackData.length+this.releaseNotesData.length+this.fsbData.length+this.testPlanData.length}}</span>
                 </div>
-            </div>-->
-
-            <div class="col-lg-3">
+              </div>
+            </div>
+            <!-- <div class="col-lg-1"></div> -->
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b1color , color:textcolor1}"
@@ -604,7 +571,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b2color , color:textcolor2}"
@@ -619,7 +586,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b4color , color:textcolor4}"
@@ -634,7 +601,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
                 v-bind:style="{ backgroundColor: b3color , color:textcolor3}"
@@ -649,6 +616,23 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-2">
+              <div
+                class="card shadow p-2 mb-5 rounded"
+                v-bind:style="{ backgroundColor: b5color , color:textcolor5}"
+              >
+                <div
+                  class="card-body in-progress labelweight cardFontChange"
+                  v-bind:style="{ backgroundColor: b5color }"
+                  @click="showMOP()"
+                >
+                  <span class="float-left">{{solutionScreenConstants.cardLables[4]}}</span>
+                  <span class="float-right">{{this.mopData.length}}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-1"></div> -->
           </div>
         </div>
       </div>
@@ -824,50 +808,6 @@
                   </div>
                 </div>
 
-                <!--                 
-                <div class="col-lg-4">
-                  <div class="row">
-                    <div class="col-lg-5">{{solutionScreenConstants.filterNames[4]}}</div>
-                    <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('foundOnPlatform')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="clearAll('foundOnPlatform')"
-                      >
-                        <i class="fas fa-minus-circle"></i>
-                        &nbsp; {{solutionScreenConstants.filterButtons[1]}}
-                      </button>
-                    </div>
-                  </div>
-                  <div style="paddingTop:0.5em">
-                    <Multiselect
-                      v-model="foundOnPlatformValue"
-                      tag-placeholder="Add this as new tag"
-                      placeholder="Search Found On Platform"
-                      label="name"
-                      track-by="name"
-                      :options="foundOnPlatformOptions"
-                      :multiple="true"
-                      :taggable="true"
-                      :clear-on-select="false"
-                      :close-on-select="false"
-                      :hide-selected="true"
-                      @close="onAnalyze()"
-                    ></Multiselect>
-                  </div>
-                </div>-->
-
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-6">{{solutionScreenConstants.filterNames[6]}}</div>
@@ -937,48 +877,6 @@
                 </div>
               </div>
               <div class="row align">
-                <!-- <div class="col-lg-4">
-                  <div class="row">
-                    <div class="col-lg-6">{{solutionScreenConstants.filterNames[6]}}</div>
-                    <div class="col" align="right">
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="selectAll('foundInRelease')"
-                      >
-                        <i class="fas fa-check-circle"></i>
-                        &nbsp;{{solutionScreenConstants.filterButtons[0]}}
-                      </button>
-
-                      <button
-                        style="fontSize:1vw;"
-                        type="button"
-                        class="all-success"
-                        @click="clearAll('foundInRelease')"
-                      >
-                        <i class="fas fa-minus-circle"></i>
-                        &nbsp; {{solutionScreenConstants.filterButtons[1]}}
-                      </button>
-                    </div>
-                  </div>
-                  <div style="paddingTop:0.5em">
-                    <Multiselect
-                      v-model="foundInReleaseValue"
-                      tag-placeholder="Add this as new tag"
-                      placeholder="Search Found In Release"
-                      label="name"
-                      track-by="name"
-                      :options="foundInReleaseOptions"
-                      :multiple="true"
-                      :taggable="true"
-                      :clear-on-select="false"
-                      :close-on-select="false"
-                      :hide-selected="true"
-                      @close="onAnalyze()"
-                    ></Multiselect>
-                  </div>
-                </div>-->
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-12">{{solutionScreenConstants.filterNames[7]}}</div>
@@ -995,28 +893,6 @@
                     ></date-picker>
                   </div>
                 </div>
-                <!-- <div class="col-lg-4">
-                  <div class="row">
-                    <div class="col-lg-9"></div>
-                    <div class="col-lg-3" style="marginTop:8%">
-                      <button
-                        v-if="searchFlag "
-                        style="fontSize:0.75vw;"
-                        type="button"
-                        class="btn btn-success btn-block pull-right"
-                        @click="onAnalyze()"
-                      >{{solutionScreenConstants.buttons[2]}}</button>
-                      <button
-                        v-if="!searchFlag "
-                        style="fontSize:0.75vw;"
-                        type="button"
-                        class="btn btn-success btn-block pull-right"
-                        @click="onAnalyze()"
-                        disabled
-                      >{{solutionScreenConstants.buttons[2]}}</button>
-                    </div>
-                  </div>
-                </div>-->
               </div>
             </div>
           </div>
@@ -1456,6 +1332,136 @@
         </div>
       </div>
 
+      <!--  Mop Flag-->
+
+      <div class="row" v-if="mopFlag" style="marginTop:-1.8%">
+        <div class="col-lg-12">
+          <div class="p-3 mb-3 bg-white">
+            <div class="row align">
+              <div class="col-md-12" align="center">
+                <table class="table responsive table-hover">
+                  <thead class="text-center">
+                    <th>File Name</th>
+
+                    <th>Title</th>
+
+                    <th style="width: 10%">Confidence (%)</th>
+                    <th>Confirm</th>
+                  </thead>
+                  <tbody class="text-center" v-if="mopData.length >0 && moreFlag5">
+                    <tr v-for="item in mopData" :key="item.index">
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.title}}</td>
+
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.probability}}</td>
+
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'mop')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'mop')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'mop')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <tbody class="text-center" v-if="mopData.length >0 && !moreFlag5">
+                    <tr v-for="item in filterDevTrackData(mopData)" :key="item.index">
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.title}}</td>
+
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'mop')"
+                      >{{item.probability}}</td>
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'mop')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'mop')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'mop')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  v-if="mopData.length>0 && !moreFlag5"
+                  class="text-centered in-progress"
+                  @click="showAllMop()"
+                >More</div>
+                <!-- <div v-if ="releaseNotesData.length>0 && moreFlag2" class="text-centered" @click="showAbove80Rl()">
+                  Hide
+                </div>-->
+                <div v-if="mopData.length==0" class="text-centered">No Data</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row" v-if="fsbFlag" style="marginTop:-1.8%">
         <div class="col-lg-12">
           <div class="p-3 mb-3 bg-white">
@@ -1673,6 +1679,7 @@ export default {
       releaseNotesData: [],
       fsbData: [],
       testPlanData: [],
+      mopData: [],
       errorFlag: false,
       tarFileName: "",
       filterSynonym: "",
@@ -1681,20 +1688,24 @@ export default {
       b2color: "",
       b3color: "",
       b4color: "",
+      b5color: "",
       format: "MM/DD/YYYY",
       textcolor1: "",
       textcolor2: "",
       textcolor3: "",
       textcolor4: "",
+      textcolor5: "",
       testPlanContent: "",
       moreFlag1: false,
       moreFlag2: false,
       moreFlag3: false,
       moreFlag4: false,
+      moreFlag5: false,
       currentUserEMailId: "",
       devTrackContent: "",
       releaseNoteContent: "",
       fsbContent: "",
+      mopContent: "",
       filterOptions: [],
       filterValue: [],
       tagValue: [],
@@ -1726,6 +1737,7 @@ export default {
       releaseNotesFlag: false,
       fsbFlag: false,
       testPlanFlag: false,
+      mopFlag: false,
       errorFlag: false,
       sdfcFlag: false,
       mlKeywords: "",
@@ -1771,6 +1783,8 @@ export default {
       this.textcolor3 = "";
       this.b4color = "";
       this.textcolor4 = "";
+      this.b5color = "";
+      this.textcolor5 = "";
     },
     stateChange() {
       this.state = !this.state;
@@ -1785,6 +1799,8 @@ export default {
         this.testPlanContent = this.testPlanData[index];
       } else if (type === "fsb") {
         this.fsbContent = this.fsbData[index];
+      } else if (type === "mop") {
+        this.mopContent = this.mopData[index];
       }
       this.patchFlag = true;
 
@@ -1798,6 +1814,7 @@ export default {
       this.releaseNotesFlag = true;
       this.testPlanFlag = false;
       this.fsbFlag = false;
+      this.mopFlag = false;
 
       if (this.releaseNotesData.length === 0) {
         this.releaseNotesData = [];
@@ -1810,6 +1827,8 @@ export default {
       this.textcolor3 = "";
       this.b4color = "";
       this.textcolor4 = "";
+      this.b5color = "";
+      this.textcolor5 = "";
     },
     showTestPlans() {
       console.log("Test Plan", this.testPlanData);
@@ -1817,6 +1836,7 @@ export default {
       this.releaseNotesFlag = false;
       this.testPlanFlag = true;
       this.fsbFlag = false;
+      this.mopFlag = false;
 
       if (this.testPlanData.length === 0) {
         this.testPlanData = [];
@@ -1829,6 +1849,8 @@ export default {
       this.textcolor3 = "";
       this.b4color = "#2a629a";
       this.textcolor4 = "#f8f9fa";
+      this.b5color = "";
+      this.textcolor5 = "";
     },
     showFSB() {
       console.log("this.sfs", this.fsb);
@@ -1836,13 +1858,35 @@ export default {
       this.releaseNotesFlag = false;
       this.testPlanFlag = false;
       this.fsbFlag = true;
-
+      this.mopFlag = false;
       this.b3color = "#2a629a";
       this.textcolor3 = "#f8f9fa";
       this.b2color = "";
       this.textcolor2 = "";
       if (this.fsbData.length === 0) {
         this.fsbData = [];
+      }
+      this.b1color = "";
+      this.textcolor1 = "";
+      this.b4color = "";
+      this.textcolor4 = "";
+      this.b5color = "";
+      this.textcolor5 = "";
+    },
+    showMOP() {
+      this.devTrackFlag = false;
+      this.releaseNotesFlag = false;
+      this.testPlanFlag = false;
+      this.fsbFlag = false;
+      this.mopFlag = true;
+      this.b5color = "#2a629a";
+      this.textcolor5 = "#f8f9fa";
+      this.b2color = "";
+      this.textcolor2 = "";
+      this.b3color = "";
+      this.textcolor3 = "";
+      if (this.mopData.length === 0) {
+        this.mopData = [];
       }
       this.b1color = "";
       this.textcolor1 = "";
@@ -2067,6 +2111,7 @@ export default {
             this.mlKeywords = "";
             this.filterSynonym = "";
             this.getTestPlan();
+            this.getMopPlan();
           });
         })
         .catch(handleError => {
@@ -2077,6 +2122,10 @@ export default {
     getTestPlan() {
       this.isLoading = true;
       this.testPlanData = [];
+      this.problemDescription = this.problemDescription.replace(
+        /^\s+|\s+$/g,
+        ""
+      );
       fetch(
         constant.ELKURL +
           "api/get_test_plan?search_param=" +
@@ -2125,6 +2174,57 @@ export default {
               }
 
               this.testPlanData.push(tempJson);
+              tempJson = {};
+            }
+            this.isLoading = false;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
+    getMopPlan() {
+      this.isLoading = true;
+      this.mopData = [];
+      this.problemDescription = this.problemDescription.replace(
+        /^\s+|\s+$/g,
+        ""
+      );
+      fetch(
+        constant.ELKURL + "api/get_mop?search_param=" + this.problemDescription,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            let array = [];
+            var upvotedUsers = [];
+            for (let i = 0; i < data.data.mop.length; i++) {
+              if (data.data.mop[i].upvotedUsers !== undefined) {
+                upvotedUsers = data.data.mop[i].upvotedUsers;
+              } else {
+                upvotedUsers = [];
+              }
+
+              let tempJson = {
+                introduction: data.data.mop[i].introduction,
+                index: i,
+                title: data.data.mop[i].title,
+                file_name: data.data.mop[i].file_name,
+                probability: data.data.mop[i].probability,
+                key: data.data.mop[i].key,
+                upvotedUsers: upvotedUsers
+              };
+              this.mopData.push(tempJson);
               tempJson = {};
             }
             this.isLoading = false;
@@ -2240,6 +2340,8 @@ export default {
         this.postTestPlanData(item);
       } else if (type === "fsb") {
         this.postFsbData(item);
+      } else if (type === "mop") {
+        this.postMopData(item);
       }
     },
     downVote(item, type) {
@@ -2255,6 +2357,8 @@ export default {
         this.postTestPlanData(item);
       } else if (type === "fsb") {
         this.postFsbData(item);
+      } else if (type === "mop") {
+        this.postMopData(item);
       }
     },
 
@@ -2353,6 +2457,27 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    postMopData(item) {
+      let formData = new FormData();
+      formData.append("data", JSON.stringify(item));
+      fetch(constant.ELKURL + "api/get_mop", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
     clearAll(param) {
       if (param === "product") {
         this.productValue = [];
@@ -2403,8 +2528,14 @@ export default {
     showAllTestPlan() {
       this.moreFlag4 = true;
     },
+    showAllMop() {
+      this.moreFlag5 = true;
+    },
     showAbove80TestPlan() {
       this.moreFlag4 = false;
+    },
+    showAbove80Mop() {
+      this.moreFlag5 = false;
     },
     validateProductSelect() {
       if (this.productValue.length !== 0) {
@@ -2578,7 +2709,9 @@ export default {
   background: transparent;
   transition: all 0.3s ease 0s;
 }
-
+.textWithSpace {
+  white-space: pre-wrap;
+}
 .all-success:hover {
   color: #fff;
   background: #169f85;
