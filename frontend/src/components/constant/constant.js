@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'local') {
   ELKURL = "https://infinera-elk.ekryp.com/"
 }
 
-export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction']
+export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction', 'knowledgeMap', 'internal']
 
 
 export const Dashboard = {
@@ -126,7 +126,7 @@ export const SolutionScreen = {
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
   tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Date Closed", "Confidence (%)", "Confirm"],
-  cardLables: ["Dev Track", "Release Notes", "FSB"],
+  cardLables: ["Dev Track", "Release Notes", "FSB", "Test Plan", "MOP"],
   logInfo: "Log Info",
   tags: "Tags",
   filterButtons: ["All", "Clear"],
@@ -147,6 +147,7 @@ export const Sidenav = {
   createAnalysisRequest: "Create Analysis Request",
   referenceData: "Reference Data",
   solutionPrediction: "Solution Prediction",
+  knowledgeMap: "Knowledge Map"
 
 
 }
@@ -158,6 +159,19 @@ export const editReferenceScreen = {
   exportButton: "Export",
   cancelButton: "Cancel",
   updateButton: "Update",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+export const testPlanScreen = {
+  breadcrumbs: ["Knowledge Map > Test Plan"],
+  PopUpHeaders: ["Test Plan Details"],
+  popUpFields: ["File Name :", "Objective :", "Procedure :", "Expected Result :", "Setup :"],
+  addButton: "Create Test Plan",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Test Plan Details",
   backButton: "Back",
   createButton: "Create"
 }

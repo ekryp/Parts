@@ -25,11 +25,13 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('priority_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('found_on_platform_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('date_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('check_title',required=False,help='check_title',location='args')
+        self.reqparse.add_argument('internal', required=True, location='args')
         super(DevTrackData, self).__init__()
 
     def get(self):
 
-        def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter):
+        def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,checkTitle):
             if not(isinstance(product_filter,list)):
                 product_filter=[]
             if not(isinstance(group_filter,list)):
@@ -52,10 +54,17 @@ class DevTrackData(Resource):
             URL=config.ELK_URI+"devtrack/_doc/_search"
             headers = {'Content-type': 'application/json'}
             if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)):
-                PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\", \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
-            else:
-                PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                print(check_title)
+                if(check_title == "true"):
+                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
+                else:
+                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
 
+            else:
+                if(check_title == "true"):
+                    PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
+                else:
+                    PARAMS="{\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
                     
@@ -197,10 +206,11 @@ class DevTrackData(Resource):
                 filterKeys=devtrackList[0]["_source"].keys()
                 for key in filterKeys:
                     filterList[key]=[]
-                print('Filter Keys',filterKeys)
+                
                 for doc in devtrackList:
                     for key in filterKeys:
-                        filterList[key].append(doc["_source"][key])
+                        if not (key == 'upvotedUsers' or key == 'probability' or key =='index' or key =='id'):
+                            filterList[key].append(doc["_source"][key])
                     
                 for key in filterKeys:
                         tempSet=list(set(filterList[key]))
@@ -233,9 +243,11 @@ class DevTrackData(Resource):
             data = es.search(index="release_notes", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
+           
             releaseNotes = []
             for doc in releaseNotesList:
                 data = doc["_source"]
+                data['key']=doc['_id'] 
                 data["probability"]= round((doc["_score"]/releaseNotesmaxScore)*100)
                 releaseNotes.append(data)
             return releaseNotes
@@ -251,6 +263,7 @@ class DevTrackData(Resource):
 
             for doc in fsbList:
                 data = doc["_source"]
+                data['key']=doc['_id']
                 data["probability"]= round((doc["_score"]/fsbmaxScore)*100)
                 fsb.append(data)
             return fsb
@@ -269,8 +282,9 @@ class DevTrackData(Resource):
             priority_filter = args.get('priority_filter')
             found_on_platform_filter = args.get('found_on_platform_filter')
             date_filter = args.get('date_filter')
-            date_filter
-            devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter)
+            check_title = args.get('check_title')
+            search_param=re.sub('[^A-Za-z0-9*. ]+', '', search_param)
+            devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,check_title)
             releaseNotes = releaseNotes(search_param)
             fsb = fsb(search_param)
             response= {
@@ -278,16 +292,46 @@ class DevTrackData(Resource):
                     "releaseNotes": [],
                     "fsb": []
                 }
-            response['devTrack'] = devTrack
-            response['releaseNotes'] = releaseNotes
-            response['fsb'] = fsb
-            
+
+            # For Internal Show All records ,For External Show Limited n conditions
+            # keep only matching issue id in releasenotes & devtrack or service account field in devtrack is nonempty
+            internal = True if args['internal'] =='true' else False
+            print("internal: {0}".format(internal))
+
+            if internal:
+                response['devTrack'] = devTrack
+                response['releaseNotes'] = releaseNotes
+                response['fsb'] = fsb
+            else:
+                devTrack1={}
+
+                # service account field in devtrack is nonempty
+                devTrack1['devtrack'] = [a for a in devTrack.get('devtrack') if not a.get('serviceAccount').isspace()]
+                devTrack1['devtrackFilters'] = devTrack.get('devtrackFilters')
+
+                # keep only matching issue id in releasenotes & devtrack
+                issueids_devTrack = [a.get('issueId') for a in devTrack.get('devtrack')]
+
+                issueids_releaseNotes = [a.get('issueId').strip() for a in releaseNotes]
+                common_ids = list(set(issueids_devTrack).intersection(issueids_releaseNotes))
+                
+
+                common_devTrack2= {}
+                common_devTrack2['devtrack'] = [a for a in devTrack.get('devtrack') if a.get('issueId') in common_ids]
+                # common_releaseNotes = [a for a in releaseNotes if a.get('issueId') in common_ids]
+
+                # Merge devTracks one with serviceAccount & common issueid with releaseNotes
+
+                devTrack1['devtrack'].extend(common_devTrack2.get('devtrack'))
+                response['devTrack'] = devTrack1
+                response['releaseNotes'] = releaseNotes
+                response['fsb'] = fsb
+
             return jsonify(data=response, http_status_code=200)
            
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=500)
-        
 
     def put(self):
         try:
