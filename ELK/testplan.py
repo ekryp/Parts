@@ -77,7 +77,7 @@ for each_record in final_items:
                 # If record field  have Expected Result, we capture procedure till start of Expected Result
                 elif is_result:
                     dd['Objective'] = each_record[objective_index + 1]
-                    dd['Procedure'] = each_record[procedure_index + 1:result_index]
+                    dd['Procedure'] = "\n".join(each_record[procedure_index + 1:result_index])
                     print(dd)
                 print('#' * 50)
                 response = requests.post(config.ELK_URI + "testplan/_doc", json=dd,
