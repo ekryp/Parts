@@ -71,7 +71,7 @@
             <p class="upload-text">{{sidanavConstants.solutionPrediction}}</p>
           </div>
         </li>
-         <hr v-if="knowledgeMapFlag">
+        <hr v-if="knowledgeMapFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="knowledgeMapFlag">
           <div class="text-center" v-if="!diasableFlag" @click="knowledgeMap()">
             <i class="fa fa-dice-d6" style="fontSize:2em"></i>
@@ -109,7 +109,7 @@ export default {
       referenceDataFlag: false,
       groupFlag: false,
       solutionFlag: false,
-      knowledgeMapFlag:false
+      knowledgeMapFlag: false
     };
   },
   created() {
@@ -117,6 +117,7 @@ export default {
     var groups = localStorage.getItem("groups");
     var groupList = groups.split(",");
     var permissions = authorization.split(",");
+    localStorage.setItem("createAnalysisFlag", false);
     localStorage.setItem("internalFlag", false);
     console.log(constant.PERMISSIONS[0]);
     for (var i = 0; i < groupList.length; i++) {
@@ -134,6 +135,8 @@ export default {
         this.dashboardFlag = true;
       } else if (permissions[i] === constant.PERMISSIONS[1]) {
         this.createAnalysisFlag = true;
+
+        localStorage.setItem("createAnalysisFlag", true);
       } else if (permissions[i] === constant.PERMISSIONS[2]) {
         this.analysisFlag = true;
       } else if (
@@ -143,8 +146,7 @@ export default {
         this.referenceDataFlag = true;
       } else if (permissions[i] === constant.PERMISSIONS[8]) {
         this.solutionFlag = true;
-      }
-      else if (permissions[i] === constant.PERMISSIONS[9]) {
+      } else if (permissions[i] === constant.PERMISSIONS[9]) {
         this.knowledgeMapFlag = true;
       }
       if (permissions[i] === "EditReference") {
@@ -180,8 +182,7 @@ export default {
     mockup() {
       router.push("/solution");
     },
-    knowledgeMap()
-    {
+    knowledgeMap() {
       router.push("/knowledge");
     }
   }

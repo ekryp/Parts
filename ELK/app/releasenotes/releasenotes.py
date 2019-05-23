@@ -37,6 +37,9 @@ class ReleaseNotes(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
 
+    def get(self):
+        search_param = "*"+args['search_param']+"*"
+        search_param=re.sub('[^A-Za-z0-9*. ]+', '', search_param)
     
     def options(self):
          pass

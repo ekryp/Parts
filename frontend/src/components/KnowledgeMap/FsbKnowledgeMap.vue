@@ -5,110 +5,6 @@
 
     <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
 
-    <vudal name="myModal">
-      <div class="header">
-        <i class="close icon"></i>
-        <h4>{{testPlanConstants.PopUpHeaders[0]}}</h4>
-      </div>
-      <div class="content">
-        <div class="form-group text-left">
-          <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
-          <div v-if="editFlag">
-            <br>
-            <div class="row">
-              <div class="col-lg-5">
-                <label class="labelweight">{{testPlanConstants.popUpFields[0]}}</label>
-              </div>
-              <div class="col-lg-7">
-                <span>{{testPlanContent.file_name}}</span>
-              </div>
-            </div>
-            <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[1]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.Objective}}</span>
-            <br>
-            <div>
-              <label class="labelweight">{{testPlanConstants.popUpFields[2]}}</label>
-
-              <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
-                <br>
-                {{item}}
-              </span>
-            </div>
-          </div>
-          <div v-if="addFlag">
-            <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">File Name :</label>
-              </div>
-              <div class="col-lg-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.file_name"
-                  :placeholder="testPlanPlaceHolders.fileNamePlaceHolder"
-                >
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Objective :</label>
-              </div>
-              <div class="col-lg-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.Objective"
-                  :placeholder="testPlanPlaceHolders.objectivePlaceHolder"
-                >
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Procedure :</label>
-              </div>
-              <div class="col-lg-6">
-                <!-- <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.procedure"
-                  :placeholder="testPlan.procedurePlaceHolder"
-                >-->
-                <b-form-textarea
-                  id="textarea"
-                  v-model="testPlan.Procedure"
-                  :placeholder="testPlanPlaceHolders.procedurePlaceHolder"
-                  rows="3"
-                  max-rows="6"
-                ></b-form-textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="actions">
-        <button
-          v-if="addFlag"
-          type="button"
-          class="btn btn-success"
-          v-tooltip.top.hover.focus="'Click to Create'"
-          @click="addTestPlan()"
-        >Create</button>
-        <button v-if="editFlag" type="button" class="btn btn-success" @click="hideEntry()">Ok</button>
-
-        <button
-          v-if="addFlag"
-          type="button"
-          class="btn btn-danger"
-          @click="hideEntry()"
-          v-tooltip.top.hover.focus="'Cancel the option'"
-        >Cancel</button>
-      </div>
-    </vudal>
-
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
@@ -211,7 +107,7 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getTestPlan();
+    this.getFSB();
   },
   data() {
     return {
@@ -249,11 +145,6 @@ export default {
         {
           prop: "title",
           label: "Title"
-        },
-        ,
-        {
-          prop: "probability",
-          label: "Confidence"
         }
       ]
     };
@@ -262,18 +153,14 @@ export default {
     hideEntry() {
       this.$modals.myModal.$hide();
     },
-    showAddRole() {
-      this.editFlag = false;
-      this.addFlag = true;
-      this.$modals.myModal.$show();
-    },
+
     showEditRole(user) {
       this.editFlag = true;
       this.addFlag = false;
       this.testPlanContent = user;
       this.$modals.myModal.$show();
     },
-    getTestPlan() {
+    getFSB() {
       this.isLoading = true;
       fetch(
         constant.ELKURL + "api/get_test_plan?search_param=" + this.filterParam,
@@ -300,34 +187,6 @@ export default {
               });
             }
             this.isLoading = false;
-          });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
-    },
-    addTestPlan() {
-      let formData = new FormData();
-      formData.append(
-        "data",
-        JSON.stringify({
-          file_name: this.testPlan.file_name,
-          Objective: this.testPlan.Objective,
-          Procedure: this.testPlan.Procedure
-        })
-      );
-      fetch(constant.ELKURL + "api/get_test_plan", {
-        method: "PUT",
-        body: formData
-      })
-        .then(response => {
-          response.text().then(text => {
-            const data = text && JSON.parse(text);
-            if (data.code === "token_expired") {
-              this.logout();
-            }
-            if (data.http_status_code === 200) {
-            }
           });
         })
         .catch(handleError => {

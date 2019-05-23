@@ -342,7 +342,9 @@
           <br>
           <span class="textOverlay">{{releaseNoteContent.description}}</span>
           <br>
-          <div v-if="releaseNoteContent.workaround !==' ' ">
+          <div
+            v-if="(releaseNoteContent.workaround !==' ') && (releaseNoteContent.workaround !=='') "
+          >
             <label class="labelweight">Workaround :</label>
             <br>
             <span class="textOverlay">{{releaseNoteContent.workaround}}</span>
@@ -368,7 +370,10 @@
           <div>
             <label class="labelweight">Procedure :</label>
 
-            <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">{{item}}</span>
+            <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
+              {{item}}
+              <br>
+            </span>
           </div>
         </div>
 
@@ -1787,6 +1792,7 @@ export default {
       this.devTrackFlag = true;
       this.releaseNotesFlag = false;
       this.testPlanFlag = false;
+      this.mopFlag = false;
       this.fsbFlag = false;
       this.b1color = "#2a629a";
       this.textcolor1 = "#f8f9fa";
@@ -2056,7 +2062,7 @@ export default {
                   progressStatus: data.data.devTrack.devtrack[i].progressStatus,
                   reportingCustomer:
                     data.data.devTrack.devtrack[i].reportingCustomer,
-                    priority:data.data.devTrack.devtrack[i].priority,
+                  priority: data.data.devTrack.devtrack[i].priority,
                   resolution: data.data.devTrack.devtrack[i].resolution,
                   serviceAccount: data.data.devTrack.devtrack[i].serviceAccount,
                   submittedBy: data.data.devTrack.devtrack[i].submittedBy,
