@@ -203,23 +203,24 @@ class DevTrackData(Resource):
                 devtrackList = data['hits']['hits']
                 devTrack = []
                 filterList={}
-                filterKeys=devtrackList[0]["_source"].keys()
-                for key in filterKeys:
-                    filterList[key]=[]
-                
-                for doc in devtrackList:
+                if(len(devtrackList)>0):
+                    filterKeys=devtrackList[0]["_source"].keys()
                     for key in filterKeys:
-                        
-                        # print('value ----->',doc["_source"][key])
-                        if not (key == 'upvotedUsers' or key == 'probability' or key =='index' or key =='id' or key == 'timestamp' or key == 'hwPON' or key == 'problemDescriptionImpacted'):
-                            filterList[key].append(doc["_source"][key])
-                    
-                for key in filterKeys:
-                        tempSet=list(set(filterList[key]))
                         filterList[key]=[]
-                        for temp in tempSet:
-                            if not (temp == ""):
-                                filterList[key].append({"name":temp})
+                    
+                    for doc in devtrackList:
+                        for key in filterKeys:
+                            
+                            # print('value ----->',doc["_source"][key])
+                            if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed'):
+                                filterList[key].append(doc["_source"][key])
+                        
+                    for key in filterKeys:
+                            tempSet=list(set(filterList[key]))
+                            filterList[key]=[]
+                            for temp in tempSet:
+                                if not (temp == ""):
+                                    filterList[key].append({"name":temp})
 
                 for doc in devtrackList:
                     data = doc["_source"]

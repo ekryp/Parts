@@ -117,6 +117,14 @@ export const ReferenceViewScreen = {
     "Download Sample_Customer.csv"
   ]
 }
+
+
+export const KnowledgeMapScreen = {
+  docNames: ["Release Notes", "FSB", "Tech Notes", "Test Plan", "MOP"],
+  breadcrumb: "Knowledge Map",
+  tableHeader: "Knowledge Map Information :",
+}
+
 export const SolutionScreen = {
   breadcrumb: "Solution",
   modalHeader: "Patches",
@@ -126,11 +134,11 @@ export const SolutionScreen = {
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
   tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Date Closed", "Confidence (%)", "Confirm"],
-  cardLables: ["Dev Track", "Release Notes", "FSB", "Test Plan", "MOP"],
+  cardLables: ["Dev Track", "Release Notes", "FSB", "Test Plan", "MOP", "Tech Notes"],
   logInfo: "Log Info",
   tags: "Tags",
   filterButtons: ["All", "Clear"],
-  filterNames: ["Product", "Group", " Severity", "Priority", "Found on Platform", "Fixed in Release", "Found in Release", "Date Closed"],
+  filterNames: ["Product", "Group", " Severity", "Priority", "Found on Platform", "Fixed in Release", "Found in Release", "Date Closed On or Before"],
   tarBall: "TAR Ball",
   labAvailablity: "Lab Availablity",
   buttons: ["Predict", "Reserve", "Refine"],

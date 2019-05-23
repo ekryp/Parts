@@ -37,6 +37,36 @@ class ReleaseNotes(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
 
-    
+    def get(self):
+        args = self.reqparse.parse_args()
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        search_param = "*"+args['search_param']+"*"
+        search_param=re.sub('[^A-Za-z0-9*. ]+', '', search_param)
+        print("Release Notes  Params : ", search_param)
+        es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
+
+        if (search_param != ""):
+            data = es.search(index="release_notes", body={"from" : 0, "size" : 800,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
+        else:
+            # data = requests.get(config.ELK_URI+"testplan/_doc/_search",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
+            # data = data.json()
+            data = es.search(index="release_notes", body={"from" : 0, "size" : 800,"query": { "match_all": {}}})
+        
+        releaseNotesmaxScore = data['hits']['max_score']
+        releaseNotesList = data['hits']['hits']
+        
+        releaseNotes = []
+        for doc in releaseNotesList:
+            data = doc["_source"]
+            data['key']=doc['_id'] 
+            data["probability"]= round((doc["_score"]/releaseNotesmaxScore)*100)
+            releaseNotes.append(data)
+        response = {"releaseNotes": [] }
+
+        response['releaseNotes'] = releaseNotes
+        return jsonify(data=response, http_status_code=200)
+
+
+
     def options(self):
          pass

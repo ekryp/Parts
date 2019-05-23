@@ -5,7 +5,7 @@
 
     <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
 
-    <vudal name="myModal">
+    <!-- <vudal name="myModal">
       <div class="header">
         <div class="row">
           <div class="col-lg-11">
@@ -21,40 +21,40 @@
           <br>
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">FSB Number</label>
+              <label class="labelweight">Title :</label>
             </div>
             <div class="col-lg-7">
-              <span>{{fsbContent.FSBNumber}}</span>
+              <span>{{releaseNoteContent.file_name}}</span>
             </div>
           </div>
           <br>
           <label class="labelweight">Description :</label>
           <br>
-          <span class="textOverlay">{{fsbContent.description}}</span>
+          <span class="textOverlay">{{releaseNoteContent.description}}</span>
           <br>
-          <label class="labelweight">Symptoms :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.symptoms}}</span>
-          <br>
-          <label class="labelweight">Root Cause :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.rootCause}}</span>
+          <div
+            v-if="(releaseNoteContent.workaround !==' ') && (releaseNoteContent.workaround !=='') "
+          >
+            <label class="labelweight">Workaround :</label>
+            <br>
+            <span class="textOverlay">{{releaseNoteContent.workaround}}</span>
+          </div>
         </div>
       </div>
       <div class="actions">
         <button type="button" class="btn btn-success" @click="hideEntry()">OK</button>
       </div>
-    </vudal>
+    </vudal>-->
 
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">Knowledge Map > FSB</span>
+          <span style="font-size: 14px;">Knowledge Map > Tech Notes</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>FSB</h3>
+          <h3>Tech Notes</h3>
         </div>
       </div>
       <br>
@@ -62,18 +62,18 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-3 mb-5 bg-white">
-            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">FSB Details</h5>
+            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">Tech Notes Details</h5>
             <br>
             <div class="row">
               <div class="col-lg-12">
                 <el-col :span="6" class="float-right">
-                  <el-input placeholder="Search " v-model="filterParam" @change="getFSB()"></el-input>
+                  <el-input placeholder="Search " v-model="filterParam" @change="getTechNotes()"></el-input>
                 </el-col>
               </div>
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allFsb">
+              <data-tables :data="allTechNotes">
                 <el-table-column
                   v-for="title in titles"
                   :prop="title.prop"
@@ -81,11 +81,11 @@
                   :key="title.prop"
                   sortable="custom"
                 ></el-table-column>
-                <el-table-column align="right">
+                <!-- <el-table-column align="right">
                   <template slot-scope="scope">
                     <el-button size="mini" @click="showEditRole(scope.row)">View</el-button>
                   </template>
-                </el-table-column>
+                </el-table-column>-->
               </data-tables>
             </div>
           </div>
@@ -141,7 +141,7 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getFSB();
+    this.getTechNotes();
   },
   data() {
     return {
@@ -149,11 +149,10 @@ export default {
       fullPage: true,
       testPlanConstants: constant.testPlanScreen,
       filterParam: "",
-      allFsb: [],
-      fsbContent: "",
+      allTechNotes: [],
+      techNoteContent: "",
       addFlag: false,
       editFlag: false,
-      fsbData: [],
       testPlanPlaceHolders: {
         fileNamePlaceHolder: "",
         objectivePlaceHolder: "",
@@ -161,20 +160,16 @@ export default {
       },
       titles: [
         {
-          prop: "FSBNumber",
-          label: "FSB Number"
-        },
-        {
-          prop: "issueId",
-          label: "Issue ID"
-        },
-        {
           prop: "file_name",
           label: "File Name"
         },
         {
-          prop: "title",
-          label: "Title"
+          prop: "description",
+          label: "Description"
+        },
+        {
+          prop: "release_product_affected",
+          label: "Release Product Affected"
         }
       ]
     };
@@ -187,18 +182,22 @@ export default {
     showEditRole(user) {
       this.editFlag = true;
       this.addFlag = false;
-      this.fsbContent = user;
+      this.techNoteContent = user;
       this.$modals.myModal.$show();
     },
-    getFSB() {
+    getTechNotes() {
       this.isLoading = true;
-      this.allFsb = [];
-      fetch(constant.ELKURL + "api/get_fsb?search_param=" + this.filterParam, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      this.allTechNotes = [];
+      fetch(
+        constant.ELKURL + "api/get_technotes?search_param=" + this.filterParam,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      })
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -207,22 +206,28 @@ export default {
             }
             let array = [];
 
-            for (var k = 0; k < data.data.fsb.length; k++) {
-              this.allFsb.push({
-                FSBNumber: data.data.fsb[k].FSBNumber,
-                index: k,
-                dateCreated: data.data.fsb[k].dateCreated,
-                dateRevised: data.data.fsb[k].dateRevised,
-                issueId: data.data.fsb[k].issueId,
-                description: data.data.fsb[k].description,
-                file_name: data.data.fsb[k].file_name,
-                probability: data.data.fsb[k].probability,
-                rootCause: data.data.fsb[k].rootCause,
-                symptoms: data.data.fsb[k].symptoms,
-                title: data.data.fsb[k].title,
-                key: data.data.fsb[k].key
-              });
+            for (var j = 0; j < data.data.technotes.length; j++) {
+              let tempJson = {
+                description: data.data.technotes[j].description,
+                index: j,
+                file_name: data.data.technotes[j].file_name,
+                issueId: data.data.technotes[j].issueId,
+                probability: data.data.technotes[j].probability,
+                key: data.data.technotes[j].key
+              };
+              if (
+                typeof data.data.technotes[j].release_product_affected ===
+                "undefined"
+              ) {
+                tempJson["release_product_affected"] = "NA";
+              } else {
+                tempJson["release_product_affected"] =
+                  data.data.technotes[j].release_product_affected;
+              }
+              this.allTechNotes.push(tempJson);
+              tempJson = {};
             }
+
             this.isLoading = false;
           });
         })
