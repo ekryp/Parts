@@ -21,24 +21,23 @@
           <br>
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">FSB Number</label>
+              <label class="labelweight">File Name :</label>
             </div>
             <div class="col-lg-7">
-              <span>{{fsbContent.FSBNumber}}</span>
+              <span>{{mopContent.file_name}}</span>
             </div>
           </div>
           <br>
-          <label class="labelweight">Description :</label>
+          <label class="labelweight">Title :</label>
           <br>
-          <span class="textOverlay">{{fsbContent.description}}</span>
+          <span class="textOverlay">{{mopContent.title}}</span>
           <br>
-          <label class="labelweight">Symptoms :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.symptoms}}</span>
-          <br>
-          <label class="labelweight">Root Cause :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.rootCause}}</span>
+
+          <div>
+            <label class="labelweight">Introduction :</label>
+
+            <span class="textOverlay">{{mopContent.introduction}}</span>
+          </div>
         </div>
       </div>
       <div class="actions">
@@ -49,12 +48,12 @@
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">Knowledge Map > FSB</span>
+          <span style="font-size: 14px;">Knowledge Map > MOP</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>FSB</h3>
+          <h3>MOP</h3>
         </div>
       </div>
       <br>
@@ -62,18 +61,18 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-3 mb-5 bg-white">
-            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">FSB Details</h5>
+            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">MOP Details</h5>
             <br>
             <div class="row">
               <div class="col-lg-12">
                 <el-col :span="6" class="float-right">
-                  <el-input placeholder="Search " v-model="filterParam" @change="getFSB()"></el-input>
+                  <el-input placeholder="Search " v-model="filterParam" @change="getMop()"></el-input>
                 </el-col>
               </div>
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allFsb">
+              <data-tables :data="allMop">
                 <el-table-column
                   v-for="title in titles"
                   :prop="title.prop"
@@ -141,7 +140,7 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getFSB();
+    this.getMop();
   },
   data() {
     return {
@@ -149,25 +148,16 @@ export default {
       fullPage: true,
       testPlanConstants: constant.testPlanScreen,
       filterParam: "",
-      allFsb: [],
-      fsbContent: "",
+      allMop: [],
+      mopContent: "",
       addFlag: false,
       editFlag: false,
-      fsbData: [],
       testPlanPlaceHolders: {
         fileNamePlaceHolder: "",
         objectivePlaceHolder: "",
         procedurePlaceHolder: ""
       },
       titles: [
-        {
-          prop: "FSBNumber",
-          label: "FSB Number"
-        },
-        {
-          prop: "issueId",
-          label: "Issue ID"
-        },
         {
           prop: "file_name",
           label: "File Name"
@@ -187,13 +177,13 @@ export default {
     showEditRole(user) {
       this.editFlag = true;
       this.addFlag = false;
-      this.fsbContent = user;
+      this.mopContent = user;
       this.$modals.myModal.$show();
     },
-    getFSB() {
+    getMop() {
       this.isLoading = true;
-      this.allFsb = [];
-      fetch(constant.ELKURL + "api/get_fsb?search_param=" + this.filterParam, {
+      this.allMop = [];
+      fetch(constant.ELKURL + "api/get_mop?search_param=" + this.filterParam, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -207,22 +197,19 @@ export default {
             }
             let array = [];
 
-            for (var k = 0; k < data.data.fsb.length; k++) {
-              this.allFsb.push({
-                FSBNumber: data.data.fsb[k].FSBNumber,
-                index: k,
-                dateCreated: data.data.fsb[k].dateCreated,
-                dateRevised: data.data.fsb[k].dateRevised,
-                issueId: data.data.fsb[k].issueId,
-                description: data.data.fsb[k].description,
-                file_name: data.data.fsb[k].file_name,
-                probability: data.data.fsb[k].probability,
-                rootCause: data.data.fsb[k].rootCause,
-                symptoms: data.data.fsb[k].symptoms,
-                title: data.data.fsb[k].title,
-                key: data.data.fsb[k].key
-              });
+            for (let i = 0; i < data.data.mop.length; i++) {
+              let tempJson = {
+                introduction: data.data.mop[i].introduction,
+                index: i,
+                title: data.data.mop[i].title,
+                file_name: data.data.mop[i].file_name,
+                probability: data.data.mop[i].probability,
+                key: data.data.mop[i].key
+              };
+              this.allMop.push(tempJson);
+              tempJson = {};
             }
+
             this.isLoading = false;
           });
         })

@@ -34,10 +34,9 @@
             <br>
             <div>
               <label class="labelweight">{{testPlanConstants.popUpFields[2]}}</label>
-              <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
-                <br>
-                {{item}}
-              </span>
+              <br>
+              <span class="textOverlay">{{testPlanContent.Procedure}}</span>
+              
             </div>
             <br>
             <label class="labelweight">{{testPlanConstants.popUpFields[3]}}</label>
@@ -397,7 +396,7 @@ console.log('Test Plan Dat',this.testPlanContent.key);
       formData.append("data", JSON.stringify({
           file_name: this.testPlan.file_name,
           Objective: this.testPlan.Objective,
-          Procedure: [this.testPlan.Procedure],
+          Procedure: this.testPlan.Procedure,
           setup:this.testPlan.setup,
           key:this.testPlanContent.key,
           expectedResult:this.testPlan.expectedResult
@@ -413,8 +412,21 @@ console.log('Test Plan Dat',this.testPlanContent.key);
               this.logout();
             }
             if (data.http_status_code === 200) {
+               this.isLoading = false;
+              this.filterParam = "";
+              this.$modals.myModal.$hide();
+               swal({
+                    title: "Success",
+                    text: "Test Plan Details Updated",
+                    icon: "success"
+                  }).then(ok => {
+                    if (ok) {
+                       this.getTestPlan();
+                    }
+                  });
             }
-            this.getTestPlan();
+            
+            
           });
         })
         .catch(handleError => {
@@ -429,7 +441,7 @@ console.log('Test Plan Dat',this.testPlanContent.key);
         JSON.stringify({
           file_name: this.testPlan.file_name,
           Objective: this.testPlan.Objective,
-          Procedure: [this.testPlan.Procedure],
+          Procedure: this.testPlan.Procedure,
           setup:this.testPlan.setup,
           expectedResult:this.testPlan.expectedResult
         })
@@ -447,13 +459,19 @@ console.log('Test Plan Dat',this.testPlanContent.key);
             
             if (data.http_status_code === 200) {
               this.isLoading = false;
-              swal({
-                  title: "Success",
-                  text: "Test Plan Added Successfully",
-                  icon: "success"
-                });
-                this.getTestPlan();
+              this.filterParam = "";
               this.$modals.myModal.$hide();
+               swal({
+                    title: "Success",
+                    text: "Test Plan Details Added",
+                    icon: "success"
+                  }).then(ok => {
+                    if (ok) {
+                       this.getTestPlan();
+                    }
+                  });
+                
+              
             }
           });
         })

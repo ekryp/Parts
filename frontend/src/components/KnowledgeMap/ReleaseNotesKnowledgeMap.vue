@@ -21,24 +21,24 @@
           <br>
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">FSB Number</label>
+              <label class="labelweight">Title :</label>
             </div>
             <div class="col-lg-7">
-              <span>{{fsbContent.FSBNumber}}</span>
+              <span>{{releaseNoteContent.file_name}}</span>
             </div>
           </div>
           <br>
           <label class="labelweight">Description :</label>
           <br>
-          <span class="textOverlay">{{fsbContent.description}}</span>
+          <span class="textOverlay">{{releaseNoteContent.description}}</span>
           <br>
-          <label class="labelweight">Symptoms :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.symptoms}}</span>
-          <br>
-          <label class="labelweight">Root Cause :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.rootCause}}</span>
+          <div
+            v-if="(releaseNoteContent.workaround !==' ') && (releaseNoteContent.workaround !=='') "
+          >
+            <label class="labelweight">Workaround :</label>
+            <br>
+            <span class="textOverlay">{{releaseNoteContent.workaround}}</span>
+          </div>
         </div>
       </div>
       <div class="actions">
@@ -49,12 +49,12 @@
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">Knowledge Map > FSB</span>
+          <span style="font-size: 14px;">Knowledge Map > Release Notes</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>FSB</h3>
+          <h3>Release Notes</h3>
         </div>
       </div>
       <br>
@@ -62,18 +62,18 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-3 mb-5 bg-white">
-            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">FSB Details</h5>
+            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">Release Notes Details</h5>
             <br>
             <div class="row">
               <div class="col-lg-12">
                 <el-col :span="6" class="float-right">
-                  <el-input placeholder="Search " v-model="filterParam" @change="getFSB()"></el-input>
+                  <el-input placeholder="Search " v-model="filterParam" @change="getReleaseNotes()"></el-input>
                 </el-col>
               </div>
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allFsb">
+              <data-tables :data="allReleaseNotes">
                 <el-table-column
                   v-for="title in titles"
                   :prop="title.prop"
@@ -141,7 +141,7 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getFSB();
+    this.getReleaseNotes();
   },
   data() {
     return {
@@ -149,11 +149,10 @@ export default {
       fullPage: true,
       testPlanConstants: constant.testPlanScreen,
       filterParam: "",
-      allFsb: [],
-      fsbContent: "",
+      allReleaseNotes: [],
+      releaseNoteContent: "",
       addFlag: false,
       editFlag: false,
-      fsbData: [],
       testPlanPlaceHolders: {
         fileNamePlaceHolder: "",
         objectivePlaceHolder: "",
@@ -161,20 +160,17 @@ export default {
       },
       titles: [
         {
-          prop: "FSBNumber",
-          label: "FSB Number"
-        },
-        {
           prop: "issueId",
           label: "Issue ID"
         },
+
         {
           prop: "file_name",
           label: "File Name"
         },
         {
-          prop: "title",
-          label: "Title"
+          prop: "severity",
+          label: "Severity"
         }
       ]
     };
@@ -187,18 +183,24 @@ export default {
     showEditRole(user) {
       this.editFlag = true;
       this.addFlag = false;
-      this.fsbContent = user;
+      this.releaseNoteContent = user;
       this.$modals.myModal.$show();
     },
-    getFSB() {
+    getReleaseNotes() {
       this.isLoading = true;
-      this.allFsb = [];
-      fetch(constant.ELKURL + "api/get_fsb?search_param=" + this.filterParam, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      this.allReleaseNotes = [];
+      fetch(
+        constant.ELKURL +
+          "api/get_release_notes?search_param=" +
+          this.filterParam,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      })
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -207,22 +209,19 @@ export default {
             }
             let array = [];
 
-            for (var k = 0; k < data.data.fsb.length; k++) {
-              this.allFsb.push({
-                FSBNumber: data.data.fsb[k].FSBNumber,
-                index: k,
-                dateCreated: data.data.fsb[k].dateCreated,
-                dateRevised: data.data.fsb[k].dateRevised,
-                issueId: data.data.fsb[k].issueId,
-                description: data.data.fsb[k].description,
-                file_name: data.data.fsb[k].file_name,
-                probability: data.data.fsb[k].probability,
-                rootCause: data.data.fsb[k].rootCause,
-                symptoms: data.data.fsb[k].symptoms,
-                title: data.data.fsb[k].title,
-                key: data.data.fsb[k].key
+            for (var j = 0; j < data.data.releaseNotes.length; j++) {
+              this.allReleaseNotes.push({
+                description: data.data.releaseNotes[j].description,
+                index: j,
+                file_name: data.data.releaseNotes[j].file_name,
+                issueId: data.data.releaseNotes[j].issueId,
+                probability: data.data.releaseNotes[j].probability,
+                severity: data.data.releaseNotes[j].severity,
+                workaround: data.data.releaseNotes[j].workaround,
+                key: data.data.releaseNotes[j].key
               });
             }
+
             this.isLoading = false;
           });
         })

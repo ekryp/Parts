@@ -20,7 +20,10 @@ import SolutionScreen from '@/components/MockUp/SolutionScreen'
 import MockUpNew from '@/components/MockUp/MockUpNew'
 import TestPlanKnowledgeMap from '@/components/KnowledgeMap/TestPlanKnowledgeMap'
 import KnowledgeMap from '@/components/KnowledgeMap/KnowledgeMap'
-
+import FsbKnowledgeMap from '@/components/KnowledgeMap/FsbKnowledgeMap'
+import MopKnowledgeMap from '@/components/KnowledgeMap/MopKnowledgeMap'
+import ReleaseNotesKnowledgeMap from '@/components/KnowledgeMap/ReleaseNotesKnowledgeMap'
+import TechNotesKnowledgeMap from '@/components/KnowledgeMap/TechNotesKnowledgeMap'
 Vue.use(Router)
 
 export default new Router({
@@ -159,6 +162,38 @@ export default new Router({
       path: '/knowledge/testplan',
       name: 'KnowledgeMap',
       component: TestPlanKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/fsb',
+      name: 'FSBKnowledgeMap',
+      component: FsbKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/releasenotes',
+      name: 'ReleaseNotesKnowledgeMap',
+      component: ReleaseNotesKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/mop',
+      name: 'MopKnowledgeMap',
+      component: MopKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/technotes',
+      name: 'TechNotesKnowledgeMap',
+      component: TechNotesKnowledgeMap,
       meta: {
         permission: 'knowledgeMap'
       }
