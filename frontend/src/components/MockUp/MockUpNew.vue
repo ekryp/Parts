@@ -342,7 +342,9 @@
           <br>
           <span class="textOverlay">{{releaseNoteContent.description}}</span>
           <br>
-          <div v-if="releaseNoteContent.workaround !==' ' ">
+          <div
+            v-if="(releaseNoteContent.workaround !==' ') && (releaseNoteContent.workaround !=='') "
+          >
             <label class="labelweight">Workaround :</label>
             <br>
             <span class="textOverlay">{{releaseNoteContent.workaround}}</span>
@@ -367,8 +369,12 @@
           <br>
           <div>
             <label class="labelweight">Procedure :</label>
-
-            <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">{{item}}</span>
+            <br>
+            <span class="textOverlay">{{testPlanContent.Procedure}}</span>
+            <!-- <span v-for="item in testPlanContent.Procedure" :key="item" class="textOverlay">
+              {{item}}
+              <br>
+            </span>-->
           </div>
         </div>
 
@@ -571,7 +577,7 @@
                 </div>
               </div>
             </div>-->
-            <div class="col-lg-1"></div>
+
             <div class="col-lg-2">
               <div
                 class="card shadow p-2 mb-5 rounded"
@@ -648,7 +654,21 @@
               </div>
             </div>
 
-            <div class="col-lg-1"></div>
+            <div class="col-lg-2">
+              <div
+                class="card shadow p-2 mb-5 rounded"
+                v-bind:style="{ backgroundColor: b6color , color:textcolor6}"
+              >
+                <div
+                  class="card-body in-progress labelweight cardFontChange"
+                  v-bind:style="{ backgroundColor: b6color }"
+                  @click="showTechNotes()"
+                >
+                  <span class="float-left">{{solutionScreenConstants.cardLables[5]}}</span>
+                  <span class="float-right">{{this.techNotesData.length}}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1478,6 +1498,136 @@
         </div>
       </div>
 
+      <!--  Tech Notes Flag-->
+
+      <div class="row" v-if="techNotesFlag" style="marginTop:-1.8%">
+        <div class="col-lg-12">
+          <div class="p-3 mb-3 bg-white">
+            <div class="row align">
+              <div class="col-md-12" align="center">
+                <table class="table responsive table-hover">
+                  <thead class="text-center">
+                    <th>File Name</th>
+
+                    <th>Description</th>
+
+                    <th style="width: 10%">Confidence (%)</th>
+                    <th>Confirm</th>
+                  </thead>
+                  <tbody class="text-center" v-if="techNotesData.length >0 && moreFlag6">
+                    <tr v-for="item in techNotesData" :key="item.index">
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'techNotes')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'techNotes')"
+                      >{{item.description}}</td>
+
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'techNotes')"
+                      >{{item.probability}}</td>
+
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'techNotes')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'techNotes')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'techNotes')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <tbody class="text-center" v-if="techNotesData.length >0 && !moreFlag6">
+                    <tr v-for="item in filterDevTrackData(techNotesData)" :key="item.index">
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'techNotes')"
+                      >{{item.file_name}}</td>
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'techNotes')"
+                      >{{item.description}}</td>
+
+                      <td
+                        class="in-progress"
+                        @click="showPatchModal(item.index,'techNotes')"
+                      >{{item.probability}}</td>
+                      <td v-if="item.upvotedUsers.length>0">
+                        <span
+                          v-for="(userFlag, index)  in  getCurrentUser(item.upvotedUsers)"
+                          :key="index"
+                        >
+                          <!-- <p>SSDSD {{userFlag}}</p> -->
+                          <i
+                            v-if="userFlag !== currentUserEMailId"
+                            @click="updatedVote(item,'techNotes')"
+                            class="far fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          <i
+                            v-if="userFlag === currentUserEMailId"
+                            @click="downVote(item,'techNotes')"
+                            class="fas fa-thumbs-up"
+                            style="cursor:pointer;color:#293f55;"
+                          ></i>
+                          &nbsp;{{item.upvotedUsers.length}}
+                        </span>
+                      </td>
+
+                      <td v-else>
+                        <i
+                          class="far fa-thumbs-up"
+                          @click="updatedVote(item,'techNotes')"
+                          style="cursor:pointer;color:#293f55;"
+                        ></i>
+                        &nbsp;{{item.upvotedUsers.length}}
+                        <!-- <i  v-if="item.voteFlag" @click="downVote(item)" class="fas fa-thumbs-up " style="cursor:pointer;color:#293f55;"></i> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  v-if="techNotesData.length>0 && !moreFlag6"
+                  class="text-centered in-progress"
+                  @click="showAllTechNotes()"
+                >More</div>
+                <!-- <div v-if ="releaseNotesData.length>0 && moreFlag2" class="text-centered" @click="showAbove80Rl()">
+                  Hide
+                </div>-->
+                <div v-if="techNotesData.length==0" class="text-centered">No Data</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row" v-if="fsbFlag" style="marginTop:-1.8%">
         <div class="col-lg-12">
           <div class="p-3 mb-3 bg-white">
@@ -1694,6 +1844,7 @@ export default {
       devTrackData: [],
       releaseNotesData: [],
       fsbData: [],
+      techNotesData: [],
       testPlanData: [],
       mopData: [],
       errorFlag: false,
@@ -1705,23 +1856,27 @@ export default {
       b3color: "",
       b4color: "",
       b5color: "",
+      b6color: "",
       format: "MM/DD/YYYY",
       textcolor1: "",
       textcolor2: "",
       textcolor3: "",
       textcolor4: "",
       textcolor5: "",
+      textcolor6: "",
       testPlanContent: "",
       moreFlag1: false,
       moreFlag2: false,
       moreFlag3: false,
       moreFlag4: false,
       moreFlag5: false,
+      moreFlag6: false,
       currentUserEMailId: "",
       devTrackContent: "",
       releaseNoteContent: "",
       fsbContent: "",
       mopContent: "",
+      techNotesContent: "",
       filterOptions: [],
       filterValue: [],
       tagValue: [],
@@ -1753,6 +1908,7 @@ export default {
       releaseNotesFlag: false,
       fsbFlag: false,
       testPlanFlag: false,
+      techNotesFlag: false,
       mopFlag: false,
       errorFlag: false,
       sdfcFlag: false,
@@ -1787,7 +1943,9 @@ export default {
       this.devTrackFlag = true;
       this.releaseNotesFlag = false;
       this.testPlanFlag = false;
+      this.mopFlag = false;
       this.fsbFlag = false;
+      this.techNotesFlag = false;
       this.b1color = "#2a629a";
       this.textcolor1 = "#f8f9fa";
       this.b2color = "";
@@ -1801,6 +1959,8 @@ export default {
       this.textcolor4 = "";
       this.b5color = "";
       this.textcolor5 = "";
+      this.b6color = "";
+      this.textcolor6 = "";
     },
     stateChange() {
       this.state = !this.state;
@@ -1817,6 +1977,8 @@ export default {
         this.fsbContent = this.fsbData[index];
       } else if (type === "mop") {
         this.mopContent = this.mopData[index];
+      } else if (type === "techNotes") {
+        this.techNotesContent = this.techNotesData[index];
       }
       this.patchFlag = true;
 
@@ -1830,6 +1992,7 @@ export default {
       this.releaseNotesFlag = true;
       this.testPlanFlag = false;
       this.fsbFlag = false;
+      this.techNotesFlag = false;
       this.mopFlag = false;
 
       if (this.releaseNotesData.length === 0) {
@@ -1845,6 +2008,8 @@ export default {
       this.textcolor4 = "";
       this.b5color = "";
       this.textcolor5 = "";
+      this.b6color = "";
+      this.textcolor6 = "";
     },
     showTestPlans() {
       console.log("Test Plan", this.testPlanData);
@@ -1853,7 +2018,7 @@ export default {
       this.testPlanFlag = true;
       this.fsbFlag = false;
       this.mopFlag = false;
-
+      this.techNotesFlag = false;
       if (this.testPlanData.length === 0) {
         this.testPlanData = [];
       }
@@ -1867,6 +2032,8 @@ export default {
       this.textcolor4 = "#f8f9fa";
       this.b5color = "";
       this.textcolor5 = "";
+      this.b6color = "";
+      this.textcolor6 = "";
     },
     showFSB() {
       console.log("this.sfs", this.fsb);
@@ -1875,6 +2042,7 @@ export default {
       this.testPlanFlag = false;
       this.fsbFlag = true;
       this.mopFlag = false;
+      this.techNotesFlag = false;
       this.b3color = "#2a629a";
       this.textcolor3 = "#f8f9fa";
       this.b2color = "";
@@ -1888,11 +2056,14 @@ export default {
       this.textcolor4 = "";
       this.b5color = "";
       this.textcolor5 = "";
+      this.b6color = "";
+      this.textcolor6 = "";
     },
     showMOP() {
       this.devTrackFlag = false;
       this.releaseNotesFlag = false;
       this.testPlanFlag = false;
+      this.techNotesFlag = false;
       this.fsbFlag = false;
       this.mopFlag = true;
       this.b5color = "#2a629a";
@@ -1903,6 +2074,31 @@ export default {
       this.textcolor3 = "";
       if (this.mopData.length === 0) {
         this.mopData = [];
+      }
+      this.b1color = "";
+      this.textcolor1 = "";
+      this.b4color = "";
+      this.textcolor4 = "";
+      this.b6color = "";
+      this.textcolor6 = "";
+    },
+    showTechNotes() {
+      this.devTrackFlag = false;
+      this.releaseNotesFlag = false;
+      this.testPlanFlag = false;
+      this.fsbFlag = false;
+      this.techNotesFlag = true;
+      this.mopFlag = false;
+      this.b6color = "#2a629a";
+      this.textcolor6 = "#f8f9fa";
+      this.b5color = "";
+      this.textcolor5 = "";
+      this.b2color = "";
+      this.textcolor2 = "";
+      this.b3color = "";
+      this.textcolor3 = "";
+      if (this.techNotesData.length === 0) {
+        this.techNotesData = [];
       }
       this.b1color = "";
       this.textcolor1 = "";
@@ -2056,7 +2252,7 @@ export default {
                   progressStatus: data.data.devTrack.devtrack[i].progressStatus,
                   reportingCustomer:
                     data.data.devTrack.devtrack[i].reportingCustomer,
-                    priority:data.data.devTrack.devtrack[i].priority,
+                  priority: data.data.devTrack.devtrack[i].priority,
                   resolution: data.data.devTrack.devtrack[i].resolution,
                   serviceAccount: data.data.devTrack.devtrack[i].serviceAccount,
                   submittedBy: data.data.devTrack.devtrack[i].submittedBy,
@@ -2129,6 +2325,7 @@ export default {
             this.filterSynonym = "";
             this.getTestPlan();
             this.getMopPlan();
+            this.getTechNotes();
           });
         })
         .catch(handleError => {
@@ -2251,6 +2448,59 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    getTechNotes() {
+      this.isLoading = true;
+      this.techNotesData = [];
+      this.problemDescription = this.problemDescription.replace(
+        /^\s+|\s+$/g,
+        ""
+      );
+      fetch(
+        constant.ELKURL +
+          "api/get_technotes?search_param=" +
+          this.problemDescription,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
+        }
+      )
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            let array = [];
+            var upvotedUsers = [];
+            for (let i = 0; i < data.data.technotes.length; i++) {
+              if (data.data.technotes[i].upvotedUsers !== undefined) {
+                upvotedUsers = data.data.technotes[i].upvotedUsers;
+              } else {
+                upvotedUsers = [];
+              }
+
+              let tempJson = {
+                description: data.data.technotes[i].description,
+                index: i,
+                file_name: data.data.technotes[i].file_name,
+                issueId: data.data.technotes[i].issueId,
+                probability: data.data.technotes[i].probability,
+                key: data.data.technotes[i].key,
+                upvotedUsers: upvotedUsers
+              };
+              this.techNotesData.push(tempJson);
+              tempJson = {};
+            }
+            this.isLoading = false;
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
 
     changeFilter() {
       this.filterFLag = !this.filterFLag;
@@ -2359,6 +2609,8 @@ export default {
         this.postFsbData(item);
       } else if (type === "mop") {
         this.postMopData(item);
+      } else if (type === "techNotes") {
+        this.postTechNotesData(item);
       }
     },
     downVote(item, type) {
@@ -2376,6 +2628,8 @@ export default {
         this.postFsbData(item);
       } else if (type === "mop") {
         this.postMopData(item);
+      } else if (type === "techNotes") {
+        this.postTechNotesData(item);
       }
     },
 
@@ -2495,6 +2749,27 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    postTechNotesData(item) {
+      let formData = new FormData();
+      formData.append("data", JSON.stringify(item));
+      fetch(constant.ELKURL + "api/get_technotes", {
+        method: "PUT",
+        body: formData
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
     clearAll(param) {
       if (param === "product") {
         this.productValue = [];
@@ -2544,6 +2819,9 @@ export default {
     },
     showAllTestPlan() {
       this.moreFlag4 = true;
+    },
+    showAllTechNotes() {
+      this.moreFlag6 = true;
     },
     showAllMop() {
       this.moreFlag5 = true;
@@ -2677,10 +2955,12 @@ export default {
 }
 .vudal {
   width: 950px !important;
+  text-align: left !important;
 }
 .textOverlay {
   word-break: break-all;
   white-space: pre-wrap;
+  text-align: left;
 }
 
 .all-success {

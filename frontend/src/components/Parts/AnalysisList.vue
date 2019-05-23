@@ -87,7 +87,7 @@
           <span class="count">{{dashboard_request_count.saved_request}}</span>
         </div>
       </div>-->
-      <div class="float-right" style="marginTop:1%">
+      <div class="float-right" style="marginTop:1%" v-if="createAnalysisFlag === 'true' ">
         <button
           type="button"
           class="btn btn-success"
@@ -138,17 +138,16 @@
           </div>
         </div>
       </div>
-      
     </div>
     <div>
-        <!-- Footer -->
-        <footer class="footer  font-small blue">
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-      </div>
+      <!-- Footer -->
+      <footer class="footer font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
 </template>
 
@@ -184,6 +183,8 @@ export default {
     console.log("beforeMount -- get_all_request_analysis", this.$store);
     this.get_all_request_analysis();
     clearInterval(window.intervalObj);
+    this.createAnalysisFlag = localStorage.getItem("createAnalysisFlag");
+    console.log("this.createAnalysisFlag", this.createAnalysisFlag);
     this.get_dashboard_request_count();
     this.createColumnDefs();
   },
@@ -194,7 +195,7 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
-      analysisDashboardConstant:constant.AnalysisDashboardScreen,
+      analysisDashboardConstant: constant.AnalysisDashboardScreen,
 
       options: [
         { name: "Total Analysis Request" },
@@ -215,6 +216,7 @@ export default {
       partsAnalysisRequestDownload: [],
       dashboard_request_count: "",
       current: "Analysis",
+      createAnalysisFlag: false,
       columnDefs: null,
       rowData: [],
       gridOptions: {
@@ -434,7 +436,7 @@ function actionCellRenderer(params) {
   font-weight: 500;
 }
 .count {
-  font-size: 2.500em;
+  font-size: 2.5em;
   font-weight: 600;
 }
 .myBreadCrumb {
