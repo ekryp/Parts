@@ -44,6 +44,12 @@ for each_pdf in pdfs:
             # print(release_product_affected)
             break
 
+        elif 'Affected Release / Product' in item:
+            start1 = result.index(item)
+            release_product_affected = result[start1 + 1]
+            # print(release_product_affected)
+            break
+
     dd = defaultdict(dict)
     dd['timestamp'] = date.today().isoformat()
     dd['description'] = Description
