@@ -27,7 +27,7 @@ class TechNotes(Resource):
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME, config.ELK_PASSWORD))
         if search_param != "":
             data = es.search(index="technotes", body={"from": 0, "size": 100, "query": {
-                "query_string": {"query": search_param.lower(), "fields": ["file_name", "title", "introduction"]}}})
+                "query_string": {"query": search_param.lower(), "fields": ["file_name", "release_product_affected", "description"]}}})
         else:
             data = es.search(index="technotes", body={"from": 0, "size": 100, "query": {"match_all": {}}})
         technotes_max_score = data['hits']['max_score']
