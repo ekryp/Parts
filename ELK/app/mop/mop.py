@@ -7,6 +7,7 @@ import csv, json
 from requests.auth import HTTPBasicAuth
 from flask_restful import reqparse
 from elasticsearch import Elasticsearch
+from app.common import escapeESArg
 
 
 class MOP(Resource):
@@ -20,7 +21,8 @@ class MOP(Resource):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         if args['search_param']:
-            search_param = "*" + args['search_param'] + "*"
+            search_param = escapeESArg(args['search_param'])
+            search_param = "*" + search_param + "*"
             print(search_param)
         else:
             search_param = ""

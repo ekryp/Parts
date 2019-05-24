@@ -3,6 +3,7 @@ from flask import request
 import requests
 import re
 import config
+from app.common import escapeESArg
 from requests.auth import HTTPBasicAuth
 from flask_restful import Resource
 from flask_restful import reqparse
@@ -276,7 +277,7 @@ class DevTrackData(Resource):
             args = self.reqparse.parse_args()
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-            search_param = "*"+args['search_param']+"*"
+            
             product_filter = args.get('product_filter')
             group_filter = args.get('group_filter')
             found_in_release_filter = args.get('found_in_release_filter')
@@ -286,7 +287,9 @@ class DevTrackData(Resource):
             found_on_platform_filter = args.get('found_on_platform_filter')
             date_filter = args.get('date_filter')
             check_title = args.get('check_title')
-            search_param=re.sub('[^A-Za-z0-9*. ]+', '', search_param)
+           
+            search_param = escapeESArg(args['search_param'])
+            search_param = "*"+search_param+"*"
             devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,check_title)
             releaseNotes = releaseNotes(search_param)
             fsb = fsb(search_param)
