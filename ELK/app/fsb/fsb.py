@@ -41,8 +41,8 @@ class FSB(Resource):
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-        search_param = "*"+args['search_param']+"*"
-        search_param = escapeESArg(search_param)
+        search_param = escapeESArg(args['search_param'])
+        search_param = "*" + search_param + "*"
         print("FSB  Params : ", search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
         if (search_param != ""):
