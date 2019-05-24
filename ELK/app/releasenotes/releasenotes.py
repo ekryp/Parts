@@ -13,6 +13,7 @@ import logging
 
 from flask import jsonify
 from flask import request
+from app.common import escapeESArg
 import requests
 from flask_restful import Resource
 from flask_restful import reqparse
@@ -40,8 +41,8 @@ class ReleaseNotes(Resource):
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-        search_param = "*"+args['search_param']+"*"
-        search_param=re.sub('[^A-Za-z0-9*. ]+', '', search_param)
+        search_param = escapeESArg(args['search_param'])
+        search_param = "*" + search_param + "*"
         print("Release Notes  Params : ", search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
 

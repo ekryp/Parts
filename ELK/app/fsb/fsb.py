@@ -12,6 +12,7 @@ from elasticsearch import Elasticsearch
 import logging
 
 from flask import jsonify
+from app.common import escapeESArg
 from flask import request
 import requests
 from flask_restful import Resource
@@ -41,7 +42,7 @@ class FSB(Resource):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         search_param = "*"+args['search_param']+"*"
-        search_param=re.sub('[^A-Za-z0-9*-._ ]+', '', search_param)
+        search_param = escapeESArg(search_param)
         print("FSB  Params : ", search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
         if (search_param != ""):
