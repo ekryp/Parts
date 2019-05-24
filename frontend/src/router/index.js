@@ -24,6 +24,7 @@ import FsbKnowledgeMap from '@/components/KnowledgeMap/FsbKnowledgeMap'
 import MopKnowledgeMap from '@/components/KnowledgeMap/MopKnowledgeMap'
 import ReleaseNotesKnowledgeMap from '@/components/KnowledgeMap/ReleaseNotesKnowledgeMap'
 import TechNotesKnowledgeMap from '@/components/KnowledgeMap/TechNotesKnowledgeMap'
+import Calendar from '@/components/LabAvailability/Calendar'
 Vue.use(Router)
 
 export default new Router({
@@ -204,6 +205,14 @@ export default new Router({
       component: KnowledgeMap,
       meta: {
         permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/lab',
+      name: 'Calendar',
+      component: Calendar,
+      meta: {
+        permission: 'Dashboard'
       }
     }
   ]
