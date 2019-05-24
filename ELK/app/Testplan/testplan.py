@@ -2,6 +2,7 @@ from flask import jsonify
 from flask import request
 import requests
 import re
+from app.common import escapeESArg
 import config
 from requests.auth import HTTPBasicAuth
 from flask_restful import Resource
@@ -55,7 +56,9 @@ class TestPlan(Resource):
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-        search_param ="*"+ args['search_param']+"*"
+        search_param = escapeESArg(args['search_param'])
+        search_param ="*"+ search_param+"*"
+        
         print(search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
         if (search_param != ""):

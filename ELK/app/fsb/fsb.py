@@ -12,6 +12,7 @@ from elasticsearch import Elasticsearch
 import logging
 
 from flask import jsonify
+from app.common import escapeESArg
 from flask import request
 import requests
 from flask_restful import Resource
@@ -36,6 +37,35 @@ class FSB(Resource):
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        search_param = escapeESArg(args['search_param'])
+        search_param = "*" + search_param + "*"
+        print("FSB  Params : ", search_param)
+        es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
+        if (search_param != ""):
+            data = es.search(index="fsb", body={"from" : 0, "size" : 150,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
+        else:
+            # data = requests.get(config.ELK_URI+"testplan/_doc/_search",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
+            # data = data.json()
+            data = es.search(index="fsb", body={"from" : 0, "size" : 150,"query": { "match_all": {}}})
+        
+        fsbmaxScore = data['hits']['max_score']
+        fsbList = data['hits']['hits']
+        fsb = []
+
+        for doc in fsbList:
+            data = doc["_source"]
+            data['key']=doc['_id']
+            data["probability"]= round((doc["_score"]/fsbmaxScore)*100)
+            fsb.append(data)
+        response = {"fsb": [] }
+
+        response['fsb'] = fsb
+        return jsonify(data=response, http_status_code=200)
+
 
     
     def options(self):

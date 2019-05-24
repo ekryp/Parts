@@ -24,12 +24,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                  
                     <tr>
                       <td>
                         <label>{{referenceViewConstant.fileNames[0]}}</label>
                       </td>
-                      
+
                       <td>
                         <DownloadExcel
                           :data="partsAnalysisRequestList"
@@ -52,7 +51,10 @@
                             id="fileupload"
                             style="display:none"
                           >
-                          <i style="cursor:pointer;color:#afa0a0;cursor:pointer;" class="fas fa-paperclip fa-lg"></i>
+                          <i
+                            style="cursor:pointer;color:#afa0a0;cursor:pointer;"
+                            class="fas fa-paperclip fa-lg"
+                          ></i>
                         </label>
 
                         <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{partsFileName}}</span>
@@ -84,7 +86,7 @@
                       <td>
                         <label>{{referenceViewConstant.fileNames[1]}}</label>
                       </td>
-                     
+
                       <td>
                         <DownloadExcel
                           :data="highSpareFilesList"
@@ -92,14 +94,18 @@
                           name="Sample_High_Spare.csv"
                         >
                           <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer;" aria-hidden="true"></i>
+                            <i
+                              class="fa fa-download"
+                              style="color:#549EE2;cursor:pointer;"
+                              aria-hidden="true"
+                            ></i>
                           </div>
                           <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer;">
                             <span>{{referenceViewConstant.filesDownloadText[1]}}</span>
                           </div>
                         </DownloadExcel>
                       </td>
-                       <td v-if="editFlag">
+                      <td v-if="editFlag">
                         <label for="highSpareUpload" class="file">
                           <input
                             type="file"
@@ -110,7 +116,9 @@
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
 
-                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{highSpareFileName}}</span>
+                        <span
+                          style="paddingLeft:7%;paddingTop:1%;cursor:pointer"
+                        >{{highSpareFileName}}</span>
                       </td>
                       <td>
                         &nbsp;
@@ -139,14 +147,18 @@
                       <td>
                         <label>{{referenceViewConstant.fileNames[2]}}</label>
                       </td>
-                      
+
                       <td>
                         <DownloadExcel :data="nodeFilesList" type="csv" name="Sample_Node.csv">
                           <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer;" aria-hidden="true"></i>
+                            <i
+                              class="fa fa-download"
+                              style="color:#549EE2;cursor:pointer;"
+                              aria-hidden="true"
+                            ></i>
                           </div>
                           <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer">
-                            <span >Download Sample_Node.csv</span>
+                            <span>Download Sample_Node.csv</span>
                           </div>
                         </DownloadExcel>
                       </td>
@@ -189,18 +201,24 @@
                       <td>
                         <label>{{referenceViewConstant.fileNames[3]}}</label>
                       </td>
-                     
+
                       <td>
                         <DownloadExcel :data="depotFilesList" type="csv" name="Sample_Depot.csv">
                           <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer" aria-hidden="true"></i>
+                            <i
+                              class="fa fa-download"
+                              style="color:#549EE2;cursor:pointer"
+                              aria-hidden="true"
+                            ></i>
                           </div>
                           <div style="paddingLeft:7%;paddingTop:1%">
-                            <span style="cursor:pointer">{{referenceViewConstant.filesDownloadText[3]}}</span>
+                            <span
+                              style="cursor:pointer"
+                            >{{referenceViewConstant.filesDownloadText[3]}}</span>
                           </div>
                         </DownloadExcel>
                       </td>
-                       <td v-if="editFlag">
+                      <td v-if="editFlag">
                         <label for="depotUpload" class="file">
                           <input
                             type="file"
@@ -239,7 +257,7 @@
                       <td>
                         <label>{{referenceViewConstant.fileNames[4]}}</label>
                       </td>
-                      
+
                       <td>
                         <DownloadExcel
                           :data="minsomerFilesList"
@@ -250,7 +268,9 @@
                             <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
                           </div>
                           <div style="paddingLeft:7%;paddingTop:1%">
-                            <span style="cursor:pointer">{{referenceViewConstant.filesDownloadText[4]}}</span>
+                            <span
+                              style="cursor:pointer"
+                            >{{referenceViewConstant.filesDownloadText[4]}}</span>
                           </div>
                         </DownloadExcel>
                       </td>
@@ -264,7 +284,9 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{minsomerFileName}}</span>
+                        <span
+                          style="paddingLeft:7%;paddingTop:1%;cursor:pointer"
+                        >{{minsomerFileName}}</span>
                       </td>
                       <td>
                         <!-- <button type="button" class="btn btn-success" @click="uploadMinsomerData()">Save</button>
@@ -289,13 +311,11 @@
                       </td>
                     </tr>
 
-
-
                     <tr>
                       <td>
                         <label>{{referenceViewConstant.fileNames[5]}}</label>
                       </td>
-                       <td>
+                      <td>
                         <div style="cursor:pointer" @click="downloadRatio2CSV()">
                           <div class="float-left" style="marginTop:1%">
                             <i class="fa fa-download" style="color:#549EE2;" aria-hidden="true"></i>
@@ -317,7 +337,7 @@
                         </label>
                         <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio2FileName}}</span>
                       </td>
-                     
+
                       <td>
                         &nbsp;
                         <i
@@ -339,7 +359,7 @@
                       <td>
                         <label>{{referenceViewConstant.fileNames[6]}}</label>
                       </td>
-                     
+
                       <td>
                         <div style="cursor:pointer" @click="downloadRatio7CSV()">
                           <div class="float-left" style="marginTop:1%">
@@ -350,7 +370,7 @@
                           </div>
                         </div>
                       </td>
-                       <td v-if="editFlag">
+                      <td v-if="editFlag">
                         <label for="ratio7Upload" class="file">
                           <input
                             type="file"
@@ -363,7 +383,6 @@
                         <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio7FileName}}</span>
                       </td>
                       <td>
-                       
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -384,7 +403,7 @@
                       <td>
                         <label>{{referenceViewConstant.fileNames[7]}}</label>
                       </td>
-                      
+
                       <td>
                         <div style="cursor:pointer" @click="downloadRatio30CSV()">
                           <div class="float-left" style="marginTop:1%">
@@ -405,10 +424,11 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio30FileName}}</span>
+                        <span
+                          style="paddingLeft:7%;paddingTop:1%;cursor:pointer"
+                        >{{ratio30FileName}}</span>
                       </td>
                       <td>
-                       
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -429,7 +449,7 @@
                       <td>
                         <label>{{referenceViewConstant.fileNames[8]}}</label>
                       </td>
-                      
+
                       <td>
                         <div style="cursor:pointer" @click="downloadRatio60CSV()">
                           <div class="float-left" style="marginTop:1%">
@@ -450,10 +470,11 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{ratio60FileName}}</span>
+                        <span
+                          style="paddingLeft:7%;paddingTop:1%;cursor:pointer"
+                        >{{ratio60FileName}}</span>
                       </td>
                       <td>
-                       
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -470,28 +491,30 @@
                       </td>
                     </tr>
 
-
-                      <tr>
+                    <tr>
                       <td>
                         <label>{{referenceViewConstant.fileNames[9]}}</label>
                       </td>
-                     
+
                       <td>
-                        
-                         <DownloadExcel
+                        <DownloadExcel
                           :data="customerFilesList"
                           type="csv"
                           name="Sample_Customer.csv"
                         >
                           <div class="float-left" style="marginTop:1%">
-                            <i class="fa fa-download" style="color:#549EE2;cursor:pointer;" aria-hidden="true"></i>
+                            <i
+                              class="fa fa-download"
+                              style="color:#549EE2;cursor:pointer;"
+                              aria-hidden="true"
+                            ></i>
                           </div>
                           <div style="paddingLeft:7%;paddingTop:1%;cursor:pointer;">
                             <span>{{referenceViewConstant.filesDownloadText[9]}}</span>
                           </div>
                         </DownloadExcel>
                       </td>
-                       <td v-if="editFlag">
+                      <td v-if="editFlag">
                         <label for="customerUpload" class="file">
                           <input
                             type="file"
@@ -501,10 +524,11 @@
                           >
                           <i style="cursor:pointer;color:#afa0a0;" class="fas fa-paperclip fa-lg"></i>
                         </label>
-                        <span style="paddingLeft:7%;paddingTop:1%;cursor:pointer">{{customerFileName}}</span>
+                        <span
+                          style="paddingLeft:7%;paddingTop:1%;cursor:pointer"
+                        >{{customerFileName}}</span>
                       </td>
                       <td>
-                      
                         &nbsp;
                         <i
                           class="fas fa-upload"
@@ -530,7 +554,7 @@
     </div>
     <div>
       <!-- Footer -->
-      <footer class="footer  font-small blue">
+      <footer class="footer font-small blue">
         <!-- Copyright -->
         <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
         <!-- Copyright -->
@@ -568,7 +592,7 @@ export default {
   },
   created() {
     this.editFlag = localStorage.getItem("editFlag");
-    this.email_id=localStorage.getItem("email_id");
+    this.email_id = localStorage.getItem("email_id");
   },
   data() {
     console.log("home");
@@ -588,7 +612,7 @@ export default {
       minsomerFileName: "no file chosen",
       minsomerFilesList: minsomerData,
       depotFile: "",
-      referenceViewConstant:constant.ReferenceViewScreen,
+      referenceViewConstant: constant.ReferenceViewScreen,
       depotFileName: "no file chosen",
       depotFilesList: depotData,
       ratio2File: "",
@@ -604,7 +628,7 @@ export default {
       ratio60FilesList: ratio60Data,
       ratio60FileName: "no file chosen",
       editFlag: false,
-      customerFile:"",
+      customerFile: "",
       customerFileName: "no file chosen"
     };
   },
@@ -809,7 +833,8 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
+                text:
+                  "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -864,7 +889,8 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
+                text:
+                  "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -919,7 +945,8 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
+                text:
+                  "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -974,7 +1001,8 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
+                text:
+                  "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1029,7 +1057,8 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-               text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
+                text:
+                  "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1116,7 +1145,8 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
+                text:
+                  "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
@@ -1132,8 +1162,7 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    uploadCustomerData()
-    {
+    uploadCustomerData() {
       let data = {
         customerFile: this.customerFile,
         email_id: this.email_id
@@ -1149,8 +1178,7 @@ export default {
         });
       }
     },
-    post_customer_data(data)
-    {
+    post_customer_data(data) {
       let formData = new FormData();
       formData.append("end_customer_file", data.customerFile);
       formData.append("user_email_id", data.email_id);
@@ -1171,7 +1199,8 @@ export default {
             if (data.http_status_code == 200) {
               swal({
                 title: "Success",
-                text: "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
+                text:
+                  "Your request for upload received.You will get a notification email when the reference data is successfully updated.",
                 icon: "success"
               });
             } else if (data.http_status_code == 400) {
