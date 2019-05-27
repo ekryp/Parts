@@ -85,6 +85,21 @@
             <p class="upload-text">{{sidanavConstants.knowledgeMap}}</p>
           </div>
         </li>
+
+        <hr v-if="knowledgeMapFlag">
+        <li class="nav-custom" style="cursor:pointer" v-if="knowledgeMapFlag">
+          <div class="text-center" v-if="!diasableFlag" @click="labAvailability()">
+            <i class="fa fa-calendar-alt" style="fontSize:2em"></i>
+
+            <br>
+            <p class="upload-text">{{sidanavConstants.labAvailability}}</p>
+          </div>
+          <div class="text-center" v-if="diasableFlag">
+            <i class="fa fa-calendar-alt" style="fontSize:2em"></i>
+            <br>
+            <p class="upload-text">{{sidanavConstants.labAvailability}}</p>
+          </div>
+        </li>
         <hr>
       </ul>
     </nav>
@@ -184,6 +199,9 @@ export default {
     },
     knowledgeMap() {
       router.push("/knowledge");
+    },
+    labAvailability() {
+      router.push("/lab");
     }
   }
 };
