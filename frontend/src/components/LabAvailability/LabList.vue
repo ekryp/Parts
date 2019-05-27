@@ -21,7 +21,7 @@
           v-tooltip.top.hover.focus="'Click to Create'"
         >{{analysisDashboardConstant.createAnalysisButton}}</button>
       </div>
-      <div class="float-left" style="marginTop:1%">
+      <!-- <div class="float-left" style="marginTop:1%">
         <button
           type="button"
           class="btn btn-success"
@@ -38,7 +38,7 @@
             {{analysisDashboardConstant.exportButton}}
           </DownloadExcel>
         </button>
-      </div>
+      </div>-->
       <br>
       <br>
       <br>

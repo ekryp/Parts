@@ -140,14 +140,12 @@
             <button
               type="button"
               class="btn btn-danger"
-              @click="cancel()"
               v-tooltip.top.hover.focus="'Move to Analysis Dashboard'"
             >{{LabAnalysisConstant.buttons[0]}}</button>
             &nbsp; &nbsp;
             <button
               type="button"
               class="btn btn-success"
-              @click="formSubmit()"
               v-tooltip.top.hover.focus="'Click to Submit'"
             >{{LabAnalysisConstant.buttons[1]}}</button>
           </div>
