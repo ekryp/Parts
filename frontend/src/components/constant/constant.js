@@ -79,11 +79,26 @@ export const AnalysisDashboardScreen = {
   createAnalysisButton: "Create Analysis"
 }
 
+export const ListLabScreen = {
+  breadcrumb: "Lab",
+
+  exportButton: "Export",
+  createAnalysisButton: "Create Event"
+}
+
 export const CreateAnalysisScreen = {
   breadcrumbs: ["Analysis", "Analysis Create"],
   createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?", "DNA File :"],
   createAnalysisPlaceHolders: ["Enter Analysis Name ", "Select Customer ", " Select Analysis Type", "Select Replenish Time ", "no file selected"],
   buttons: ["Back", "Submit For Analysis", "ReSubmit For Analysis", "Uploading"]
+}
+
+
+export const LabScreen = {
+  breadcrumbs: ["Lab Availability"],
+  labLabels: ["Title :", "Lab Needed:", "Start Time :", "End Time :", "Request Type :", "Decription :"],
+  labPlaceHolders: ["Enter Title ", "Select Lab ", "Enter Meeting Start Time", "Enter Meeting Start Time", "Enter Request Type", "Enter Decription"],
+  buttons: ["Back", "Create Event"]
 }
 
 
@@ -155,7 +170,8 @@ export const Sidenav = {
   createAnalysisRequest: "Create Analysis Request",
   referenceData: "Reference Data",
   solutionPrediction: "Solution Prediction",
-  knowledgeMap: "Knowledge Map"
+  knowledgeMap: "Knowledge Map",
+  labAvailability: " Lab \n Availability"
 
 
 }

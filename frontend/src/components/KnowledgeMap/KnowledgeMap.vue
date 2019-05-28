@@ -19,9 +19,9 @@
                 <table class="table" style="width:100%">
                   <thead>
                     <tr>
-                      <th>File Type</th>
-                      <th>Description</th>
-                      <th>Options</th>
+                      <th width="20%">File Type</th>
+                      <th width="60%">Description</th>
+                      <th width="20%">Options</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -29,7 +29,10 @@
                       <td>
                         <label>{{knowledgeMapConstant.docNames[0]}}</label>
                       </td>
-                      <td>some desc</td>
+                      <td>
+                        Release Notes are documents that are delivered as part of a release and
+                        contain important information about the release includeing open and closed issues.
+                      </td>
                       <td>
                         &nbsp; &nbsp; &nbsp;
                         <i
@@ -44,7 +47,10 @@
                       <td>
                         <label>{{knowledgeMapConstant.docNames[1]}}</label>
                       </td>
-                      <td>some desc</td>
+                      <td>
+                        These are Field Service Bulletins (FSB) that are issues when an important issue is
+                        discovered and what the customer needs to do when they encounter such issues.
+                      </td>
                       <td>
                         &nbsp; &nbsp; &nbsp;
                         <i
@@ -59,7 +65,7 @@
                       <td>
                         <label>{{knowledgeMapConstant.docNames[2]}}</label>
                       </td>
-                      <td>some desc</td>
+                      <td>A technical note (Tech Note) is an article giving a brief description of a technique or procedure.</td>
                       <td>
                         &nbsp; &nbsp; &nbsp;
                         <i
@@ -74,7 +80,7 @@
                       <td>
                         <label>{{knowledgeMapConstant.docNames[3]}}</label>
                       </td>
-                      <td>some desc</td>
+                      <td>Test Plan are documents that provide the details on the steps to be executed to test a particular functionality.</td>
                       <td>
                         &nbsp; &nbsp; &nbsp;
                         <i
@@ -89,7 +95,7 @@
                       <td>
                         <label>{{knowledgeMapConstant.docNames[4]}}</label>
                       </td>
-                      <td>some desc</td>
+                      <td>Method Of Procedure (MOP) is a step-by-step sequence for performing an operation</td>
                       <td>
                         &nbsp; &nbsp; &nbsp;
                         <i
