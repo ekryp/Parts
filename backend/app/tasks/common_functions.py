@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
 
 
+
 def read_data(sql, con):
     connection = create_engine(con, connect_args=Configuration.ssl_args)
     return pd.read_sql(sql, con=connection)
@@ -614,6 +615,22 @@ def check_analysis_task_status():
 
     return is_running
 
+
+def to_sql_lab_systems(df):
+
+    df.rename(columns={
+        'Lab Id': 'id',
+        'Lab System Name': 'system_name',
+        'Product Type': 'product_type',
+        'IP Address': 'ip_address',
+        'Log In Name': 'username',
+        'Password': 'password',
+        'Serial Console': 'serial_console'
+
+    }, inplace=True
+    )
+    df.to_sql(name='lab_systems', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into lab_systems table")
 
 
 
