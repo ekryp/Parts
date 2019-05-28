@@ -20,14 +20,14 @@ class PostLabRequest(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('title', required=True)
-        self.reqparse.add_argument('lab_resource', required=True)
-        self.reqparse.add_argument('requested_date', required=True)
-        self.reqparse.add_argument('start_time', required=True)
-        self.reqparse.add_argument('end_time', required=True)
-        self.reqparse.add_argument('type', required=True)
-        self.reqparse.add_argument('description', required=False)
-        self.reqparse.add_argument('created_by', required=True)
+        self.reqparse.add_argument('title', required=True, location='form')
+        self.reqparse.add_argument('lab_resource', required=True, location='form')
+        self.reqparse.add_argument('requested_date', required=True, location='form')
+        self.reqparse.add_argument('start_time', required=True, location='form')
+        self.reqparse.add_argument('end_time', required=True, location='form')
+        self.reqparse.add_argument('type', required=True, location='form')
+        self.reqparse.add_argument('description', required=False, location='form')
+        self.reqparse.add_argument('created_by', required=True, location='form')
         super(PostLabRequest, self).__init__()
 
     
@@ -49,7 +49,7 @@ class PostLabRequest(Resource):
 
 class GetAllLabRequest(Resource):
 
-    # @requires_auth
+    @requires_auth
     def get(self):
         try:
             query = "SELECT * FROM lab_request"
