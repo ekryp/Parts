@@ -401,6 +401,18 @@
           </div>
         </div>
 
+        <div v-if="techNotesFlag">
+          <br>
+          <div class="row">
+            <div class="col-lg-5">
+              <label class="labelweight">File Name :</label>
+            </div>
+            <div class="col-lg-7">
+              <span>{{techNotesContent.references}}</span>
+            </div>
+          </div>
+        </div>
+
         <div v-if="fsbFlag">
           <br>
           <div class="row">
@@ -2202,7 +2214,7 @@ export default {
       }
       console.log("Tag Values", this.tagValue);
       for (var i = 0; i < this.tagValue.length; i++) {
-        this.tagValues = this.tagValues + " AND " + this.tagValue[i].value;
+        this.tagValues = this.tagValues + " " + this.tagValue[i].value;
       }
 
       this.problemDescription = this.problemDescription.replace(
@@ -2457,11 +2469,11 @@ export default {
               this.isLoading = false;
             } else {
               this.isLoading = false;
-              // swal({
-              //   title: "Error",
-              //   text: "Some Network Issues.Please Try After Sometime ",
-              //   icon: "error"
-              // });
+              swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
             }
           });
         })
@@ -2517,6 +2529,11 @@ export default {
               this.isLoading = false;
             } else {
               this.isLoading = false;
+              swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
             }
           });
         })
@@ -2565,6 +2582,7 @@ export default {
                   file_name: data.data.technotes[i].file_name,
                   issueId: data.data.technotes[i].issueId,
                   probability: data.data.technotes[i].probability,
+                  references: data.data.technotes[i].references,
                   key: data.data.technotes[i].key,
                   upvotedUsers: upvotedUsers
                 };
@@ -2575,6 +2593,11 @@ export default {
               this.isLoading = false;
             } else {
               this.isLoading = false;
+              swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
             }
           });
         })
