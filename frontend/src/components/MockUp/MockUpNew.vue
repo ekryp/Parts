@@ -459,7 +459,7 @@
                 <label
                   class="col-md-6 labelweight"
                 >{{solutionScreenConstants.problemDescriptionName}}</label>
-                <label class="col-md-6 labelweight">{{solutionScreenConstants.problemAreaHeader}}</label>
+                <label class="col-md-6 labelweight">{{solutionScreenConstants.tagHeader}}</label>
               </div>
 
               <div class="row">
@@ -476,7 +476,7 @@
                       ></textarea>
                     </div>
                   </div>
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="col-lg-10"></div>
                     <div class="col-lg-2 alignButton">
                       <button
@@ -495,11 +495,11 @@
                         disabled
                       >{{solutionScreenConstants.buttons[0]}}</button>
                     </div>
-                  </div>
+                  </div>-->
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <div class="col-md-9">
+                    <!-- <div class="col-md-9">
                       <Multiselect
                         v-model="filterValue"
                         tag-placeholder="Add this as new tag"
@@ -519,11 +519,11 @@
                     <div class="col-lg-3" style="marginTop:2%">
                       <input type="checkbox" id="checkbox" v-model="checked">
                       <label for="checkbox">{{solutionScreenConstants.checkBoxLabel}}</label>
-                    </div>
+                    </div>-->
 
-                    <label class="col-md-6 labelweight align">{{solutionScreenConstants.tagHeader}}</label>
+                    <!-- <label class="col-md-6 labelweight align">{{solutionScreenConstants.tagHeader}}</label> -->
 
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                       <Multiselect
                         v-model="tagValue"
                         tag-placeholder="Add this as new tag"
@@ -539,20 +539,25 @@
                         @tag="addTag"
                       ></Multiselect>
                     </div>
+                    <div class="col-lg-10"></div>
+                    <!-- 
+                      Previous Search Condition
+                      v-if="searchFlag &&problemDescription.trim() !== ''"
+                    v-if="!searchFlag ||problemDescription.trim() === ''  "-->
                     <div class="col-lg-2" style="paddingTop:0.35em">
                       <button
-                        v-if="searchFlag &&problemDescription.trim() !== ''"
+                        v-if="problemDescription.trim() !== ''"
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="getMlKeywords()"
+                        @click="onAnalyze()"
                       >{{solutionScreenConstants.buttons[2]}}</button>
                       <button
-                        v-if="!searchFlag ||problemDescription.trim() === ''  "
+                        v-if="problemDescription.trim() === ''  "
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="getMlKeywords()"
+                        @click="onAnalyze()"
                         disabled
                       >{{solutionScreenConstants.buttons[2]}}</button>
                     </div>
@@ -913,6 +918,40 @@
                 </div>
               </div>
               <div class="row align">
+                <div class="col-lg-4">
+                  <div class="row">
+                    <div class="col-lg-4">{{solutionScreenConstants.filterNames[8]}}</div>
+                    <div class="col" align="right">
+                      <button
+                        style="fontSize:1vw;"
+                        type="button"
+                        class="all-success"
+                        @click="clearAll('serviceAccount')"
+                      >
+                        <i class="fas fa-minus-circle"></i>
+                        &nbsp; {{solutionScreenConstants.filterButtons[1]}}
+                      </button>
+                    </div>
+                  </div>
+                  <div style="paddingTop:0.5em">
+                    <Multiselect
+                      v-model="serviceAccountValue"
+                      tag-placeholder="Add this as new tag"
+                      placeholder="Search Service Account"
+                      label="name"
+                      track-by="name"
+                      :options="serviceAccountOptions"
+                      :close-on-select="false"
+                      :multiple="true"
+                      :clear-on-select="false"
+                      :hide-selected="true"
+                      :taggable="true"
+                      @close="validateServiceAccountSelect()"
+                      @remove="validateServiceAccountClose()"
+                    ></Multiselect>
+                  </div>
+                </div>
+
                 <div class="col-lg-4">
                   <div class="row">
                     <div class="col-lg-12">{{solutionScreenConstants.filterNames[7]}}</div>
@@ -1894,6 +1933,8 @@ export default {
       foundOnPlatformOptions: [],
       fixedInReleaseValue: [],
       fixedInReleaseOptions: [],
+      serviceAccountValue: [],
+      serviceAccountOptions: [],
       internalFlag: false,
       foundInReleaseValue: [],
       foundInReleaseOptions: [],
@@ -1914,7 +1955,8 @@ export default {
       sdfcFlag: false,
       mlKeywords: "",
       estotalhits: 0,
-      filterValues: ""
+      filterValues: "",
+      tagValues: ""
     };
   },
   methods: {
@@ -2111,7 +2153,7 @@ export default {
       this.devTrackData = [];
       this.releaseNotesData = [];
       this.fsbData = [];
-      this.filterValues = "";
+      this.tagValues = "";
 
       this.filterURL = "";
       for (var i = 0; i < this.productValue.length; i++) {
@@ -2135,6 +2177,12 @@ export default {
           `&fixed_in_release_filter=` +
           this.fixedInReleaseValue[i].name;
       }
+      for (var i = 0; i < this.serviceAccountValue.length; i++) {
+        this.filterURL =
+          this.filterURL +
+          `&service_account_filter=` +
+          this.serviceAccountValue[i].name;
+      }
       for (var i = 0; i < this.severityValue.length; i++) {
         this.filterURL =
           this.filterURL + `&severity_filter=` + this.severityValue[i].name;
@@ -2152,10 +2200,9 @@ export default {
       if (this.time1 !== "") {
         this.filterURL = this.filterURL + `&date_filter=` + this.time1;
       }
-
+      console.log("Tag Values", this.tagValue);
       for (var i = 0; i < this.tagValue.length; i++) {
-        this.filterValues =
-          this.filterValues + " AND " + this.tagValue[i].value;
+        this.tagValues = this.tagValues + " AND " + this.tagValue[i].value;
       }
 
       this.problemDescription = this.problemDescription.replace(
@@ -2171,14 +2218,14 @@ export default {
       // } else {
       this.mlKeywords = "";
       // }
-      for (var i = 0; i < this.filterValue.length; i++) {
-        if (this.checked) {
-          this.mlKeywords =
-            this.mlKeywords + " AND " + this.filterValue[i].name;
-        } else {
-          this.mlKeywords = this.mlKeywords + " OR " + this.filterValue[i].name;
-        }
-      }
+      // for (var i = 0; i < this.filterValue.length; i++) {
+      //   if (this.checked) {
+      //     this.mlKeywords =
+      //       this.mlKeywords + " AND " + this.filterValue[i].name;
+      //   } else {
+      //     this.mlKeywords = this.mlKeywords + " OR " + this.filterValue[i].name;
+      //   }
+      // }
       console.log("Filter Values", this.filterValues);
       fetch(
         constant.ELKURL +
@@ -2186,7 +2233,7 @@ export default {
           this.problemDescription +
           this.mlKeywords +
           this.filterSynonym +
-          this.filterValues +
+          this.tagValues +
           this.filterURL +
           "&internal=" +
           this.internalFlag +
@@ -2317,18 +2364,34 @@ export default {
                 this.analyzeFlag = true;
                 this.devTrackFlag = true;
               }
+              this.getTestPlan();
+              this.getMopPlan();
+              this.getTechNotes();
             } else {
               this.isLoading = false;
+              swal({
+                title: "Error",
+                text: "Some Network Issues.Please Try After Sometime ",
+                icon: "error"
+              });
             }
             console.log("data -- response-->", data);
             this.mlKeywords = "";
             this.filterSynonym = "";
-            this.getTestPlan();
-            this.getMopPlan();
-            this.getTechNotes();
           });
         })
         .catch(handleError => {
+          this.isLoading = false;
+          if (
+            handleError.message === "Failed to fetch" ||
+            handleError.message === "Internal Server Error"
+          ) {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
           console.log(" Error Response ------->", handleError);
         });
     },
@@ -2358,39 +2421,48 @@ export default {
             if (data.code === "token_expired") {
               this.logout();
             }
-            let array = [];
-            var upvotedUsers = [];
-            for (let i = 0; i < data.data.test_plan.length; i++) {
-              if (data.data.test_plan[i].upvotedUsers !== undefined) {
-                upvotedUsers = data.data.test_plan[i].upvotedUsers;
-              } else {
-                upvotedUsers = [];
-              }
+            if (data.http_status_code === 200) {
+              let array = [];
+              var upvotedUsers = [];
+              for (let i = 0; i < data.data.test_plan.length; i++) {
+                if (data.data.test_plan[i].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.test_plan[i].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
 
-              let tempJson = {
-                Objective: data.data.test_plan[i].Objective,
-                index: i,
-                Procedure: data.data.test_plan[i].Procedure,
-                file_name: data.data.test_plan[i].file_name,
-                probability: data.data.test_plan[i].probability,
-                key: data.data.test_plan[i].key,
-                upvotedUsers: upvotedUsers
-              };
+                let tempJson = {
+                  Objective: data.data.test_plan[i].Objective,
+                  index: i,
+                  Procedure: data.data.test_plan[i].Procedure,
+                  file_name: data.data.test_plan[i].file_name,
+                  probability: data.data.test_plan[i].probability,
+                  key: data.data.test_plan[i].key,
+                  upvotedUsers: upvotedUsers
+                };
 
-              if (typeof data.data.test_plan[i].setup !== "undefined") {
-                tempJson["setup"] = data.data.test_plan[i].setup;
-              }
-              if (
-                typeof data.data.test_plan[i].expectedResult !== "undefined"
-              ) {
-                tempJson["expectedResult"] =
-                  data.data.test_plan[i].expectedResult;
-              }
+                if (typeof data.data.test_plan[i].setup !== "undefined") {
+                  tempJson["setup"] = data.data.test_plan[i].setup;
+                }
+                if (
+                  typeof data.data.test_plan[i].expectedResult !== "undefined"
+                ) {
+                  tempJson["expectedResult"] =
+                    data.data.test_plan[i].expectedResult;
+                }
 
-              this.testPlanData.push(tempJson);
-              tempJson = {};
+                this.testPlanData.push(tempJson);
+                tempJson = {};
+              }
+              this.isLoading = false;
+            } else {
+              this.isLoading = false;
+              // swal({
+              //   title: "Error",
+              //   text: "Some Network Issues.Please Try After Sometime ",
+              //   icon: "error"
+              // });
             }
-            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -2420,28 +2492,32 @@ export default {
             if (data.code === "token_expired") {
               this.logout();
             }
-            let array = [];
-            var upvotedUsers = [];
-            for (let i = 0; i < data.data.mop.length; i++) {
-              if (data.data.mop[i].upvotedUsers !== undefined) {
-                upvotedUsers = data.data.mop[i].upvotedUsers;
-              } else {
-                upvotedUsers = [];
-              }
+            if (data.http_status_code === 200) {
+              let array = [];
+              var upvotedUsers = [];
+              for (let i = 0; i < data.data.mop.length; i++) {
+                if (data.data.mop[i].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.mop[i].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
 
-              let tempJson = {
-                introduction: data.data.mop[i].introduction,
-                index: i,
-                title: data.data.mop[i].title,
-                file_name: data.data.mop[i].file_name,
-                probability: data.data.mop[i].probability,
-                key: data.data.mop[i].key,
-                upvotedUsers: upvotedUsers
-              };
-              this.mopData.push(tempJson);
-              tempJson = {};
+                let tempJson = {
+                  introduction: data.data.mop[i].introduction,
+                  index: i,
+                  title: data.data.mop[i].title,
+                  file_name: data.data.mop[i].file_name,
+                  probability: data.data.mop[i].probability,
+                  key: data.data.mop[i].key,
+                  upvotedUsers: upvotedUsers
+                };
+                this.mopData.push(tempJson);
+                tempJson = {};
+              }
+              this.isLoading = false;
+            } else {
+              this.isLoading = false;
             }
-            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -2473,28 +2549,33 @@ export default {
             if (data.code === "token_expired") {
               this.logout();
             }
-            let array = [];
-            var upvotedUsers = [];
-            for (let i = 0; i < data.data.technotes.length; i++) {
-              if (data.data.technotes[i].upvotedUsers !== undefined) {
-                upvotedUsers = data.data.technotes[i].upvotedUsers;
-              } else {
-                upvotedUsers = [];
+            if (data.http_status_code === 200) {
+              let array = [];
+              var upvotedUsers = [];
+              for (let i = 0; i < data.data.technotes.length; i++) {
+                if (data.data.technotes[i].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.technotes[i].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
+
+                let tempJson = {
+                  description: data.data.technotes[i].description,
+                  index: i,
+                  file_name: data.data.technotes[i].file_name,
+                  issueId: data.data.technotes[i].issueId,
+                  probability: data.data.technotes[i].probability,
+                  key: data.data.technotes[i].key,
+                  upvotedUsers: upvotedUsers
+                };
+                this.techNotesData.push(tempJson);
+                tempJson = {};
               }
 
-              let tempJson = {
-                description: data.data.technotes[i].description,
-                index: i,
-                file_name: data.data.technotes[i].file_name,
-                issueId: data.data.technotes[i].issueId,
-                probability: data.data.technotes[i].probability,
-                key: data.data.technotes[i].key,
-                upvotedUsers: upvotedUsers
-              };
-              this.techNotesData.push(tempJson);
-              tempJson = {};
+              this.isLoading = false;
+            } else {
+              this.isLoading = false;
             }
-            this.isLoading = false;
           });
         })
         .catch(handleError => {
@@ -2511,7 +2592,7 @@ export default {
       this.filterSynonym = "";
       this.filterOptions = [];
       this.filterValue = [];
-      this.tagValue = [];
+      //this.tagValue = [];
       this.tagOptions = [];
       fetch(
         constant.ELKURL +
@@ -2725,6 +2806,14 @@ export default {
           });
         })
         .catch(handleError => {
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
           console.log(" Error Response ------->", handleError);
         });
     },
@@ -2834,60 +2923,65 @@ export default {
     },
     validateProductSelect() {
       if (this.productValue.length !== 0) {
-        this.getMlKeywords();
+        this.onAnalyze();
       }
     },
     validateProductClose() {
       this.isLoading = true;
-      setTimeout(() => this.getMlKeywords(), 1000);
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateGroupSelect() {
       if (this.groupValue.length !== 0) {
-        this.getMlKeywords();
+        this.onAnalyze();
       }
     },
     validateGroupClose() {
       this.isLoading = true;
 
-      setTimeout(() => this.getMlKeywords(), 1000);
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateSeveritySelect() {
       if (this.severityValue.length !== 0) {
-        this.getMlKeywords();
+        this.onAnalyze();
       }
     },
     validateSeverityClose() {
       this.isLoading = true;
 
-      setTimeout(() => this.getMlKeywords(), 1000);
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validatePrioritySelect() {
       if (this.priorityValue.length !== 0) {
-        this.getMlKeywords();
+        this.onAnalyze();
       }
     },
     validatePriorityClose() {
-      setTimeout(() => this.getMlKeywords(), 1000);
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateFoundInReleaseSelect() {
-      console.log("Product va", this.foundInReleaseValue);
       //setTimeout(() => this.onAnalyze(), 1000);
       if (this.foundInReleaseValue.length !== 0) {
-        this.getMlKeywords();
+        this.onAnalyze();
       }
     },
     validateFoundInReleaseClose() {
-      console.log("Product va", this.foundInReleaseValue);
-      setTimeout(() => this.getMlKeywords(), 1000);
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     validateFixedInReleaseSelect() {
       if (this.fixedInReleaseValue.length !== 0) {
-        this.getMlKeywords();
+        this.onAnalyze();
       }
     },
     validateFixedInReleaseClose() {
-      console.log("Product va", this.foundInReleaseValue);
-      setTimeout(() => this.getMlKeywords(), 1000);
+      setTimeout(() => this.onAnalyze(), 1000);
+    },
+    validateServiceAccountSelect() {
+      if (this.fixedInReleaseValue.length !== 0) {
+        this.onAnalyze();
+      }
+    },
+    validateServiceAccountClose() {
+      setTimeout(() => this.onAnalyze(), 1000);
     },
     showAllfsb() {
       this.moreFlag3 = true;

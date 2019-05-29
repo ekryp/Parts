@@ -39,85 +39,31 @@
           </DownloadExcel>
         </button>
       </div>-->
-      <br>
-      <br>
-      <br>
-      <table id="example" class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Lab Needed</th>
-            <th scope="col">Start Time</th>
-            <th scope="col">End Time</th>
-            <th scope="col">Request Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Support Meeting</td>
-            <td>Lab 1</td>
-            <td>12/02/2019 10.00.00 AM</td>
-            <td>12/02/2019 12.00.00 PM</td>
-            <td>Full Admin</td>
-          </tr>
-          <tr>
-            <td>Traffic Problem</td>
-            <td>Lab 3</td>
-            <td>22/02/2019 10.00.00 AM</td>
-            <td>22/02/2019 10.30.00 AM</td>
-            <td>Full Admin</td>
-          </tr>
-          <tr>
-            <td>Part Unavailable</td>
-            <td>Lab 2</td>
-            <td>01/02/2019 9.00.00 AM</td>
-            <td>01/02/2019 10.00.00 AM</td>
-            <td>Full Admin</td>
-          </tr>
-          <tr>
-            <td>Support Meeting</td>
-            <td>Lab 1</td>
-            <td>12/02/2019 10.00.00 AM</td>
-            <td>12/02/2019 12.00.00 PM</td>
-            <td>Read Only</td>
-          </tr>
-          <tr>
-            <td>Traffic Problem</td>
-            <td>Lab 3</td>
-            <td>22/02/2019 10.00.00 AM</td>
-            <td>22/02/2019 10.30.00 AM</td>
-            <td>Read Only</td>
-          </tr>
-          <tr>
-            <td>Part Unavailable</td>
-            <td>Lab 2</td>
-            <td>01/02/2019 9.00.00 AM</td>
-            <td>01/02/2019 10.00.00 AM</td>
-            <td>Full Admin</td>
-          </tr>
-          <tr>
-            <td>Support Meeting</td>
-            <td>Lab 1</td>
-            <td>12/02/2019 10.00.00 AM</td>
-            <td>12/02/2019 12.00.00 PM</td>
-            <td>Full Admin</td>
-          </tr>
-          <tr>
-            <td>Traffic Problem</td>
-            <td>Lab 3</td>
-            <td>22/02/2019 10.00.00 AM</td>
-            <td>22/02/2019 10.30.00 AM</td>
-            <td>Full Admin</td>
-          </tr>
-          <tr>
-            <td>Part Unavailable</td>
-            <td>Lab 2</td>
-            <td>01/02/2019 9.00.00 AM</td>
-            <td>01/02/2019 10.00.00 AM</td>
-            <td>Read Only</td>
-          </tr>
-        </tbody>
-      </table>
+      
+      <div class id="agbox" style="marginTop:7%">
+        <div style="marginTop:0%">
+          <div v-if="requestList.length !== 0">
+            <ag-grid-vue
+              style="width: 100%; height: 500px;"
+              class="ag-theme-balham"
+              :columnDefs="columnDefs"
+              :rowData="rowData"
+              :gridOptions="gridOptions"
+              :enableColResize="true"
+              :enableSorting="true"
+              :enableFilter="true"
+              :groupHeaders="true"
+              :cellClicked="onCellClicked"
+              :suppressRowClickSelection="true"
+              rowSelection="multiple"
+              pagination="true"
+              :paginationPageSize="15"
+              :gridReady="onReady"
+              :gridSizeChanged="onReady"
+            ></ag-grid-vue>
+          </div>
+        </div>
+      </div>
 
       <!-- new Table -->
     </div>
@@ -163,12 +109,12 @@ export default {
 
   created() {
     console.log("beforeMount -- get_all_request_analysis", this.$store);
-    // this.get_all_request_analysis();
+    this.get_lab_request();
     clearInterval(window.intervalObj);
     this.createAnalysisFlag = localStorage.getItem("createAnalysisFlag");
     console.log("this.createAnalysisFlag", this.createAnalysisFlag);
     //this.get_dashboard_request_count();
-    //  this.createColumnDefs();
+     this.createColumnDefs();
   },
   // Vuex Configure Its not updating the Value once State Changed
   computed: {},
@@ -194,7 +140,7 @@ export default {
         "Status",
         "Created Date"
       ],
-      partsAnalysisRequestList: [],
+      requestList: [],
       partsAnalysisRequestDownload: [],
       dashboard_request_count: "",
       current: "Analysis",
@@ -242,10 +188,10 @@ export default {
     },
 
     // API Calls
-    get_all_request_analysis() {
+    get_lab_request() {
       this.isLoading = true;
       console.log("working successfully");
-      fetch(constant.APIURL + "api/v1/get_steps_all_users", {
+      fetch(constant.APIURL + "api/v1/lab/requests", {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -258,33 +204,22 @@ export default {
               this.logout();
             }
             console.log("data -getallrequest--->", data);
-            this.partsAnalysisRequestList = data;
+            this.requestList = data.data;
 
-            for (let i = 0; i < this.partsAnalysisRequestList.length; i++) {
+
+            for (let i = 0; i < this.requestList.length; i++) {
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
               this.rowData.push({
-                analysis_name: this.partsAnalysisRequestList[i].analysis_name,
-                analysis_type: this.partsAnalysisRequestList[i].analysis_type,
-                customer_name: this.partsAnalysisRequestList[i].customer_name,
-                requestStatus: this.partsAnalysisRequestList[i].requestStatus,
-                createdDate: new Date(
-                  this.partsAnalysisRequestList[i].created_at
-                ),
-                completedFlag: this.partsAnalysisRequestList[i]
-                  .analysis_request_id
-              });
-              this.partsAnalysisRequestDownload.push({
-                analysis_name: this.partsAnalysisRequestList[i].analysis_name,
-                analysis_type: this.partsAnalysisRequestList[i].analysis_type,
-                customer_name: this.partsAnalysisRequestList[i].customer_name,
-                requestStatus: this.partsAnalysisRequestList[i].requestStatus,
-                createdDate: new Date(
-                  this.partsAnalysisRequestList[i].created_at
-                )
-                  .toDateString()
-                  .substring(4)
+                end_time: this.requestList[i].end_time,
+                lab_resource: this.requestList[i].lab_resource,
+                requested_date: this.requestList[i].requested_date,
+                start_time: this.requestList[i].start_time,
+                type: this.requestList[i].type,
+                title: this.requestList[i].title
+
               });
             }
+             
             this.isLoading = false;
           });
         })
@@ -324,37 +259,35 @@ export default {
     createColumnDefs() {
       this.columnDefs = [
         {
-          headerName: "Analysis Name",
-          field: "analysis_name",
+          headerName: "Title",
+          field: "title",
           width: 250
         },
         {
-          headerName: "Analysis Type",
-          field: "analysis_type",
+          headerName: "Lab Needed",
+          field: "lab_resource",
           width: 150
         },
         {
-          headerName: "Customer Name",
-          field: "customer_name",
+          headerName: "Requested Date",
+          field: "requested_date",
           width: 150
         },
         {
-          headerName: "Status",
-          field: "requestStatus",
+          headerName: "Start Time",
+          field: "start_time",
           width: 150
         },
         {
-          headerName: "Created Date",
-          field: "createdDate",
-          width: 150,
-          filter: "date",
-          cellRenderer: dateCellRenderer
+          headerName: "End Time",
+          field: "end_time",
+          width: 150
         },
         {
-          headerName: "Action",
-          field: "completedFlag",
-          width: 250,
-          cellRenderer: actionCellRenderer
+          headerName: "Type",
+          field: "type",
+          width: 150
+         
         }
       ];
     },
