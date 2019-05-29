@@ -335,7 +335,7 @@ class DevTrackData(Resource):
                 devTrack1={}
 
                 # service account field in devtrack is nonempty
-                devTrack1['devtrack'] = [a for a in devTrack.get('devtrack') if not a.get('serviceAccount').isspace()]
+                devTrack1['devtrack'] = [a for a in devTrack.get('devtrack') if not (a.get('serviceAccount').isspace() or a.get('serviceAccount') =='' ) ]
                 devTrack1['devtrackFilters'] = devTrack.get('devtrackFilters')
 
                 # keep only matching issue id in releasenotes & devtrack
