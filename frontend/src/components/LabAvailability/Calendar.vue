@@ -1,7 +1,7 @@
 <template>
   <div>
-    <headernav msg="Spare Part Analysis" :loaderFlag="loaderFlag"/>
-    <side-nav menu="analysis" :diasableFlag="diasableFlag"/>
+    <headernav msg="Spare Part Analysis"/>
+    <side-nav menu="analysis"/>
     <div class="custom-container" style="paddingTop:3%">
       <!-- <div class="container"> -->
       <form style="marginTop: 5%;">
@@ -15,10 +15,10 @@
 
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
               <label>{{LabAnalysisConstant.labLabels[0]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <input
                 type="text"
                 class="form-control"
@@ -30,12 +30,12 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
               <label>{{LabAnalysisConstant.labLabels[1]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <multiselect
-                v-model="labData.lab"
+                v-model="labData.lab_resource"
                 label="name"
                 :placeholder="LabAnalysisConstant.labPlaceHolders[1]"
                 :options="labOptions"
@@ -46,56 +46,38 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
               <label>{{LabAnalysisConstant.labLabels[2]}}</label>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
               <date-picker
                 style="height:40px;paddingTop:1.1em;width:100%"
-                v-model="labData.startDate"
+                v-model="labData.requested_date"
                 lang="en"
                 value-type="format"
                 format="MM/DD/YYYY"
                 :first-day-of-week="1"
-                @change="getMlKeywords()"
-              ></date-picker>
-            </div>
-            <div class="col-lg-3">
-              <date-picker
-                style="height:40px;paddingTop:1.1em;width:100%"
-                v-model="labData.startTime"
-                lang="en"
-                type="time"
-                format="HH:mm:ss"
-                placeholder="Select Time"
+                confirm
               ></date-picker>
             </div>
           </div>
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-3">
-              <label>{{LabAnalysisConstant.labLabels[3]}}</label>
+            <div class="col-lg-4">
+              <label>{{LabAnalysisConstant.labLabels[6]}}</label>
             </div>
-            <div class="col-lg-3">
+
+            <div class="col-lg-4">
               <date-picker
                 style="height:40px;paddingTop:1.1em;width:100%"
-                v-model="labData.endDate"
-                lang="en"
+                v-model="labData.start_time"
                 value-type="format"
-                format="MM/DD/YYYY"
-                :first-day-of-week="1"
-                @change="getMlKeywords()"
-              ></date-picker>
-            </div>
-            <div class="col-lg-3">
-              <date-picker
-                style="height:40px;paddingTop:1.1em;width:100%"
-                v-model="labData.endTime"
                 lang="en"
                 type="time"
-                format="HH:mm:ss"
+                format="HH:mm"
                 placeholder="Select Time"
+                confirm
               ></date-picker>
             </div>
           </div>
@@ -103,12 +85,33 @@
         <br>
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
+              <label>{{LabAnalysisConstant.labLabels[3]}}</label>
+            </div>
+
+            <div class="col-lg-4">
+              <date-picker
+                style="height:40px;paddingTop:1.1em;width:100%"
+                v-model="labData.end_time"
+                value-type="format"
+                lang="en"
+                type="time"
+                format="HH:mm"
+                placeholder="Select Time"
+                confirm
+              ></date-picker>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-4">
               <label>{{LabAnalysisConstant.labLabels[4]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <multiselect
-                v-model="labData.requestType"
+                v-model="labData.type"
                 label="name"
                 :placeholder="LabAnalysisConstant.labPlaceHolders[4]"
                 :options="requestTypeOptions"
@@ -120,10 +123,10 @@
         <br>
         <div class="form-group">
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
               <label>{{LabAnalysisConstant.labLabels[5]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <b-form-textarea
                 id="textarea"
                 class="textOverlay"
@@ -147,6 +150,7 @@
               type="button"
               class="btn btn-success"
               v-tooltip.top.hover.focus="'Click to Submit'"
+              @click="compareDates()"
             >{{LabAnalysisConstant.buttons[1]}}</button>
           </div>
         </div>
@@ -182,6 +186,7 @@ export default {
 
   created() {
     clearInterval(window.intervalObj);
+    this.labData.created_by = localStorage.getItem("email_id");
     console.log("created");
   },
   components: {
@@ -197,13 +202,14 @@ export default {
       LabAnalysisConstant: constant.LabScreen,
       labData: {
         description: "",
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-        requestType: "",
+        loaderFlag: false,
+        requested_date: "",
+        start_time: "",
+        end_time: "",
+        type: "",
         title: "",
-        lab: ""
+        lab_resource: "",
+        created_by: ""
       },
 
       labOptions: [
@@ -227,280 +233,55 @@ export default {
         {
           name: "Full Admin"
         }
-      ],
-      analysisType: "4 Hr Analysis",
-      replensihTime: "Ratio of PON - 2Day",
-      date: new Date(),
-      dnafile: "",
-      sapfile: "",
-      bomFile: "",
-      partsAnalysisData: "",
-      partsAnalysis: "",
-      partsClose: true,
-      showPartsChild: false,
-      postMenu: "Analysis >",
-      current: "Analysis Update",
-      show: false,
-      label: "Loading...",
-      errorData: [],
-      uploading: false,
-      resubmit: false,
-      loaderFlag: false,
-      diasableFlag: false,
-      mtbf: true,
-      fileType: "dna",
-
-      sampleBOM: sampleBomData
+      ]
     };
   },
   methods: {
-    selectedCustomerName(value) {
-      this.customerNames = value;
-    },
-    selectedAnalysisType(value) {
-      console.log(value);
-      this.analysisType = value;
-    },
-    selectedReplensihTime(value) {
-      console.log(value);
-      this.replensihTime = value;
-    },
-    handleFile(e) {
-      console.log("image ------>", e.target.files);
-      const file = e.target.files[0];
+    compareDates() {
+      var x = new Date(this.labData.startDate);
+      var y = new Date(this.labData.endDate);
+      console.log(this.labData.lab_resource);
       if (
-        file.name.endsWith("xlsx") ||
-        file.name.endsWith("csv") ||
-        file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV") ||
-        file.name.endsWith("txt") ||
-        file.name.endsWith("TXT") ||
-        file.name.endsWith("tsv") ||
-        file.name.endsWith("TSV")
+        this.labData.title !== "" &&
+        (this.labData.lab_resource !== "" &&
+          this.labData.lab_resource !== null) &&
+        (this.labData.type !== "" && this.labData.type !== null) &&
+        this.labData.start_time !== "" &&
+        this.labData.end_time !== "" &&
+        this.labData.requested_date !== ""
       ) {
-        console.log(file.name);
-        this.dnafileName = file.name;
-        this.dnafile = file;
-      } else {
-        swal({
-          title: "Error",
-          text: "Please Upload a .CSV or .TXT or .TSV or .XLSX File",
-          icon: "error"
-        });
-      }
-    },
-
-    bomFileEvent(e) {
-      console.log("image ------>", e.target.files);
-      const file = e.target.files[0];
-      if (
-        file.name.endsWith("xlsx") ||
-        file.name.endsWith("csv") ||
-        file.name.endsWith("XLSX") ||
-        file.name.endsWith("CSV")
-      ) {
-        console.log(file.name);
-        this.bomFileName = file.name;
-        this.bomFile = file;
-      } else {
-        swal({
-          title: "Error",
-          text: "Please Upload a .CSV or .XSLX File",
-          icon: "error",
-          buttons: {
-            download: {
-              text: "Download Sample",
-              value: "yes"
-            },
-            ok: true
-          }
-        }).then(value => {
-          switch (value) {
-            case "yes":
-              this.downloadSampleBOM();
-          }
-        });
-      }
-    },
-    downloadSampleBOM() {
-      var fileContent = String(this.sampleBOM);
-      var fileType = "csv";
-
-      fileType = fileType || "csv";
-      var blobType = "text/csv";
-      var a = document.createElement("a");
-      a.href = window.URL.createObjectURL(
-        new Blob([fileContent], { type: blobType })
-      );
-      a.download = "SampleBOM" + "." + fileType;
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-    },
-    sapFile(e) {
-      console.log("image ----sap->", e.target.files);
-      const file = e.target.files[0];
-      if (
-        file.name.endsWith("xlsx") ||
-        file.name.endsWith("xls") ||
-        file.name.endsWith("XLSX") ||
-        file.name.endsWith("XLS")
-      ) {
-        console.log(file.name);
-        this.sapfileName = file.name;
-        this.sapfile = file;
-      } else {
-        swal({
-          title: "Error",
-          text: "Please Upload a  .XLS or .XLSX File",
-          icon: "error"
-        });
-      }
-    },
-
-    cancel() {
-      router.push("/parts/analysis/dashboard");
-    },
-    routeToView(data) {
-      router.push({
-        path: "/parts/analysis/view",
-        query: { id: data.analysis_id }
-      });
-    },
-    formSubmit() {
-      var mtbfValue;
-      if (this.mtbf) {
-        mtbfValue = "yes";
-      } else {
-        mtbfValue = "no";
-      }
-      let data = {
-        dnafileName: this.dnafileName,
-        sapfileName: this.sapfileName,
-        analyisisName: this.analyisisName,
-        customerNames: this.customerNames,
-        analysisType: this.analysisType,
-        replensihTime: this.replensihTime,
-        date: new Date(),
-        dnafile: this.dnafile,
-        sapfile: this.sapfile,
-        bomfile: this.bomFile,
-        mtbf: mtbfValue
-      };
-      var filePresent = false;
-      if (
-        this.analyisisName !== "" &&
-        this.customerNames !== "" &&
-        this.analysisType !== "" &&
-        this.replensihTime !== ""
-      ) {
-        if (this.fileType === "dna") {
-          if (this.dnafile !== "") {
-            filePresent = true;
-          } else {
-            swal({
-              title: "Error",
-              text: "Please Attach the DNA File",
-              icon: "error"
-            });
-          }
+        if (this.labData.startTime < this.labData.endTime) {
+          this.postRequestLab();
         } else {
-          if (this.bomFile !== "") {
-            filePresent = true;
-          } else {
-            swal({
-              title: "Error",
-              text: "Please Attach the BOM File",
-              icon: "error"
-            });
-          }
-        }
-
-        if (filePresent) {
-          if (this.sapfile !== "") {
-            this.diasableFlag = true;
-            this.uploading = true;
-            this.diasableFlag = true;
-            if (this.resubmit) {
-              swal({
-                title: "Info",
-                text: "Are you sure want to Resubmit the Request ?",
-                icon: "info"
-              }).then(ok => {
-                if (ok) {
-                  this.resubmit = false;
-                  this.post_spare_part_analysis(data);
-                }
-              });
-            } else {
-              this.post_spare_part_analysis(data);
-            }
-          } else {
-            swal({
-              title: "Error",
-              text: "Please Attach the SAP File",
-              icon: "error"
-            });
-          }
+          swal({
+            title: "info",
+            text: "The End Time of Meeting is Before the Start Time",
+            icon: "info"
+          });
         }
       } else {
         swal({
-          title: "Error",
-          text: "Please Fill the Form",
-          icon: "error"
+          title: "info",
+          text: "Please Fill All the Form Details.",
+          icon: "info"
         });
       }
     },
-
-    // API calls
-    get_spare_part_analysis() {
-      fetch(constant.APIURL + "api/v1/get_spare_part_analysis", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
-        }
-      })
-        .then(response => {
-          response.text().then(text => {
-            const data = text && JSON.parse(text);
-            console.log("data ---->", data);
-            if (data.code === "token_expired") {
-              this.logout();
-            }
-            this.partsAnalysis = data;
-          });
-        })
-        .catch(handleError => {
-          console.log(" Error Response ------->", handleError);
-        });
-    },
-    redirectToSummary() {
-      console.log("inside summary");
-      router.push({
-        path: "/parts/analysis",
-        query: { id: this.requestId }
-      });
-    },
-    post_spare_part_analysis(data) {
+    postRequestLab() {
+      this.isLoading = true;
       let formData = new FormData();
-      console.log("loader show");
+      formData.append("title", this.labData.title);
+      formData.append("lab_resource", this.labData.lab_resource.name);
+      formData.append("requested_date", this.labData.requested_date);
+      formData.append("start_time", this.labData.start_time);
+      formData.append("type", this.labData.type.name);
+      formData.append("end_time", this.labData.end_time);
+      formData.append("description", this.labData.description);
+      formData.append("created_by", this.labData.created_by);
 
-      this.loaderFlag = true;
-      formData.append("analysis_name", data.analyisisName);
-      formData.append("analysis_type", data.analysisType);
-      formData.append("replenish_time", data.replensihTime);
+      console.log(this.labData);
 
-      formData.append("user_email_id", localStorage.getItem("email_id"));
-      formData.append("customer_name", data.customerNames);
-      formData.append("sap_export_file", data.sapfile);
-      formData.append("is_mtbf", data.mtbf);
-      if (this.fileType === "dna") {
-        formData.append("customer_dna_file", data.dnafile);
-      } else {
-        formData.append("bom_file", data.bomfile);
-      }
-      console.log("formdata ----->", formData.get("analysis_name"));
-      fetch(constant.APIURL + "api/v1/post_spare_part_analysis", {
+      fetch(constant.APIURL + "api/v1/lab/request", {
         method: "POST",
         body: formData,
         headers: {
@@ -513,39 +294,30 @@ export default {
             if (data.code === "token_expired") {
               this.logout();
             }
-            console.log("Response from backend data ---->", data);
             if (data.http_status_code === 200) {
-              this.routeToView(data);
-            } else {
-              swal("Hello world!");
-              this.uploading = false;
-              this.resubmit = true;
-              this.diasableFlag = false;
-
+              this.isLoading = false;
               swal({
-                title: "Error",
+                title: "SUCCESS",
                 text: data.msg,
-                icon: "error",
-                buttons: {
-                  download: {
-                    text: "Download Sample",
-                    value: "yes"
-                  },
-                  ok: true
-                }
-              }).then(value => {
-                switch (value) {
-                  case "yes":
-                    this.downloadSampleBOM();
+                icon: "success"
+              }).then(ok => {
+                if (ok) {
+                  this.routeToLab();
                 }
               });
-              this.loaderFlag = false;
+            } else {
+              this.isLoading = false;
+              this.errorMessage = data.msg;
             }
+            console.log("data -- response-->", data);
           });
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+    },
+    routeToLab() {
+      router.push("/lab");
     },
     logout() {
       console.log("logout");

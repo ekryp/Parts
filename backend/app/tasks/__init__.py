@@ -10,7 +10,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
-    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status
+    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status, to_sql_lab_systems
 
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
@@ -1250,6 +1250,37 @@ def end_customer_table_creation(end_customer_file, extension, user_email_id):
     to_sql_end_customer(end_customer_df)
     sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ", " Your Request to upload Customer data finished ")
 
+
+@celery.task
+def lab_table_creation(lab_file, extension, user_email_id):
+
+    while check_analysis_task_status():
+        import time
+        print("The task lab_table_creation is paused, as analysis request is running")
+        time.sleep(60)
+
+    print("The task lab_table_creation task started, as No analyis request is running")
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+
+    if extension.lower() == '.csv':
+        lab_df = pd.read_csv(lab_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        lab_df = pd.read_csv(lab_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        lab_df = pd.read_excel(lab_file)
+
+    # Remove duplicate cust_name
+    lab_df.drop_duplicates(subset="Lab System Name", keep="first", inplace=True)
+
+    # delete end_customer  & append with new values
+    query = "delete from lab_systems"
+    engine.execute(query)
+
+    # lab_systems table populated
+    to_sql_lab_systems(lab_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ", " Your Request to upload Labs data finished ")
 
 
 

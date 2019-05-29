@@ -42,7 +42,12 @@ class ReleaseNotes(Resource):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         search_param = escapeESArg(args['search_param'])
-        search_param = "*" + search_param + "*"
+        splited_search_param = search_param.split(' ')
+        updated_search_param = splited_search_param[0]
+        for tmp in splited_search_param[1:]:
+            updated_search_param += " AND "+tmp
+        search_param = updated_search_param
+        print(search_param)
         print("Release Notes  Params : ", search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
 

@@ -2,7 +2,8 @@ from datetime import datetime
 from app import app
 from app import csvs, excel, mytext
 from app.tasks import celery, part_table_creation, depot_table_creation, node_table_creation, \
-    high_spare_table_creation, misnomer_table_creation, ratio_table_creation, end_customer_table_creation
+    high_spare_table_creation, misnomer_table_creation, ratio_table_creation, end_customer_table_creation,\
+    lab_table_creation
 from flask import jsonify
 from flask import request
 from flask_restful import Resource
@@ -533,6 +534,70 @@ class UploadEndCustomer(Resource):
             #end_customer_table_creation(end_customer_file, extension, user_email_id)
             celery.send_task('app.tasks.end_customer_table_creation', [end_customer_file, extension, user_email_id])
             return jsonify(msg="End Customer File Uploaded Successfully", http_status_code=200)
+
+        except FileFormatIssue as e:
+            return jsonify(msg=e.msg, http_status_code=400)
+
+        except Exception as e:
+            print(str(e))
+            return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
+
+
+def check_lab_file(lab_file, extension):
+
+    if extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        lab_df = pd.read_excel(lab_file)
+
+    lab_row, lab_cols = lab_df.shape
+    if lab_row < 1:
+        raise FileFormatIssue(lab_file, "No Records to process, BAD Depot File")
+
+    if lab_cols < 7:
+        raise FileFormatIssue(lab_file, "Less than required 7 columns, BAD Labs File")
+
+    if lab_cols > 7:
+        raise FileFormatIssue(lab_file, "More than required 7 columns, BAD Labs File")
+
+    lab_columns = ['Lab Id', 'Lab System Name', 'Product Type', 'IP Address',
+       'Log In Name', 'Password', 'Serial Console']
+
+    if set(lab_df.columns.values.tolist()) != set(lab_columns):
+        raise FileFormatIssue(lab_file, "Header mismatch, BAD Lab File")
+
+
+class UploadLabDetails(Resource):
+    ''' It populates lab_systems table '''
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_email_id', type=str, required=True, help='Email ID missing', location='form')
+        super(UploadLabDetails, self).__init__()
+
+    @requires_auth
+    def post(self):
+        args = self.reqparse.parse_args()
+        dest_folder = request.form.get('user_email_id')
+        user_email_id = request.form.get('user_email_id')
+        upload_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        lab_file = ''
+
+        for file in request.files.getlist('labs_file'):
+
+            name, extension = os.path.splitext(file.filename)
+
+            if extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "labs_file_{0}{1}".format(upload_date, extension.lower())
+                lab_file = file.filename
+                excel.save(file, folder=dest_folder)
+
+            lab_file = os.path.join(full_path, lab_file)
+        try:
+            check_lab_file(lab_file, extension)
+
+            # lab_table_creation(lab_file, extension, user_email_id)
+            celery.send_task('app.tasks.lab_table_creation', [lab_file, extension, user_email_id])
+            return jsonify(msg="Lab File Uploaded Successfully", http_status_code=200)
 
         except FileFormatIssue as e:
             return jsonify(msg=e.msg, http_status_code=400)
