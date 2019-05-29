@@ -2238,10 +2238,17 @@ export default {
       //     this.mlKeywords = this.mlKeywords + " OR " + this.filterValue[i].name;
       //   }
       // }
+      let dynamicURL = "";
+      if (this.problemDescription.includes('"')) {
+        dynamicURL = "api/get_devtrack_data_preffix?search_param=";
+      } else {
+        dynamicURL = "api/getDevTrackData?search_param=";
+      }
+
       console.log("Filter Values", this.filterValues);
       fetch(
         constant.ELKURL +
-          "api/getDevTrackData?search_param=" +
+          dynamicURL +
           this.problemDescription +
           this.mlKeywords +
           this.filterSynonym +
@@ -2268,6 +2275,7 @@ export default {
               //   this.analyzeFlag = true;
               // }
               var upvotedUsers = [];
+
               this.productOptions = data.data.devTrack.devtrackFilters.product;
               this.groupOptions = data.data.devTrack.devtrackFilters.group;
               this.severityOptions =
@@ -2328,47 +2336,47 @@ export default {
                 this.moreFlag4 = false;
               }
               this.showDevTrack();
-              for (var j = 0; j < data.data.releaseNotes.length; j++) {
-                if (data.data.releaseNotes[j].upvotedUsers !== undefined) {
-                  upvotedUsers = data.data.releaseNotes[j].upvotedUsers;
-                } else {
-                  upvotedUsers = [];
-                }
-                this.releaseNotesData.push({
-                  description: data.data.releaseNotes[j].description,
-                  index: j,
-                  file_name: data.data.releaseNotes[j].file_name,
-                  issueId: data.data.releaseNotes[j].issueId,
-                  probability: data.data.releaseNotes[j].probability,
-                  severity: data.data.releaseNotes[j].severity,
-                  workaround: data.data.releaseNotes[j].workaround,
-                  key: data.data.releaseNotes[j].key,
-                  upvotedUsers: upvotedUsers
-                });
-              }
+              // for (var j = 0; j < data.data.releaseNotes.length; j++) {
+              //   if (data.data.releaseNotes[j].upvotedUsers !== undefined) {
+              //     upvotedUsers = data.data.releaseNotes[j].upvotedUsers;
+              //   } else {
+              //     upvotedUsers = [];
+              //   }
+              //   this.releaseNotesData.push({
+              //     description: data.data.releaseNotes[j].description,
+              //     index: j,
+              //     file_name: data.data.releaseNotes[j].file_name,
+              //     issueId: data.data.releaseNotes[j].issueId,
+              //     probability: data.data.releaseNotes[j].probability,
+              //     severity: data.data.releaseNotes[j].severity,
+              //     workaround: data.data.releaseNotes[j].workaround,
+              //     key: data.data.releaseNotes[j].key,
+              //     upvotedUsers: upvotedUsers
+              //   });
+              // }
 
-              for (var k = 0; k < data.data.fsb.length; k++) {
-                if (data.data.fsb[k].upvotedUsers !== undefined) {
-                  upvotedUsers = data.data.fsb[k].upvotedUsers;
-                } else {
-                  upvotedUsers = [];
-                }
-                this.fsbData.push({
-                  FSBNumber: data.data.fsb[k].FSBNumber,
-                  index: k,
-                  dateCreated: data.data.fsb[k].dateCreated,
-                  dateRevised: data.data.fsb[k].dateRevised,
-                  issueId: data.data.fsb[k].issueId,
-                  description: data.data.fsb[k].description,
-                  file_name: data.data.fsb[k].file_name,
-                  probability: data.data.fsb[k].probability,
-                  rootCause: data.data.fsb[k].rootCause,
-                  symptoms: data.data.fsb[k].symptoms,
-                  title: data.data.fsb[k].title,
-                  key: data.data.fsb[k].key,
-                  upvotedUsers: upvotedUsers
-                });
-              }
+              // for (var k = 0; k < data.data.fsb.length; k++) {
+              //   if (data.data.fsb[k].upvotedUsers !== undefined) {
+              //     upvotedUsers = data.data.fsb[k].upvotedUsers;
+              //   } else {
+              //     upvotedUsers = [];
+              //   }
+              //   this.fsbData.push({
+              //     FSBNumber: data.data.fsb[k].FSBNumber,
+              //     index: k,
+              //     dateCreated: data.data.fsb[k].dateCreated,
+              //     dateRevised: data.data.fsb[k].dateRevised,
+              //     issueId: data.data.fsb[k].issueId,
+              //     description: data.data.fsb[k].description,
+              //     file_name: data.data.fsb[k].file_name,
+              //     probability: data.data.fsb[k].probability,
+              //     rootCause: data.data.fsb[k].rootCause,
+              //     symptoms: data.data.fsb[k].symptoms,
+              //     title: data.data.fsb[k].title,
+              //     key: data.data.fsb[k].key,
+              //     upvotedUsers: upvotedUsers
+              //   });
+              // }
               console.log("asdasd", this.devTrackData);
               if (data.data.devTrack.length > 0) {
                 this.analyzeFlag = true;
@@ -2470,10 +2478,10 @@ export default {
             } else {
               this.isLoading = false;
               swal({
-              title: "Error",
-              text: "Something Went Wrong.Please Try After Sometime ",
-              icon: "error"
-            });
+                title: "Error",
+                text: "Something Went Wrong.Please Try After Sometime ",
+                icon: "error"
+              });
             }
           });
         })
@@ -2530,10 +2538,10 @@ export default {
             } else {
               this.isLoading = false;
               swal({
-              title: "Error",
-              text: "Something Went Wrong.Please Try After Sometime ",
-              icon: "error"
-            });
+                title: "Error",
+                text: "Something Went Wrong.Please Try After Sometime ",
+                icon: "error"
+              });
             }
           });
         })
@@ -2594,10 +2602,10 @@ export default {
             } else {
               this.isLoading = false;
               swal({
-              title: "Error",
-              text: "Something Went Wrong.Please Try After Sometime ",
-              icon: "error"
-            });
+                title: "Error",
+                text: "Something Went Wrong.Please Try After Sometime ",
+                icon: "error"
+              });
             }
           });
         })
