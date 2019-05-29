@@ -26,13 +26,14 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('priority_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('found_on_platform_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('date_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('service_account_filter', required=False, location='args', action='append')
         self.reqparse.add_argument('check_title',required=False,help='check_title',location='args')
         self.reqparse.add_argument('internal', required=False, location='args')
         super(DevTrackData, self).__init__()
 
     def get(self):
 
-        def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,checkTitle):
+        def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,checkTitle,service_account_filter):
             if not(isinstance(product_filter,list)):
                 product_filter=[]
             if not(isinstance(group_filter,list)):
@@ -49,12 +50,14 @@ class DevTrackData(Resource):
                 found_on_platform_filter=[]
             if not(isinstance(date_filter,list)):
                 date_filter=[]
+            if not(isinstance(service_account_filter,list)):
+                service_account_filter=[]
 
             DATE_FILTER_PARAMS=""
             
             URL=config.ELK_URI+"devtrack/_doc/_search"
             headers = {'Content-type': 'application/json'}
-            if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)):
+            if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                 print(check_title)
                 if(check_title == "true"):
                     PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
@@ -85,6 +88,18 @@ class DevTrackData(Resource):
                                     GROUP_PARAMS+="{\"term\" : { \"group\" :\""+tmp.lower()+"\" } }"
                                 else:
                                     GROUP_PARAMS+="{\"term\" : { \"group\" :\""+tmp.lower()+"\"} },"
+
+
+                if(len(service_account_filter)>0):
+                    SERVICE_ACCOUNT_PARAMS=""
+                    for loc in service_account_filter:
+                        for tmp in loc.split():
+                            tmp=re.sub('[^A-Za-z0-9]+', '', tmp)
+                            if not(tmp == ""):
+                                if tmp == loc.split()[-1]:
+                                    SERVICE_ACCOUNT_PARAMS+="{\"term\" : { \"serviceAccount\" :\""+tmp.lower()+"\" } }"
+                                else:
+                                    SERVICE_ACCOUNT_PARAMS+="{\"term\" : { \"serviceAccount\" :\""+tmp.lower()+"\"} },"
 
 
                 if(len(found_in_release_filter)>0):
@@ -184,6 +199,9 @@ class DevTrackData(Resource):
                 
             if (len(priority_filter)>0):
                 PARAMS+=PRIORITY_PARAMS+","
+
+            if (len(service_account_filter)>0):
+                PARAMS+=SERVICE_ACCOUNT_PARAMS+","
                 
             if (len(found_on_platform_filter)>0):
                 PARAMS+=FOUND_ON_PLATFORM_PARAMS+","
@@ -192,7 +210,7 @@ class DevTrackData(Resource):
                 PARAMS+=DATE_FILTER_PARAMS+","
                 
 
-            if((len(product_filter)>0) or (len(group_filter)>0)or (len(found_in_release_filter)>0)or (len(fixed_in_release_filter)>0)or (len(severity_filter)>0)or (len(priority_filter)>0)or (len(found_on_platform_filter)>0)or (len(date_filter)>0)):
+            if((len(product_filter)>0) or (len(group_filter)>0)or (len(found_in_release_filter)>0)or (len(fixed_in_release_filter)>0)or (len(severity_filter)>0)or (len(priority_filter)>0)or (len(found_on_platform_filter)>0)or (len(date_filter)>0)or (len(service_account_filter)>0)):
                 PARAMS = PARAMS[:-1]
                 PARAMS+="]}}}}}"
             print("Devtrack Params : ",json.loads(PARAMS))
@@ -213,7 +231,7 @@ class DevTrackData(Resource):
                         for key in filterKeys:
                             
                             # print('value ----->',doc["_source"][key])
-                            if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed'):
+                            if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed' or key == 'serviceAccount'):
                                 filterList[key].append(doc["_source"][key])
                         
                     for key in filterKeys:
@@ -287,10 +305,15 @@ class DevTrackData(Resource):
             found_on_platform_filter = args.get('found_on_platform_filter')
             date_filter = args.get('date_filter')
             check_title = args.get('check_title')
-           
+            service_account_filter=args.get('service_account_filter')
             search_param = escapeESArg(args['search_param'])
-            search_param = "*"+search_param+"*"
-            devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,check_title)
+            splited_search_param = search_param.split(' ')
+            updated_search_param = splited_search_param[0]
+            for tmp in splited_search_param[1:]:
+                updated_search_param += " AND "+tmp
+
+            search_param = updated_search_param
+            devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,check_title,service_account_filter)
             releaseNotes = releaseNotes(search_param)
             fsb = fsb(search_param)
             response= {
