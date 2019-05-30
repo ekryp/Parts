@@ -443,7 +443,7 @@ class DevTrackPhrasePrefix(Resource):
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
                                 
-                                tmp=re.sub('[^A-Za-z0-9.- ]+ ', '', tmp)
+                                #tmp=re.sub('[^A-Za-z0-9.- ]+ ', '', tmp)
                                 if not(tmp == ""):
                                     if tmp == search_param_list[-1]:
                                         PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"fields\": [\"title\"],\"type\" : \"phrase_prefix\"}},"
@@ -455,7 +455,7 @@ class DevTrackPhrasePrefix(Resource):
                             for tmp_list in final_list:
                                 PARAMS+=" {\"bool\": {\"should\": ["
                                 for tmp in tmp_list:
-                                    tmp=re.sub('[^A-Za-z0-9.- ]+', '', tmp)
+                                    #tmp=re.sub('[^A-Za-z0-9.- ]+', '', tmp)
                                     if not(tmp == ""):
                                         if tmp == tmp_list[-1]:
                                             PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"fields\": [\"title\"],\"type\" : \"phrase_prefix\"}}"
@@ -497,10 +497,10 @@ class DevTrackPhrasePrefix(Resource):
                         PARAMS+="]}}}"
 
                 else:
-                    if(check_title == "true"):
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"multi_match\": {\"query\": \""+phrase_query[0]+"\",\"fields\": [\"title\"],\"type\" : \"phrase_prefix\"}},\"filter\": {\"bool\" : {\"must\" : ["
-                    else:
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"multi_match\": {\"query\": \""+phrase_query[0]+"\",\"type\" : \"phrase_prefix\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                    # if(check_title == "true"):
+                    #     PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"multi_match\": {\"query\": \""+phrase_query[0]+"\",\"fields\": [\"title\"],\"type\" : \"phrase_prefix\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                    # else:
+                    #     PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"multi_match\": {\"query\": \""+phrase_query[0]+"\",\"type\" : \"phrase_prefix\"}},\"filter\": {\"bool\" : {\"must\" : ["
 
 
 
@@ -529,8 +529,8 @@ class DevTrackPhrasePrefix(Resource):
                                         else:
                                             PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"fields\": [\"title\"],\"type\" : \"phrase_prefix\"}},"
                                 PARAMS+="]}},"
-                        
-                        PARAMS+="\"filter\": {\"bool\" : {\"must\" : ["
+                        PARAMS=PARAMS[:-1]
+                        PARAMS+="],\"filter\": {\"bool\" : {\"must\" : ["
                         
 
                     
