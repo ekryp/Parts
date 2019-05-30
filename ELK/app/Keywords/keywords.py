@@ -90,7 +90,7 @@ class GetMLKeyWords(Resource):
             elastic_search_df = pd.read_excel('Keyword_UI.xlsx')
 
             ml_synonym = []
-
+            found_elastic_search_words = []
             for problem_area in found_problem_area:
                 matched_elastic_search_words = elastic_search_df[elastic_search_df['UI Problem Area Map'].str.match(problem_area, case=False)]
                 found_elastic_search_words = []
