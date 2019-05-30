@@ -17,6 +17,7 @@ def sample_data_fsb():
     response = requests.post(config.ELK_URI + "fsb/_doc", json=dd,
                          auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
                          headers={"content-type": "application/json"})
+    print(response.json())
 
 
 def sample_data_devtrack():
@@ -26,9 +27,10 @@ def sample_data_devtrack():
     dd['description'] = 'I am seeing faulty  equipment degrade alarm along with "dpinit failed"  error "second string" Traffic Glitch'
     dd['timestamp'] = date.today().isoformat()
     print(dd)
-    response = requests.post(config.ELK_URI + "devtrack/_doc" + str(dd.get('issueId')), json=dd,
+    response = requests.post(config.ELK_URI + "devtrack/_doc/" + str(dd.get('issueId')), json=dd,
                          auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
                          headers={"content-type": "application/json"})
+    print(response.json())
 
 
 def sample_data_release_notes():
@@ -41,6 +43,7 @@ def sample_data_release_notes():
     response = requests.post(config.ELK_URI + "release_notes/_doc", json=dd,
                          auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
                          headers={"content-type": "application/json"})
+    print(response.json())
 
 
 def sample_data_mop():
@@ -53,6 +56,7 @@ def sample_data_mop():
     response = requests.post(config.ELK_URI + "mop/_doc", json=dd,
                          auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
                          headers={"content-type": "application/json"})
+    print(response.json())
 
 
 def sample_data_testplan():
@@ -65,6 +69,7 @@ def sample_data_testplan():
     response = requests.post(config.ELK_URI + "testplan/_doc", json=dd,
                          auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
                          headers={"content-type": "application/json"})
+    print(response.json())
 
 
 def sample_data_technotes():
@@ -77,6 +82,11 @@ def sample_data_technotes():
     response = requests.post(config.ELK_URI + "technotes/_doc", json=dd,
                          auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
                          headers={"content-type": "application/json"})
+    print(response.json())
 
-#sample_data_fsb()
-sample_data_devtrack()
+# sample_data_fsb()
+# sample_data_devtrack()
+# sample_data_release_notes()
+# sample_data_mop()
+# sample_data_testplan()
+# sample_data_technotes()
