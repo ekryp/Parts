@@ -2931,6 +2931,8 @@ export default {
         this.priorityValue = [];
       } else if (param === "foundOnPlatform") {
         this.foundOnPlatformValue = [];
+      } else if (param === "serviceAccount") {
+        this.serviceAccountValue = [];
       }
       this.getMlKeywords();
     },
@@ -3025,7 +3027,7 @@ export default {
       setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateFixedInReleaseSelect() {
-      if (this.fixedInReleaseValue.length !== 0) {
+      if (this.serviceAccountValue.length !== 0) {
         this.getMlKeywords();
       }
     },
