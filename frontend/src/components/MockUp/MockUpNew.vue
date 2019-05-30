@@ -2243,11 +2243,10 @@ export default {
       //   }
       // }
       let dynamicURL = "";
-      if (this.problemDescription.includes('"')) {
-        dynamicURL = "api/get_devtrack_data_preffix?search_param=";
-      } else {
-        dynamicURL = "api/getDevTrackData?search_param=";
-      }
+      // if (this.problemDescription.includes('"')) {
+      dynamicURL = "api/get_devtrack_data_preffix?search_param=";
+      // } else {
+      //   dynamicURL = "api/getDevTrackData?search_param=";
 
       console.log("Filter Values", this.filterValues);
       fetch(
