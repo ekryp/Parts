@@ -2289,6 +2289,8 @@ export default {
                 data.data.devTrack.devtrackFilters.priority;
               this.foundOnPlatformOptions =
                 data.data.devTrack.devtrackFilters.foundOnPlatform;
+              this.serviceAccountOptions =
+                data.data.devTrack.devtrackFilters.serviceAccount;
               this.fixedInReleaseOptions =
                 data.data.devTrack.devtrackFilters.fixedinRelease;
               this.foundInReleaseOptions =
