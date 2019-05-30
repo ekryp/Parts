@@ -50,18 +50,53 @@ for each_pdf in pdfs:
             # print(release_product_affected)
             break
 
+    # Get References from result list
+    # It present after References line
+    References = ''
+    for item in result:
+
+        if 'References' in item:
+            start_ref = result.index(item)
+            break
+
+    for item in result:
+
+        if 'Details' in item:
+            end_ref = result.index(item)
+            break
+
+        elif 'Symptoms' in item:
+            end_ref = result.index(item)
+            break
+
+        elif 'Associated Documentation' in item:
+            end_ref = result.index(item)
+            break
+
+    References= result[start_ref + 1:end_ref]
+
+    # remove empty lines
+    References = [x for x in References if not x.isspace()]
+
+    # join non-empty rows to one
+    References = '\n'.join(References)
+
     dd = defaultdict(dict)
     dd['timestamp'] = date.today().isoformat()
     dd['description'] = Description
     dd['file_name'] = os.path.split(each_pdf)[1]
     if not release_product_affected.isspace() and release_product_affected!="":
         dd['release_product_affected'] = release_product_affected
+
+    if not References.isspace() and References!="":
+        dd['references'] = References
     print(dd)
     print('#' * 100)
 
     response = requests.post(config.ELK_URI + "technotes/_doc", json=dd,
                              auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
                              headers={"content-type": "application/json"})
+
 
 
 

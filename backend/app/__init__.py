@@ -127,13 +127,15 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard, GetAnalysisDashboardCount
 
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
-    UploadMisnomer, UploadRatio, UploadEndCustomer
+    UploadMisnomer, UploadRatio, UploadEndCustomer, UploadLabDetails
 
 from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer,GetRatio,Customer
 
 from app.resources.access_control import ResetPassword, Role, User, User_Role
 
 from app.auth.authorization import Roles, Permission
+
+from app.resources.labrequest import PostLabRequest, GetAllLabRequest
 
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
@@ -195,6 +197,10 @@ api.add_resource(User, '/info/members/delete-user', endpoint='delete-user')
 api.add_resource(User_Role, '/info/members/get-all-roles-by-user', endpoint='get-all-roles-by-user')
 api.add_resource(Roles, '/info/members/update-roles', endpoint='update_role_for_particular_user')
 api.add_resource(FilterMainDashboard, '/get_filter_main_dashboard', endpoint='get_filter_main_dashboard')
+
+api.add_resource(PostLabRequest, '/lab/request', endpoint='lab_request')
+api.add_resource(GetAllLabRequest, '/lab/requests', endpoint='lab_requests')
+api.add_resource(UploadLabDetails, '/post_lab_details', endpoint='post_lab_details')
 app.register_blueprint(api_blueprint)
 api.init_app(app)
 

@@ -79,11 +79,26 @@ export const AnalysisDashboardScreen = {
   createAnalysisButton: "Create Analysis"
 }
 
+export const ListLabScreen = {
+  breadcrumb: "Lab",
+
+  exportButton: "Import",
+  createAnalysisButton: "Request Lab"
+}
+
 export const CreateAnalysisScreen = {
   breadcrumbs: ["Analysis", "Analysis Create"],
   createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?", "DNA File :"],
   createAnalysisPlaceHolders: ["Enter Analysis Name ", "Select Customer ", " Select Analysis Type", "Select Replenish Time ", "no file selected"],
   buttons: ["Back", "Submit For Analysis", "ReSubmit For Analysis", "Uploading"]
+}
+
+
+export const LabScreen = {
+  breadcrumbs: ["Lab Availability"],
+  labLabels: ["Title (Purpose of the System):", "Lab Needed:", "Requested Date :", "End Time :", "Request Type :", "Decription :", "Start Time :"],
+  labPlaceHolders: ["Enter Title ", "Select Lab ", "Enter Meeting Start Time", "Enter Meeting Start Time", "Enter Request Type", "Enter Decription"],
+  buttons: ["Back", "Request Lab"]
 }
 
 
@@ -130,7 +145,7 @@ export const SolutionScreen = {
   modalHeader: "Patches",
   modalTabHeaders: ["Details", "Description"],
   modalContentsLabels: ["Title:", "Description:", "Progress Status:", "Group:", "Severity:", "Found In Build:", "Traget Release:", "Date Closed:", "Product:", "Service Account:", "Fixed In Release:"],
-  problemDescriptionName: "Problem Description",
+  problemDescriptionName: "Search",
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
   tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Date Closed", "Confidence (%)", "Confirm"],
@@ -138,10 +153,10 @@ export const SolutionScreen = {
   logInfo: "Log Info",
   tags: "Tags",
   filterButtons: ["All", "Clear"],
-  filterNames: ["Product", "Group", " Severity", "Priority", "Found on Platform", "Fixed in Release", "Found in Release", "Date Closed On or Before"],
+  filterNames: ["Product", "Group", " Severity", "Priority", "Found on Platform", "Fixed in Release", "Found in Release", "Date Closed On or Before", "Service Account"],
   tarBall: "TAR Ball",
   labAvailablity: "Lab Availablity",
-  buttons: ["Predict", "Reserve", "Refine"],
+  buttons: ["Refine", "Reserve", "Predict"],
   potentialSolutionHeader: "Potential Solutions",
   tagHeader: "Further Refine Based On",
   errorMessage: "No Data Found ",
@@ -155,7 +170,8 @@ export const Sidenav = {
   createAnalysisRequest: "Create Analysis Request",
   referenceData: "Reference Data",
   solutionPrediction: "Solution Prediction",
-  knowledgeMap: "Knowledge Map"
+  knowledgeMap: "Knowledge Map",
+  labAvailability: " Lab \n Availability"
 
 
 }
