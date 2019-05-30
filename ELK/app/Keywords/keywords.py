@@ -29,7 +29,7 @@ class GetMLKeyWords(Resource):
                 # matches is now ['String 1', 'String 2', 'String3']
                 return matches
                 # return ",".join(matches)
-                return ', '.join(['"{}"'.format(c) for c in matches])
+                # return ', '.join(['"{}"'.format(c) for c in matches])
 
             one_strings = find_double_quoted_string(input_)
 
@@ -89,7 +89,7 @@ class GetMLKeyWords(Resource):
             # Get elastic search words
             elastic_search_df = pd.read_excel('Keyword_UI.xlsx')
 
-            mapping = {}
+            ml_synonym = []
 
             for problem_area in found_problem_area:
                 matched_elastic_search_words = elastic_search_df[elastic_search_df['UI Problem Area Map'].str.match(problem_area, case=False)]
@@ -106,9 +106,10 @@ class GetMLKeyWords(Resource):
                                 each_word = each_word.rstrip()
                                 found_elastic_search_words.append(each_word)
 
-                mapping[problem_area] = found_elastic_search_words
+                found_elastic_search_words.append(problem_area)
+                ml_synonym.append(found_elastic_search_words)
 
             print("elastic search words found are {0}".format(found_elastic_search_words))
 
-            return jsonify(mapping=mapping, input=input,
+            return jsonify(ml_keywords=found_problem_area, ml_synonym=ml_synonym, input=input,
                            one_strings=one_strings, removed_stopwords=removed_stopwords, http_status_code=200)
