@@ -425,9 +425,12 @@ class DevTrackPhrasePrefix(Resource):
                     date_filter=[]
                 if not(isinstance(service_account_filter,list)):
                     service_account_filter=[]
+                if not(isinstance(phrase_query,list)):
+                    phrase_query=[]
                 search_param_list = search_param.split(' ')
-                for phrase in phrase_query:
-                    search_param_list.append(phrase)
+                if(len(phrase_query)>0):
+                    for phrase in phrase_query:
+                        search_param_list.append(phrase)
                 DATE_FILTER_PARAMS=""
                 PARAMS=""
                 URL=config.ELK_URI+"devtrack/_doc/_search"
