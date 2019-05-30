@@ -97,7 +97,7 @@ class GetMLKeyWords(Resource):
 
                 if not matched_elastic_search_words.empty:
                     for each_elastic_word in matched_elastic_search_words['Elastic Search Map'].tolist():
-                        if each_elastic_word not in found_elastic_search_words:
+                        if each_elastic_word.lower() not in found_elastic_search_words:
                             # split multiple words into seperate list item
                             for each_word in each_elastic_word.split(','):
                                 # remove start & end space but ont in between space in words
@@ -106,7 +106,9 @@ class GetMLKeyWords(Resource):
                                 each_word = each_word.rstrip()
                                 found_elastic_search_words.append(each_word)
 
-                found_elastic_search_words.append(problem_area)
+                # add problem area in ml_synonym
+                if problem_area.lower() not in found_elastic_search_words:
+                    found_elastic_search_words.append(problem_area)
                 ml_synonym.append(found_elastic_search_words)
 
             print("elastic search words found are {0}".format(found_elastic_search_words))
