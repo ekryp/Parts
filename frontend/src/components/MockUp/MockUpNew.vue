@@ -3027,7 +3027,8 @@ export default {
       setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateFixedInReleaseSelect() {
-      if (this.serviceAccountValue.length !== 0) {
+      if (this.fixedInReleaseValue.length !== 0) {
+        fixedInReleaseValue;
         this.getMlKeywords();
       }
     },
@@ -3035,7 +3036,7 @@ export default {
       setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateServiceAccountSelect() {
-      if (this.fixedInReleaseValue.length !== 0) {
+      if (this.serviceAccountValue.length !== 0) {
         this.getMlKeywords();
       }
     },
