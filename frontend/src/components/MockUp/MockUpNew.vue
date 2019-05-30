@@ -557,14 +557,14 @@
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="getMlKeywords()"
+                        @click="emptyFilterBeforeSearch()"
                       >{{solutionScreenConstants.buttons[2]}}</button>
                       <button
                         v-if="problemDescription.trim() === ''  "
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="getMlKeywords()"
+                        @click="emptyFilterBeforeSearch()"
                         disabled
                       >{{solutionScreenConstants.buttons[2]}}</button>
                     </div>
@@ -2441,10 +2441,7 @@ export default {
         constant.ELKURL +
           "api/get_test_plan?search_param=" +
           this.inputParams +
-          this.mlKeywords +
-          this.filterSynonym +
-          this.tagValues +
-          this.filterURL +
+          this.phraseValue +
           "&predict_value=" +
           this.predictValue,
         {
@@ -2636,6 +2633,16 @@ export default {
 
     changeFilter() {
       this.filterFLag = !this.filterFLag;
+    },
+    emptyFilterBeforeSearch() {
+      this.productValue = [];
+      this.groupValue = [];
+      this.severityValue = [];
+      this.priorityValue = [];
+      this.foundOnPlatformValue = [];
+      this.fixedInReleaseValue = [];
+      this.serviceAccountValue = [];
+      this.getMlKeywords();
     },
     getMlKeywords() {
       this.isLoading = true;
