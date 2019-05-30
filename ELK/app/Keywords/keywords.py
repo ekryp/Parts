@@ -88,11 +88,12 @@ class GetMLKeyWords(Resource):
 
             # Get elastic search words
             elastic_search_df = pd.read_excel('Keyword_UI.xlsx')
-            found_elastic_search_words = []
+
             mapping = {}
 
             for problem_area in found_problem_area:
                 matched_elastic_search_words = elastic_search_df[elastic_search_df['UI Problem Area Map'].str.match(problem_area, case=False)]
+                found_elastic_search_words = []
 
                 if not matched_elastic_search_words.empty:
                     for each_elastic_word in matched_elastic_search_words['Elastic Search Map'].tolist():
