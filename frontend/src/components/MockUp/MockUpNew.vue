@@ -471,7 +471,7 @@
                 <label
                   class="col-md-6 labelweight"
                 >{{solutionScreenConstants.problemDescriptionName}}</label>
-                <label class="col-md-6 labelweight">{{solutionScreenConstants.tagHeader}}</label>
+                <label class="col-md-6 labelweight">{{solutionScreenConstants.problemAreaHeader}}</label>
               </div>
 
               <div class="row">
@@ -511,7 +511,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <!-- <div class="col-md-9">
+                    <div class="col-md-12">
                       <Multiselect
                         v-model="filterValue"
                         tag-placeholder="Add this as new tag"
@@ -528,12 +528,7 @@
                     </div>
                     <br>
 
-                    <div class="col-lg-3" style="marginTop:2%">
-                      <input type="checkbox" id="checkbox" v-model="checked">
-                      <label for="checkbox">{{solutionScreenConstants.checkBoxLabel}}</label>
-                    </div>-->
-
-                    <!-- <label class="col-md-6 labelweight align">{{solutionScreenConstants.tagHeader}}</label> -->
+                    <label class="col-md-6 labelweight align">{{solutionScreenConstants.tagHeader}}</label>
 
                     <div class="col-md-12">
                       <Multiselect
@@ -562,14 +557,14 @@
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="onAnalyze()"
+                        @click="getMlKeywords()"
                       >{{solutionScreenConstants.buttons[2]}}</button>
                       <button
                         v-if="problemDescription.trim() === ''  "
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="onAnalyze()"
+                        @click="getMlKeywords()"
                         disabled
                       >{{solutionScreenConstants.buttons[2]}}</button>
                     </div>
@@ -1896,6 +1891,7 @@ export default {
       releaseNotesData: [],
       fsbData: [],
       techNotesData: [],
+
       testPlanData: [],
       mopData: [],
       errorFlag: false,
@@ -1945,6 +1941,9 @@ export default {
       foundOnPlatformOptions: [],
       fixedInReleaseValue: [],
       fixedInReleaseOptions: [],
+      inputParams: "",
+      oneString: [],
+      predictValue: "",
       serviceAccountValue: [],
       serviceAccountOptions: [],
       internalFlag: false,
@@ -2203,6 +2202,10 @@ export default {
         this.filterURL =
           this.filterURL + `&priority_filter=` + this.priorityValue[i].name;
       }
+      for (var i = 0; i < this.oneString.length; i++) {
+        this.filterURL = this.filterURL + `&phrase_query=` + this.oneString[i];
+      }
+
       for (var i = 0; i < this.foundOnPlatformValue.length; i++) {
         this.filterURL =
           this.filterURL +
@@ -2229,6 +2232,7 @@ export default {
       //   }
       // } else {
       this.mlKeywords = "";
+
       // }
       // for (var i = 0; i < this.filterValue.length; i++) {
       //   if (this.checked) {
@@ -2249,7 +2253,7 @@ export default {
       fetch(
         constant.ELKURL +
           dynamicURL +
-          this.problemDescription +
+          this.inputParams +
           this.mlKeywords +
           this.filterSynonym +
           this.tagValues +
@@ -2257,7 +2261,9 @@ export default {
           "&internal=" +
           this.internalFlag +
           "&check_title=" +
-          this.state,
+          this.state +
+          "&predict_value=" +
+          this.predictValue,
         {
           headers: {
             "Content-Type": "application/json"
@@ -2336,47 +2342,47 @@ export default {
                 this.moreFlag4 = false;
               }
               this.showDevTrack();
-              // for (var j = 0; j < data.data.releaseNotes.length; j++) {
-              //   if (data.data.releaseNotes[j].upvotedUsers !== undefined) {
-              //     upvotedUsers = data.data.releaseNotes[j].upvotedUsers;
-              //   } else {
-              //     upvotedUsers = [];
-              //   }
-              //   this.releaseNotesData.push({
-              //     description: data.data.releaseNotes[j].description,
-              //     index: j,
-              //     file_name: data.data.releaseNotes[j].file_name,
-              //     issueId: data.data.releaseNotes[j].issueId,
-              //     probability: data.data.releaseNotes[j].probability,
-              //     severity: data.data.releaseNotes[j].severity,
-              //     workaround: data.data.releaseNotes[j].workaround,
-              //     key: data.data.releaseNotes[j].key,
-              //     upvotedUsers: upvotedUsers
-              //   });
-              // }
+              for (var j = 0; j < data.data.releaseNotes.length; j++) {
+                if (data.data.releaseNotes[j].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.releaseNotes[j].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
+                this.releaseNotesData.push({
+                  description: data.data.releaseNotes[j].description,
+                  index: j,
+                  file_name: data.data.releaseNotes[j].file_name,
+                  issueId: data.data.releaseNotes[j].issueId,
+                  probability: data.data.releaseNotes[j].probability,
+                  severity: data.data.releaseNotes[j].severity,
+                  workaround: data.data.releaseNotes[j].workaround,
+                  key: data.data.releaseNotes[j].key,
+                  upvotedUsers: upvotedUsers
+                });
+              }
 
-              // for (var k = 0; k < data.data.fsb.length; k++) {
-              //   if (data.data.fsb[k].upvotedUsers !== undefined) {
-              //     upvotedUsers = data.data.fsb[k].upvotedUsers;
-              //   } else {
-              //     upvotedUsers = [];
-              //   }
-              //   this.fsbData.push({
-              //     FSBNumber: data.data.fsb[k].FSBNumber,
-              //     index: k,
-              //     dateCreated: data.data.fsb[k].dateCreated,
-              //     dateRevised: data.data.fsb[k].dateRevised,
-              //     issueId: data.data.fsb[k].issueId,
-              //     description: data.data.fsb[k].description,
-              //     file_name: data.data.fsb[k].file_name,
-              //     probability: data.data.fsb[k].probability,
-              //     rootCause: data.data.fsb[k].rootCause,
-              //     symptoms: data.data.fsb[k].symptoms,
-              //     title: data.data.fsb[k].title,
-              //     key: data.data.fsb[k].key,
-              //     upvotedUsers: upvotedUsers
-              //   });
-              // }
+              for (var k = 0; k < data.data.fsb.length; k++) {
+                if (data.data.fsb[k].upvotedUsers !== undefined) {
+                  upvotedUsers = data.data.fsb[k].upvotedUsers;
+                } else {
+                  upvotedUsers = [];
+                }
+                this.fsbData.push({
+                  FSBNumber: data.data.fsb[k].FSBNumber,
+                  index: k,
+                  dateCreated: data.data.fsb[k].dateCreated,
+                  dateRevised: data.data.fsb[k].dateRevised,
+                  issueId: data.data.fsb[k].issueId,
+                  description: data.data.fsb[k].description,
+                  file_name: data.data.fsb[k].file_name,
+                  probability: data.data.fsb[k].probability,
+                  rootCause: data.data.fsb[k].rootCause,
+                  symptoms: data.data.fsb[k].symptoms,
+                  title: data.data.fsb[k].title,
+                  key: data.data.fsb[k].key,
+                  upvotedUsers: upvotedUsers
+                });
+              }
               console.log("asdasd", this.devTrackData);
               if (data.data.devTrack.length > 0) {
                 this.analyzeFlag = true;
@@ -2623,8 +2629,10 @@ export default {
       this.filterSynonym = "";
       this.filterOptions = [];
       this.filterValue = [];
+      this.oneString = [];
       //this.tagValue = [];
       this.tagOptions = [];
+      this.predictValue = "";
       fetch(
         constant.ELKURL +
           "api/get_ml_keywords?search_param=" +
@@ -2645,7 +2653,11 @@ export default {
             if (data.http_status_code === 200) {
               this.isLoading = false;
               let count = 0;
+              this.inputParams = data.input;
+
               for (var i = 0; i < data.ml_keywords.length; i++) {
+                console.log("the data needed");
+
                 this.filterOptions.push({
                   name: data.ml_keywords[i]
                 });
@@ -2654,15 +2666,28 @@ export default {
                 });
                 console.log("count ----->", count);
               }
-              for (var j = 0; j < data.ml_synonym.length; j++) {
-                if (this.checked) {
-                  this.filterSynonym =
-                    this.filterSynonym + " AND " + data.ml_synonym[j];
-                } else {
-                  this.filterSynonym =
-                    this.filterSynonym + " OR " + data.ml_synonym[j];
+              console.log("ml synonym ", data.one_strings);
+              for (var j = 0; j < data.one_strings.length; j++) {
+                this.oneString.push(data.one_strings[j]);
+              }
+              console.log("one string", this.oneString);
+              for (var k = 0; k < data.ml_synonym.length; k++) {
+                this.predictValue += ",";
+                for (var l = 0; l < data.ml_synonym[k].length; l++) {
+                  console.log("dated", data.ml_synonym[k].length);
+                  this.predictValue += "|" + data.ml_synonym[k][l];
                 }
               }
+              // for (var j = 0; j < data.ml_synonym.length; j++) {
+              //   if (this.checked) {
+              //     this.filterSynonym =
+              //       this.filterSynonym + " AND " + data.ml_synonym[j];
+              //   } else {
+              //     this.filterSynonym =
+              //       this.filterSynonym + " OR " + data.ml_synonym[j];
+              //   }
+              // }
+              console.log("adssadf", this.predictValue);
               this.onAnalyze();
               this.searchFlag = true;
             }
@@ -2954,65 +2979,65 @@ export default {
     },
     validateProductSelect() {
       if (this.productValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
     validateProductClose() {
       this.isLoading = true;
-      setTimeout(() => this.onAnalyze(), 1000);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateGroupSelect() {
       if (this.groupValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
     validateGroupClose() {
       this.isLoading = true;
 
-      setTimeout(() => this.onAnalyze(), 1000);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateSeveritySelect() {
       if (this.severityValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
     validateSeverityClose() {
       this.isLoading = true;
 
-      setTimeout(() => this.onAnalyze(), 1000);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validatePrioritySelect() {
       if (this.priorityValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
     validatePriorityClose() {
-      setTimeout(() => this.onAnalyze(), 1000);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateFoundInReleaseSelect() {
       //setTimeout(() => this.onAnalyze(), 1000);
       if (this.foundInReleaseValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
     validateFoundInReleaseClose() {
-      setTimeout(() => this.onAnalyze(), 1000);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateFixedInReleaseSelect() {
       if (this.fixedInReleaseValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
     validateFixedInReleaseClose() {
-      setTimeout(() => this.onAnalyze(), 1000);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateServiceAccountSelect() {
       if (this.fixedInReleaseValue.length !== 0) {
-        this.onAnalyze();
+        this.getMlKeywords();
       }
     },
     validateServiceAccountClose() {
-      setTimeout(() => this.onAnalyze(), 1000);
+      setTimeout(() => this.getMlKeywords(), 1000);
     },
     showAllfsb() {
       this.moreFlag3 = true;
