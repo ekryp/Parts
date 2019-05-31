@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="content contentwidth">
+      <div class="content contentwidth" style="text-align: left">
         <div>
           <br>
           <div class="row">
@@ -183,12 +183,16 @@ export default {
     getMop() {
       this.isLoading = true;
       this.allMop = [];
-      fetch(constant.ELKURL + "api/get_mop?search_param=" + this.filterParam, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+      fetch(
+        constant.ELKURL + "api/get_all_mop?search_param=" + this.filterParam,
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          }
         }
-      })
+      )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);
@@ -227,6 +231,7 @@ export default {
     }
 } */
 .vudal {
+  text-align: left !important;
   width: 950px !important;
 }
 .labelweight {
