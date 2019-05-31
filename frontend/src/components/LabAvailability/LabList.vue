@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <div class="float-right" style="marginTop:1%" v-if="createAnalysisFlag === 'true' ">
+      <div class="float-right" style="marginTop:1%">
         <button
           type="button"
           class="btn btn-success"
@@ -21,6 +21,9 @@
           v-tooltip.top.hover.focus="'Click to Create'"
         >{{analysisDashboardConstant.createAnalysisButton}}</button>
       </div>
+      <br>
+      <br>
+      <br>
       <!-- <div class="float-left" style="marginTop:1%">
         <button
           type="button"
@@ -39,8 +42,8 @@
           </DownloadExcel>
         </button>
       </div>-->
-      
-      <div class id="agbox" style="marginTop:7%">
+
+      <!-- <div class id="agbox" style="marginTop:7%">
         <div style="marginTop:0%">
           <div v-if="requestList.length !== 0">
             <ag-grid-vue
@@ -63,9 +66,63 @@
             ></ag-grid-vue>
           </div>
         </div>
-      </div>
+      </div>-->
 
       <!-- new Table -->
+      <br>
+      <br>
+      <br>
+      <table id="example" class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Lab Id</th>
+            <th scope="col">Lab Sysytem Name</th>
+            <th scope="col">Product Type</th>
+            <th scope="col">IP Address</th>
+            <th scope="col">Log In Name</th>
+            <th scope="col">Password</th>
+            <th scope="col">Serial Console</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Lab Sys 1</td>
+            <td>CX</td>
+            <td>11.22.33.44</td>
+            <td>Khali</td>
+            <td>Ekryp 1</td>
+            <td>XYZ</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Lab Sys 2</td>
+            <td>CX</td>
+            <td>11.22.33.44</td>
+            <td>Nagesh</td>
+            <td>Ekryp 2</td>
+            <td>XYZ</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Lab Sys 3</td>
+            <td>CX</td>
+            <td>11.22.33.44</td>
+            <td>Ashish</td>
+            <td>Ekryp 3</td>
+            <td>XYZ</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Lab Sys 4</td>
+            <td>CX</td>
+            <td>11.22.33.44</td>
+            <td>Ekryp</td>
+            <td>Ekryp 3</td>
+            <td>XYZ</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div>
       <!-- Footer -->
@@ -114,7 +171,7 @@ export default {
     this.createAnalysisFlag = localStorage.getItem("createAnalysisFlag");
     console.log("this.createAnalysisFlag", this.createAnalysisFlag);
     //this.get_dashboard_request_count();
-     this.createColumnDefs();
+    this.createColumnDefs();
   },
   // Vuex Configure Its not updating the Value once State Changed
   computed: {},
@@ -206,7 +263,6 @@ export default {
             console.log("data -getallrequest--->", data);
             this.requestList = data.data;
 
-
             for (let i = 0; i < this.requestList.length; i++) {
               //console.log(this.partsAnalysisRequestList[i].analysis_name);
               this.rowData.push({
@@ -216,10 +272,9 @@ export default {
                 start_time: this.requestList[i].start_time,
                 type: this.requestList[i].type,
                 title: this.requestList[i].title
-
               });
             }
-             
+
             this.isLoading = false;
           });
         })
@@ -287,7 +342,6 @@ export default {
           headerName: "Type",
           field: "type",
           width: 150
-         
         }
       ];
     },

@@ -47,7 +47,7 @@
           <div v-if="addFlag || editFlag">
             <div class="row">
               <div class="col-lg-5">
-                <label style="{text-align}">Release Number :</label>
+                <label style="{text-align}">Release :</label>
               </div>
               <div class="col-lg-6">
                 <input
