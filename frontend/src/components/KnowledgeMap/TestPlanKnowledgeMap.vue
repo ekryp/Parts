@@ -348,15 +348,15 @@ export default {
       this.isLoading = true;
       this.allTestPlan = [];
       fetch(
-        constant.ELKURL + "api/get_test_plan?search_param=" + this.filterParam,
-        {
-          method: "GET",
-          headers: {
-            Authorization:
-              "Bearer " + localStorage.getItem("auth0_access_token")
+          constant.ELKURL + "api/get_all_test_plan?search_param=" + this.filterParam,
+          {
+            method: "GET",
+            headers: {
+              Authorization:
+                "Bearer " + localStorage.getItem("auth0_access_token")
+            }
           }
-        }
-      )
+        )
         .then(response => {
           response.text().then(text => {
             const data = text && JSON.parse(text);

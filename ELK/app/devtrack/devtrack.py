@@ -60,15 +60,15 @@ class DevTrackData(Resource):
             if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                 print(check_title)
                 if(check_title == "true"):
-                    PARAMS = "{\"from\" : 0, \"size\" : 8820,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
+                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
                 else:
-                    PARAMS = "{\"from\" : 0, \"size\" : 8820,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
+                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
 
             else:
                 if(check_title == "true"):
-                    PARAMS="{\"from\" : 0, \"size\" : 8820,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
                 else:
-                    PARAMS="{\"from\" : 0, \"size\" : 8820,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
                     
@@ -431,6 +431,7 @@ class DevTrackPhrasePrefix(Resource):
                 if(len(phrase_query)>0):
                     for phrase in phrase_query:
                         search_param_list.append(phrase)
+                search_param_list = list( dict.fromkeys(search_param_list)) 
                 DATE_FILTER_PARAMS=""
                 PARAMS=""
                 URL=config.ELK_URI+"devtrack/_doc/_search"
@@ -438,7 +439,7 @@ class DevTrackPhrasePrefix(Resource):
                 if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                     print(check_title)
                     if(check_title == "true"):
-                        PARAMS="{\"from\" : 0, \"size\" : 8820,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -468,7 +469,7 @@ class DevTrackPhrasePrefix(Resource):
 
                     
                     else:
-                        PARAMS="{\"from\" : 0, \"size\" : 8820,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -505,7 +506,7 @@ class DevTrackPhrasePrefix(Resource):
 
 
                     if(check_title == "true"):
-                        PARAMS="{\"from\" : 0, \"size\" : 8820,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -535,7 +536,7 @@ class DevTrackPhrasePrefix(Resource):
 
                     
                     else:
-                        PARAMS="{\"from\" : 0, \"size\" : 8820,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -757,9 +758,9 @@ class DevTrackPhrasePrefix(Resource):
                     for doc in devtrackList:
                         for key in filterKeys:
                             
+                            # print('value ----->',doc["_source"][key])
                             if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed' or key == 'serviceAccount'):
-                                if(key in doc["_source"].keys()):
-                                    filterList[key].append(doc["_source"][key])  
+                                filterList[key].append(doc["_source"][key])
                         
                     for key in filterKeys:
                             tempSet=list(set(filterList[key]))
@@ -799,7 +800,7 @@ class DevTrackPhrasePrefix(Resource):
 
             print("Release Notes  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            PARAMS="{\"from\" : 0, \"size\" : 700,\"query\": {\"bool\": {\"must\": ["
+            PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
                         
             if(len(search_param_list)>0):
                 for tmp in search_param_list:
@@ -850,7 +851,7 @@ class DevTrackPhrasePrefix(Resource):
         
 
             print("FSB  Params : ", search_param)
-            PARAMS="{\"from\" : 0, \"size\" : 100,\"query\": {\"bool\": {\"must\": ["
+            PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
                         
             if(len(search_param_list)>0):
                 for tmp in search_param_list:

@@ -2429,6 +2429,7 @@ export default {
       this.isLoading = true;
       this.testPlanData = [];
       this.phraseValue = "";
+      
       for (var i = 0; i < this.oneString.length; i++) {
         this.phraseValue =
           this.phraseValue + `&phrase_query=` + this.oneString[i];
@@ -2441,6 +2442,7 @@ export default {
         constant.ELKURL +
           "api/get_test_plan?search_param=" +
           this.inputParams +
+          this.tagValues +
           this.phraseValue +
           "&predict_value=" +
           this.predictValue,
@@ -2509,12 +2511,23 @@ export default {
     getMopPlan() {
       this.isLoading = true;
       this.mopData = [];
+      this.phraseValue = "";
+      for (var i = 0; i < this.oneString.length; i++) {
+        this.phraseValue =
+          this.phraseValue + `&phrase_query=` + this.oneString[i];
+      }
       this.problemDescription = this.problemDescription.replace(
         /^\s+|\s+$/g,
         ""
       );
       fetch(
-        constant.ELKURL + "api/get_mop?search_param=" + this.problemDescription,
+        constant.ELKURL +
+          "api/get_mop?search_param=" +
+          this.inputParams +
+          this.tagValues +
+          this.phraseValue +
+          "&predict_value=" +
+          this.predictValue,
         {
           method: "GET",
           headers: {
@@ -2569,6 +2582,10 @@ export default {
     getTechNotes() {
       this.isLoading = true;
       this.techNotesData = [];
+      for (var i = 0; i < this.oneString.length; i++) {
+        this.phraseValue =
+          this.phraseValue + `&phrase_query=` + this.oneString[i];
+      }
       this.problemDescription = this.problemDescription.replace(
         /^\s+|\s+$/g,
         ""
@@ -2576,7 +2593,11 @@ export default {
       fetch(
         constant.ELKURL +
           "api/get_technotes?search_param=" +
-          this.problemDescription,
+          this.inputParams +
+          this.tagValues +
+          this.phraseValue +
+          "&predict_value=" +
+          this.predictValue,
         {
           method: "GET",
           headers: {
@@ -3048,7 +3069,6 @@ export default {
     },
     validateFixedInReleaseSelect() {
       if (this.fixedInReleaseValue.length !== 0) {
-        fixedInReleaseValue;
         this.getMlKeywords();
       }
     },

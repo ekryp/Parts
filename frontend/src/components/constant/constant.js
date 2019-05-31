@@ -169,7 +169,7 @@ export const Sidenav = {
   analysis: "Analysis",
   createAnalysisRequest: "Create Analysis Request",
   referenceData: "Reference Data",
-  solutionPrediction: "Solution Prediction",
+  solutionPrediction: "Resolution Prediction",
   knowledgeMap: "Knowledge Map",
   labAvailability: " Lab \n Availability"
 
