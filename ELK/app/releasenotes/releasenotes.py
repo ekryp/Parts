@@ -52,11 +52,11 @@ class ReleaseNotes(Resource):
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
 
         if (search_param != ""):
-            data = es.search(index="release_notes", body={"from" : 0, "size" : 800,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
+            data = es.search(index="release_notes", body={"from" : 0, "size" : 10000,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
         else:
             # data = requests.get(config.ELK_URI+"testplan/_doc/_search",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
             # data = data.json()
-            data = es.search(index="release_notes", body={"from" : 0, "size" : 800,"query": { "match_all": {}}})
+            data = es.search(index="release_notes", body={"from" : 0, "size" : 10000,"query": { "match_all": {}}})
         
         releaseNotesmaxScore = data['hits']['max_score']
         releaseNotesList = data['hits']['hits']

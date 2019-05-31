@@ -157,7 +157,7 @@ export default new Router({
       name: 'MockUpNew',
       component: MockUpNew,
       meta: {
-        permission: 'Dashboard'
+        permission: 'SolutionPrediction'
       }
     },
     {
