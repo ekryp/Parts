@@ -110,10 +110,10 @@ class TestPlan(Resource):
         
         PARAMS=PARAMS[:-1]
         PARAMS+="]}}}"
-        
-        print(search_param)
+        print('Query Used',PARAMS)
+        print('length',len(search_param_list))
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-        if (search_param != ""):
+        if (len(search_param_list)>0 ):
             data = es.search(index="testplan", body=json.loads(PARAMS))
         else:
             # data = requests.get(config.ELK_URI+"testplan/_doc/_search",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
