@@ -51,11 +51,11 @@ class FSB(Resource):
         print("FSB  Params : ", search_param)
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
         if (search_param != ""):
-            data = es.search(index="fsb", body={"from" : 0, "size" : 150,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
+            data = es.search(index="fsb", body={"from" : 0, "size" : 10000,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
         else:
             # data = requests.get(config.ELK_URI+"testplan/_doc/_search",auth=HTTPBasicAuth(config.ELK_USERNAME,config.ELK_PASSWORD),headers={"content-type":"application/json"})
             # data = data.json()
-            data = es.search(index="fsb", body={"from" : 0, "size" : 150,"query": { "match_all": {}}})
+            data = es.search(index="fsb", body={"from" : 0, "size" : 10000,"query": { "match_all": {}}})
         
         fsbmaxScore = data['hits']['max_score']
         fsbList = data['hits']['hits']

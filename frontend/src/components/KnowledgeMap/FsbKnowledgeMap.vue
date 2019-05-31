@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="content contentwidth">
+      <div class="content contentwidth" style="text-align: left">
         <div>
           <br>
           <div class="row">
@@ -241,6 +241,7 @@ export default {
 } */
 .vudal {
   width: 950px !important;
+  text-align: left !important;
 }
 .labelweight {
   font-weight: 600;

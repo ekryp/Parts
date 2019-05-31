@@ -8,7 +8,12 @@
       <div class="header">
         <div class="row">
           <div class="col-lg-11">
-            <h4 v-if="patchFlag">{{solutionScreenConstants.modalHeader}}</h4>
+            <h4 v-if="devTrackFlag">{{solutionScreenConstants.cardLables[0]}}</h4>
+            <h4 v-if="releaseNotesFlag">{{solutionScreenConstants.cardLables[1]}}</h4>
+            <h4 v-if="fsbFlag">{{solutionScreenConstants.cardLables[2]}}</h4>
+            <h4 v-if="testPlanFlag">{{solutionScreenConstants.cardLables[3]}}</h4>
+            <h4 v-if="mopFlag">{{solutionScreenConstants.cardLables[4]}}</h4>
+            <h4 v-if="techNotesFlag">{{solutionScreenConstants.cardLables[5]}}</h4>
           </div>
           <div class="col-lg-1 in-progress" @click="hideModal()">
             <i class="fa fa-times fa-md pull-right" aria-hidden="true"></i>
@@ -557,14 +562,14 @@
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="getMlKeywords()"
+                        @click="emptyFilterBeforeSearch()"
                       >{{solutionScreenConstants.buttons[2]}}</button>
                       <button
                         v-if="problemDescription.trim() === ''  "
                         style="fontSize:0.75vw;"
                         type="button"
                         class="btn btn-success btn-block"
-                        @click="getMlKeywords()"
+                        @click="emptyFilterBeforeSearch()"
                         disabled
                       >{{solutionScreenConstants.buttons[2]}}</button>
                     </div>
@@ -1933,6 +1938,7 @@ export default {
       productOptions: [],
       groupValue: [],
       groupOptions: [],
+
       severityValue: [],
       severityOptions: [],
       priorityValue: [],
@@ -1942,6 +1948,7 @@ export default {
       fixedInReleaseValue: [],
       fixedInReleaseOptions: [],
       inputParams: "",
+      phraseValue: "",
       oneString: [],
       predictValue: "",
       serviceAccountValue: [],
@@ -2426,6 +2433,12 @@ export default {
     getTestPlan() {
       this.isLoading = true;
       this.testPlanData = [];
+      this.phraseValue = "";
+
+      for (var i = 0; i < this.oneString.length; i++) {
+        this.phraseValue =
+          this.phraseValue + `&phrase_query=` + this.oneString[i];
+      }
       this.problemDescription = this.problemDescription.replace(
         /^\s+|\s+$/g,
         ""
@@ -2433,7 +2446,11 @@ export default {
       fetch(
         constant.ELKURL +
           "api/get_test_plan?search_param=" +
-          this.problemDescription,
+          this.inputParams +
+          this.tagValues +
+          this.phraseValue +
+          "&predict_value=" +
+          this.predictValue,
         {
           method: "GET",
           headers: {
@@ -2499,12 +2516,23 @@ export default {
     getMopPlan() {
       this.isLoading = true;
       this.mopData = [];
+      this.phraseValue = "";
+      for (var i = 0; i < this.oneString.length; i++) {
+        this.phraseValue =
+          this.phraseValue + `&phrase_query=` + this.oneString[i];
+      }
       this.problemDescription = this.problemDescription.replace(
         /^\s+|\s+$/g,
         ""
       );
       fetch(
-        constant.ELKURL + "api/get_mop?search_param=" + this.problemDescription,
+        constant.ELKURL +
+          "api/get_mop?search_param=" +
+          this.inputParams +
+          this.tagValues +
+          this.phraseValue +
+          "&predict_value=" +
+          this.predictValue,
         {
           method: "GET",
           headers: {
@@ -2559,6 +2587,10 @@ export default {
     getTechNotes() {
       this.isLoading = true;
       this.techNotesData = [];
+      for (var i = 0; i < this.oneString.length; i++) {
+        this.phraseValue =
+          this.phraseValue + `&phrase_query=` + this.oneString[i];
+      }
       this.problemDescription = this.problemDescription.replace(
         /^\s+|\s+$/g,
         ""
@@ -2566,7 +2598,11 @@ export default {
       fetch(
         constant.ELKURL +
           "api/get_technotes?search_param=" +
-          this.problemDescription,
+          this.inputParams +
+          this.tagValues +
+          this.phraseValue +
+          "&predict_value=" +
+          this.predictValue,
         {
           method: "GET",
           headers: {
@@ -2623,6 +2659,16 @@ export default {
 
     changeFilter() {
       this.filterFLag = !this.filterFLag;
+    },
+    emptyFilterBeforeSearch() {
+      this.productValue = [];
+      this.groupValue = [];
+      this.severityValue = [];
+      this.priorityValue = [];
+      this.foundOnPlatformValue = [];
+      this.fixedInReleaseValue = [];
+      this.serviceAccountValue = [];
+      this.getMlKeywords();
     },
     getMlKeywords() {
       this.isLoading = true;
@@ -3028,7 +3074,6 @@ export default {
     },
     validateFixedInReleaseSelect() {
       if (this.fixedInReleaseValue.length !== 0) {
-        fixedInReleaseValue;
         this.getMlKeywords();
       }
     },
@@ -3036,6 +3081,7 @@ export default {
       setTimeout(() => this.getMlKeywords(), 1000);
     },
     validateServiceAccountSelect() {
+      console.log("in");
       if (this.serviceAccountValue.length !== 0) {
         this.getMlKeywords();
       }

@@ -11,6 +11,8 @@ import csv, json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from elasticsearch import Elasticsearch
 import logging
+from operator import itemgetter
+
 
 class DevTrackData(Resource):
     def __init__(self):
@@ -60,15 +62,15 @@ class DevTrackData(Resource):
             if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                 print(check_title)
                 if(check_title == "true"):
-                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
+                    PARAMS = "{\"from\" : 0, \"size\" : 10000,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
                 else:
-                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
+                    PARAMS = "{\"from\" : 0, \"size\" : 10000,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
 
             else:
                 if(check_title == "true"):
-                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
                 else:
-                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
                     
@@ -262,7 +264,7 @@ class DevTrackData(Resource):
 
             print("Release Notes  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            data = es.search(index="release_notes", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
+            data = es.search(index="release_notes", body={"from" : 0, "size" : 10000,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
            
@@ -278,7 +280,7 @@ class DevTrackData(Resource):
 
             print("FSB  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            data = es.search(index="fsb", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
+            data = es.search(index="fsb", body={"from" : 0, "size" : 10000,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
             fsbmaxScore = data['hits']['max_score']
             fsbList = data['hits']['hits']
             fsb = []
@@ -431,6 +433,7 @@ class DevTrackPhrasePrefix(Resource):
                 if(len(phrase_query)>0):
                     for phrase in phrase_query:
                         search_param_list.append(phrase)
+                search_param_list = list( dict.fromkeys(search_param_list)) 
                 DATE_FILTER_PARAMS=""
                 PARAMS=""
                 URL=config.ELK_URI+"devtrack/_doc/_search"
@@ -438,7 +441,7 @@ class DevTrackPhrasePrefix(Resource):
                 if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                     print(check_title)
                     if(check_title == "true"):
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -468,7 +471,7 @@ class DevTrackPhrasePrefix(Resource):
 
                     
                     else:
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -505,7 +508,7 @@ class DevTrackPhrasePrefix(Resource):
 
 
                     if(check_title == "true"):
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -535,7 +538,7 @@ class DevTrackPhrasePrefix(Resource):
 
                     
                     else:
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -748,7 +751,7 @@ class DevTrackPhrasePrefix(Resource):
                 devtrackmaxScore = data['hits']['max_score']
                 devtrackList = data['hits']['hits']
                 devTrack = []
-                filterList={}
+                filterList={"product":[],"group":[],"severity":[],"priority":[],"foundinRelease":[],"fixedinRelease":[],"dateClosed":[],"serviceAccount":[]}
                 if(len(devtrackList)>0):
                     filterKeys=devtrackList[0]["_source"].keys()
                     for key in filterKeys:
@@ -758,8 +761,10 @@ class DevTrackPhrasePrefix(Resource):
                         for key in filterKeys:
                             
                             # print('value ----->',doc["_source"][key])
-                            if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed' or key == 'serviceAccount'):
+                            if (key in doc["_source"].keys()):
                                 filterList[key].append(doc["_source"][key])
+                            #if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed' or key == 'serviceAccount'):
+                            #    filterList[key].append(doc["_source"][key])
                         
                     for key in filterKeys:
                             tempSet=list(set(filterList[key]))
@@ -785,11 +790,50 @@ class DevTrackPhrasePrefix(Resource):
                 print('exception is ',e)
                 return devTrackResponse
             
-        def releaseNotes(search_param):
 
+
+
+        def releaseNotes(search_param,phrase_query,final_list):
+            if not(isinstance(phrase_query,list)):
+                phrase_query=[]
+            search_param_list = search_param.split(' ')
+            if(len(phrase_query)>0):
+                for phrase in phrase_query:
+                    search_param_list.append(phrase)
+        
+            search_param_list = list( dict.fromkeys(search_param_list))
             print("Release Notes  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            data = es.search(index="release_notes", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
+            PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
+                        
+            if(len(search_param_list)>0):
+                for tmp in search_param_list:
+                    
+                    
+                    if not(tmp == ""):
+                        if tmp == search_param_list[-1]:
+                            PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}},"
+                        else:
+                            PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}},"
+
+            if(len(final_list)>0):
+                
+                for tmp_list in final_list:
+                    PARAMS+=" {\"bool\": {\"should\": ["
+                    for tmp in tmp_list:
+                        
+                        if not(tmp == ""):
+                            if tmp == tmp_list[-1]:
+                                PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}}"
+                            else:
+                                PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}},"
+                    PARAMS+="]}},"
+            
+            PARAMS=PARAMS[:-1]
+            PARAMS+="]}}}"
+
+
+            data = es.search(index="release_notes",body=json.loads(PARAMS))
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
            
@@ -801,11 +845,45 @@ class DevTrackPhrasePrefix(Resource):
                 releaseNotes.append(data)
             return releaseNotes
 
-        def fsb(search_param):
+        def fsb(search_param,phrase_query,final_list):
+            if not(isinstance(phrase_query,list)):
+                phrase_query=[]
+            search_param_list = search_param.split(' ')
+            if(len(phrase_query)>0):
+                for phrase in phrase_query:
+                    search_param_list.append(phrase)
+        
 
             print("FSB  Params : ", search_param)
+            PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
+                        
+            if(len(search_param_list)>0):
+                for tmp in search_param_list:
+                    
+                    
+                    if not(tmp == ""):
+                        if tmp == search_param_list[-1]:
+                            PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}},"
+                        else:
+                            PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}},"
+
+            if(len(final_list)>0):
+                
+                for tmp_list in final_list:
+                    PARAMS+=" {\"bool\": {\"should\": ["
+                    for tmp in tmp_list:
+                        
+                        if not(tmp == ""):
+                            if tmp == tmp_list[-1]:
+                                PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}}"
+                            else:
+                                PARAMS+="{\"multi_match\": {\"query\": \""+tmp+"\",\"type\" : \"phrase_prefix\"}},"
+                    PARAMS+="]}},"
+            
+            PARAMS=PARAMS[:-1]
+            PARAMS+="]}}}"
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            data = es.search(index="fsb", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
+            data = es.search(index="fsb",body=json.loads(PARAMS))
             fsbmaxScore = data['hits']['max_score']
             fsbList = data['hits']['hits']
             fsb = []
@@ -845,18 +923,7 @@ class DevTrackPhrasePrefix(Resource):
             predict_value_list=predict_value.split(",")
             final_list=[]
             if (len(predict_value_list)>0):
-                predict_value_list.pop(0)
-           
-            # splited_search_param = search_param.split(' ')
-            # updated_search_param = splited_search_param[0]
-            # for tmp in splited_search_param[1:]:
-            #     updated_search_param += " AND "+tmp
-            # print('search asd ',updated_search_param)
-            #search_param = updated_search_param
-            
-            
-            
-            
+                predict_value_list.pop(0)    
                 for predict_list in predict_value_list:
                     filter_list=[]
                     for tmp in predict_list.split('|')[1:]:
@@ -864,8 +931,8 @@ class DevTrackPhrasePrefix(Resource):
                     final_list.append(filter_list)    
                 print('filter list ',final_list)
             devTrack = devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,check_title,service_account_filter,phrase_query,final_list)
-            releaseNotes = releaseNotes(search_param)
-            fsb = fsb(search_param)
+            releaseNotes = releaseNotes(search_param,phrase_query,final_list)
+            fsb = fsb(search_param,phrase_query,final_list)
             response= {
                     "devTrack": [],
                     "releaseNotes": [],
@@ -901,6 +968,28 @@ class DevTrackPhrasePrefix(Resource):
                 # Merge devTracks one with serviceAccount & common issueid with releaseNotes
 
                 devTrack1['devtrack'].extend(common_devTrack2.get('devtrack'))
+                print("Before Confidence score : {0}".format([int(a.get('probability')) for a in devTrack1.get('devtrack')]))
+
+                try:
+                    # throws error if devTrack1 is empty list
+                    max_score = max([int(a.get('probability')) for a in devTrack1.get('devtrack')])
+
+                    for record in devTrack1['devtrack']:
+                        # print(max_score)
+                        # print(record.get("probability"))
+                        record["probability"] = round((record.get("probability") / max_score) * 100)
+                        # print(record.get("probability"))
+
+                except:
+                    pass
+
+                print("After Confidence score : {0}".format([int(a.get('probability')) for a in devTrack1.get('devtrack')]))
+
+                # Filter by probability in descending order
+                devTrack1['devtrack'] = sorted(devTrack1['devtrack'], key=itemgetter('probability'), reverse=True)
+
+                print("Order by Confidence score : {0}".format([int(a.get('probability')) for a in devTrack1.get('devtrack')]))
+
                 response['devTrack'] = devTrack1
                 response['releaseNotes'] = releaseNotes
                 response['fsb'] = fsb

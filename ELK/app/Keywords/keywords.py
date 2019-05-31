@@ -90,10 +90,9 @@ class GetMLKeyWords(Resource):
             elastic_search_df = pd.read_excel('Keyword_UI.xlsx')
 
             ml_synonym = []
-            found_elastic_search_words = []
             for problem_area in found_problem_area:
                 matched_elastic_search_words = elastic_search_df[elastic_search_df['UI Problem Area Map'].str.match(problem_area, case=False)]
-                found_elastic_search_words = []
+                found_elastic_search_words = set()
 
                 if not matched_elastic_search_words.empty:
                     for each_elastic_word in matched_elastic_search_words['Elastic Search Map'].tolist():
@@ -104,14 +103,12 @@ class GetMLKeyWords(Resource):
                                 # ' one two  ' becomes 'one two'
                                 each_word = each_word.lstrip()
                                 each_word = each_word.rstrip()
-                                found_elastic_search_words.append(each_word)
+                                found_elastic_search_words.add(each_word)
 
                 # add problem area in ml_synonym
                 if problem_area.lower() not in found_elastic_search_words:
-                    found_elastic_search_words.append(problem_area)
-                ml_synonym.append(found_elastic_search_words)
-
-            print("elastic search words found are {0}".format(found_elastic_search_words))
+                    found_elastic_search_words.add(problem_area)
+                ml_synonym.append(list(found_elastic_search_words))
 
             return jsonify(ml_keywords=found_problem_area, ml_synonym=ml_synonym, input=input,
                            one_strings=one_strings, removed_stopwords=removed_stopwords, http_status_code=200)

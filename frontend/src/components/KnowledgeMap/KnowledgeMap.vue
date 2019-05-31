@@ -171,7 +171,7 @@ export default {
 }
 .content {
   padding-top: 20%;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
 }
 </style>
