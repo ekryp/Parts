@@ -83,7 +83,7 @@ class TestPlan(Resource):
             for phrase in phrase_query:
                 search_param_list.append(phrase)
 
-        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+        PARAMS="{\"from\" : 0, \"size\" : 100,\"query\": {\"bool\": {\"must\": ["
                         
         if(len(search_param_list)>0):
             for tmp in search_param_list:
