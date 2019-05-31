@@ -44,6 +44,7 @@ api.add_resource(TestPlanPhrase, '/get_all_test_plan', endpoint='get_all_test_pl
 api.add_resource(ReleaseNotes, '/get_release_notes', endpoint='get_release_notes')
 api.add_resource(FSB, '/get_fsb', endpoint='get_fsb')
 api.add_resource(MOP, '/get_mop', endpoint='get_mop')
+api.add_resource(MOP, '/delete_mop', endpoint='delete_mop')
 api.add_resource(MopPhrase, '/get_all_mop', endpoint='get_all_mop')
 api.add_resource(TechNotes, '/get_technotes', endpoint='get_technotes')
 api.add_resource(TechNotePhrase, '/get_all_technotes', endpoint='get_all_technotes')

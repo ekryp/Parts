@@ -108,7 +108,18 @@ class MOP(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
 
-    
+    def delete(self):
+        def create_request_parser():
+            self.parser = reqparse.RequestParser()
+            self.parser.add_argument('doc_id', required=True, location='args')
+            return self.parser
+
+        create_request_parser()
+        args = self.parser.parse_args()
+        response = requests.delete(config.ELK_URI + "mop/_doc/" + args["doc_id"],
+                                auth=HTTPBasicAuth(config.ELK_USERNAME, config.ELK_PASSWORD),
+                                headers={"content-type": "application/json"})
+        return jsonify(msg=response.json(), http_status_code=200)
 
     def options(self):
         pass
