@@ -391,6 +391,7 @@ export default {
 
     updateTestPlan()
     {
+      this.isLoading = true;
 let formData = new FormData();
 console.log('Test Plan Dat',this.testPlanContent.key);
       formData.append("data", JSON.stringify({
@@ -432,6 +433,67 @@ console.log('Test Plan Dat',this.testPlanContent.key);
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+    },
+    deleteRole(testplan)
+    {
+
+       swal({
+                    title: "Info",
+                    text: "Do You Want to Delete the Data ?",
+                    icon: "info"
+                  }).then(ok => {
+                    if (ok) {
+                      this.isLoading = true;
+                       
+                 
+      // formData.append("data", JSON.stringify({
+      //     release_number: this.testPlan.release_number,
+      //     Objective: this.testPlan.Objective,
+      //     Procedure: this.testPlan.Procedure,
+      //     setup:this.testPlan.setup,
+      //     key:this.testPlanContent.key,
+      //     expectedResult:this.testPlan.expectedResult
+      //   }));
+      fetch(constant.ELKURL + "api/get_test_plan?doc_id="+testplan.key, {
+        method: "DELETE"
+        
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            if (data.http_status_code === 200) {
+               this.isLoading = false;
+              this.filterParam = "";
+              this.$modals.myModal.$hide();
+              this.isLoading = false;
+               swal({
+                    title: "Success",
+                    text: "Test Plan Deleted Successfully",
+                    icon: "success"
+                  }).then(ok => {
+                    if (ok) {
+                       this.getTestPlan();
+                    }
+                  });
+            }else{
+              swal({
+                    title: "Error",
+                    text: "Something Went Wrong.Please Try Again",
+                    icon: "error"
+                  })
+            }
+            
+            
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+           }
+                  });
     },
     addTestPlan() {
       this.isLoading = true;

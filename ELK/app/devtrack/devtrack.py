@@ -62,15 +62,15 @@ class DevTrackData(Resource):
             if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                 print(check_title)
                 if(check_title == "true"):
-                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
+                    PARAMS = "{\"from\" : 0, \"size\" : 10000,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}}}"
                 else:
-                    PARAMS = "{\"from\" : 0, \"size\" : 50,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
+                    PARAMS = "{\"from\" : 0, \"size\" : 10000,\"query\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [ \"severity\",\"description\",\"foundinRelease\",\"issueId\"]}}}"
 
             else:
                 if(check_title == "true"):
-                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\",\"fields\": [\"title\"]}},\"filter\": {\"bool\" : {\"must\" : ["
                 else:
-                    PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
+                    PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": {\"query_string\": {\"query\": \""+search_param+"\"}},\"filter\": {\"bool\" : {\"must\" : ["
                 if(len(product_filter)>0):
                     PRODUCT_PARAMS=""
                     
@@ -264,7 +264,7 @@ class DevTrackData(Resource):
 
             print("Release Notes  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            data = es.search(index="release_notes", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
+            data = es.search(index="release_notes", body={"from" : 0, "size" : 10000,"query": {"query_string": {"query": search_param ,"fields": ["issueId", "severity","description","workaround","file_name"]}}})
             releaseNotesmaxScore = data['hits']['max_score']
             releaseNotesList = data['hits']['hits']
            
@@ -280,7 +280,7 @@ class DevTrackData(Resource):
 
             print("FSB  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            data = es.search(index="fsb", body={"from" : 0, "size" : 50,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
+            data = es.search(index="fsb", body={"from" : 0, "size" : 10000,"query": {"query_string": {"query": search_param,"fields": ["issueId", "title","description","symptoms","rootCause", "file_name","FSBNumber","dateCreated","dateRevised"]}}})
             fsbmaxScore = data['hits']['max_score']
             fsbList = data['hits']['hits']
             fsb = []
@@ -441,7 +441,7 @@ class DevTrackPhrasePrefix(Resource):
                 if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                     print(check_title)
                     if(check_title == "true"):
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -471,7 +471,7 @@ class DevTrackPhrasePrefix(Resource):
 
                     
                     else:
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -508,7 +508,7 @@ class DevTrackPhrasePrefix(Resource):
 
 
                     if(check_title == "true"):
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -538,7 +538,7 @@ class DevTrackPhrasePrefix(Resource):
 
                     
                     else:
-                        PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+                        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
                         if(len(search_param_list)>0):
                             for tmp in search_param_list:
@@ -804,7 +804,7 @@ class DevTrackPhrasePrefix(Resource):
             search_param_list = list( dict.fromkeys(search_param_list))
             print("Release Notes  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
-            PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+            PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
             if(len(search_param_list)>0):
                 for tmp in search_param_list:
@@ -855,7 +855,7 @@ class DevTrackPhrasePrefix(Resource):
         
 
             print("FSB  Params : ", search_param)
-            PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["
+            PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
             if(len(search_param_list)>0):
                 for tmp in search_param_list:

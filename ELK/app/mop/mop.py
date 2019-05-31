@@ -51,7 +51,7 @@ class MOP(Resource):
                 search_param_list.append(phrase)
         search_param_list = list( dict.fromkeys(search_param_list)) 
 
-        PARAMS="{\"from\" : 0, \"size\" : 100,\"query\": {\"bool\": {\"must\": ["
+        PARAMS="{\"from\" : 0, \"size\" : 10000,\"query\": {\"bool\": {\"must\": ["
                         
         if(len(search_param_list)>0):
             for tmp in search_param_list:
@@ -148,11 +148,11 @@ class MopPhrase(Resource):
             search_param = ""
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME, config.ELK_PASSWORD))
         if search_param != "":
-            data = es.search(index="mop", body={"from": 0, "size": 100, "query": {
+            data = es.search(index="mop", body={"from": 0, "size": 10000, "query": {
             "query_string": {"query": search_param.lower()}}})
             print(data)
         else:
-            data = es.search(index="mop", body={"from": 0, "size": 100, "query": {"match_all": {}}})
+            data = es.search(index="mop", body={"from": 0, "size": 10000, "query": {"match_all": {}}})
         mop_max_score = data['hits']['max_score']
         mop_list = data['hits']['hits']
         mop = []
