@@ -967,13 +967,19 @@ class DevTrackPhrasePrefix(Resource):
 
                 devTrack1['devtrack'].extend(common_devTrack2.get('devtrack'))
                 print("Before Confidence score : {0}".format([int(a.get('probability')) for a in devTrack1.get('devtrack')]))
-                max_score = max([int(a.get('probability')) for a in devTrack1.get('devtrack')])
 
-                for record in devTrack1['devtrack']:
-                    # print(max_score)
-                    # print(record.get("probability"))
-                    record["probability"] = round((record.get("probability") / max_score) * 100)
-                    # print(record.get("probability"))
+                try:
+                    # throws error if devTrack1 is empty list
+                    max_score = max([int(a.get('probability')) for a in devTrack1.get('devtrack')])
+
+                    for record in devTrack1['devtrack']:
+                        # print(max_score)
+                        # print(record.get("probability"))
+                        record["probability"] = round((record.get("probability") / max_score) * 100)
+                        # print(record.get("probability"))
+
+                except:
+                    pass
 
                 print("After Confidence score : {0}".format([int(a.get('probability')) for a in devTrack1.get('devtrack')]))
 
