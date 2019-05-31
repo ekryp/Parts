@@ -166,7 +166,7 @@ export default {
 
   created() {
     console.log("beforeMount -- get_all_request_analysis", this.$store);
-    this.get_lab_request();
+    //this.get_lab_request();
     clearInterval(window.intervalObj);
     this.createAnalysisFlag = localStorage.getItem("createAnalysisFlag");
     console.log("this.createAnalysisFlag", this.createAnalysisFlag);
