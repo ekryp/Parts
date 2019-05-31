@@ -110,7 +110,5 @@ class GetMLKeyWords(Resource):
                     found_elastic_search_words.add(problem_area)
                 ml_synonym.append(list(found_elastic_search_words))
 
-            print("elastic search words found are {0}".format(found_elastic_search_words))
-
             return jsonify(ml_keywords=found_problem_area, ml_synonym=ml_synonym, input=input,
                            one_strings=one_strings, removed_stopwords=removed_stopwords, http_status_code=200)
