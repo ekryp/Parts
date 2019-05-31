@@ -189,7 +189,9 @@ export default {
       this.isLoading = true;
       this.allTechNotes = [];
       fetch(
-        constant.ELKURL + "api/get_technotes?search_param=" + this.filterParam,
+        constant.ELKURL +
+          "api/get_all_technotes?search_param=" +
+          this.filterParam,
         {
           method: "GET",
           headers: {
@@ -245,6 +247,7 @@ export default {
     }
 } */
 .vudal {
+  text-align: left !important;
   width: 950px !important;
 }
 .labelweight {

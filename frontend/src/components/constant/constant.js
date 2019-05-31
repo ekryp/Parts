@@ -135,7 +135,7 @@ export const ReferenceViewScreen = {
 
 
 export const KnowledgeMapScreen = {
-  docNames: ["Release Notes", "FSB", "Tech Notes", "Test Plan", "MOP"],
+  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP"],
   breadcrumb: "Knowledge Map",
   tableHeader: "Knowledge Map Information :",
 }
@@ -149,7 +149,7 @@ export const SolutionScreen = {
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
   tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Date Closed", "Confidence (%)", "Confirm"],
-  cardLables: ["Dev Track", "Release Notes", "FSB", "Test Plan", "MOP", "Tech Notes"],
+  cardLables: ["Dev Track", "Release Notes", "FSB", "Debug Procedure", "MOP", "Tech Notes"],
   logInfo: "Log Info",
   tags: "Tags",
   filterButtons: ["All", "Clear"],
@@ -188,14 +188,14 @@ export const editReferenceScreen = {
 }
 
 export const testPlanScreen = {
-  breadcrumbs: ["Knowledge Map > Test Plan"],
-  PopUpHeaders: ["Test Plan Details"],
+  breadcrumbs: ["Knowledge Map > Debug Procedure"],
+  PopUpHeaders: ["Debug Procedure Details"],
   popUpFields: ["File Name :", "Objective :", "Procedure :", "Expected Result :", "Setup :"],
-  addButton: "Create Test Plan",
+  addButton: "Create Debug Procedure",
   exportButton: "Export",
   cancelButton: "Cancel",
   updateButton: "Update",
-  tableName: "Test Plan Details",
+  tableName: "Debug Procedure Details",
   backButton: "Back",
   createButton: "Create"
 }

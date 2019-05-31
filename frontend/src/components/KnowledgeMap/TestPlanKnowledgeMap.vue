@@ -10,7 +10,7 @@
         <i class="close icon"></i>
         <h4>{{testPlanConstants.PopUpHeaders[0]}}</h4>
       </div>
-      <div class="content">
+      <div class="content" style="text-align: left">
         <div class="form-group text-left">
           <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
           <div v-if="viewFlag">
@@ -47,13 +47,13 @@
           <div v-if="addFlag || editFlag">
             <div class="row">
               <div class="col-lg-5">
-                <label style="{text-align}">File Name :</label>
+                <label style="{text-align}">Release Number :</label>
               </div>
               <div class="col-lg-6">
                 <input
                   type="text"
                   class="form-control"
-                  v-model="testPlan.file_name"
+                  v-model="testPlan.release_number"
                   :placeholder="testPlanPlaceHolders.fileNamePlaceHolder"
                 >
               </div>
@@ -171,7 +171,7 @@
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>Test Plan</h3>
+          <h3>Debug Procedure</h3>
         </div>
       </div>
       <br>
@@ -394,7 +394,7 @@ export default {
 let formData = new FormData();
 console.log('Test Plan Dat',this.testPlanContent.key);
       formData.append("data", JSON.stringify({
-          file_name: this.testPlan.file_name,
+          release_number: this.testPlan.release_number,
           Objective: this.testPlan.Objective,
           Procedure: this.testPlan.Procedure,
           setup:this.testPlan.setup,
@@ -439,7 +439,7 @@ console.log('Test Plan Dat',this.testPlanContent.key);
       formData.append(
         "data",
         JSON.stringify({
-          file_name: this.testPlan.file_name,
+          release_number: this.testPlan.release_number,
           Objective: this.testPlan.Objective,
           Procedure: this.testPlan.Procedure,
           setup:this.testPlan.setup,
@@ -489,6 +489,7 @@ console.log('Test Plan Dat',this.testPlanContent.key);
     }
 } */
 .vudal {
+  text-align: left !important;
   width: 950px !important;
 }
 .labelweight {

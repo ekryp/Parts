@@ -797,7 +797,7 @@ class DevTrackPhrasePrefix(Resource):
                 for phrase in phrase_query:
                     search_param_list.append(phrase)
         
-
+            search_param_list = list( dict.fromkeys(search_param_list))
             print("Release Notes  Params : ", search_param)
             es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
             PARAMS="{\"from\" : 0, \"size\" : 50,\"query\": {\"bool\": {\"must\": ["

@@ -112,3 +112,52 @@ class TechNotes(Resource):
 
     def options(self):
         pass
+
+
+class TechNotePhrase(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('search_param', required=False, location='args')
+        self.reqparse.add_argument('data',required=False,help='data',location='form')
+       
+        super(TechNotePhrase, self).__init__()
+        
+    def get(self):
+        args = self.reqparse.parse_args()
+
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        if args['search_param']:
+            search_param = escapeESArg(args['search_param'])
+            splited_search_param = search_param.split(' ')
+            updated_search_param = splited_search_param[0]
+            for tmp in splited_search_param[1:]:
+                updated_search_param += " AND "+tmp
+            search_param = updated_search_param
+            print(search_param)
+        else:
+            search_param = ""
+        es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME, config.ELK_PASSWORD))
+        if search_param != "":
+            data = es.search(index="technotes", body={"from": 0, "size": 100, "query": {
+            "query_string": {"query": search_param.lower()}}})
+            print(data)
+        else:
+            data = es.search(index="technotes", body={"from": 0, "size": 100, "query": {"match_all": {}}})
+        
+        technotes_max_score = data['hits']['max_score']
+        technotes_list = data['hits']['hits']
+        technotes = []
+
+        for doc in technotes_list:
+            data = doc["_source"]
+            data['key'] = doc['_id']
+            data["probability"] = round((doc["_score"] / technotes_max_score) * 100)
+            technotes.append(data)
+        response = {"technotes": []}
+        response['technotes'] = technotes
+        return jsonify(data=response, http_status_code=200)
+
+
+    
+    def options(self):
+         pass

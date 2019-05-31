@@ -33,8 +33,8 @@ from app.fsb.fsb import FSB
 from app.releasenotes.releasenotes import ReleaseNotes
 from app.Testplan.testplan import TestPlan,TestPlanPhrase
 from app.Keywords.keywords import GetMLKeyWords
-from app.mop.mop import MOP
-from app.technotes.technote import TechNotes
+from app.mop.mop import MOP,MopPhrase
+from app.technotes.technote import TechNotes,TechNotePhrase
 
 api.add_resource(DevTrackData, '/getDevTrackData', endpoint='getDevTrackData')
 api.add_resource(DevTrackPhrasePrefix, '/get_devtrack_data_preffix', endpoint='get_devtrack_data_preffix')
@@ -44,7 +44,9 @@ api.add_resource(TestPlanPhrase, '/get_all_test_plan', endpoint='get_all_test_pl
 api.add_resource(ReleaseNotes, '/get_release_notes', endpoint='get_release_notes')
 api.add_resource(FSB, '/get_fsb', endpoint='get_fsb')
 api.add_resource(MOP, '/get_mop', endpoint='get_mop')
+api.add_resource(MopPhrase, '/get_all_mop', endpoint='get_all_mop')
 api.add_resource(TechNotes, '/get_technotes', endpoint='get_technotes')
+api.add_resource(TechNotePhrase, '/get_all_technotes', endpoint='get_all_technotes')
 
 app.register_blueprint(api_blueprint)
 api.init_app(app)

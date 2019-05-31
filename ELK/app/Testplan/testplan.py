@@ -168,21 +168,26 @@ class TestPlanPhrase(Resource):
         es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME, config.ELK_PASSWORD))
         if search_param != "":
             data = es.search(index="testplan", body={"from": 0, "size": 100, "query": {
-            "query_string": {"query": search_param.lower(), "fields": ["file_name", "release_product_affected", "description"]}}})
+            "query_string": {"query": search_param.lower()}}})
+            print(data)
         else:
             data = es.search(index="testplan", body={"from": 0, "size": 100, "query": {"match_all": {}}})
-        technotes_max_score = data['hits']['max_score']
-        technotes_list = data['hits']['hits']
-        technotes = []
+        test_max_score = data['hits']['max_score']
+        test_plan_list = data['hits']['hits']
+        test_plan = []
 
-        for doc in technotes_list:
+        for doc in test_plan_list:
             data = doc["_source"]
-            data['key'] = doc['_id']
-            data["probability"] = round((doc["_score"] / technotes_max_score) * 100)
-            technotes.append(data)
-        response = {"test_plan": []}
-        response['test_plan'] = technotes
+            data['key']=doc['_id']
+            data["probability"]= round((doc["_score"]/test_max_score)*100)
+            test_plan.append(data)
+        response= {
+                    "test_plan": []
+                }
+            
+        response['test_plan'] = test_plan
         return jsonify(data=response, http_status_code=200)
+
 
 
     
