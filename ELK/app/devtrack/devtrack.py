@@ -761,8 +761,10 @@ class DevTrackPhrasePrefix(Resource):
                         for key in filterKeys:
                             
                             # print('value ----->',doc["_source"][key])
-                            if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed' or key == 'serviceAccount'):
+                            if (key in doc["_source"].keys()):
                                 filterList[key].append(doc["_source"][key])
+                            #if  (key == 'product' or key == 'group' or key =='severity' or key =='priority' or key == 'foundinRelease' or key == 'fixedinRelease' or key == 'dateClosed' or key == 'serviceAccount'):
+                            #    filterList[key].append(doc["_source"][key])
                         
                     for key in filterKeys:
                             tempSet=list(set(filterList[key]))
