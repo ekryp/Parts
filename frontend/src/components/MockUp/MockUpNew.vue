@@ -360,10 +360,10 @@
           <br>
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">File Name :</label>
+              <label class="labelweight">Release Number:</label>
             </div>
             <div class="col-lg-7">
-              <span>{{testPlanContent.file_name}}</span>
+              <span>{{testPlanContent.release_number}}</span>
             </div>
           </div>
           <br>
@@ -410,7 +410,7 @@
           <br>
           <div class="row">
             <div class="col-lg-5">
-              <label class="labelweight">File Name :</label>
+              <label class="labelweight">References :</label>
             </div>
             <div class="col-lg-7">
               <span>{{techNotesContent.references}}</span>
@@ -1298,7 +1298,7 @@
               <div class="col-md-12" align="center">
                 <table class="table responsive table-hover">
                   <thead class="text-center">
-                    <th>File Name</th>
+                    <th>Release Number</th>
 
                     <th>Objective</th>
 
@@ -1310,7 +1310,7 @@
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'testPlan')"
-                      >{{item.file_name}}</td>
+                      >{{item.release_number}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'testPlan')"
@@ -1360,7 +1360,7 @@
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'testPlan')"
-                      >{{item.file_name}}</td>
+                      >{{item.release_number}}</td>
                       <td
                         class="in-progress"
                         @click="showPatchModal(item.index,'testPlan')"
@@ -2171,7 +2171,8 @@ export default {
       this.devTrackData = [];
       this.releaseNotesData = [];
       this.fsbData = [];
-      this.tagValues = "";
+     // this.tagValues = "";
+     this.phraseValue="";
 
       this.filterURL = "";
       for (var i = 0; i < this.productValue.length; i++) {
@@ -2223,9 +2224,9 @@ export default {
         this.filterURL = this.filterURL + `&date_filter=` + this.time1;
       }
       console.log("Tag Values", this.tagValue);
-      for (var i = 0; i < this.tagValue.length; i++) {
-        this.tagValues = this.tagValues + " " + this.tagValue[i].value;
-      }
+      // for (var i = 0; i < this.tagValue.length; i++) {
+      //   this.tagValues = this.tagValues + " " + this.tagValue[i].value;
+      // }
 
       this.problemDescription = this.problemDescription.replace(
         /^\s+|\s+$/g,
@@ -2262,7 +2263,7 @@ export default {
           this.inputParams +
           this.mlKeywords +
           this.filterSynonym +
-          this.tagValues +
+          
           this.filterURL +
           "&internal=" +
           this.internalFlag +
@@ -2447,7 +2448,7 @@ export default {
         constant.ELKURL +
           "api/get_test_plan?search_param=" +
           this.inputParams +
-          this.tagValues +
+         
           this.phraseValue +
           "&predict_value=" +
           this.predictValue,
@@ -2479,7 +2480,7 @@ export default {
                   Objective: data.data.test_plan[i].Objective,
                   index: i,
                   Procedure: data.data.test_plan[i].Procedure,
-                  file_name: data.data.test_plan[i].file_name,
+                  release_number: data.data.test_plan[i].release_number,
                   probability: data.data.test_plan[i].probability,
                   key: data.data.test_plan[i].key,
                   upvotedUsers: upvotedUsers
@@ -2529,7 +2530,7 @@ export default {
         constant.ELKURL +
           "api/get_mop?search_param=" +
           this.inputParams +
-          this.tagValues +
+          
           this.phraseValue +
           "&predict_value=" +
           this.predictValue,
@@ -2587,6 +2588,7 @@ export default {
     getTechNotes() {
       this.isLoading = true;
       this.techNotesData = [];
+      this.phraseValue="";
       for (var i = 0; i < this.oneString.length; i++) {
         this.phraseValue =
           this.phraseValue + `&phrase_query=` + this.oneString[i];
@@ -2599,7 +2601,7 @@ export default {
         constant.ELKURL +
           "api/get_technotes?search_param=" +
           this.inputParams +
-          this.tagValues +
+          
           this.phraseValue +
           "&predict_value=" +
           this.predictValue,
@@ -2679,11 +2681,16 @@ export default {
       this.oneString = [];
       //this.tagValue = [];
       this.tagOptions = [];
+      this.tagValues="";
       this.predictValue = "";
+        for (var i = 0; i < this.tagValue.length; i++) {
+        this.tagValues = this.tagValues + " \"" + this.tagValue[i].value+" \"";
+       }
+       console.log('Tag Values Used',this.tagValues)
       fetch(
         constant.ELKURL +
           "api/get_ml_keywords?search_param=" +
-          this.problemDescription,
+          this.problemDescription+this.tagValues,
         {
           headers: {
             Authorization:

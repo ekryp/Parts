@@ -14,13 +14,22 @@
         <div class="form-group text-left">
           <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
           <div v-if="viewFlag">
+          <br>
+          <div class="row"  v-if="typeof testPlanContent.title !== 'undefined'">
+              <div class="col-lg-5">
+                <label class="labelweight">{{testPlanConstants.popUpFields[5]}}</label>
+              </div>
+              <div class="col-lg-7">
+                <span>{{testPlanContent.title}}</span>
+              </div>
+            </div>
             <br>
             <div class="row">
               <div class="col-lg-5">
                 <label class="labelweight">{{testPlanConstants.popUpFields[0]}}</label>
               </div>
               <div class="col-lg-7">
-                <span>{{testPlanContent.file_name}}</span>
+                <span>{{testPlanContent.release_number}}</span>
               </div>
             </div>
             <br>
@@ -45,6 +54,21 @@
             <br>
           </div>
           <div v-if="addFlag || editFlag">
+           <div class="row">
+              <div class="col-lg-5">
+                <label style="{text-align}">Title :</label>
+              </div>
+              <div class="col-lg-6">
+                <textarea
+                  type="text"
+                  class="form-control"
+                  col=3 
+                  v-model="testPlan.title"
+                  :placeholder="testPlanPlaceHolders.titlePlaceHolder"
+                ></textarea>
+              </div>
+            </div>
+            <br>
             <div class="row">
               <div class="col-lg-5">
                 <label style="{text-align}">Release :</label>
@@ -208,9 +232,8 @@
                 ></el-table-column :min-width="20">
                 <el-table-column align="right">
                   <template slot-scope="scope">
-                      <el-button size="mini" type="info" @click="showEditRole(scope.row)">Edit</el-button>
-                    <el-button size="mini" type="primary" @click="showViewRole(scope.row)">View</el-button>
-                     
+                   <el-button size="mini" type="info" @click="showViewRole(scope.row)">View</el-button>
+                    <el-button size="mini" type="primary" @click="showEditRole(scope.row)">Edit</el-button>
                     <el-button size="mini" type="danger" @click="deleteRole(scope.row)">Delete</el-button>
                   </template>
                 </el-table-column>
@@ -283,15 +306,17 @@ export default {
       editFlag: false,
       viewFlag:false,
       testPlan: {
-        file_name: "",
+        release_number: "",
         Objective: "",
         Procedure: "",
         expectedResult:"",
-        setup:""
+        setup:"",
+        title:""
 
       },
       testPlanPlaceHolders: {
         fileNamePlaceHolder: "Enter the File Name Here",
+        titlePlaceHolder:"Enter the Title Here",
         objectivePlaceHolder: "Enter the Objective Here",
         procedurePlaceHolder: "Enter the Procedure",
         setupPlaceHolder:"Enter the Setup ",
@@ -310,6 +335,8 @@ export default {
       this.testPlan.file_name="";
       this.testPlan.Objective="";
       this.testPlan.Procedure="";
+      this.testPlan.release_number="";
+      this.testPlan.title="";
       this.testPlan.expectedResult="";
       this.testPlan.setup="";
       this.$modals.myModal.$hide();
@@ -318,6 +345,8 @@ export default {
        this.testPlan.file_name="";
       this.testPlan.Objective="";
       this.testPlan.Procedure="";
+      this.testPlan.release_number="";
+      this.testPlan.title="";
       this.testPlan.expectedResult="";
       this.testPlan.setup="";
       this.viewFlag = false;
@@ -337,6 +366,8 @@ export default {
       this.addFlag = false;
       this.editFlag = true;
       this.testPlanContent = user;
+      this.testPlan.release_number = user.release_number;
+      this.testPlan.title=user.testPlan;
       this.testPlan.file_name = user.file_name;
       this.testPlan.Objective = user.Objective;
       this.testPlan.Procedure = user.Procedure;
@@ -369,7 +400,11 @@ export default {
              let tempJson={ Objective: data.data.test_plan[i].Objective,
                 Procedure: data.data.test_plan[i].Procedure,
                 file_name: data.data.test_plan[i].file_name,
+                 release_number: data.data.test_plan[i].release_number,
+                 title: data.data.test_plan[i].title,
+                 
                  key:data.data.test_plan[i].key}
+                
 
               if (typeof data.data.test_plan[i].setup !== 'undefined'){
                 tempJson['setup']=data.data.test_plan[i].setup
@@ -396,6 +431,7 @@ let formData = new FormData();
 console.log('Test Plan Dat',this.testPlanContent.key);
       formData.append("data", JSON.stringify({
           release_number: this.testPlan.release_number,
+          title:this.testPlan.title,
           Objective: this.testPlan.Objective,
           Procedure: this.testPlan.Procedure,
           setup:this.testPlan.setup,
@@ -502,6 +538,7 @@ console.log('Test Plan Dat',this.testPlanContent.key);
         "data",
         JSON.stringify({
           release_number: this.testPlan.release_number,
+          title:this.testPlan.title,
           Objective: this.testPlan.Objective,
           Procedure: this.testPlan.Procedure,
           setup:this.testPlan.setup,

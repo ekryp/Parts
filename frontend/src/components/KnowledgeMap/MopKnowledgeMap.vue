@@ -82,7 +82,7 @@
                 ></el-table-column>
                 <el-table-column align="right">
                   <template slot-scope="scope">
-                    <el-button size="mini" @click="showEditRole(scope.row)">View</el-button>
+                    <el-button size="mini" type="info" @click="showEditRole(scope.row)">View</el-button>
                   </template>
                 </el-table-column>
               </data-tables>

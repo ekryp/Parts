@@ -190,7 +190,7 @@ export const editReferenceScreen = {
 export const testPlanScreen = {
   breadcrumbs: ["Knowledge Map > Debug Procedure"],
   PopUpHeaders: ["Debug Procedure Details"],
-  popUpFields: ["File Name :", "Objective :", "Procedure :", "Expected Result :", "Setup :"],
+  popUpFields: ["Release :", "Objective :", "Procedure :", "Expected Result :", "Setup :", "Title :"],
   addButton: "Create Debug Procedure",
   exportButton: "Export",
   cancelButton: "Cancel",
