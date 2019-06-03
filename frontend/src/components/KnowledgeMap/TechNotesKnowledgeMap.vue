@@ -5,7 +5,7 @@
 
     <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
 
-    <!-- <vudal name="myModal">
+    <vudal name="myModal">
       <div class="header">
         <div class="row">
           <div class="col-lg-11">
@@ -24,27 +24,31 @@
               <label class="labelweight">Title :</label>
             </div>
             <div class="col-lg-7">
-              <span>{{releaseNoteContent.file_name}}</span>
+              <span>{{techNoteContent.file_name}}</span>
             </div>
           </div>
           <br>
           <label class="labelweight">Description :</label>
           <br>
-          <span class="textOverlay">{{releaseNoteContent.description}}</span>
+          <span class="textOverlay">{{techNoteContent.description}}</span>
           <br>
-          <div
-            v-if="(releaseNoteContent.workaround !==' ') && (releaseNoteContent.workaround !=='') "
-          >
-            <label class="labelweight">Workaround :</label>
+          <div>
+            <label class="labelweight">Affected Product :</label>
             <br>
-            <span class="textOverlay">{{releaseNoteContent.workaround}}</span>
+            <span class="textOverlay">{{techNoteContent.release_product_affected}}</span>
+          </div>
+          <br>
+          <div>
+            <label class="labelweight">References :</label>
+            <br>
+            <span class="textOverlay">{{techNoteContent.references}}</span>
           </div>
         </div>
       </div>
       <div class="actions">
         <button type="button" class="btn btn-success" @click="hideEntry()">OK</button>
       </div>
-    </vudal>-->
+    </vudal>
 
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
@@ -81,11 +85,11 @@
                   :key="title.prop"
                   sortable="custom"
                 ></el-table-column>
-                <!-- <el-table-column align="right">
+                <el-table-column align="right">
                   <template slot-scope="scope">
-                    <el-button size="mini" @click="showEditRole(scope.row)">View</el-button>
+                    <el-button size="mini" type="info" @click="showEditRole(scope.row)">View</el-button>
                   </template>
-                </el-table-column>-->
+                </el-table-column>
               </data-tables>
             </div>
           </div>
@@ -166,10 +170,6 @@ export default {
         {
           prop: "description",
           label: "Description"
-        },
-        {
-          prop: "release_product_affected",
-          label: "Release Product Affected"
         }
       ]
     };
@@ -217,6 +217,7 @@ export default {
                 probability: data.data.technotes[j].probability,
                 key: data.data.technotes[j].key
               };
+              
               if (
                 typeof data.data.technotes[j].release_product_affected ===
                 "undefined"
@@ -225,6 +226,15 @@ export default {
               } else {
                 tempJson["release_product_affected"] =
                   data.data.technotes[j].release_product_affected;
+              }
+              if (
+                typeof data.data.technotes[j].references ===
+                "undefined"
+              ) {
+                tempJson["references"] = "NA";
+              } else {
+                tempJson["references"] =
+                  data.data.technotes[j].references;
               }
               this.allTechNotes.push(tempJson);
               tempJson = {};
