@@ -457,14 +457,7 @@ export default {
      
       formData.append('faq_id',faq.faq_id);
                  
-      // formData.append("data", JSON.stringify({
-      //     release_number: this.testPlan.release_number,
-      //     Objective: this.testPlan.Objective,
-      //     Procedure: this.testPlan.Procedure,
-      //     setup:this.testPlan.setup,
-      //     key:this.testPlanContent.key,
-      //     expectedResult:this.testPlan.expectedResult
-      //   }));
+      
      fetch(constant.APIURL + "api/v1/get_faq", {
         method: "DELETE",
         headers: {
@@ -538,7 +531,7 @@ export default {
               this.$modals.myModal.$hide();
                swal({
                     title: "Success",
-                    text: "Test Plan Details Added",
+                    text: "FAQ Details Added",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {

@@ -80,7 +80,12 @@
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allFaq" style="width: 100%" @row-click="showViewRole">
+              <data-tables
+                :data="allFaq"
+                style="width: 100%"
+                @row-click="showViewRole"
+                :filters="filters"
+              >
                 <el-table-column
                   :min-width="20"
                   v-for="title in titles"
@@ -134,7 +139,7 @@ Vue.use(DataTablesServer);
 Vue.use(ElementUI);
 
 export default {
-  name: "TestPlanKnowledgeMap",
+  name: "Help",
   components: {
     SideNav,
     headernav,
