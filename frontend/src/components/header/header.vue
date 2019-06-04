@@ -11,6 +11,7 @@
         <span></span>
         <span></span>
       </div>
+
       <button
         class="navbar-toggler"
         type="button"
@@ -24,6 +25,14 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
+          <li style="color:#515356; fontWeight:500;" class="nav-item dropdown">
+            <a
+              class="nav-link"
+              aria-expanded="false"
+              style="color:#515356; fontWeight:500;cursor:pointer;"
+              @click="redirectHelp()"
+            >Help</a>
+          </li>
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -120,6 +129,9 @@ export default {
   methods: {
     redirectUser() {
       router.push("/user");
+    },
+    redirectHelp() {
+      router.push("/help");
     },
     redirectRole() {
       router.push("/role");

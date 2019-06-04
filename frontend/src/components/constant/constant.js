@@ -135,7 +135,7 @@ export const ReferenceViewScreen = {
 
 
 export const KnowledgeMapScreen = {
-  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP"],
+  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP", "FAQ"],
   breadcrumb: "Knowledge Map",
   tableHeader: "Knowledge Map Information :",
 }
@@ -196,6 +196,20 @@ export const testPlanScreen = {
   cancelButton: "Cancel",
   updateButton: "Update",
   tableName: "Debug Procedure Details",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+
+export const FaqScreen = {
+  breadcrumbs: ["Knowledge Map > FAQ"],
+  PopUpHeaders: ["FAQ Details"],
+  popUpFields: ["Title :", "Permissions :", "Description :"],
+  addButton: "Create FAQ",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "FAQ",
   backButton: "Back",
   createButton: "Create"
 }

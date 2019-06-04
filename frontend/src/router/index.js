@@ -24,8 +24,10 @@ import FsbKnowledgeMap from '@/components/KnowledgeMap/FsbKnowledgeMap'
 import MopKnowledgeMap from '@/components/KnowledgeMap/MopKnowledgeMap'
 import ReleaseNotesKnowledgeMap from '@/components/KnowledgeMap/ReleaseNotesKnowledgeMap'
 import TechNotesKnowledgeMap from '@/components/KnowledgeMap/TechNotesKnowledgeMap'
+import FAQ from '@/components/KnowledgeMap/FAQ'
 import Calendar from '@/components/LabAvailability/Calendar'
 import LabList from '@/components/LabAvailability/LabList'
+import Help from '@/components/help/Help'
 Vue.use(Router)
 
 export default new Router({
@@ -201,6 +203,14 @@ export default new Router({
       }
     },
     {
+      path: '/knowledge/faq',
+      name: 'TechNotesKnowledgeMap',
+      component: FAQ,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
       path: '/knowledge',
       name: 'KnowledgeMap',
       component: KnowledgeMap,
@@ -214,6 +224,15 @@ export default new Router({
       component: LabList,
       meta: {
         permission: 'knowledgeMap'
+      }
+
+    },
+    {
+      path: '/help',
+      name: 'Help',
+      component: Help,
+      meta: {
+        permission: 'Dashboard'
       }
 
     },
