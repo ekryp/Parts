@@ -56,7 +56,7 @@
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">{{faqConstants.breadcrumbs[0]}}</span>
+          <span style="font-size: 14px;">FAQ</span>
         </p>
       </div>
       <div class="row">
