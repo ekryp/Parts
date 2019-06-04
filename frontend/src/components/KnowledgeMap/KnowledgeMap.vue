@@ -105,6 +105,21 @@
                         ></i>
                       </td>
                     </tr>
+
+                    <tr>
+                      <td>
+                        <label>{{knowledgeMapConstant.docNames[5]}}</label>
+                      </td>
+                      <td>Frequently Asked Questions (FAQ) is a set of general queries user have about the product</td>
+                      <td>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('faq')"
+                        ></i>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
