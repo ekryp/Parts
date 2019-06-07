@@ -120,6 +120,21 @@
                         ></i>
                       </td>
                     </tr>
+
+                    <tr >
+                      <td>
+                        <label>{{knowledgeMapConstant.docNames[6]}}</label>
+                      </td>
+                      <td>to be added</td>
+                      <td>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('usecase')"
+                        ></i>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

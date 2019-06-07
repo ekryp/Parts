@@ -135,7 +135,7 @@ export const ReferenceViewScreen = {
 
 
 export const KnowledgeMapScreen = {
-  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP", "Ekryp Help"],
+  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP", "Ekryp Help", "Ekryp Use Cases"],
   breadcrumb: "Knowledge Map",
   tableHeader: "Knowledge Map Information :",
 }
@@ -214,6 +214,19 @@ export const FaqScreen = {
   createButton: "Create"
 }
 
+
+export const UseCaseScreen = {
+  breadcrumbs: ["Knowledge Map > Ekryp Use Cases"],
+  PopUpHeaders: ["Ekryp Use Cases Details"],
+  popUpFields: ["UseCase :", "Brief Description :", "Description :"],
+  addButton: "Create Ekryp Use Cases",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Ekryp Use Cases",
+  backButton: "Back",
+  createButton: "Create"
+}
 
 export const SendFeedbackScreen = {
   breadcrumbs: ["Send Feedback"],
