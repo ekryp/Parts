@@ -32,10 +32,10 @@ def check_part_file(part_file, extension):
         raise FileFormatIssue(part_file, "No Records to process, BAD Part File")
 
     if part_cols < 10:
-        raise FileFormatIssue(part_file, "Less than required 5 columns, BAD Part File")
+        raise FileFormatIssue(part_file, "Less than required 10 columns, BAD Part File")
 
     if part_cols > 10:
-        raise FileFormatIssue(part_file, "More than required 5 columns, BAD Part File")
+        raise FileFormatIssue(part_file, "More than required 10 columns, BAD Part File")
 
     part_cols = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute', 'standard_cost',
                  'ProductType', 'ProductFamily', 'ProductCategory', 'ItemCategory', 'Phase']
