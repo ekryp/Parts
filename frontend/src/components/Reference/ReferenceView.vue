@@ -281,6 +281,36 @@ export default {
           formName: "standard_cost",
           value: "",
           placeHolder: "2,108.94"
+        },
+         {
+          columnName: "Product Type",
+          formName: "product_type",
+          value: "",
+          placeHolder: "HW"
+        },
+         {
+          columnName: "Product Family",
+          formName: "product_family",
+          value: "",
+          placeHolder: "ATN"
+        },
+         {
+          columnName: "Product Category",
+          formName: "product_category",
+          value: "",
+          placeHolder: "AAM"
+        },
+         {
+          columnName: "Item Category",
+          formName: "item_category",
+          value: "",
+          placeHolder: "AAM"
+        },
+         {
+          columnName: "Phase",
+          formName: "product_phase",
+          value: "",
+          placeHolder: "EOA-Effective"
         }
       ];
       this.referenceColumnDefs = [
@@ -313,7 +343,32 @@ export default {
           width: 150,
           filter: "date",
           cellStyle: { "text-align": "right" }
-        }
+        },
+         {
+          headerName: "Product Type",
+          field: "product_type",
+          width: 150
+        },
+         {
+          headerName: "Product Family",
+          field: "product_family",
+          width: 150
+        },
+         {
+          headerName: "Product Category",
+          field: "product_category",
+          width: 150
+        },
+         {
+          headerName: "Item Category",
+          field: "item_category",
+          width: 150
+        },
+         {
+          headerName: "Phase",
+          field: "product_phase",
+          width: 150
+        },
       ];
       if (this.editReferenceFlag) {
         this.referenceColumnDefs.push({
@@ -1090,6 +1145,11 @@ export default {
                 standard_cost: accounting.formatMoney(
                   this.referenceList[i].standard_cost
                 ),
+                product_type: this.referenceList[i].product_type,
+                product_category: this.referenceList[i].product_category,
+                item_category: this.referenceList[i].item_category,
+                product_phase: this.referenceList[i].product_phase,
+                product_family: this.referenceList[i].product_family,
                 editFlag: this.referenceList[i].part_id,
                 deleteFlag: this.referenceList[i].part_id
               });
@@ -1100,7 +1160,13 @@ export default {
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
-                standard_cost: this.referenceList[i].standard_cost
+                standard_cost: this.referenceList[i].standard_cost,
+                product_family: this.referenceList[i].product_family,
+                product_type: this.referenceList[i].product_type,
+                product_category: this.referenceList[i].product_category,
+                item_category: this.referenceList[i].item_category,
+                product_phase: this.referenceList[i].product_phase
+                
               });
             }
 
