@@ -215,6 +215,13 @@ export const FaqScreen = {
 }
 
 
+export const SendFeedbackScreen = {
+  breadcrumbs: ["Send Feedback"],
+  labLabels: ["Brief Title:", "Detailed Feedback:"],
+  labPlaceHolders: ["Enter Title ", "Enter Your Feedback Here "],
+  buttons: ["Back", "Send"]
+}
+
 // export const  partsFileData={
 //     title:"Parts Details",
 //     partsColumnList:[
