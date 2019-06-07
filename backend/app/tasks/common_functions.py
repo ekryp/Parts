@@ -527,6 +527,15 @@ def to_sql_current_ib(table_name, df, analysis_id):
 def to_sql_part_table(df):
     df['cust_id'] = 7
     df['part_number'] = 0
+    df.rename(columns={
+        'ProductType': 'product_type',
+        'ProductFamily': 'product_family',
+        'ProductCategory': 'product_category',
+        'ItemCategory': 'item_category',
+        'Phase': 'product_phase'
+    }, inplace=True
+    )
+
     df.to_sql(name='parts', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into parts table")
 

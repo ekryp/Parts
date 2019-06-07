@@ -359,10 +359,15 @@ CREATE TABLE `parts` (
   `spared_attribute` int(11) DEFAULT NULL,
   `version_number` double DEFAULT NULL,
   `source_part_data` varchar(45) DEFAULT NULL,
+  `product_type` varchar(45) DEFAULT NULL,
+  `product_family` varchar(45) DEFAULT NULL,
+  `product_category` varchar(45) DEFAULT NULL,
+  `item_category` varchar(45) DEFAULT NULL,
+  `product_phase` varchar(45) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`part_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=116143 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=243202 DEFAULT CHARSET=latin1
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
