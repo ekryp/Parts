@@ -30,10 +30,10 @@ class Usecase(Resource):
         args = self.reqparse.parse_args()
         usecase = args['usecase']
         description = args['description']
-        brief_description = args['brief_description']
+       
         ekryp_usecase_id = args['ekryp_usecase_id']
         try:
-            query = "update ekryp_usecase set usecase='{0}',description='{1}',brief_description='{2}' ekryp_usecase_id faq_id={3}".format(usecase,description,brief_description,ekryp_usecase_id)
+            query = "update ekryp_usecase set usecase='{0}',description='{1}' ekryp_usecase_id ekryp_usecase_id={2}".format(usecase,description,ekryp_usecase_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             engine.execute(query)
             return jsonify(msg=" Usecase Details Updated Successfully", http_status_code=200)
@@ -50,10 +50,8 @@ class Usecase(Resource):
        
 
         try:
-           
-           
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
-            query="insert into ekryp_usecase (usecase,description,brief_description) values('{0}','{1}','{2}')".format(usecase,description,brief_description)
+            query="insert into ekryp_usecase (usecase,description) values('{0}','{1}')".format(usecase,description)
             engine.execute(query)
             return jsonify(msg="Inserted Usecase Details Successfully", http_status_code=200)
         except Exception as e:
@@ -64,7 +62,7 @@ class Usecase(Resource):
 
     @requires_auth
     def get(self):
-        query = "SELECT ekryp_usecase_id,usecase,description,brief_description FROM ekryp_usecase"
+        query = "SELECT ekryp_usecase_id,usecase,description FROM ekryp_usecase"
 
         result = get_df_from_sql_query(
             query=query,
@@ -80,7 +78,7 @@ class Usecase(Resource):
         args = self.reqparse.parse_args()
         ekryp_usecase_id = args['ekryp_usecase_id']
         try:
-            query = "delete from ekryp_usecase where ekryp_usecase_id = {0}".format(faq_id)
+            query = "delete from ekryp_usecase where ekryp_usecase_id = {0}".format(ekryp_usecase_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
 
             result=engine.execute(query)
