@@ -38,7 +38,7 @@ class Feedback(Resource):
         try:
             subject=' Feedback Notification '
             message= title+'\n'+feedback
-            email_response=sendEmailNotificatio('nageshwara.vijay@ekryp.com', subject, message)
+            email_response=sendEmailNotificatio('customer.service@ekryp.com', subject, message)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="insert into feedback (title,feedback) values('{0}','{1}')".format(title,feedback)
             engine.execute(query)
