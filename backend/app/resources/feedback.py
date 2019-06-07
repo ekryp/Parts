@@ -4,9 +4,11 @@ from flask import jsonify
 from flask import request
 from sqlalchemy import create_engine, exc
 from flask_restful import Resource
+from app.tasks import Email
 from flask_restful import reqparse
 from app.utils.utils import get_df_from_sql_query
 import pandas as pd
+
 import pdb
 import os
 import logging
@@ -34,6 +36,9 @@ class Feedback(Resource):
         
 
         try:
+            subject='Feedback Notification '
+            message= title+'\n'+feedback
+            email_response=Email.sendEmailNotificatio('nageshwara.vijay@ekryp.com',subject,message)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="insert into feedback (title,feedback) values('{0}','{1}')".format(title,feedback)
             engine.execute(query)
