@@ -13,6 +13,7 @@ import json
 from app import Configuration
 from app.auth.authorization import requires_auth
 
+
 class GetParts(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -22,6 +23,11 @@ class GetParts(Resource):
         self.reqparse.add_argument('standard_cost', location='form')
         self.reqparse.add_argument('spared_attribute', location='form')
         self.reqparse.add_argument('part_reliability_class', location='form')
+        self.reqparse.add_argument('product_type', location='form')
+        self.reqparse.add_argument('product_family', location='form')
+        self.reqparse.add_argument('product_category', location='form')
+        self.reqparse.add_argument('item_category', location='form')
+        self.reqparse.add_argument('product_phase', location='form')
         
         self.reqparse.add_argument('parts_id', type=int,required=False, help='parts_id', location='args')
         super(GetParts, self).__init__()
@@ -35,8 +41,20 @@ class GetParts(Resource):
         part_reliability_class = args['part_reliability_class']
         part_name = args['part_name']
         spared_attribute = args['spared_attribute']
+        product_type = args['product_type']
+        product_family = args['product_family']
+        product_category = args['product_category']
+        item_category = args['item_category']
+        product_phase = args['product_phase']
+
         try:
-            query = "update parts set material_number='{0}',part_name='{1}',part_reliability_class='{2}',spared_attribute={3} where part_id={4}".format(material_number,part_name,part_reliability_class,spared_attribute,parts_id)
+            query = "update parts set material_number='{0}', part_name='{1}', part_reliability_class='{2}'," \
+                    "spared_attribute={3}, product_type='{5}',product_family='{6}',product_category='{7}'," \
+                    "item_category='{8}'," \
+                    " product_phase= '{9}' where part_id={4}".format(material_number, part_name, part_reliability_class,
+                                                                     spared_attribute, parts_id, product_type,
+                                                                     product_family, product_category,
+                                                                     item_category, product_phase)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             engine.execute(query)
             part_cost_query ="update part_cost set standard_cost={0} where part_id={1}".format(standard_cost,parts_id)
@@ -53,10 +71,19 @@ class GetParts(Resource):
         part_reliability_class = args['part_reliability_class']
         part_name = args['part_name']
         spared_attribute = args['spared_attribute']
+        product_type = args['product_type']
+        product_family = args['product_family']
+        product_category = args['product_category']
+        item_category = args['item_category']
+        product_phase = args['product_phase']
         try:
 
             query = "INSERT INTO parts (cust_id,material_number,part_name,"\
-                    "part_reliability_class,spared_attribute,part_number) values ({0},{1},'{2}','{3}','{4}',{5})".format(7,material_number,part_name,part_reliability_class,spared_attribute,0)
+                    "part_reliability_class,spared_attribute,part_number,product_type,product_family," \
+                    "product_category, item_category, product_phase) " \
+                    "values ({0},{1},'{2}','{3}','{4}',{5},'{6}','{7}','{8}','{9}','{10}')".format(
+                7, material_number, part_name, part_reliability_class, spared_attribute, 0,product_type,
+                product_family, product_category, item_category,product_phase )
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             engine.execute(query)
             part_cost_query="INSERT INTO part_cost (part_id,material_number,standard_cost) values ((SELECT part_id FROM parts where part_name='{0}'),{1},{2})".format(part_name,material_number,standard_cost)
@@ -67,10 +94,13 @@ class GetParts(Resource):
 
     @requires_auth
     def get(self):
-        query = "select parts.part_id,parts.part_name,parts.material_number,"\
-                " part_cost.standard_cost,parts.part_number,"\
-                "parts.part_reliability_class,parts.spared_attribute"\
-                " from parts inner join part_cost on parts.part_id=part_cost.part_id"
+        query = "select parts.part_id,parts.part_name,parts.material_number," \
+                "part_cost.standard_cost,parts.part_number," \
+                "parts.part_reliability_class,parts.spared_attribute," \
+                "parts.product_type,parts.product_family," \
+                "parts.product_category,parts.item_category," \
+                "parts.product_phase " \
+                "from parts inner join part_cost on parts.part_id=part_cost.part_id"
 
         result = get_df_from_sql_query(
             query=query,
@@ -89,8 +119,10 @@ class GetParts(Resource):
         args = self.reqparse.parse_args()
         parts_id = args['parts_id']
         try:
-
             query = "delete from parts where part_id = {0}".format(parts_id)
+            engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
+            result=engine.execute(query)
+            query = "delete from part_cost where part_id = {0}".format(parts_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             result=engine.execute(query)
             return jsonify(msg="Parts Details Deleted Successfully", http_status_code=200)
