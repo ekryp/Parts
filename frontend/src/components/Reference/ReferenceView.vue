@@ -1011,7 +1011,7 @@ export default {
       }
     },
     addData() {
-       
+       console.log('adsads')
       let url;
       if (this.fileType === "parts") {
         url = "api/v1/get_all_parts";
@@ -1999,6 +1999,11 @@ export default {
           this.columnList[2].value = event.data.part_reliability_class;
           this.columnList[3].value = event.data.spared_attribute;
           this.columnList[4].value = event.data.standard_cost;
+          this.columnList[5].value = event.data.product_type;
+          this.columnList[6].value = event.data.product_family;
+          this.columnList[7].value = event.data.product_category;
+          this.columnList[8].value = event.data.item_category;
+          this.columnList[9].value = event.data.product_phase;
 
           this.$modals.myModal.$show();
         } else if (this.fileType === "highspare") {
