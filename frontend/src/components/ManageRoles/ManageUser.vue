@@ -257,6 +257,8 @@ export default {
       userId: "",
       loaderFlag: false,
       permissionValue: [],
+      ekrypUserOptions:[],
+      otherUserOptions:[],
       options: [],
       filters: [
         {
@@ -540,7 +542,17 @@ export default {
       this.addFlag = false;
       this.permissionValue=[];
       this.userId = user.user_id;
-      console.log(user);
+      console.log(user.email);
+      this.options=[];
+      if(user.email.includes('ekryp'))
+      {
+        console.log(user);
+        this.options=this.ekrypUserOptions;
+      }
+      else{
+        this.options=this.otherUserOptions;
+      }
+      console.log(this.options);
       for (let i = 0; i < user.role_ids.length; i++) {
         for (let j = 0; j < this.options.length; j++) {
           if (user.role_ids[i] == this.options[j].role_id) {
@@ -579,12 +591,27 @@ export default {
             console.log("data -- get_top_extended-->", data);
             //this.allRoles = data;
             for (let i = 0; i < data.length; i++) {
-              this.options.push({
+              
+              if(data[i]._id === '47eca0a9-b77d-4666-85bf-93df15d5ca11' && data[i].name === 'EkrypUser')
+              {
+                this.ekrypUserOptions.push({
                 role_name: data[i].name,
                 role_id: data[i]._id,
                 role_description: data[i].description
               });
+              }
+              else{
+              this.otherUserOptions.push({
+                role_name: data[i].name,
+                role_id: data[i]._id,
+                role_description: data[i].description
+              });
+              }
             }
+            this.ekrypUserOptions =this.ekrypUserOptions.concat(this.otherUserOptions);
+            console.log('Ekryp Users',this.ekrypUserOptions);
+            console.log('Other Users',this.otherUserOptions);
+
             // this.options=this.allRoles;
           });
         })

@@ -106,7 +106,7 @@
                       </td>
                     </tr>
 
-                    <tr>
+                    <tr v-if="this.ekrypUserFlag">
                       <td>
                         <label>{{knowledgeMapConstant.docNames[5]}}</label>
                       </td>
@@ -160,11 +160,13 @@ export default {
   created() {
     this.editFlag = localStorage.getItem("editFlag");
     this.email_id = localStorage.getItem("email_id");
+    this.ekrypUserFlag = localStorage.getItem("ekrypUserFlag");
   },
   data() {
     console.log("home");
     return {
       email_id: "",
+      ekrypUserFlag:false,
       knowledgeMapConstant: constant.KnowledgeMapScreen,
       editFlag: false
     };

@@ -134,6 +134,7 @@ export default {
     var permissions = authorization.split(",");
     localStorage.setItem("createAnalysisFlag", false);
     localStorage.setItem("internalFlag", false);
+    localStorage.setItem("EkrypUser", false);
     console.log(constant.PERMISSIONS[0]);
     for (var i = 0; i < groupList.length; i++) {
       console.log(groupList[i]);
@@ -169,6 +170,9 @@ export default {
       }
       if (permissions[i] === "internal") {
         localStorage.setItem("internalFlag", true);
+      }
+       if (permissions[i] === "EkrypUser") {
+        localStorage.setItem("ekrypUserFlag", true);
       }
     }
   },
