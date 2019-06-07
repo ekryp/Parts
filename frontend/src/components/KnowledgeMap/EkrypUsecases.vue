@@ -8,7 +8,7 @@
     <vudal name="myModal">
       <div class="header">
         <i class="close icon"></i>
-        <h4>{{faqConstants.PopUpHeaders[0]}}</h4>
+        <h4>{{useCaseConstants.PopUpHeaders[0]}}</h4>
       </div>
       <div class="content" style="text-align: left">
         <div class="form-group text-left">
@@ -17,27 +17,27 @@
           <br>
           <div class="row"  >
               <div class="col-lg-5">
-                <label class="labelweight">{{faqConstants.popUpFields[0]}}</label>
+                <label class="labelweight">{{useCaseConstants.popUpFields[0]}}</label>
               </div>
               <div class="col-lg-7">
-                <span>{{faqContent.title}}</span>
+                <span>{{useCaseContent.usecase}}</span>
               </div>
             </div>
             <br>
             <div class="row">
               <div class="col-lg-5">
-                <label class="labelweight">{{faqConstants.popUpFields[1]}}</label>
+                <label class="labelweight">{{useCaseConstants.popUpFields[1]}}</label>
               </div>
               <div class="col-lg-7">
-                <span>{{faqContent.permissions}}</span>
+                <span>{{useCaseContent.briefDescription}}</span>
               </div>
             </div>
             <br>
             
             <div>
-              <label class="labelweight">{{faqConstants.popUpFields[2]}}</label>
+              <label class="labelweight">{{useCaseConstants.popUpFields[2]}}</label>
               <br>
-              <span class="textOverlay">{{faqContent.description}}</span>
+              <span class="textOverlay">{{useCaseContent.description}}</span>
               
             </div>
             <br>
@@ -53,28 +53,23 @@
                   type="text"
                   class="form-control"
                   col=3 
-                  v-model="faq.title"
-                  :placeholder="faqPlaceHolders.titlePlaceHolder"
+                  v-model="usecase.usecase"
+                  :placeholder="useCasePlaceHolders.useCasePlaceHolder"
                 ></textarea>
               </div>
             </div>
             <br>
             <div class="row">
               <div class="col-lg-4">
-                <label style="{text-align}">Description :</label>
+                <label style="{text-align}">Brief Description :</label>
               </div>
               <div class="col-lg-7">
-                <!-- <input
-                  type="text"
-                  class="form-control"
-                  v-model="faq.description"
-                  :placeholder="faqPlaceHolders.descriptionPlaceHolder"
-                > -->
+               
                   <b-form-textarea
                   id="textarea"
                   class="textOverlay"
-                  v-model="faq.description"
-                  :placeholder="faqPlaceHolders.descriptionPlaceHolder"
+                  v-model="usecase.briefDescription"
+                  :placeholder="useCasePlaceHolders.briefDescriptionPlaceHolder"
                   rows="3"
                   max-rows="10"
                 ></b-form-textarea>
@@ -83,15 +78,15 @@
             <br>
              <div class="row">
               <div class="col-lg-4">
-                <label style="{text-align}">Permission :</label>
+                <label style="{text-align}">Description :</label>
               </div>
               <div class="col-lg-7">
                 <textarea
                   type="text"
                   class="form-control"
                   col=3 
-                  v-model="faq.permissions"
-                  :placeholder="faqPlaceHolders.permissionPlaceHolder"
+                  v-model="usecase.description"
+                  :placeholder="useCasePlaceHolders.descriptionPlaceHolder"
                 ></textarea>
               </div>
             </div>
@@ -155,7 +150,7 @@
           type="button"
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Create'"
-          @click="addFAQ()"
+          @click="addUseCase()"
         >Create</button>
 
          <button
@@ -163,7 +158,7 @@
           type="button"
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Create'"
-          @click="updateFAQ()"
+          @click="updateUseCase()"
         >Update</button>
         <button v-if="viewFlag" type="button" class="btn btn-success" @click="hideEntry()">Ok</button>
 
@@ -180,12 +175,12 @@
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">{{faqConstants.breadcrumbs[0]}}</span>
+          <span style="font-size: 14px;">{{useCaseConstants.breadcrumbs[0]}}</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>{{faqConstants.tableName}}</h3>
+          <h3>{{useCaseConstants.tableName}}</h3>
         </div>
       </div>
       <br>
@@ -193,15 +188,15 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-3 mb-5 bg-white">
-            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">{{faqConstants.tableName}}</h5>
+            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">{{useCaseConstants.tableName}}</h5>
             <br>
             <div class="row">
               <div class="col-lg-6">
                 <button
                   class="btn btn-sm btn-success"
                   style="margin-bottom: 2%;marginLeft:1%"
-                  @click="showAddFAQ()"
-                >{{faqConstants.addButton}}</button>
+                  @click="showUseCase()"
+                >{{useCaseConstants.addButton}}</button>
               </div>
               <div class="col-lg-6">
                 <el-col :span="12" class="float-right">
@@ -222,9 +217,9 @@
                 ></el-table-column :min-width="20">
                 <el-table-column align="right">
                   <template slot-scope="scope">
-                   <el-button size="mini" type="info" @click="showViewFAQ(scope.row)">View</el-button>
-                    <el-button size="mini" type="primary" @click="showEditFAQ(scope.row)">Edit</el-button>
-                    <el-button size="mini" type="danger" @click="deleteFAQ(scope.row)">Delete</el-button>
+                   <el-button size="mini" type="info" @click="showViewUseCase(scope.row)">View</el-button>
+                    <el-button size="mini" type="primary" @click="showEditUseCase(scope.row)">Edit</el-button>
+                    <el-button size="mini" type="danger" @click="deleteUseCase(scope.row)">Delete</el-button>
                   </template>
                 </el-table-column>
               </data-tables>
@@ -282,84 +277,83 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getFAQ();
+    this.getUseCase();
   },
   data() {
     return {
       isLoading: false,
       fullPage: true,
-      faqConstants: constant.FaqScreen,
+      useCaseConstants: constant.UseCaseScreen,
       filterParam: "",
-      allFaq: [],
-      faqContent: "",
+      allUseCase: [],
+      useCaseContent: "",
       addFlag: false,
       editFlag: false,
       viewFlag:false,
-      faq: {
-        title: "",
+      usecase: {
+        usecase: "",
         description: "",
-        permissions: ""
+        briefDescription: ""
       },
-      faqPlaceHolders: {
-        titlePlaceHolder: "Enter the Title Here",
+      useCasePlaceHolders: {
+        useCasePlaceHolder: "Enter the UseCase Here",
         descriptionPlaceHolder:"Enter the Description Here",
-        permissionPlaceHolder: "Enter the Permission Here"
+        briefDescriptionPlaceHolder: "Enter the Brief Description Here"
        
       },
       filters: [
         {
-          prop: ['title'],
+          prop: ['usecase'],
           value: ''
         }
       ],
       titles: [
         {
-          prop: "title",
-          label: "Title"
+          prop: "usecase",
+          label: "UseCase Name"
         }
       ]
     };
   },
   methods: {
     hideEntry() {
-      this.faq.title="";
-      this.faq.description="";
-      this.faq.permission="";
+      this.usecase.usecase="";
+      this.usecase.description="";
+      this.usecase.briefDescription="";
       
       this.$modals.myModal.$hide();
     },
-    showAddFAQ() {
-      this.faq.title="";
-      this.faq.description="";
-      this.faq.permission="";
+    showUseCase() {
+      this.usecase.usecase="";
+      this.usecase.description="";
+      this.usecase.briefDescription="";
       this.viewFlag = false;
       this.editFlag = false;
       this.addFlag = true;
       this.$modals.myModal.$show();
     },
-    showViewFAQ(user) {
+    showViewUseCase(user) {
       this.viewFlag = true;
       this.addFlag = false;
       this.editFlag = false;
-      this.faqContent = user;
+      this.useCaseContent = user;
       this.$modals.myModal.$show();
     },
-    showEditFAQ(user) {
+    showEditUseCase(user) {
       this.viewFlag = false;
       this.addFlag = false;
       this.editFlag = true;
-      this.faqContent = user;
-      this.faq.title = user.title;
-      this.faq.description=user.description;
-      this.faq.permission = user.permission;
-      
+      this.useCaseContent = user;
+      this.usecase.title = user.usecase;
+      this.usecase.description=user.description;
+      this.usecase.briefDescription = user.briefDescription;
       this.$modals.myModal.$show();
     },
-    getFAQ() {
+    getUseCase() {
       this.isLoading = true;
-      this.allFaq = [];
+      this.allUseCase = [];
       fetch(
-          constant.APIURL + "api/v1/get_faq" ,
+          constant.APIURL + "api/v1/get_usecase" ,
           {
             method: "GET",
             headers: {
@@ -378,17 +372,17 @@ export default {
             console.log('Dta',data);
             for (let i = 0; i < data.length; i++) {
 
-             let tempJson={ title: data[i].title,
+             let tempJson={ usecase: data[i].usecase,
                 description: data[i].description,
-                permissions: data[i].permissions,
-                faq_id:data[i].faq_id}
+                briefDescription: data[i].briefDescription,
+                ekryp_usecase_id:data[i].ekryp_usecase_id}
                 
 
 
-              this.allFaq.push(tempJson);
+              this.allUseCase.push(tempJson);
               tempJson={}
             }
-            console.log('This is ',this.allFaq);
+            console.log('This is ',this.allUseCase);
             this.isLoading = false;
           });
         })
@@ -397,16 +391,16 @@ export default {
         });
     },
 
-    updateFAQ()
+    updateUseCase()
     {
       this.isLoading = true;
       let formData = new FormData();
-      formData.append('title',this.faq.title);
-      formData.append('description',this.faq.description);
-      formData.append('permissions',this.faq.permissions);
-      formData.append('faq_id',this.faqContent.faq_id);
+      formData.append('usecase',this.usecase.usecase);
+      formData.append('description',this.usecase.description);
+      formData.append('briefDescription',this.usecase.briefDescription);
+      formData.append('ekryp_usecase_id',this.useCaseContent.ekryp_usecase_id);
         
-      fetch(constant.APIURL + "api/v1/get_faq", {
+      fetch(constant.APIURL + "api/v1/get_usecase", {
         method: "PATCH",
         headers: {
             Authorization:
@@ -426,11 +420,11 @@ export default {
               this.$modals.myModal.$hide();
                swal({
                     title: "Success",
-                    text: "FAQ  Details Updated",
+                    text: "Use Case  Details Updated",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getFAQ();
+                       this.getUseCase();
                     }
                   });
             }
@@ -442,7 +436,7 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
-    deleteFAQ(faq)
+    deleteUseCase(usecase)
     {
 
        swal({
@@ -455,10 +449,10 @@ export default {
                     
         let formData = new FormData();
      
-      formData.append('faq_id',faq.faq_id);
+      formData.append('faq_id',usecase.ekryp_usecase_id);
                  
       
-     fetch(constant.APIURL + "api/v1/get_faq", {
+     fetch(constant.APIURL + "api/v1/get_usecase", {
         method: "DELETE",
         headers: {
             Authorization:
@@ -479,11 +473,11 @@ export default {
               this.isLoading = false;
                swal({
                     title: "Success",
-                    text: "FAQ Deleted Successfully",
+                    text: "Use Case Deleted Successfully",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getFAQ();
+                       this.getUseCase();
                     }
                   });
             }else{
@@ -503,16 +497,14 @@ export default {
            }
                   });
     },
-    addFAQ() {
+    addUseCase() {
       this.isLoading = true;
-      if(this.faq.title !== '' && this.faq.description !=='')
-      {
       let formData = new FormData();
-      formData.append('title',this.faq.title);
-      formData.append('description',this.faq.description);
-      formData.append('permissions',this.faq.permissions);
+      formData.append('usecase',this.usecase.usecase);
+      formData.append('description',this.usecase.description);
+      formData.append('briefDescription',this.usecase.briefDescription);
         
-      fetch(constant.APIURL + "api/v1/get_faq", {
+      fetch(constant.APIURL + "api/v1/get_usecase", {
         method: "PUT",
         headers: {
             Authorization:
@@ -533,7 +525,7 @@ export default {
               this.$modals.myModal.$hide();
                swal({
                     title: "Success",
-                    text: "FAQ Details Added",
+                    text: "Use Case Details Added",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
@@ -548,17 +540,6 @@ export default {
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
-        }else{
-           swal({
-                    title: "Info",
-                    text: "Please Fill The Details That Are Mandatory",
-                    icon: "info"
-                  }).then(ok => {
-                    if (ok) {
-                       this.getFAQ();
-                    }
-                  });
-        }
     }
   }
 };

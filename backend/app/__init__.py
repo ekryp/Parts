@@ -202,8 +202,8 @@ api.add_resource(User_Role, '/info/members/get-all-roles-by-user', endpoint='get
 api.add_resource(Roles, '/info/members/update-roles', endpoint='update_role_for_particular_user')
 api.add_resource(FilterMainDashboard, '/get_filter_main_dashboard', endpoint='get_filter_main_dashboard')
 api.add_resource(FAQ, '/get_faq', endpoint='get_faq')
+api.add_resource(Usecase, '/get_usecase', endpoint='get_usecase')
 api.add_resource(Feedback, '/send_feedback', endpoint='send_feedback')
-
 api.add_resource(PostLabRequest, '/lab/request', endpoint='lab_request')
 api.add_resource(GetAllLabRequest, '/lab/requests', endpoint='lab_requests')
 api.add_resource(UploadLabDetails, '/post_lab_details', endpoint='post_lab_details')
