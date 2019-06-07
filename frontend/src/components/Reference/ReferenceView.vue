@@ -284,31 +284,31 @@ export default {
         },
          {
           columnName: "Product Type",
-          formName: "product_type",
+          formName: "ProductType",
           value: "",
           placeHolder: "HW"
         },
          {
           columnName: "Product Family",
-          formName: "product_family",
+          formName: "ProductFamily",
           value: "",
           placeHolder: "ATN"
         },
          {
           columnName: "Product Category",
-          formName: "product_category",
+          formName: "ProductCategory",
           value: "",
           placeHolder: "AAM"
         },
          {
           columnName: "Item Category",
-          formName: "item_category",
+          formName: "ItemCategory",
           value: "",
           placeHolder: "AAM"
         },
          {
           columnName: "Phase",
-          formName: "product_phase",
+          formName: "Phase",
           value: "",
           placeHolder: "EOA-Effective"
         }
@@ -346,27 +346,27 @@ export default {
         },
          {
           headerName: "Product Type",
-          field: "product_type",
+          field: "ProductType",
           width: 150
         },
          {
           headerName: "Product Family",
-          field: "product_family",
+          field: "ProductFamily",
           width: 150
         },
          {
           headerName: "Product Category",
-          field: "product_category",
+          field: "ProductCategory",
           width: 150
         },
          {
           headerName: "Item Category",
-          field: "item_category",
+          field: "ItemCategory",
           width: 150
         },
          {
           headerName: "Phase",
-          field: "product_phase",
+          field: "Phase",
           width: 150
         },
       ];
@@ -1145,11 +1145,11 @@ export default {
                 standard_cost: accounting.formatMoney(
                   this.referenceList[i].standard_cost
                 ),
-                product_type: this.referenceList[i].product_type,
-                product_category: this.referenceList[i].product_category,
-                item_category: this.referenceList[i].item_category,
-                product_phase: this.referenceList[i].product_phase,
-                product_family: this.referenceList[i].product_family,
+                ProductType: this.referenceList[i].ProductType,
+                ProductCategory: this.referenceList[i].ProductCategory,
+                ItemCategory: this.referenceList[i].ItemCategory,
+                Phase: this.referenceList[i].Phase,
+                ProductFamily: this.referenceList[i].ProductFamily,
                 editFlag: this.referenceList[i].part_id,
                 deleteFlag: this.referenceList[i].part_id
               });
@@ -1161,11 +1161,11 @@ export default {
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
                 standard_cost: this.referenceList[i].standard_cost,
-                product_family: this.referenceList[i].product_family,
-                product_type: this.referenceList[i].product_type,
-                product_category: this.referenceList[i].product_category,
-                item_category: this.referenceList[i].item_category,
-                product_phase: this.referenceList[i].product_phase
+                ProductFamily: this.referenceList[i].ProductFamily,
+                ProductType: this.referenceList[i].ProductType,
+                ProductCategory: this.referenceList[i].ProductCategory,
+                ItemCategory: this.referenceList[i].ItemCategory,
+                Phase: this.referenceList[i].Phase
                 
               });
             }
@@ -1999,11 +1999,11 @@ export default {
           this.columnList[2].value = event.data.part_reliability_class;
           this.columnList[3].value = event.data.spared_attribute;
           this.columnList[4].value = event.data.standard_cost;
-          this.columnList[5].value = event.data.product_type;
-          this.columnList[6].value = event.data.product_family;
-          this.columnList[7].value = event.data.product_category;
-          this.columnList[8].value = event.data.item_category;
-          this.columnList[9].value = event.data.product_phase;
+          this.columnList[5].value = event.data.ProductType;
+          this.columnList[6].value = event.data.ProductFamily;
+          this.columnList[7].value = event.data.ProductCategory;
+          this.columnList[8].value = event.data.ItemCategory;
+          this.columnList[9].value = event.data.Phase;
 
           this.$modals.myModal.$show();
         } else if (this.fileType === "highspare") {
