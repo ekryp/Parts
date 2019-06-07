@@ -998,7 +998,8 @@ def part_table_creation(part_file, extension, user_email_id):
     part_df['part_reliability_class'] = part_df['part_reliability_class'].fillna('Others')
 
     # Part table is without std_cost ,std_cost is seperate table
-    part_table_column = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute']
+    part_table_column = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute'
+                         , 'ProductType', 'ProductFamily', 'ProductCategory', 'ItemCategory', 'Phase']
 
     # delete parts & append with new values
     query = "delete from parts"

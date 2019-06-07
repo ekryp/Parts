@@ -135,7 +135,7 @@ export const ReferenceViewScreen = {
 
 
 export const KnowledgeMapScreen = {
-  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP", "FAQ"],
+  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP", "Ekryp Help"],
   breadcrumb: "Knowledge Map",
   tableHeader: "Knowledge Map Information :",
 }
@@ -202,18 +202,25 @@ export const testPlanScreen = {
 
 
 export const FaqScreen = {
-  breadcrumbs: ["Knowledge Map > FAQ"],
+  breadcrumbs: ["Knowledge Map > Ekryp Help"],
   PopUpHeaders: ["FAQ Details"],
   popUpFields: ["Title :", "Permissions :", "Description :"],
-  addButton: "Create FAQ",
+  addButton: "Create Ekryp Help",
   exportButton: "Export",
   cancelButton: "Cancel",
   updateButton: "Update",
-  tableName: "FAQ",
+  tableName: "Ekryp Help",
   backButton: "Back",
   createButton: "Create"
 }
 
+
+export const SendFeedbackScreen = {
+  breadcrumbs: ["Send Feedback"],
+  labLabels: ["Brief Title:", "Detailed Feedback:"],
+  labPlaceHolders: ["Enter Title ", "Enter Your Feedback Here "],
+  buttons: ["Back", "Send"]
+}
 
 // export const  partsFileData={
 //     title:"Parts Details",

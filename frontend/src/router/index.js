@@ -28,6 +28,7 @@ import FAQ from '@/components/KnowledgeMap/FAQ'
 import Calendar from '@/components/LabAvailability/Calendar'
 import LabList from '@/components/LabAvailability/LabList'
 import Help from '@/components/help/Help'
+import SendFeedback from '@/components/help/SendFeedback'
 Vue.use(Router)
 
 export default new Router({
@@ -207,7 +208,7 @@ export default new Router({
       name: 'TechNotesKnowledgeMap',
       component: FAQ,
       meta: {
-        permission: 'knowledgeMap'
+        permission: 'EkrypUser'
       }
     },
     {
@@ -243,6 +244,15 @@ export default new Router({
       meta: {
         permission: 'knowledgeMap'
       }
+    },
+    {
+      path: '/feedback',
+      name: 'SendFeedback',
+      component: SendFeedback,
+      meta: {
+        permission: 'Dashboard'
+      }
+
     }
   ]
 
