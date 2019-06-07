@@ -110,7 +110,7 @@
                       <td>
                         <label>{{knowledgeMapConstant.docNames[5]}}</label>
                       </td>
-                      <td>Frequently Asked Questions (FAQ) is a set of general queries user have about the product</td>
+                      <td>Ekryp Help is a set of general queries user have about the product</td>
                       <td>
                         &nbsp; &nbsp; &nbsp;
                         <i

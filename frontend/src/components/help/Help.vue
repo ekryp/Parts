@@ -56,12 +56,12 @@
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">FAQ</span>
+          <span style="font-size: 14px;">{{faqConstants.tableName}}</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>FAQ</h3>
+          <h3>{{faqConstants.tableName}}</h3>
         </div>
       </div>
       <br>

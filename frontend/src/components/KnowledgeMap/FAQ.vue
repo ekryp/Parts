@@ -185,7 +185,7 @@
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>FAQ</h3>
+          <h3>{{faqConstants.tableName}}</h3>
         </div>
       </div>
       <br>
