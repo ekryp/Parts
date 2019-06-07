@@ -24,7 +24,7 @@
               </div>
             </div>
             <br>
-            <div class="row">
+           <!-- <div class="row">
               <div class="col-lg-5">
                 <label class="labelweight">{{useCaseConstants.popUpFields[1]}}</label>
               </div>
@@ -32,7 +32,7 @@
                 <span>{{useCaseContent.briefDescription}}</span>
               </div>
             </div>
-            <br>
+            <br> -->
             
             <div>
               <label class="labelweight">{{useCaseConstants.popUpFields[2]}}</label>
@@ -46,7 +46,7 @@
           <div v-if="addFlag || editFlag">
            <div class="row">
               <div class="col-lg-4">
-                <label style="{text-align}">Title :</label>
+                <label style="{text-align}">Use Case Title :</label>
               </div>
               <div class="col-lg-7">
                 <textarea
@@ -59,7 +59,7 @@
               </div>
             </div>
             <br>
-            <div class="row">
+           <!-- <div class="row">
               <div class="col-lg-4">
                 <label style="{text-align}">Brief Description :</label>
               </div>
@@ -74,20 +74,22 @@
                   max-rows="10"
                 ></b-form-textarea>
               </div>
-            </div>
+            </div> -->
             <br>
              <div class="row">
               <div class="col-lg-4">
-                <label style="{text-align}">Description :</label>
+                <label style="{text-align}">Detailed Description :</label>
               </div>
               <div class="col-lg-7">
-                <textarea
-                  type="text"
-                  class="form-control"
-                  col=3 
+               <b-form-textarea
+                  id="textarea"
+                  class="textOverlay"
                   v-model="usecase.description"
                   :placeholder="useCasePlaceHolders.descriptionPlaceHolder"
-                ></textarea>
+                  rows="5"
+                  max-rows="10"
+                ></b-form-textarea>
+                
               </div>
             </div>
             <br>
@@ -206,7 +208,7 @@
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allFaq" style="width: 100%" :filters="filters">
+              <data-tables :data="allUseCase" style="width: 100%" :filters="filters">
                 <el-table-column
                  :min-width="120"
                   v-for="title in titles"
@@ -296,8 +298,8 @@ export default {
         briefDescription: ""
       },
       useCasePlaceHolders: {
-        useCasePlaceHolder: "Enter the UseCase Here",
-        descriptionPlaceHolder:"Enter the Description Here",
+        useCasePlaceHolder: "Enter the Use Case Title Here",
+        descriptionPlaceHolder:"Enter the Detailed Description Here",
         briefDescriptionPlaceHolder: "Enter the Brief Description Here"
        
       },
@@ -310,7 +312,7 @@ export default {
       titles: [
         {
           prop: "usecase",
-          label: "UseCase Name"
+          label: "Use Case Name"
         }
       ]
     };
@@ -344,7 +346,7 @@ export default {
       this.addFlag = false;
       this.editFlag = true;
       this.useCaseContent = user;
-      this.usecase.title = user.usecase;
+      this.usecase.usecase = user.usecase;
       this.usecase.description=user.description;
       this.usecase.briefDescription = user.briefDescription;
       this.$modals.myModal.$show();
@@ -427,9 +429,15 @@ export default {
                        this.getUseCase();
                     }
                   });
+            }else{
+             this.isLoading = false;
+             this.$modals.myModal.$hide();
+              swal({
+                    title: "Error ",
+                    text: "Error Updating Use Case Details",
+                    icon: "error"
+                  });
             }
-            
-            
           });
         })
         .catch(handleError => {
@@ -449,7 +457,7 @@ export default {
                     
         let formData = new FormData();
      
-      formData.append('faq_id',usecase.ekryp_usecase_id);
+      formData.append('ekryp_usecase_id',usecase.ekryp_usecase_id);
                  
       
      fetch(constant.APIURL + "api/v1/get_usecase", {
@@ -529,11 +537,15 @@ export default {
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getFAQ();
+                       this.getUseCase();
                     }
                   });
-                
-              
+            }else{
+                 swal({
+                    title: "Error",
+                    text: "Error Adding Use Case Details",
+                    icon: "error"
+                  })
             }
           });
         })
