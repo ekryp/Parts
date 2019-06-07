@@ -140,11 +140,11 @@ export default {
     postRequestLab() {
       this.isLoading = true;
       let formData = new FormData();
-      formData.append("title", this.labData.title);
-      formData.append("feedback", this.labData.feedback.name);
-      console.log(this.labData);
+      formData.append("title", this.feedbackData.title);
+      formData.append("feedback", this.feedbackData.feedback);
+      console.log(this.feedbackData);
       fetch(constant.APIURL + "api/v1/send_feedback", {
-        method: "POST",
+        method: "PUT",
         body: formData,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")

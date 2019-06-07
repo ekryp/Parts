@@ -25,6 +25,7 @@ import MopKnowledgeMap from '@/components/KnowledgeMap/MopKnowledgeMap'
 import ReleaseNotesKnowledgeMap from '@/components/KnowledgeMap/ReleaseNotesKnowledgeMap'
 import TechNotesKnowledgeMap from '@/components/KnowledgeMap/TechNotesKnowledgeMap'
 import FAQ from '@/components/KnowledgeMap/FAQ'
+import EkrypUsecases from '@/components/KnowledgeMap/EkrypUsecases'
 import Calendar from '@/components/LabAvailability/Calendar'
 import LabList from '@/components/LabAvailability/LabList'
 import Help from '@/components/help/Help'
@@ -205,10 +206,18 @@ export default new Router({
     },
     {
       path: '/knowledge/faq',
-      name: 'TechNotesKnowledgeMap',
+      name: 'FAQ',
       component: FAQ,
       meta: {
         permission: 'EkrypUser'
+      }
+    },
+    {
+      path: '/knowledge/usecase',
+      name: 'EkrypUsecases',
+      component: EkrypUsecases,
+      meta: {
+        permission: 'knowledgeMap'
       }
     },
     {
