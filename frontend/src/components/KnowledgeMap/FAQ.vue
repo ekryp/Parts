@@ -433,6 +433,14 @@ export default {
                        this.getFAQ();
                     }
                   });
+            }else{
+               this.isLoading = false;
+               this.$modals.myModal.$hide();
+              swal({
+                    title: "Error",
+                    text: "FAQ  Details Updation Failed",
+                    icon: "error"
+                  })
             }
             
             
@@ -446,7 +454,7 @@ export default {
     {
 
        swal({
-                    title: "Info",
+              title: "Info",
                     text: "Do You Want to Delete the Data ?",
                     icon: "info"
                   }).then(ok => {
@@ -487,6 +495,8 @@ export default {
                     }
                   });
             }else{
+              this.isLoading = false;
+              this.$modals.myModal.$hide();
               swal({
                     title: "Error",
                     text: "Something Went Wrong.Please Try Again",
@@ -542,6 +552,14 @@ export default {
                   });
                 
               
+            }else{
+               this.isLoading = false;
+               this.$modals.myModal.$hide();
+              swal({
+                    title: "Error",
+                    text: "FAQ  Details Addition Failed",
+                    icon: "error"
+                  })
             }
           });
         })

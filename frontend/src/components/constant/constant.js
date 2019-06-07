@@ -218,7 +218,7 @@ export const FaqScreen = {
 export const UseCaseScreen = {
   breadcrumbs: ["Knowledge Map > Ekryp Use Cases"],
   PopUpHeaders: ["Ekryp Use Cases Details"],
-  popUpFields: ["UseCase :", "Brief Description :", "Description :"],
+  popUpFields: ["Use Case Title :", "Brief Description :", "Detailed Description :"],
   addButton: "Create Ekryp Use Cases",
   exportButton: "Export",
   cancelButton: "Cancel",

@@ -90,8 +90,8 @@
             <td>Lab Sys 1</td>
             <td>CX</td>
             <td>11.22.33.44</td>
-            <td>Khali</td>
-            <td>Ekryp 1</td>
+            <td>Abe</td>
+            <td>Infi 1</td>
             <td>XYZ</td>
           </tr>
           <tr>
@@ -99,8 +99,8 @@
             <td>Lab Sys 2</td>
             <td>CX</td>
             <td>11.22.33.44</td>
-            <td>Nagesh</td>
-            <td>Ekryp 2</td>
+            <td>Rashmi</td>
+            <td>Infi 2</td>
             <td>XYZ</td>
           </tr>
           <tr>
@@ -108,8 +108,8 @@
             <td>Lab Sys 3</td>
             <td>CX</td>
             <td>11.22.33.44</td>
-            <td>Ashish</td>
-            <td>Ekryp 3</td>
+            <td>John</td>
+            <td>Infi 3</td>
             <td>XYZ</td>
           </tr>
           <tr>
@@ -117,8 +117,8 @@
             <td>Lab Sys 4</td>
             <td>CX</td>
             <td>11.22.33.44</td>
-            <td>Ekryp</td>
-            <td>Ekryp 3</td>
+            <td>Doe</td>
+            <td>Infi 3</td>
             <td>XYZ</td>
           </tr>
         </tbody>

@@ -125,7 +125,7 @@
                       <td>
                         <label>{{knowledgeMapConstant.docNames[6]}}</label>
                       </td>
-                      <td>to be added</td>
+                      <td>Upload and share best practices in using eKryp to find solutions</td>
                       <td>
                         &nbsp; &nbsp; &nbsp;
                         <i
