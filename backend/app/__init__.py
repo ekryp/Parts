@@ -134,6 +134,7 @@ from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,
 from app.resources.faq import FAQ
 
 from app.resources.feedback import Feedback
+from app.resources.usecase import Usecase
 
 from app.resources.access_control import ResetPassword, Role, User, User_Role
 
