@@ -10,7 +10,7 @@ from app.tasks.common_functions import clean_pon_names, to_sql_customer_dna_reco
 engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
 
 
-def check_file_validity(file, is_inservice_only):
+def check_file_validity(file):
 
     name, extension = os.path.splitext(file)
 
@@ -31,12 +31,7 @@ def check_file_validity(file, is_inservice_only):
         data_frame_list = []
         data = pd.DataFrame()
         print(lines)
-        if is_inservice_only:
-            columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
-                   'Part#', 'Serial#', 'Service State']
-        else:
-            columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
-                   'Part#', 'Serial#']
+        columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name', 'Part#', 'Serial#']
         for index, line in enumerate(lines):
             data_frame = pd.DataFrame()
             try:
@@ -56,20 +51,14 @@ def check_file_validity(file, is_inservice_only):
     return data
 
 
-def clean_file(file, is_inservice_only):
-
+def clean_file(file):
     data_frame_list = []
     data_frame = pd.DataFrame()
     #step 1
-    data = check_file_validity(file, is_inservice_only)
+    data = check_file_validity(file)
 
     #step 3
-    if is_inservice_only:
-        valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
-                         'Part#', 'Serial#', 'Service State']
-    else:
-        valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
-                         'Part#', 'Serial#']
+    valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name', 'Part#', 'Serial#']
 
     index = data[(data.values == '#Type')].index
 
@@ -99,40 +88,20 @@ def clean_file(file, is_inservice_only):
         #step 7
         data_frame_file['Source'] = os.path.basename(file)
 
-        if is_inservice_only:
-            # Keep only in_service pon
-            mask = data_frame_file['Service State'] == 'In-Service'
-            print(data_frame_file.shape)
-            data_frame_file = data_frame_file[mask]
-            data_frame_file = data_frame_file.drop(['Service State'], 1)
-            print(data_frame_file.shape)
-            return data_frame_file
-
-        else:
-            return data_frame_file
+        return data_frame_file
 
     else:
 
         new_data = data[valid_columns]
         new_data['Source'] = os.path.basename(file)
-        if is_inservice_only:
-            # Keep only in_service pon
-            mask = new_data['Service State'] == 'In-Service'
-            print(new_data.shape)
-            new_data = new_data[mask]
-            new_data = new_data.drop(['Service State'], 1)
-            print(new_data.shape)
-            return new_data
-        else:
-            return new_data
+        return new_data
 
 
-def cleaned_dna_file(dna_file, is_inservice_only):
+def cleaned_dna_file(dna_file):
 
     # Read the input dna file
 
-    input_db = clean_file(dna_file, is_inservice_only)
-
+    input_db = clean_file(dna_file)
     # Perform any basic clean up activities -  Clean the PON, and installed equipment,
     # strip any special characters. Other than ‘.’ and ‘-’ ,’\’
 
