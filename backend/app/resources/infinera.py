@@ -1230,7 +1230,7 @@ class PostSparePartAnalysis(Resource):
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
             '''
 
-        def check_dna_file(dna_file, extension):
+        def check_dna_file(dna_file, extension, is_inservice_only):
 
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file, nrows=200)
@@ -1251,12 +1251,17 @@ class PostSparePartAnalysis(Resource):
                             break
 
                 columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name', 'Part#',
-                           'Serial#']
+                           'Serial#', 'Service State']
                 dna_df = pd.read_csv(dna_file, sep='\t', skiprows=lines, names=columns)
 
             dna_row, dna_cols = dna_df.shape
             if dna_row < 1:
                 raise FileFormatIssue(dna_file, "No Records to process,BAD DNA File")
+
+            if is_inservice_only:
+                if 'Service State' not in dna_df.columns:
+                    raise FileFormatIssue(dna_file, "You selected in-service only option but DNA file "
+                                                    "do not have 'Service State' column,BAD DNA File")
 
         def check_bom_file(bom_file, extension):
 
@@ -1318,7 +1323,7 @@ class PostSparePartAnalysis(Resource):
                     my_tsvs.save(file, folder=dest_folder)
 
                 dna_file = os.path.join(full_path, customer_dna_file)
-                check_dna_file(dna_file, extension)
+                check_dna_file(dna_file, extension, is_inservice_only)
 
             for file in request.files.getlist('sap_export_file'):
 
@@ -1377,9 +1382,11 @@ class PostSparePartAnalysis(Resource):
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
                 # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only)
 
+
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time,args['analysis_name'], is_mtbf, is_inservice_only])
+
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
