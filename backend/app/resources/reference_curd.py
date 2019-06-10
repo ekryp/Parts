@@ -97,9 +97,9 @@ class GetParts(Resource):
         query = "select parts.part_id,parts.part_name,parts.material_number," \
                 "part_cost.standard_cost,parts.part_number," \
                 "parts.part_reliability_class,parts.spared_attribute," \
-                "parts.product_type as ProductType,parts.product_family as ProductFamily," \
-                "parts.product_category as ProductCategory,parts.item_category as ItemCategory," \
-                "parts.product_phase as Phase " \
+                "parts.product_type as product_type,parts.product_family as product_family," \
+                "parts.product_category as product_category,parts.item_category as item_category," \
+                "parts.product_phase as product_phase " \
                 "from parts inner join part_cost on parts.part_id=part_cost.part_id"
 
         result = get_df_from_sql_query(

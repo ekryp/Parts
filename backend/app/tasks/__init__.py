@@ -999,7 +999,7 @@ def part_table_creation(part_file, extension, user_email_id):
 
     # Part table is without std_cost ,std_cost is seperate table
     part_table_column = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute'
-                         , 'ProductType', 'ProductFamily', 'ProductCategory', 'ItemCategory', 'Phase']
+                         , 'product_type', 'product_family', 'product_category', 'item_category', 'product_phase']
 
     # delete parts & append with new values
     query = "delete from parts"
