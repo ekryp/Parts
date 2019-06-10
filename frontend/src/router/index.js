@@ -24,8 +24,12 @@ import FsbKnowledgeMap from '@/components/KnowledgeMap/FsbKnowledgeMap'
 import MopKnowledgeMap from '@/components/KnowledgeMap/MopKnowledgeMap'
 import ReleaseNotesKnowledgeMap from '@/components/KnowledgeMap/ReleaseNotesKnowledgeMap'
 import TechNotesKnowledgeMap from '@/components/KnowledgeMap/TechNotesKnowledgeMap'
+import FAQ from '@/components/KnowledgeMap/FAQ'
+import EkrypUsecases from '@/components/KnowledgeMap/EkrypUsecases'
 import Calendar from '@/components/LabAvailability/Calendar'
 import LabList from '@/components/LabAvailability/LabList'
+import Help from '@/components/help/Help'
+import SendFeedback from '@/components/help/SendFeedback'
 Vue.use(Router)
 
 export default new Router({
@@ -201,6 +205,22 @@ export default new Router({
       }
     },
     {
+      path: '/knowledge/faq',
+      name: 'FAQ',
+      component: FAQ,
+      meta: {
+        permission: 'EkrypUser'
+      }
+    },
+    {
+      path: '/knowledge/usecase',
+      name: 'EkrypUsecases',
+      component: EkrypUsecases,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
       path: '/knowledge',
       name: 'KnowledgeMap',
       component: KnowledgeMap,
@@ -218,12 +238,30 @@ export default new Router({
 
     },
     {
+      path: '/help',
+      name: 'Help',
+      component: Help,
+      meta: {
+        permission: 'Dashboard'
+      }
+
+    },
+    {
       path: '/create_event',
       name: 'Calendar',
       component: Calendar,
       meta: {
         permission: 'knowledgeMap'
       }
+    },
+    {
+      path: '/feedback',
+      name: 'SendFeedback',
+      component: SendFeedback,
+      meta: {
+        permission: 'Dashboard'
+      }
+
     }
   ]
 

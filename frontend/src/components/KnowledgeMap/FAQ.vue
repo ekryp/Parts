@@ -8,97 +8,95 @@
     <vudal name="myModal">
       <div class="header">
         <i class="close icon"></i>
-        <h4>{{testPlanConstants.PopUpHeaders[0]}}</h4>
+        <h4>{{faqConstants.PopUpHeaders[0]}}</h4>
       </div>
       <div class="content" style="text-align: left">
         <div class="form-group text-left">
           <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
           <div v-if="viewFlag">
           <br>
-          <div class="row"  v-if="typeof testPlanContent.title !== 'undefined'">
+          <div class="row"  >
               <div class="col-lg-5">
-                <label class="labelweight">{{testPlanConstants.popUpFields[5]}}</label>
+                <label class="labelweight">{{faqConstants.popUpFields[0]}}</label>
               </div>
               <div class="col-lg-7">
-                <span>{{testPlanContent.title}}</span>
+                <span>{{faqContent.title}}</span>
               </div>
             </div>
             <br>
             <div class="row">
               <div class="col-lg-5">
-                <label class="labelweight">{{testPlanConstants.popUpFields[0]}}</label>
+                <label class="labelweight">{{faqConstants.popUpFields[1]}}</label>
               </div>
               <div class="col-lg-7">
-                <span>{{testPlanContent.release_number}}</span>
+                <span>{{faqContent.permissions}}</span>
               </div>
             </div>
             <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[4]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.setup}}</span>
-            <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[1]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.Objective}}</span>
-            <br>
+            
             <div>
-              <label class="labelweight">{{testPlanConstants.popUpFields[2]}}</label>
+              <label class="labelweight">{{faqConstants.popUpFields[2]}}</label>
               <br>
-              <span class="textOverlay">{{testPlanContent.Procedure}}</span>
+              <span class="textOverlay">{{faqContent.description}}</span>
               
             </div>
             <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[3]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.expectedResult}}</span>
-            <br>
+            
           </div>
           <div v-if="addFlag || editFlag">
            <div class="row">
-              <div class="col-lg-5">
+              <div class="col-lg-4">
                 <label style="{text-align}">Title :</label>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-7">
                 <textarea
                   type="text"
                   class="form-control"
                   col=3 
-                  v-model="testPlan.title"
-                  :placeholder="testPlanPlaceHolders.titlePlaceHolder"
+                  v-model="faq.title"
+                  :placeholder="faqPlaceHolders.titlePlaceHolder"
                 ></textarea>
               </div>
             </div>
             <br>
             <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Release :</label>
+              <div class="col-lg-4">
+                <label style="{text-align}">Description :</label>
               </div>
-              <div class="col-lg-6">
-                <input
+              <div class="col-lg-7">
+                <!-- <input
                   type="text"
                   class="form-control"
-                  v-model="testPlan.release_number"
-                  :placeholder="testPlanPlaceHolders.fileNamePlaceHolder"
-                >
+                  v-model="faq.description"
+                  :placeholder="faqPlaceHolders.descriptionPlaceHolder"
+                > -->
+                  <b-form-textarea
+                  id="textarea"
+                  class="textOverlay"
+                  v-model="faq.description"
+                  :placeholder="faqPlaceHolders.descriptionPlaceHolder"
+                  rows="3"
+                  max-rows="10"
+                ></b-form-textarea>
               </div>
             </div>
             <br>
              <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Setup :</label>
+              <div class="col-lg-4">
+                <label style="{text-align}">Permission :</label>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-7">
                 <textarea
                   type="text"
                   class="form-control"
                   col=3 
-                  v-model="testPlan.setup"
-                  :placeholder="testPlanPlaceHolders.setupPlaceHolder"
+                  v-model="faq.permissions"
+                  :placeholder="faqPlaceHolders.permissionPlaceHolder"
                 ></textarea>
               </div>
             </div>
             <br>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-lg-5">
                 <label style="{text-align}">Objective :</label>
               </div>
@@ -117,12 +115,7 @@
                 <label style="{text-align}">Procedure :</label>
               </div>
               <div class="col-lg-6">
-                <!-- <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.procedure"
-                  :placeholder="testPlan.procedurePlaceHolder"
-                >-->
+               
                 <b-form-textarea
                   id="textarea"
                   class="textOverlay"
@@ -140,12 +133,7 @@
                 <label style="{text-align}">Expected result :</label>
               </div>
               <div class="col-lg-6">
-                <!-- <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.procedure"
-                  :placeholder="testPlan.procedurePlaceHolder"
-                >-->
+               
                 <b-form-textarea
                   id="textarea"
                   class="textOverlay"
@@ -155,7 +143,9 @@
                   max-rows="6"
                 ></b-form-textarea>
               </div>
-            </div>
+            </div> -->
+
+
           </div>
         </div>
       </div>
@@ -165,7 +155,7 @@
           type="button"
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Create'"
-          @click="addTestPlan()"
+          @click="addFAQ()"
         >Create</button>
 
          <button
@@ -173,7 +163,7 @@
           type="button"
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Create'"
-          @click="updateTestPlan()"
+          @click="updateFAQ()"
         >Update</button>
         <button v-if="viewFlag" type="button" class="btn btn-success" @click="hideEntry()">Ok</button>
 
@@ -190,12 +180,12 @@
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">{{testPlanConstants.breadcrumbs[0]}}</span>
+          <span style="font-size: 14px;">{{faqConstants.breadcrumbs[0]}}</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>Debug Procedure</h3>
+          <h3>{{faqConstants.tableName}}</h3>
         </div>
       </div>
       <br>
@@ -203,25 +193,25 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-3 mb-5 bg-white">
-            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">{{testPlanConstants.tableName}}</h5>
+            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">{{faqConstants.tableName}}</h5>
             <br>
             <div class="row">
               <div class="col-lg-6">
                 <button
                   class="btn btn-sm btn-success"
                   style="margin-bottom: 2%;marginLeft:1%"
-                  @click="showAddRole()"
-                >{{testPlanConstants.addButton}}</button>
+                  @click="showAddFAQ()"
+                >{{faqConstants.addButton}}</button>
               </div>
               <div class="col-lg-6">
                 <el-col :span="12" class="float-right">
-                  <el-input placeholder="Search " v-model="filterParam" @change="getTestPlan()"></el-input>
+                  <el-input placeholder="Search " v-model="filters[0].value"></el-input>
                 </el-col>
               </div>
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allTestPlan" style="width: 100%">
+              <data-tables :data="allFaq" style="width: 100%" :filters="filters">
                 <el-table-column
                  :min-width="120"
                   v-for="title in titles"
@@ -232,9 +222,9 @@
                 ></el-table-column :min-width="20">
                 <el-table-column align="right">
                   <template slot-scope="scope">
-                   <el-button size="mini" type="info" @click="showViewRole(scope.row)">View</el-button>
-                    <el-button size="mini" type="primary" @click="showEditRole(scope.row)">Edit</el-button>
-                    <el-button size="mini" type="danger" @click="deleteRole(scope.row)">Delete</el-button>
+                   <el-button size="mini" type="info" @click="showViewFAQ(scope.row)">View</el-button>
+                    <el-button size="mini" type="primary" @click="showEditFAQ(scope.row)">Edit</el-button>
+                    <el-button size="mini" type="danger" @click="deleteFAQ(scope.row)">Delete</el-button>
                   </template>
                 </el-table-column>
               </data-tables>
@@ -292,94 +282,84 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getTestPlan();
+    this.getFAQ();
   },
   data() {
     return {
       isLoading: false,
       fullPage: true,
-      testPlanConstants: constant.testPlanScreen,
+      faqConstants: constant.FaqScreen,
       filterParam: "",
-      allTestPlan: [],
-      testPlanContent: "",
+      allFaq: [],
+      faqContent: "",
       addFlag: false,
       editFlag: false,
       viewFlag:false,
-      testPlan: {
-        release_number: "",
-        Objective: "",
-        Procedure: "",
-        expectedResult:"",
-        setup:"",
-        title:""
-
+      faq: {
+        title: "",
+        description: "",
+        permissions: ""
       },
-      testPlanPlaceHolders: {
-        fileNamePlaceHolder: "Enter the File Name Here",
-        titlePlaceHolder:"Enter the Title Here",
-        objectivePlaceHolder: "Enter the Objective Here",
-        procedurePlaceHolder: "Enter the Procedure",
-        setupPlaceHolder:"Enter the Setup ",
-        expectedResultPlaceHolder:"Enter the Expected Result"
+      faqPlaceHolders: {
+        titlePlaceHolder: "Enter the Title Here",
+        descriptionPlaceHolder:"Enter the Description Here",
+        permissionPlaceHolder: "Enter the Permission Here"
+       
       },
+      filters: [
+        {
+          prop: ['title'],
+          value: ''
+        }
+      ],
       titles: [
         {
-          prop: "Objective",
-          label: "Objective"
+          prop: "title",
+          label: "Title"
         }
       ]
     };
   },
   methods: {
     hideEntry() {
-      this.testPlan.file_name="";
-      this.testPlan.Objective="";
-      this.testPlan.Procedure="";
-      this.testPlan.release_number="";
-      this.testPlan.title="";
-      this.testPlan.expectedResult="";
-      this.testPlan.setup="";
+      this.faq.title="";
+      this.faq.description="";
+      this.faq.permission="";
+      
       this.$modals.myModal.$hide();
     },
-    showAddRole() {
-       this.testPlan.file_name="";
-      this.testPlan.Objective="";
-      this.testPlan.Procedure="";
-      this.testPlan.release_number="";
-      this.testPlan.title="";
-      this.testPlan.expectedResult="";
-      this.testPlan.setup="";
+    showAddFAQ() {
+      this.faq.title="";
+      this.faq.description="";
+      this.faq.permission="";
       this.viewFlag = false;
       this.editFlag = false;
       this.addFlag = true;
       this.$modals.myModal.$show();
     },
-    showViewRole(user) {
+    showViewFAQ(user) {
       this.viewFlag = true;
       this.addFlag = false;
       this.editFlag = false;
-      this.testPlanContent = user;
+      this.faqContent = user;
       this.$modals.myModal.$show();
     },
-    showEditRole(user) {
+    showEditFAQ(user) {
       this.viewFlag = false;
       this.addFlag = false;
       this.editFlag = true;
-      this.testPlanContent = user;
-      this.testPlan.release_number = user.release_number;
-      this.testPlan.title=user.testPlan;
-      this.testPlan.file_name = user.file_name;
-      this.testPlan.Objective = user.Objective;
-      this.testPlan.Procedure = user.Procedure;
-      this.testPlan.expectedResult = user.expectedResult;
-      this.testPlan.setup = user.setup
+      this.faqContent = user;
+      this.faq.title = user.title;
+      this.faq.description=user.description;
+      this.faq.permission = user.permission;
+      
       this.$modals.myModal.$show();
     },
-    getTestPlan() {
+    getFAQ() {
       this.isLoading = true;
-      this.allTestPlan = [];
+      this.allFaq = [];
       fetch(
-          constant.ELKURL + "api/get_all_test_plan?search_param=" + this.filterParam,
+          constant.APIURL + "api/v1/get_faq" ,
           {
             method: "GET",
             headers: {
@@ -395,27 +375,20 @@ export default {
               this.logout();
             }
             let array = [];
-            for (let i = 0; i < data.data.test_plan.length; i++) {
+            console.log('Dta',data);
+            for (let i = 0; i < data.length; i++) {
 
-             let tempJson={ Objective: data.data.test_plan[i].Objective,
-                Procedure: data.data.test_plan[i].Procedure,
-                file_name: data.data.test_plan[i].file_name,
-                 release_number: data.data.test_plan[i].release_number,
-                 title: data.data.test_plan[i].title,
-                 
-                 key:data.data.test_plan[i].key}
+             let tempJson={ title: data[i].title,
+                description: data[i].description,
+                permissions: data[i].permissions,
+                faq_id:data[i].faq_id}
                 
 
-              if (typeof data.data.test_plan[i].setup !== 'undefined'){
-                tempJson['setup']=data.data.test_plan[i].setup
-              }
-              if (typeof data.data.test_plan[i].expectedResult !== 'undefined'){
-                tempJson['expectedResult']=data.data.test_plan[i].expectedResult
-              }
 
-              this.allTestPlan.push(tempJson);
+              this.allFaq.push(tempJson);
               tempJson={}
             }
+            console.log('This is ',this.allFaq);
             this.isLoading = false;
           });
         })
@@ -424,22 +397,21 @@ export default {
         });
     },
 
-    updateTestPlan()
+    updateFAQ()
     {
       this.isLoading = true;
-let formData = new FormData();
-console.log('Test Plan Dat',this.testPlanContent.key);
-      formData.append("data", JSON.stringify({
-          release_number: this.testPlan.release_number,
-          title:this.testPlan.title,
-          Objective: this.testPlan.Objective,
-          Procedure: this.testPlan.Procedure,
-          setup:this.testPlan.setup,
-          key:this.testPlanContent.key,
-          expectedResult:this.testPlan.expectedResult
-        }));
-      fetch(constant.ELKURL + "api/get_test_plan", {
-        method: "PUT",
+      let formData = new FormData();
+      formData.append('title',this.faq.title);
+      formData.append('description',this.faq.description);
+      formData.append('permissions',this.faq.permissions);
+      formData.append('faq_id',this.faqContent.faq_id);
+        
+      fetch(constant.APIURL + "api/v1/get_faq", {
+        method: "PATCH",
+        headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          },
         body: formData
       })
         .then(response => {
@@ -454,13 +426,21 @@ console.log('Test Plan Dat',this.testPlanContent.key);
               this.$modals.myModal.$hide();
                swal({
                     title: "Success",
-                    text: "Test Plan Details Updated",
+                    text: "FAQ  Details Updated",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getTestPlan();
+                       this.getFAQ();
                     }
                   });
+            }else{
+               this.isLoading = false;
+               this.$modals.myModal.$hide();
+              swal({
+                    title: "Error",
+                    text: "FAQ  Details Updation Failed",
+                    icon: "error"
+                  })
             }
             
             
@@ -470,29 +450,29 @@ console.log('Test Plan Dat',this.testPlanContent.key);
           console.log(" Error Response ------->", handleError);
         });
     },
-    deleteRole(testplan)
+    deleteFAQ(faq)
     {
 
        swal({
-                    title: "Info",
+              title: "Info",
                     text: "Do You Want to Delete the Data ?",
                     icon: "info"
                   }).then(ok => {
                     if (ok) {
                       this.isLoading = true;
-                       
+                    
+        let formData = new FormData();
+     
+      formData.append('faq_id',faq.faq_id);
                  
-      // formData.append("data", JSON.stringify({
-      //     release_number: this.testPlan.release_number,
-      //     Objective: this.testPlan.Objective,
-      //     Procedure: this.testPlan.Procedure,
-      //     setup:this.testPlan.setup,
-      //     key:this.testPlanContent.key,
-      //     expectedResult:this.testPlan.expectedResult
-      //   }));
-      fetch(constant.ELKURL + "api/get_test_plan?doc_id="+testplan.key, {
-        method: "DELETE"
-        
+      
+     fetch(constant.APIURL + "api/v1/get_faq", {
+        method: "DELETE",
+        headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          },
+        body: formData
       })
         .then(response => {
           response.text().then(text => {
@@ -507,14 +487,16 @@ console.log('Test Plan Dat',this.testPlanContent.key);
               this.isLoading = false;
                swal({
                     title: "Success",
-                    text: "Test Plan Deleted Successfully",
+                    text: "FAQ Deleted Successfully",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getTestPlan();
+                       this.getFAQ();
                     }
                   });
             }else{
+              this.isLoading = false;
+              this.$modals.myModal.$hide();
               swal({
                     title: "Error",
                     text: "Something Went Wrong.Please Try Again",
@@ -531,22 +513,21 @@ console.log('Test Plan Dat',this.testPlanContent.key);
            }
                   });
     },
-    addTestPlan() {
+    addFAQ() {
       this.isLoading = true;
+      if(this.faq.title !== '' && this.faq.description !=='')
+      {
       let formData = new FormData();
-      formData.append(
-        "data",
-        JSON.stringify({
-          release_number: this.testPlan.release_number,
-          title:this.testPlan.title,
-          Objective: this.testPlan.Objective,
-          Procedure: this.testPlan.Procedure,
-          setup:this.testPlan.setup,
-          expectedResult:this.testPlan.expectedResult
-        })
-      );
-      fetch(constant.ELKURL + "api/get_test_plan", {
-        method: "POST",
+      formData.append('title',this.faq.title);
+      formData.append('description',this.faq.description);
+      formData.append('permissions',this.faq.permissions);
+        
+      fetch(constant.APIURL + "api/v1/get_faq", {
+        method: "PUT",
+        headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          },
         body: formData
       })
         .then(response => {
@@ -562,21 +543,40 @@ console.log('Test Plan Dat',this.testPlanContent.key);
               this.$modals.myModal.$hide();
                swal({
                     title: "Success",
-                    text: "Test Plan Details Added",
+                    text: "FAQ Details Added",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getTestPlan();
+                       this.getFAQ();
                     }
                   });
                 
               
+            }else{
+               this.isLoading = false;
+               this.$modals.myModal.$hide();
+              swal({
+                    title: "Error",
+                    text: "FAQ  Details Addition Failed",
+                    icon: "error"
+                  })
             }
           });
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
+        }else{
+           swal({
+                    title: "Info",
+                    text: "Please Fill The Details That Are Mandatory",
+                    icon: "info"
+                  }).then(ok => {
+                    if (ok) {
+                       this.getFAQ();
+                    }
+                  });
+        }
     }
   }
 };

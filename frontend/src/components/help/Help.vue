@@ -7,54 +7,61 @@
 
     <vudal name="myModal">
       <div class="header">
-        <div class="row">
-          <div class="col-lg-11">
-            <h4>Patches :</h4>
-          </div>
-          <div class="col-lg-1 in-progress" @click="hideEntry()">
-            <i class="fa fa-times fa-md pull-right" aria-hidden="true"></i>
-          </div>
-        </div>
+        <i class="close icon"></i>
+        <h4>{{faqConstants.PopUpHeaders[0]}}</h4>
       </div>
-      <div class="content contentwidth" style="text-align: left">
-        <div>
-          <br>
-          <div class="row">
-            <div class="col-lg-5">
-              <label class="labelweight">FSB Number</label>
+      <div class="content" style="text-align: left">
+        <div class="form-group text-left">
+          <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
+          <div v-if="viewFlag">
+            <br>
+            <div class="row">
+              <div class="col-lg-5">
+                <label class="labelweight">{{faqConstants.popUpFields[0]}}</label>
+              </div>
+              <div class="col-lg-7">
+                <span>{{faqContent.title}}</span>
+              </div>
             </div>
-            <div class="col-lg-7">
-              <span>{{fsbContent.FSBNumber}}</span>
+            <br>
+            <!-- <div class="row">
+              <div class="col-lg-5">
+                <label class="labelweight">{{faqConstants.popUpFields[0]}}</label>
+              </div>
+              <div class="col-lg-7">
+                <span>{{faqContent.release_number}}</span>
+              </div>
             </div>
+            <br>-->
+
+            <div>
+              <label class="labelweight">{{faqConstants.popUpFields[2]}}</label>
+              <br>
+              <span class="textOverlay">{{faqContent.description}}</span>
+            </div>
+            <br>
           </div>
-          <br>
-          <label class="labelweight">Description :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.description}}</span>
-          <br>
-          <label class="labelweight">Symptoms :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.symptoms}}</span>
-          <br>
-          <label class="labelweight">Root Cause :</label>
-          <br>
-          <span class="textOverlay">{{fsbContent.rootCause}}</span>
         </div>
       </div>
       <div class="actions">
-        <button type="button" class="btn btn-success" @click="hideEntry()">OK</button>
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="hideEntry()"
+          v-tooltip.top.hover.focus="'Cancel the option'"
+        >OK</button>
       </div>
     </vudal>
 
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">Knowledge Map > FSB</span>
+          <span style="font-size: 14px;">{{faqConstants.tableName}}</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>FSB</h3>
+          <h3>{{faqConstants.tableName}}</h3>
         </div>
       </div>
       <br>
@@ -62,30 +69,31 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-3 mb-5 bg-white">
-            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">FSB Details</h5>
+            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">{{faqConstants.tableName}}</h5>
             <br>
             <div class="row">
               <div class="col-lg-12">
-                <el-col :span="6" class="float-right">
-                  <el-input placeholder="Search " v-model="filterParam" @change="getFSB()"></el-input>
+                <el-col :span="8" class="float-right">
+                  <el-input placeholder="Search " v-model="filters[0].value"></el-input>
                 </el-col>
               </div>
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allFsb">
+              <data-tables
+                :data="allFaq"
+                style="width: 100%"
+                @row-click="showViewRole"
+                :filters="filters"
+              >
                 <el-table-column
+                  :min-width="20"
                   v-for="title in titles"
                   :prop="title.prop"
                   :label="title.label"
                   :key="title.prop"
                   sortable="custom"
                 ></el-table-column>
-                <el-table-column align="right">
-                  <template slot-scope="scope">
-                    <el-button size="mini" type="info" @click="showEditRole(scope.row)">View</el-button>
-                  </template>
-                </el-table-column>
               </data-tables>
             </div>
           </div>
@@ -131,7 +139,7 @@ Vue.use(DataTablesServer);
 Vue.use(ElementUI);
 
 export default {
-  name: "FsbKnowledgeMap",
+  name: "Help",
   components: {
     SideNav,
     headernav,
@@ -141,37 +149,36 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getFSB();
+    this.getFAQ();
   },
   data() {
     return {
       isLoading: false,
       fullPage: true,
-      testPlanConstants: constant.testPlanScreen,
+      faqConstants: constant.FaqScreen,
       filterParam: "",
-      allFsb: [],
-      fsbContent: "",
+      allFaq: [],
+      faqContent: "",
       addFlag: false,
       editFlag: false,
-      fsbData: [],
-      testPlanPlaceHolders: {
-        fileNamePlaceHolder: "",
-        objectivePlaceHolder: "",
-        procedurePlaceHolder: ""
+      viewFlag: false,
+      filters: [
+        {
+          prop: ["title"],
+          value: ""
+        }
+      ],
+      faq: {
+        title: "",
+        description: "",
+        permission: ""
+      },
+      faqPlaceHolders: {
+        titlePlaceHolder: "Enter the Title Here",
+        descriptionPlaceHolder: "Enter the Description Here",
+        permissionPlaceHolder: "Enter the Permission Here"
       },
       titles: [
-        {
-          prop: "FSBNumber",
-          label: "FSB Number"
-        },
-        {
-          prop: "issueId",
-          label: "Issue ID"
-        },
-        {
-          prop: "file_name",
-          label: "File Name"
-        },
         {
           prop: "title",
           label: "Title"
@@ -181,19 +188,43 @@ export default {
   },
   methods: {
     hideEntry() {
+      this.faq.title = "";
+      this.faq.description = "";
+      this.faq.permission = "";
+
       this.$modals.myModal.$hide();
     },
-
-    showEditRole(user) {
-      this.editFlag = true;
-      this.addFlag = false;
-      this.fsbContent = user;
+    showAddRole() {
+      this.faq.title = "";
+      this.faq.description = "";
+      this.faq.permission = "";
+      this.viewFlag = false;
+      this.editFlag = false;
+      this.addFlag = true;
       this.$modals.myModal.$show();
     },
-    getFSB() {
+    showViewRole(user) {
+      this.viewFlag = true;
+      this.addFlag = false;
+      this.editFlag = false;
+      this.faqContent = user;
+      this.$modals.myModal.$show();
+    },
+    showEditRole(user) {
+      this.viewFlag = false;
+      this.addFlag = false;
+      this.editFlag = true;
+      this.faqContent = user;
+      this.faqContent.title = user.title;
+      this.faqContent.description = user.description;
+      this.faqContent.permission = user.permission;
+
+      this.$modals.myModal.$show();
+    },
+    getFAQ() {
       this.isLoading = true;
-      this.allFsb = [];
-      fetch(constant.ELKURL + "api/get_fsb?search_param=" + this.filterParam, {
+      this.allFaq = [];
+      fetch(constant.APIURL + "api/v1/get_faq", {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
@@ -206,23 +237,19 @@ export default {
               this.logout();
             }
             let array = [];
+            console.log("Dta", data);
+            for (let i = 0; i < data.length; i++) {
+              let tempJson = {
+                title: data[i].title,
+                description: data[i].description,
+                permissions: data[i].permissions,
+                faq_id: data[i].faq_id
+              };
 
-            for (var k = 0; k < data.data.fsb.length; k++) {
-              this.allFsb.push({
-                FSBNumber: data.data.fsb[k].FSBNumber,
-                index: k,
-                dateCreated: data.data.fsb[k].dateCreated,
-                dateRevised: data.data.fsb[k].dateRevised,
-                issueId: data.data.fsb[k].issueId,
-                description: data.data.fsb[k].description,
-                file_name: data.data.fsb[k].file_name,
-                probability: data.data.fsb[k].probability,
-                rootCause: data.data.fsb[k].rootCause,
-                symptoms: data.data.fsb[k].symptoms,
-                title: data.data.fsb[k].title,
-                key: data.data.fsb[k].key
-              });
+              this.allFaq.push(tempJson);
+              tempJson = {};
             }
+            console.log("This is ", this.allFaq);
             this.isLoading = false;
           });
         })
@@ -240,14 +267,17 @@ export default {
     }
 } */
 .vudal {
-  width: 950px !important;
   text-align: left !important;
+  width: 950px !important;
 }
 .labelweight {
   font-weight: 600;
-  text-align: left;
 }
 .align {
   padding: 6px;
+}
+.textOverlay {
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 </style>

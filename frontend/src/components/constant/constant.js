@@ -2,7 +2,7 @@ export let APIURL = "";
 export let APPURL = "";
 export let ELKURL = "";
 if (process.env.NODE_ENV === 'local') {
-  APIURL = "https://staging-ib-services.ekryp.com/";
+  APIURL = "http://localhost:5000/";
   ELKURL = "http://localhost:5002/";
   APPURL = "http://localhost:2323/";
   //ELKURL = "https://staging-elk.ekryp.com/"
@@ -135,7 +135,7 @@ export const ReferenceViewScreen = {
 
 
 export const KnowledgeMapScreen = {
-  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP"],
+  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP", "Ekryp Help", "Ekryp Use Cases"],
   breadcrumb: "Knowledge Map",
   tableHeader: "Knowledge Map Information :",
 }
@@ -190,7 +190,7 @@ export const editReferenceScreen = {
 export const testPlanScreen = {
   breadcrumbs: ["Knowledge Map > Debug Procedure"],
   PopUpHeaders: ["Debug Procedure Details"],
-  popUpFields: ["File Name :", "Objective :", "Procedure :", "Expected Result :", "Setup :"],
+  popUpFields: ["Release :", "Objective :", "Procedure :", "Expected Result :", "Setup :", "Title :"],
   addButton: "Create Debug Procedure",
   exportButton: "Export",
   cancelButton: "Cancel",
@@ -200,6 +200,40 @@ export const testPlanScreen = {
   createButton: "Create"
 }
 
+
+export const FaqScreen = {
+  breadcrumbs: ["Knowledge Map > Ekryp Help"],
+  PopUpHeaders: ["FAQ Details"],
+  popUpFields: ["Title :", "Permissions :", "Description :"],
+  addButton: "Create Ekryp Help",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Ekryp Help",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+
+export const UseCaseScreen = {
+  breadcrumbs: ["Knowledge Map > Ekryp Use Cases"],
+  PopUpHeaders: ["Ekryp Use Cases Details"],
+  popUpFields: ["Use Case Title :", "Brief Description :", "Detailed Description :"],
+  addButton: "Create Ekryp Use Cases",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Ekryp Use Cases",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+export const SendFeedbackScreen = {
+  breadcrumbs: ["Send Feedback"],
+  labLabels: ["Brief Title:", "Detailed Feedback:"],
+  labPlaceHolders: ["Enter Title ", "Enter Your Feedback Here "],
+  buttons: ["Back", "Send"]
+}
 
 // export const  partsFileData={
 //     title:"Parts Details",

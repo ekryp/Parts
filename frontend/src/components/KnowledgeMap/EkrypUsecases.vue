@@ -8,97 +8,92 @@
     <vudal name="myModal">
       <div class="header">
         <i class="close icon"></i>
-        <h4>{{testPlanConstants.PopUpHeaders[0]}}</h4>
+        <h4>{{useCaseConstants.PopUpHeaders[0]}}</h4>
       </div>
       <div class="content" style="text-align: left">
         <div class="form-group text-left">
           <Loading :active="isLoading" :can-cancel="false" color="#15ba9a" :is-full-page="fullPage"></Loading>
           <div v-if="viewFlag">
           <br>
-          <div class="row"  v-if="typeof testPlanContent.title !== 'undefined'">
+          <div class="row"  >
               <div class="col-lg-5">
-                <label class="labelweight">{{testPlanConstants.popUpFields[5]}}</label>
+                <label class="labelweight">{{useCaseConstants.popUpFields[0]}}</label>
               </div>
               <div class="col-lg-7">
-                <span>{{testPlanContent.title}}</span>
+                <span>{{useCaseContent.usecase}}</span>
               </div>
             </div>
             <br>
-            <div class="row">
+           <!-- <div class="row">
               <div class="col-lg-5">
-                <label class="labelweight">{{testPlanConstants.popUpFields[0]}}</label>
+                <label class="labelweight">{{useCaseConstants.popUpFields[1]}}</label>
               </div>
               <div class="col-lg-7">
-                <span>{{testPlanContent.release_number}}</span>
+                <span>{{useCaseContent.briefDescription}}</span>
               </div>
             </div>
-            <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[4]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.setup}}</span>
-            <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[1]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.Objective}}</span>
-            <br>
+            <br> -->
+            
             <div>
-              <label class="labelweight">{{testPlanConstants.popUpFields[2]}}</label>
+              <label class="labelweight">{{useCaseConstants.popUpFields[2]}}</label>
               <br>
-              <span class="textOverlay">{{testPlanContent.Procedure}}</span>
+              <span class="textOverlay">{{useCaseContent.description}}</span>
               
             </div>
             <br>
-            <label class="labelweight">{{testPlanConstants.popUpFields[3]}}</label>
-            <br>
-            <span class="textOverlay">{{testPlanContent.expectedResult}}</span>
-            <br>
+            
           </div>
           <div v-if="addFlag || editFlag">
            <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Title :</label>
+              <div class="col-lg-4">
+                <label style="{text-align}">Use Case Title :</label>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-7">
                 <textarea
                   type="text"
                   class="form-control"
                   col=3 
-                  v-model="testPlan.title"
-                  :placeholder="testPlanPlaceHolders.titlePlaceHolder"
+                  v-model="usecase.usecase"
+                  :placeholder="useCasePlaceHolders.useCasePlaceHolder"
                 ></textarea>
               </div>
             </div>
             <br>
-            <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Release :</label>
+           <!-- <div class="row">
+              <div class="col-lg-4">
+                <label style="{text-align}">Brief Description :</label>
               </div>
-              <div class="col-lg-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.release_number"
-                  :placeholder="testPlanPlaceHolders.fileNamePlaceHolder"
-                >
+              <div class="col-lg-7">
+               
+                  <b-form-textarea
+                  id="textarea"
+                  class="textOverlay"
+                  v-model="usecase.briefDescription"
+                  :placeholder="useCasePlaceHolders.briefDescriptionPlaceHolder"
+                  rows="3"
+                  max-rows="10"
+                ></b-form-textarea>
               </div>
-            </div>
+            </div> -->
             <br>
              <div class="row">
-              <div class="col-lg-5">
-                <label style="{text-align}">Setup :</label>
+              <div class="col-lg-4">
+                <label style="{text-align}">Detailed Description :</label>
               </div>
-              <div class="col-lg-6">
-                <textarea
-                  type="text"
-                  class="form-control"
-                  col=3 
-                  v-model="testPlan.setup"
-                  :placeholder="testPlanPlaceHolders.setupPlaceHolder"
-                ></textarea>
+              <div class="col-lg-7">
+               <b-form-textarea
+                  id="textarea"
+                  class="textOverlay"
+                  v-model="usecase.description"
+                  :placeholder="useCasePlaceHolders.descriptionPlaceHolder"
+                  rows="5"
+                  max-rows="10"
+                ></b-form-textarea>
+                
               </div>
             </div>
             <br>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-lg-5">
                 <label style="{text-align}">Objective :</label>
               </div>
@@ -117,12 +112,7 @@
                 <label style="{text-align}">Procedure :</label>
               </div>
               <div class="col-lg-6">
-                <!-- <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.procedure"
-                  :placeholder="testPlan.procedurePlaceHolder"
-                >-->
+               
                 <b-form-textarea
                   id="textarea"
                   class="textOverlay"
@@ -140,12 +130,7 @@
                 <label style="{text-align}">Expected result :</label>
               </div>
               <div class="col-lg-6">
-                <!-- <input
-                  type="text"
-                  class="form-control"
-                  v-model="testPlan.procedure"
-                  :placeholder="testPlan.procedurePlaceHolder"
-                >-->
+               
                 <b-form-textarea
                   id="textarea"
                   class="textOverlay"
@@ -155,7 +140,9 @@
                   max-rows="6"
                 ></b-form-textarea>
               </div>
-            </div>
+            </div> -->
+
+
           </div>
         </div>
       </div>
@@ -165,7 +152,7 @@
           type="button"
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Create'"
-          @click="addTestPlan()"
+          @click="addUseCase()"
         >Create</button>
 
          <button
@@ -173,7 +160,7 @@
           type="button"
           class="btn btn-success"
           v-tooltip.top.hover.focus="'Click to Create'"
-          @click="updateTestPlan()"
+          @click="updateUseCase()"
         >Update</button>
         <button v-if="viewFlag" type="button" class="btn btn-success" @click="hideEntry()">Ok</button>
 
@@ -190,12 +177,12 @@
     <div class="custom-container" style="paddingTop: 6%">
       <div class="myBreadCrumb">
         <p>
-          <span style="font-size: 14px;">{{testPlanConstants.breadcrumbs[0]}}</span>
+          <span style="font-size: 14px;">{{useCaseConstants.breadcrumbs[0]}}</span>
         </p>
       </div>
       <div class="row">
         <div class="col" align="center">
-          <h3>Debug Procedure</h3>
+          <h3>{{useCaseConstants.tableName}}</h3>
         </div>
       </div>
       <br>
@@ -203,25 +190,25 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-3 mb-5 bg-white">
-            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">{{testPlanConstants.tableName}}</h5>
+            <h5 class="gridTitle col-lg-12" style="marginLeft:-1%">{{useCaseConstants.tableName}}</h5>
             <br>
             <div class="row">
               <div class="col-lg-6">
                 <button
                   class="btn btn-sm btn-success"
                   style="margin-bottom: 2%;marginLeft:1%"
-                  @click="showAddRole()"
-                >{{testPlanConstants.addButton}}</button>
+                  @click="showUseCase()"
+                >{{useCaseConstants.addButton}}</button>
               </div>
               <div class="col-lg-6">
                 <el-col :span="12" class="float-right">
-                  <el-input placeholder="Search " v-model="filterParam" @change="getTestPlan()"></el-input>
+                  <el-input placeholder="Search " v-model="filters[0].value"></el-input>
                 </el-col>
               </div>
             </div>
 
             <div class="table-responsive">
-              <data-tables :data="allTestPlan" style="width: 100%">
+              <data-tables :data="allUseCase" style="width: 100%" :filters="filters">
                 <el-table-column
                  :min-width="120"
                   v-for="title in titles"
@@ -232,9 +219,9 @@
                 ></el-table-column :min-width="20">
                 <el-table-column align="right">
                   <template slot-scope="scope">
-                   <el-button size="mini" type="info" @click="showViewRole(scope.row)">View</el-button>
-                    <el-button size="mini" type="primary" @click="showEditRole(scope.row)">Edit</el-button>
-                    <el-button size="mini" type="danger" @click="deleteRole(scope.row)">Delete</el-button>
+                   <el-button size="mini" type="info" @click="showViewUseCase(scope.row)">View</el-button>
+                    <el-button size="mini" type="primary" @click="showEditUseCase(scope.row)">Edit</el-button>
+                    <el-button size="mini" type="danger" @click="deleteUseCase(scope.row)">Delete</el-button>
                   </template>
                 </el-table-column>
               </data-tables>
@@ -292,94 +279,83 @@ export default {
   },
   created() {
     clearInterval(window.intervalObj);
-    this.getTestPlan();
+    this.getUseCase();
   },
   data() {
     return {
       isLoading: false,
       fullPage: true,
-      testPlanConstants: constant.testPlanScreen,
+      useCaseConstants: constant.UseCaseScreen,
       filterParam: "",
-      allTestPlan: [],
-      testPlanContent: "",
+      allUseCase: [],
+      useCaseContent: "",
       addFlag: false,
       editFlag: false,
       viewFlag:false,
-      testPlan: {
-        release_number: "",
-        Objective: "",
-        Procedure: "",
-        expectedResult:"",
-        setup:"",
-        title:""
-
+      usecase: {
+        usecase: "",
+        description: "",
+        briefDescription: ""
       },
-      testPlanPlaceHolders: {
-        fileNamePlaceHolder: "Enter the File Name Here",
-        titlePlaceHolder:"Enter the Title Here",
-        objectivePlaceHolder: "Enter the Objective Here",
-        procedurePlaceHolder: "Enter the Procedure",
-        setupPlaceHolder:"Enter the Setup ",
-        expectedResultPlaceHolder:"Enter the Expected Result"
+      useCasePlaceHolders: {
+        useCasePlaceHolder: "Enter the Use Case Title Here",
+        descriptionPlaceHolder:"Enter the Detailed Description Here",
+        briefDescriptionPlaceHolder: "Enter the Brief Description Here"
+       
       },
+      filters: [
+        {
+          prop: ['usecase'],
+          value: ''
+        }
+      ],
       titles: [
         {
-          prop: "Objective",
-          label: "Objective"
+          prop: "usecase",
+          label: "Use Case Name"
         }
       ]
     };
   },
   methods: {
     hideEntry() {
-      this.testPlan.file_name="";
-      this.testPlan.Objective="";
-      this.testPlan.Procedure="";
-      this.testPlan.release_number="";
-      this.testPlan.title="";
-      this.testPlan.expectedResult="";
-      this.testPlan.setup="";
+      this.usecase.usecase="";
+      this.usecase.description="";
+      this.usecase.briefDescription="";
+      
       this.$modals.myModal.$hide();
     },
-    showAddRole() {
-       this.testPlan.file_name="";
-      this.testPlan.Objective="";
-      this.testPlan.Procedure="";
-      this.testPlan.release_number="";
-      this.testPlan.title="";
-      this.testPlan.expectedResult="";
-      this.testPlan.setup="";
+    showUseCase() {
+      this.usecase.usecase="";
+      this.usecase.description="";
+      this.usecase.briefDescription="";
       this.viewFlag = false;
       this.editFlag = false;
       this.addFlag = true;
       this.$modals.myModal.$show();
     },
-    showViewRole(user) {
+    showViewUseCase(user) {
       this.viewFlag = true;
       this.addFlag = false;
       this.editFlag = false;
-      this.testPlanContent = user;
+      this.useCaseContent = user;
       this.$modals.myModal.$show();
     },
-    showEditRole(user) {
+    showEditUseCase(user) {
       this.viewFlag = false;
       this.addFlag = false;
       this.editFlag = true;
-      this.testPlanContent = user;
-      this.testPlan.release_number = user.release_number;
-      this.testPlan.title=user.testPlan;
-      this.testPlan.file_name = user.file_name;
-      this.testPlan.Objective = user.Objective;
-      this.testPlan.Procedure = user.Procedure;
-      this.testPlan.expectedResult = user.expectedResult;
-      this.testPlan.setup = user.setup
+      this.useCaseContent = user;
+      this.usecase.usecase = user.usecase;
+      this.usecase.description=user.description;
+      this.usecase.briefDescription = user.briefDescription;
       this.$modals.myModal.$show();
     },
-    getTestPlan() {
+    getUseCase() {
       this.isLoading = true;
-      this.allTestPlan = [];
+      this.allUseCase = [];
       fetch(
-          constant.ELKURL + "api/get_all_test_plan?search_param=" + this.filterParam,
+          constant.APIURL + "api/v1/get_usecase" ,
           {
             method: "GET",
             headers: {
@@ -395,27 +371,20 @@ export default {
               this.logout();
             }
             let array = [];
-            for (let i = 0; i < data.data.test_plan.length; i++) {
+            console.log('Dta',data);
+            for (let i = 0; i < data.length; i++) {
 
-             let tempJson={ Objective: data.data.test_plan[i].Objective,
-                Procedure: data.data.test_plan[i].Procedure,
-                file_name: data.data.test_plan[i].file_name,
-                 release_number: data.data.test_plan[i].release_number,
-                 title: data.data.test_plan[i].title,
-                 
-                 key:data.data.test_plan[i].key}
+             let tempJson={ usecase: data[i].usecase,
+                description: data[i].description,
+                briefDescription: data[i].briefDescription,
+                ekryp_usecase_id:data[i].ekryp_usecase_id}
                 
 
-              if (typeof data.data.test_plan[i].setup !== 'undefined'){
-                tempJson['setup']=data.data.test_plan[i].setup
-              }
-              if (typeof data.data.test_plan[i].expectedResult !== 'undefined'){
-                tempJson['expectedResult']=data.data.test_plan[i].expectedResult
-              }
 
-              this.allTestPlan.push(tempJson);
+              this.allUseCase.push(tempJson);
               tempJson={}
             }
+            console.log('This is ',this.allUseCase);
             this.isLoading = false;
           });
         })
@@ -424,22 +393,21 @@ export default {
         });
     },
 
-    updateTestPlan()
+    updateUseCase()
     {
       this.isLoading = true;
-let formData = new FormData();
-console.log('Test Plan Dat',this.testPlanContent.key);
-      formData.append("data", JSON.stringify({
-          release_number: this.testPlan.release_number,
-          title:this.testPlan.title,
-          Objective: this.testPlan.Objective,
-          Procedure: this.testPlan.Procedure,
-          setup:this.testPlan.setup,
-          key:this.testPlanContent.key,
-          expectedResult:this.testPlan.expectedResult
-        }));
-      fetch(constant.ELKURL + "api/get_test_plan", {
-        method: "PUT",
+      let formData = new FormData();
+      formData.append('usecase',this.usecase.usecase);
+      formData.append('description',this.usecase.description);
+      formData.append('briefDescription',this.usecase.briefDescription);
+      formData.append('ekryp_usecase_id',this.useCaseContent.ekryp_usecase_id);
+        
+      fetch(constant.APIURL + "api/v1/get_usecase", {
+        method: "PATCH",
+        headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          },
         body: formData
       })
         .then(response => {
@@ -454,23 +422,29 @@ console.log('Test Plan Dat',this.testPlanContent.key);
               this.$modals.myModal.$hide();
                swal({
                     title: "Success",
-                    text: "Test Plan Details Updated",
+                    text: "Use Case  Details Updated",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getTestPlan();
+                       this.getUseCase();
                     }
                   });
+            }else{
+             this.isLoading = false;
+             this.$modals.myModal.$hide();
+              swal({
+                    title: "Error ",
+                    text: "Error Updating Use Case Details",
+                    icon: "error"
+                  });
             }
-            
-            
           });
         })
         .catch(handleError => {
           console.log(" Error Response ------->", handleError);
         });
     },
-    deleteRole(testplan)
+    deleteUseCase(usecase)
     {
 
        swal({
@@ -480,19 +454,19 @@ console.log('Test Plan Dat',this.testPlanContent.key);
                   }).then(ok => {
                     if (ok) {
                       this.isLoading = true;
-                       
+                    
+        let formData = new FormData();
+     
+      formData.append('ekryp_usecase_id',usecase.ekryp_usecase_id);
                  
-      // formData.append("data", JSON.stringify({
-      //     release_number: this.testPlan.release_number,
-      //     Objective: this.testPlan.Objective,
-      //     Procedure: this.testPlan.Procedure,
-      //     setup:this.testPlan.setup,
-      //     key:this.testPlanContent.key,
-      //     expectedResult:this.testPlan.expectedResult
-      //   }));
-      fetch(constant.ELKURL + "api/get_test_plan?doc_id="+testplan.key, {
-        method: "DELETE"
-        
+      
+     fetch(constant.APIURL + "api/v1/get_usecase", {
+        method: "DELETE",
+        headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          },
+        body: formData
       })
         .then(response => {
           response.text().then(text => {
@@ -507,11 +481,11 @@ console.log('Test Plan Dat',this.testPlanContent.key);
               this.isLoading = false;
                swal({
                     title: "Success",
-                    text: "Test Plan Deleted Successfully",
+                    text: "Use Case Deleted Successfully",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getTestPlan();
+                       this.getUseCase();
                     }
                   });
             }else{
@@ -531,22 +505,19 @@ console.log('Test Plan Dat',this.testPlanContent.key);
            }
                   });
     },
-    addTestPlan() {
+    addUseCase() {
       this.isLoading = true;
       let formData = new FormData();
-      formData.append(
-        "data",
-        JSON.stringify({
-          release_number: this.testPlan.release_number,
-          title:this.testPlan.title,
-          Objective: this.testPlan.Objective,
-          Procedure: this.testPlan.Procedure,
-          setup:this.testPlan.setup,
-          expectedResult:this.testPlan.expectedResult
-        })
-      );
-      fetch(constant.ELKURL + "api/get_test_plan", {
-        method: "POST",
+      formData.append('usecase',this.usecase.usecase);
+      formData.append('description',this.usecase.description);
+      formData.append('briefDescription',this.usecase.briefDescription);
+        
+      fetch(constant.APIURL + "api/v1/get_usecase", {
+        method: "PUT",
+        headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
+          },
         body: formData
       })
         .then(response => {
@@ -562,15 +533,19 @@ console.log('Test Plan Dat',this.testPlanContent.key);
               this.$modals.myModal.$hide();
                swal({
                     title: "Success",
-                    text: "Test Plan Details Added",
+                    text: "Use Case Details Added",
                     icon: "success"
                   }).then(ok => {
                     if (ok) {
-                       this.getTestPlan();
+                       this.getUseCase();
                     }
                   });
-                
-              
+            }else{
+                 swal({
+                    title: "Error",
+                    text: "Error Adding Use Case Details",
+                    icon: "error"
+                  })
             }
           });
         })

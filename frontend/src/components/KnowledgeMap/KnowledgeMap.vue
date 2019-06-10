@@ -105,6 +105,36 @@
                         ></i>
                       </td>
                     </tr>
+
+                    <tr v-if="this.ekrypUserFlag">
+                      <td>
+                        <label>{{knowledgeMapConstant.docNames[5]}}</label>
+                      </td>
+                      <td>Ekryp Help is a set of general queries user have about the product</td>
+                      <td>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('faq')"
+                        ></i>
+                      </td>
+                    </tr>
+
+                    <tr >
+                      <td>
+                        <label>{{knowledgeMapConstant.docNames[6]}}</label>
+                      </td>
+                      <td>Upload and share best practices in using eKryp to find solutions</td>
+                      <td>
+                        &nbsp; &nbsp; &nbsp;
+                        <i
+                          class="fas fa-eye"
+                          style="cursor:pointer;color:#169f85;"
+                          @click="routeToView('usecase')"
+                        ></i>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -145,11 +175,13 @@ export default {
   created() {
     this.editFlag = localStorage.getItem("editFlag");
     this.email_id = localStorage.getItem("email_id");
+    this.ekrypUserFlag = localStorage.getItem("ekrypUserFlag");
   },
   data() {
     console.log("home");
     return {
       email_id: "",
+      ekrypUserFlag:false,
       knowledgeMapConstant: constant.KnowledgeMapScreen,
       editFlag: false
     };
