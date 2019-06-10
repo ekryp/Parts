@@ -114,6 +114,16 @@
             </div>
           </div>
         </div>
+        <div class="row" style="marginTop:0%" v-if="fileType === 'dna'">
+          <div class="col-lg-3">
+            <label>{{createAnalysisConstant.createAnalysisLabels[10]}}</label>
+          </div>
+
+          <div class="col-lg-2">
+            <input type="checkbox" id="checkbox" v-model="isInserviceOnly">
+          </div>
+        </div>
+        <br>
         <div class="row" style="marginTop:0%">
           <div class="col-lg-3">
             <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
@@ -344,6 +354,7 @@ export default {
       loaderFlag: false,
       diasableFlag: false,
       mtbf: true,
+      isInserviceOnly: true,
       fileType: "dna",
 
       sampleBOM: sampleBomData
@@ -481,7 +492,8 @@ export default {
         dnafile: this.dnafile,
         sapfile: this.sapfile,
         bomfile: this.bomFile,
-        mtbf: mtbfValue
+        mtbf: mtbfValue,
+        isInserviceOnly: this.isInserviceOnly
       };
       var filePresent = false;
       if (
@@ -591,6 +603,7 @@ export default {
       formData.append("sap_export_file", data.sapfile);
       formData.append("is_mtbf", data.mtbf);
       if (this.fileType === "dna") {
+        formData.append("is_inservice_only", data.isInserviceOnly);
         formData.append("customer_dna_file", data.dnafile);
       } else {
         formData.append("bom_file", data.bomfile);
