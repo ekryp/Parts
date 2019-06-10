@@ -243,7 +243,7 @@ export default {
   methods: {
     addEntry() {
       this.addFlag = true;
-      this.editFlag =  false;
+      this.editFlag = false;
       this.errorMessage = "";
       for (var i = 0; i < this.columnList.length; i++) {
         this.columnList[i].value = null;
@@ -312,7 +312,7 @@ export default {
           placeHolder: "AAM"
         },
         {
-          columnName: "Phase",
+          columnName: "Product Phase",
           formName: "product_phase",
           value: "",
           placeHolder: "EOA-Effective"
@@ -370,7 +370,7 @@ export default {
           width: 150
         },
         {
-          headerName: "Phase",
+          headerName: "Product Phase",
           field: "product_phase",
           width: 150
         }
