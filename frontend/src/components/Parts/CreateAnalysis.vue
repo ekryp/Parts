@@ -114,16 +114,7 @@
             </div>
           </div>
         </div>
-        <div class="row" style="marginTop:0%" v-if="fileType === 'dna'">
-          <div class="col-lg-3">
-            <label>{{createAnalysisConstant.createAnalysisLabels[10]}}</label>
-          </div>
 
-          <div class="col-lg-2">
-            <input type="checkbox" id="checkbox" v-model="isInserviceOnly">
-          </div>
-        </div>
-        <br>
         <div class="row" style="marginTop:0%">
           <div class="col-lg-3">
             <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
@@ -157,7 +148,16 @@
               </div>-->
             </div>
           </div>
+          <div class="row" style="marginTop:0%" v-if="fileType === 'dna'">
+            <div class="col-lg-3">
+              <label>{{createAnalysisConstant.createAnalysisLabels[10]}}</label>
+            </div>
 
+            <div class="col-lg-2">
+              <input type="checkbox" id="checkbox" v-model="isInserviceOnly">
+            </div>
+          </div>
+          <br>
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
               <label v-if="fileType === 'dna'">{{createAnalysisConstant.createAnalysisLabels[9]}}</label>
@@ -354,7 +354,7 @@ export default {
       loaderFlag: false,
       diasableFlag: false,
       mtbf: true,
-      isInserviceOnly: true,
+      isInserviceOnly: false,
       fileType: "dna",
 
       sampleBOM: sampleBomData
