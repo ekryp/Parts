@@ -38,7 +38,7 @@ def check_part_file(part_file, extension):
         raise FileFormatIssue(part_file, "More than required 10 columns, BAD Part File")
 
     part_cols = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute', 'standard_cost',
-                 'ProductType', 'ProductFamily', 'ProductCategory', 'ItemCategory', 'Phase']
+                 'product_type', 'product_family', 'product_category', 'item_category', 'product_phase']
 
     if set(part_df.columns.values.tolist()) != set(part_cols):
         raise FileFormatIssue(part_file, "Header mismatch, BAD Part File")
