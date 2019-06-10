@@ -78,14 +78,14 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
         print("Failed to update status for prospects_id {0}".format(prospects_id))
 
 
-def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only):
 
     # 5.4 Load all Data elements from Reference Data
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
      parts_cost, high_spares, depot) = fetch_db(replenish_time)
 
     # clean PONs, part# and installed equipments
-    input_db = cleaned_dna_file(dna_file)
+    input_db = cleaned_dna_file(dna_file, is_inservice_only)
 
 
     # 5.5 Convert Misnomer PON to correct PON
@@ -384,11 +384,12 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only):
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file,
                                                                                             analysis_date, analysis_id,
-                                                                                            prospect_id, replenish_time)
+                                                                                            prospect_id, replenish_time,
+                                                                                            is_inservice_only)
 
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
@@ -792,11 +793,11 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 '''
 
 
-def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf):
+def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file,
                                                                                      analysis_date, analysis_id,
-                                                                                     prospect_id, replenish_time)
+                                                                                     prospect_id, replenish_time, is_inservice_only)
 
     # Flag will be there to choose from simple or mtbf calculation.
 
@@ -897,7 +898,7 @@ def sendEmailNotificatio(user_email_id,subject,message):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, is_inservice_only):
    
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Submitted Successfully..")
@@ -909,7 +910,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
             print(query)
             engine.execute(query)
 
-        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf)
+        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only)
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
                            user_email_id, analysis_id, customer_name)
