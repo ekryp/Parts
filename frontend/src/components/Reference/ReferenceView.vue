@@ -56,7 +56,6 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Create'"
             @click="addData()"
-
           >{{editReferenceConstant.createButton}}</button>
           <button
             v-if="editFlag"
@@ -85,7 +84,8 @@
             @click="addEntry()"
             v-if="editReferenceFlag"
           >
-            <i class="fas fa-plus-square"></i> &nbsp;{{editReferenceConstant.addButton}}
+            <i class="fas fa-plus-square"></i>
+            &nbsp;{{editReferenceConstant.addButton}}
           </button>
           &nbsp; &nbsp;
           <button
@@ -93,7 +93,12 @@
             class="btn btn-success"
             v-tooltip.top.hover.focus="'Click to Download'"
           >
-            <DownloadExcel :data="referenceFileData"  type="csv" :name="title+'.csv'" :referenceTitle="downloadRatioFlag" >
+            <DownloadExcel
+              :data="referenceFileData"
+              type="csv"
+              :name="title+'.csv'"
+              :referenceTitle="downloadRatioFlag"
+            >
               <i class="fas fa-file-excel"></i>
               &nbsp;
               {{editReferenceConstant.exportButton}}
@@ -135,17 +140,16 @@
           >{{editReferenceConstant.backButton}}</button>
         </div>
       </div>
-      
     </div>
     <div>
-        <!-- Footer -->
-        <footer class="footer  font-small blue">
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-      </div>
+      <!-- Footer -->
+      <footer class="footer font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
 </template>
 
@@ -194,12 +198,11 @@ export default {
     } else if (this.fileType === "misnomer") {
       this.misnomerColumnDef();
       this.getMisnomer();
-    } 
-    else if (this.fileType === "customer") {
+    } else if (this.fileType === "customer") {
       this.customerColumnDef();
       this.getCustomer();
     } else {
-      this.downloadRatioFlag="true";
+      this.downloadRatioFlag = "true";
       this.ratioPONColumnDef();
       this.getRatioPON(this.fileType);
     }
@@ -210,7 +213,7 @@ export default {
       postMenu: "Reference >",
       current: "Reference View",
       fileType: "",
-      editReferenceConstant:constant.editReferenceScreen,
+      editReferenceConstant: constant.editReferenceScreen,
       referenceFileData: [],
       referenceColumnDefs: null,
       referenceRowData: [],
@@ -227,7 +230,7 @@ export default {
       uniqueId: "",
       loaderFlag: false,
       editReferenceFlag: false,
-      downloadRatioFlag:"false",
+      downloadRatioFlag: "false",
       referenceGridOptions: {
         rowStyle: {
           color: "#72879d",
@@ -239,6 +242,8 @@ export default {
   },
   methods: {
     addEntry() {
+      this.addFlag = true;
+      this.editFlag = false;
       this.errorMessage = "";
       for (var i = 0; i < this.columnList.length; i++) {
         this.columnList[i].value = null;
@@ -282,33 +287,33 @@ export default {
           value: "",
           placeHolder: "2,108.94"
         },
-         {
+        {
           columnName: "Product Type",
-          formName: "ProductType",
+          formName: "product_type",
           value: "",
           placeHolder: "HW"
         },
-         {
+        {
           columnName: "Product Family",
-          formName: "ProductFamily",
+          formName: "product_family",
           value: "",
           placeHolder: "ATN"
         },
-         {
+        {
           columnName: "Product Category",
-          formName: "ProductCategory",
+          formName: "product_category",
           value: "",
           placeHolder: "AAM"
         },
-         {
+        {
           columnName: "Item Category",
-          formName: "ItemCategory",
+          formName: "item_category",
           value: "",
           placeHolder: "AAM"
         },
-         {
-          columnName: "Phase",
-          formName: "Phase",
+        {
+          columnName: "Product Phase",
+          formName: "product_phase",
           value: "",
           placeHolder: "EOA-Effective"
         }
@@ -325,7 +330,7 @@ export default {
           width: 150,
           cellStyle: { "text-align": "right" }
         },
-        
+
         {
           headerName: "Part Reliability Class",
           field: "part_reliability_class",
@@ -344,31 +349,31 @@ export default {
           filter: "date",
           cellStyle: { "text-align": "right" }
         },
-         {
+        {
           headerName: "Product Type",
-          field: "ProductType",
+          field: "product_type",
           width: 150
         },
-         {
+        {
           headerName: "Product Family",
-          field: "ProductFamily",
+          field: "product_family",
           width: 150
         },
-         {
+        {
           headerName: "Product Category",
-          field: "ProductCategory",
+          field: "product_category",
           width: 150
         },
-         {
+        {
           headerName: "Item Category",
-          field: "ItemCategory",
+          field: "item_category",
           width: 150
         },
-         {
-          headerName: "Phase",
-          field: "Phase",
+        {
+          headerName: "Product Phase",
+          field: "product_phase",
           width: 150
-        },
+        }
       ];
       if (this.editReferenceFlag) {
         this.referenceColumnDefs.push({
@@ -509,7 +514,7 @@ export default {
           value: "",
           placeHolder: "NSW"
         },
-         {
+        {
           columnName: "Country",
           formName: "country",
           value: "",
@@ -527,7 +532,7 @@ export default {
           value: "",
           placeHolder: "Choice Logistics"
         },
-       
+
         {
           columnName: "Contact",
           formName: "contact",
@@ -572,27 +577,27 @@ export default {
         {
           headerName: "Country",
           field: "country",
-          width: 150,
+          width: 150
         },
         {
           headerName: "Region",
           field: "region",
-          width: 150,
+          width: 150
         },
         {
           headerName: "Partner Warehouse Code",
           field: "partner_warehouse_code",
-          width: 150,
+          width: 150
         },
         {
           headerName: "Contact",
           field: "contact",
-          width: 150,
+          width: 150
         },
         {
           headerName: "Hub",
           field: "hub",
-          width: 150,
+          width: 150
         },
         {
           headerName: "Latitude",
@@ -668,17 +673,16 @@ export default {
       }
     },
     ratioPONColumnDef() {
-      if(this.fileType === "Ratio of PON - 2Day")
-      {
+      if (this.fileType === "Ratio of PON - 2Day") {
         this.title = "Ratio PON 2 Day Details";
-      }else if(this.fileType === "Ratio of PON - 7Day"){
-         this.title = "Ratio PON 7 Day Details";
-      }else if(this.fileType === "Ratio of PON - 30Day"){
-         this.title = "Ratio PON 30 Day Details";
-      }else if(this.fileType === "Ratio of PON - 60Day"){
-         this.title = "Ratio PON 60 Day Details";
+      } else if (this.fileType === "Ratio of PON - 7Day") {
+        this.title = "Ratio PON 7 Day Details";
+      } else if (this.fileType === "Ratio of PON - 30Day") {
+        this.title = "Ratio PON 30 Day Details";
+      } else if (this.fileType === "Ratio of PON - 60Day") {
+        this.title = "Ratio PON 60 Day Details";
       }
-      
+
       this.columnList = [
         {
           columnName: "Product Family",
@@ -691,69 +695,69 @@ export default {
           formName: "number_of_spares_1",
           value: "",
           placeHolder: "10",
-          isNumber:true
+          isNumber: true
         },
         {
           columnName: "Number of Spares 2",
           formName: "number_of_spares_2",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 3",
           formName: "number_of_spares_3",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 4",
           formName: "number_of_spares_4",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 5",
           formName: "number_of_spares_5",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 6",
           formName: "number_of_spares_6",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 7",
           formName: "number_of_spares_7",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 8",
           formName: "number_of_spares_8",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 9",
           formName: "number_of_spares_9",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         },
         {
           columnName: "Number of Spares 10",
           formName: "number_of_spares_10",
           value: "",
-          isNumber:true,
+          isNumber: true,
           placeHolder: "10"
         }
       ];
@@ -844,8 +848,7 @@ export default {
         });
       }
     },
-    customerColumnDef()
-    {
+    customerColumnDef() {
       this.title = "Customer Details";
 
       this.columnList = [
@@ -860,8 +863,7 @@ export default {
           formName: "end_cust_name",
           value: "",
           placeHolder: "ABB Limited"
-        },
-        
+        }
       ];
       this.referenceColumnDefs = [
         {
@@ -869,17 +871,14 @@ export default {
           field: "end_cust_id_from_source",
           width: 250,
           cellStyle: { "text-align": "right" }
-
         },
         {
-          
-              headerName: "Customer Name",
-              field: "end_cust_name",
-              width: 250
-            }
-         
+          headerName: "Customer Name",
+          field: "end_cust_name",
+          width: 250
+        }
       ];
-       if (this.editReferenceFlag) {
+      if (this.editReferenceFlag) {
         this.referenceColumnDefs.push({
           headerName: "Edit",
           field: "editFlag",
@@ -913,8 +912,7 @@ export default {
       } else if (this.fileType === "misnomer") {
         //formData.append("reference_table_id",this.uniqueId);
         url = "api/v1/get_all_misnomer?reference_table_id=" + this.uniqueId;
-      } 
-      else if (this.fileType === "customer") {
+      } else if (this.fileType === "customer") {
         //formData.append("reference_table_id",this.uniqueId);
         url = "api/v1/get_customer?end_cust_id=" + this.uniqueId;
       } else {
@@ -960,7 +958,6 @@ export default {
               }
               console.log("Response from backend data ---->", data);
               if (data.http_status_code === 200) {
-               
                 for (let i = 0; i < this.columnList.length; i++) {
                   this.columnList[i].value = "";
                 }
@@ -980,8 +977,7 @@ export default {
                       this.getDepot();
                     } else if (this.fileType === "misnomer") {
                       this.getMisnomer();
-                    }
-                    else if (this.fileType === "customer") {
+                    } else if (this.fileType === "customer") {
                       this.getCustomer();
                     } else {
                       this.getRatioPON(this.fileType);
@@ -996,22 +992,20 @@ export default {
             });
           })
           .catch(handleError => {
-           this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+            this.isLoading = false;
+            if (handleError.message === "Failed to fetch") {
+              swal({
+                title: "Error",
+                text: "Something Went Wrong.Please Try After Sometime ",
+                icon: "error"
+              });
+            }
+            console.log(" Error Response ------->", handleError);
           });
       }
     },
     addData() {
-       console.log('adsads')
+      console.log("adsads");
       let url;
       if (this.fileType === "parts") {
         url = "api/v1/get_all_parts";
@@ -1032,7 +1026,7 @@ export default {
       let alertIndex;
 
       let formData = new FormData();
-     
+
       for (let i = 0; i < this.columnList.length; i++) {
         formData.append(this.columnList[i].formName, this.columnList[i].value);
         if (!this.columnList[i].value) {
@@ -1087,7 +1081,7 @@ export default {
                       this.getDepot();
                     } else if (this.fileType === "misnomer") {
                       this.getMisnomer();
-                    }else if (this.fileType === "customer") {
+                    } else if (this.fileType === "customer") {
                       this.getCustomer();
                     } else {
                       this.getRatioPON(this.fileType);
@@ -1101,17 +1095,15 @@ export default {
             });
           })
           .catch(handleError => {
-            this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+            this.isLoading = false;
+            if (handleError.message === "Failed to fetch") {
+              swal({
+                title: "Error",
+                text: "Something Went Wrong.Please Try After Sometime ",
+                icon: "error"
+              });
+            }
+            console.log(" Error Response ------->", handleError);
           });
       }
     },
@@ -1138,35 +1130,34 @@ export default {
               this.referenceRowData.push({
                 material_number: this.referenceList[i].material_number,
                 part_name: this.referenceList[i].part_name,
-               
+
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
                 standard_cost: accounting.formatMoney(
                   this.referenceList[i].standard_cost
                 ),
-                ProductType: this.referenceList[i].ProductType,
-                ProductCategory: this.referenceList[i].ProductCategory,
-                ItemCategory: this.referenceList[i].ItemCategory,
-                Phase: this.referenceList[i].Phase,
-                ProductFamily: this.referenceList[i].ProductFamily,
+                product_type: this.referenceList[i].product_type,
+                product_category: this.referenceList[i].product_category,
+                item_category: this.referenceList[i].item_category,
+                product_phase: this.referenceList[i].product_phase,
+                product_family: this.referenceList[i].product_family,
                 editFlag: this.referenceList[i].part_id,
                 deleteFlag: this.referenceList[i].part_id
               });
               this.referenceFileData.push({
                 material_number: this.referenceList[i].material_number,
                 part_name: this.referenceList[i].part_name,
-                
+
                 part_reliability_class: this.referenceList[i]
                   .part_reliability_class,
                 spared_attribute: this.referenceList[i].spared_attribute,
                 standard_cost: this.referenceList[i].standard_cost,
-                ProductFamily: this.referenceList[i].ProductFamily,
-                ProductType: this.referenceList[i].ProductType,
-                ProductCategory: this.referenceList[i].ProductCategory,
-                ItemCategory: this.referenceList[i].ItemCategory,
-                Phase: this.referenceList[i].Phase
-                
+                product_family: this.referenceList[i].product_family,
+                product_type: this.referenceList[i].product_type,
+                product_category: this.referenceList[i].product_category,
+                item_category: this.referenceList[i].item_category,
+                product_phase: this.referenceList[i].product_phase
               });
             }
 
@@ -1174,17 +1165,15 @@ export default {
           });
         })
         .catch(handleError => {
-         this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
+          console.log(" Error Response ------->", handleError);
         });
     },
     getHighSpare() {
@@ -1215,7 +1204,6 @@ export default {
               this.referenceFileData.push({
                 Substitution_Part: this.referenceList[i].SubstitutionPON,
                 Classic_Part: this.referenceList[i].ClassicPON
-                
               });
             }
 
@@ -1223,17 +1211,15 @@ export default {
           });
         })
         .catch(handleError => {
-          this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
+          console.log(" Error Response ------->", handleError);
         });
     },
     cancel() {
@@ -1267,9 +1253,8 @@ export default {
                 deleteFlag: this.referenceList[i].node_id
               });
               this.referenceFileData.push({
-                 Node_Name: this.referenceList[i].node_name,
-                End_Customer: this.referenceList[i]
-                  .end_customer_node_belongs,
+                Node_Name: this.referenceList[i].node_name,
+                End_Customer: this.referenceList[i].end_customer_node_belongs,
                 Depot: this.referenceList[i].node_depot_belongs
               });
             }
@@ -1277,17 +1262,15 @@ export default {
           });
         })
         .catch(handleError => {
-          this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
+          console.log(" Error Response ------->", handleError);
         });
     },
     getDepot() {
@@ -1333,12 +1316,12 @@ export default {
                 state: this.referenceList[i].state,
                 country: this.referenceList[i].country,
                 region: this.referenceList[i].region,
-                partner_warehouse_code: this.referenceList[i].partner_warehouse_code,
+                partner_warehouse_code: this.referenceList[i]
+                  .partner_warehouse_code,
                 contact: this.referenceList[i].contact,
                 hub: this.referenceList[i].hub,
                 lat: this.referenceList[i].lat,
                 long: this.referenceList[i].long
-                
               });
             }
 
@@ -1346,17 +1329,15 @@ export default {
           });
         })
         .catch(handleError => {
-         this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
+          console.log(" Error Response ------->", handleError);
         });
     },
     getMisnomer() {
@@ -1387,26 +1368,22 @@ export default {
               this.referenceFileData.push({
                 Misnomer_Part: this.referenceList[i].Misnomer_PON,
                 Correct_Part: this.referenceList[i].Correct_PON
-               
               });
-           
             }
 
             this.isLoading = false;
           });
         })
         .catch(handleError => {
-         this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
+          console.log(" Error Response ------->", handleError);
         });
     },
     getRatioPON(fileType) {
@@ -1462,17 +1439,15 @@ export default {
           });
         })
         .catch(handleError => {
-          this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
+          console.log(" Error Response ------->", handleError);
         });
     },
     getCustomer() {
@@ -1503,8 +1478,7 @@ export default {
                 deleteFlag: this.referenceList[i].end_cust_id
               });
               this.referenceFileData.push({
-                 Sold_To_Customer: this.referenceList[i]
-                  .end_cust_id_from_source,
+                Sold_To_Customer: this.referenceList[i].end_cust_id_from_source,
                 Customer_Name: this.referenceList[i].end_cust_name
               });
             }
@@ -1512,20 +1486,16 @@ export default {
           });
         })
         .catch(handleError => {
-          
-          this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+          this.isLoading = false;
+          if (handleError.message === "Failed to fetch") {
+            swal({
+              title: "Error",
+              text: "Something Went Wrong.Please Try After Sometime ",
+              icon: "error"
+            });
+          }
+          console.log(" Error Response ------->", handleError);
         });
-        
     },
 
     OnRefReady(event) {
@@ -1609,17 +1579,15 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                    this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+                  this.isLoading = false;
+                  if (handleError.message === "Failed to fetch") {
+                    swal({
+                      title: "Error",
+                      text: "Something Went Wrong.Please Try After Sometime ",
+                      icon: "error"
+                    });
+                  }
+                  console.log(" Error Response ------->", handleError);
                 });
             }
           });
@@ -1669,17 +1637,15 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+                  this.isLoading = false;
+                  if (handleError.message === "Failed to fetch") {
+                    swal({
+                      title: "Error",
+                      text: "Something Went Wrong.Please Try After Sometime ",
+                      icon: "error"
+                    });
+                  }
+                  console.log(" Error Response ------->", handleError);
                 });
             }
           });
@@ -1728,17 +1694,15 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+                  this.isLoading = false;
+                  if (handleError.message === "Failed to fetch") {
+                    swal({
+                      title: "Error",
+                      text: "Something Went Wrong.Please Try After Sometime ",
+                      icon: "error"
+                    });
+                  }
+                  console.log(" Error Response ------->", handleError);
                 });
             }
           });
@@ -1786,17 +1750,15 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+                  this.isLoading = false;
+                  if (handleError.message === "Failed to fetch") {
+                    swal({
+                      title: "Error",
+                      text: "Something Went Wrong.Please Try After Sometime ",
+                      icon: "error"
+                    });
+                  }
+                  console.log(" Error Response ------->", handleError);
                 });
             }
           });
@@ -1848,23 +1810,21 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+                  this.isLoading = false;
+                  if (handleError.message === "Failed to fetch") {
+                    swal({
+                      title: "Error",
+                      text: "Something Went Wrong.Please Try After Sometime ",
+                      icon: "error"
+                    });
+                  }
+                  console.log(" Error Response ------->", handleError);
                 });
             }
           });
-        }else if (this.fileType === "customer") {
+        } else if (this.fileType === "customer") {
           let end_cust_id = event.value;
-          console.log('cust ID',end_cust_id);
+          console.log("cust ID", end_cust_id);
 
           swal({
             title: "Info",
@@ -1911,22 +1871,19 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+                  this.isLoading = false;
+                  if (handleError.message === "Failed to fetch") {
+                    swal({
+                      title: "Error",
+                      text: "Something Went Wrong.Please Try After Sometime ",
+                      icon: "error"
+                    });
+                  }
+                  console.log(" Error Response ------->", handleError);
                 });
             }
           });
-        }  
-        else {
+        } else {
           let reliability_id = event.value;
           swal({
             title: "Info",
@@ -1974,17 +1931,15 @@ export default {
                   });
                 })
                 .catch(handleError => {
-                  this.isLoading=false;
-                    if(handleError.message === 'Failed to fetch')
-                    {
-                      swal({
-                        title: "Error",
-                        text: "Something Went Wrong.Please Try After Sometime ",
-                        icon: "error"
-                      })
-                    }
-                    console.log(" Error Response ------->", handleError);
-                  
+                  this.isLoading = false;
+                  if (handleError.message === "Failed to fetch") {
+                    swal({
+                      title: "Error",
+                      text: "Something Went Wrong.Please Try After Sometime ",
+                      icon: "error"
+                    });
+                  }
+                  console.log(" Error Response ------->", handleError);
                 });
             }
           });
@@ -1999,11 +1954,11 @@ export default {
           this.columnList[2].value = event.data.part_reliability_class;
           this.columnList[3].value = event.data.spared_attribute;
           this.columnList[4].value = event.data.standard_cost;
-          this.columnList[5].value = event.data.ProductType;
-          this.columnList[6].value = event.data.ProductFamily;
-          this.columnList[7].value = event.data.ProductCategory;
-          this.columnList[8].value = event.data.ItemCategory;
-          this.columnList[9].value = event.data.Phase;
+          this.columnList[5].value = event.data.product_type;
+          this.columnList[6].value = event.data.product_family;
+          this.columnList[7].value = event.data.product_category;
+          this.columnList[8].value = event.data.item_category;
+          this.columnList[9].value = event.data.product_phase;
 
           this.$modals.myModal.$show();
         } else if (this.fileType === "highspare") {
@@ -2046,13 +2001,13 @@ export default {
           this.columnList[1].value = event.data.MisnomerPON;
 
           this.$modals.myModal.$show();
-        }   else if (this.fileType === "customer") {
+        } else if (this.fileType === "customer") {
           this.uniqueId = event.value;
           this.columnList[0].value = event.data.end_cust_id_from_source;
           this.columnList[1].value = event.data.end_cust_name;
 
           this.$modals.myModal.$show();
-        }else {
+        } else {
           this.uniqueId = event.value;
           this.columnList[0].value = event.data.product_family;
           this.columnList[1].value = event.data.number_of_spares1;
@@ -2070,31 +2025,23 @@ export default {
         }
       }
     },
-    checkNumber(isNumberFlag,value,key)
-    {
-      if(isNumberFlag)
-      {
-        
+    checkNumber(isNumberFlag, value, key) {
+      if (isNumberFlag) {
         var pattern = /^\d+$/;
-       if(!pattern.test(value))
-       {
+        if (!pattern.test(value)) {
           swal({
             title: "Info",
             text: "Please Insert a Integer Value ?",
             icon: "info"
           });
-          for(var i=0;i<this.columnList.length;i++)
-          {
-            if(this.columnList[i].columnName === key)
-            {
-              this.columnList[i].value="";
+          for (var i = 0; i < this.columnList.length; i++) {
+            if (this.columnList[i].columnName === key) {
+              this.columnList[i].value = "";
             }
           }
-       }  
-       
+        }
       }
-    }
-,   
+    },
     logout() {
       console.log("logout");
       router.push("/");
