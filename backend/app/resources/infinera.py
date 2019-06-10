@@ -1158,6 +1158,7 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('user_email_id', required=True, location='form')
         self.reqparse.add_argument('replenish_time', required=True, location='form')
         self.reqparse.add_argument('is_mtbf', required=True, location='form')
+        self.reqparse.add_argument('is_inservice_only', required=False, location='form')
         super(PostSparePartAnalysis, self).__init__()
 
     @requires_auth
@@ -1172,6 +1173,13 @@ class PostSparePartAnalysis(Resource):
         customer_name = args['customer_name'].replace(",", "|")
         replenish_time = args['replenish_time'].replace(",", "|")
         is_mtbf = request.form.get('is_mtbf')
+        is_inservice_only = request.form.get('is_inservice_only')
+        if is_inservice_only is None:
+            is_inservice_only = False
+        elif is_inservice_only == 'false':
+            is_inservice_only = False
+        elif is_inservice_only == 'true':
+            is_inservice_only = True
 
         def save_analysis_record_db(input_file):
 
@@ -1367,13 +1375,11 @@ class PostSparePartAnalysis(Resource):
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
-
+                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only)
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time,args['analysis_name'], is_mtbf])
-
+                                                               customer_name, prospect_id, replenish_time,args['analysis_name'], is_mtbf, is_inservice_only])
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
