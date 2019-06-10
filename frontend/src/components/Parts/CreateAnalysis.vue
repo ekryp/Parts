@@ -630,24 +630,31 @@ export default {
               this.uploading = false;
               this.resubmit = true;
               this.diasableFlag = false;
-
-              swal({
-                title: "Error",
-                text: data.msg,
-                icon: "error",
-                buttons: {
-                  download: {
-                    text: "Download Sample",
-                    value: "yes"
-                  },
-                  ok: true
-                }
-              }).then(value => {
-                switch (value) {
-                  case "yes":
-                    this.downloadSampleBOM();
-                }
-              });
+              if (this.fileType === "dna") {
+                swal({
+                  title: "Error",
+                  text: data.msg,
+                  icon: "error"
+                });
+              } else {
+                swal({
+                  title: "Error",
+                  text: data.msg,
+                  icon: "error",
+                  buttons: {
+                    download: {
+                      text: "Download Sample",
+                      value: "yes"
+                    },
+                    ok: true
+                  }
+                }).then(value => {
+                  switch (value) {
+                    case "yes":
+                      this.downloadSampleBOM();
+                  }
+                });
+              }
               this.loaderFlag = false;
             }
           });
