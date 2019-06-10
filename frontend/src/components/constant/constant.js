@@ -2,7 +2,7 @@ export let APIURL = "";
 export let APPURL = "";
 export let ELKURL = "";
 if (process.env.NODE_ENV === 'local') {
-  APIURL = "https://staging-ib-services.ekryp.com/";
+  APIURL = "http://localhost:5000/";
   ELKURL = "http://localhost:5002/";
   APPURL = "http://localhost:2323/";
   //ELKURL = "https://staging-elk.ekryp.com/"
