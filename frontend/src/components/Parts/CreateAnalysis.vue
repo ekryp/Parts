@@ -160,14 +160,13 @@
           <br>
 
 <div class="row text-center">
-          <div class="col-lg-1" v-if="!advanceFlag" @click="changeFilter()" align="left">
-            <i class="fas fa-bars fa-lg" style="color:#169f85"></i>
+          <div class="col-lg-2" v-if="!advanceFlag" @click="changeFilter()" align="left">
+            <i class="fas fa-bars fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
           </div>
-          <div class="col-lg-1" v-if="advanceFlag" @click="changeFilter()" align="left">
-            <i class="fas fa-times fa-lg" style="color:#169f85"></i>
+          <div class="col-lg-2" v-if="advanceFlag" @click="changeFilter()" align="left">
+            <i class="fas fa-times fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
           </div>
-          <div class="col-lg-2"></div>
-          <div class="col" style="textAlign:left">Advance Settings</div>
+          
           <div class="col"></div>
         </div>
         <br v-if="!advanceFlag">

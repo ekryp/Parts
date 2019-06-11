@@ -4,8 +4,8 @@
   "part_reliability_class": "Reliability Class for the part is entered here.(Example: AAM)",
   "spared_attribute": "Enter 1 if the part is sparable otherwise 0",
   "standard_cost": "Enter the standard cost of the part here.(Example: 1966.70)",
-  "product_type": "Enter the type of the product here.(Example: HW)",
   "product_family": "Enter the family to which product belong here.(Example: ATN)",
+  "product_type": "Enter the type of the product here.(Example: HW)",
   "product_category": "Enter the category to which product belong here.(Example: AAM)",
   "item_category": "Enter the category to which product belong here.(Example: AAM)",
   "product_phase": "Enter the phase of the product here.(Example: EOA-Effective)"
