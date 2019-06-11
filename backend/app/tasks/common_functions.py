@@ -633,9 +633,48 @@ def to_sql_lab_systems(df):
     print("Loaded into lab_systems table")
 
 
+def get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type):
+    filter_query = "select part_name as parts_adv from parts where 1=1 "
+    if item_category and len(item_category) > 1:
+        item_category_filter = " and item_category in {0}".format(tuple(item_category))
+        filter_query = filter_query + item_category_filter
 
+    elif item_category:
+        item_category_filter = " and item_category in ('{0}')".format(str(tuple(item_category)[0]))
+        filter_query = filter_query + item_category_filter
 
+    if product_category and len(product_category) > 1:
+        product_category_filter = " and product_category in {0}".format(tuple(product_category))
+        filter_query = filter_query + product_category_filter
 
+    elif product_category:
+        product_category_filter = " and product_category in ('{0}')".format(str(tuple(product_category)[0]))
+        filter_query = filter_query + product_category_filter
 
+    if product_family and len(product_family) > 1:
+        product_family_filter = " and product_family in {0}".format(tuple(product_family))
+        filter_query = filter_query + product_family_filter
 
+    elif product_family:
+        product_family_filter = " and product_family in ('{0}')".format(str(tuple(product_family)[0]))
+        filter_query = filter_query + product_family_filter
 
+    if product_phase and len(product_phase) > 1:
+        product_phase_filter = " and product_phase in {0}".format(tuple(product_phase))
+        filter_query = filter_query + product_phase_filter
+
+    elif product_phase:
+        product_phase_filter = " and product_phase in ('{0}')".format(str(tuple(product_phase)[0]))
+        filter_query = filter_query + product_phase_filter
+
+    if product_type and len(product_type) > 1:
+        product_type_filter = " and product_type in {0}".format(tuple(product_type))
+        filter_query = filter_query + product_type_filter
+    elif product_type:
+        product_type_filter = " and product_type in ('{0}')".format(str(tuple(product_type)[0]))
+        filter_query = filter_query + product_type_filter
+
+    print(filter_query)
+    connection = Configuration.INFINERA_DB_URL
+    parts_with_adv = read_data(filter_query, connection)
+    return parts_with_adv

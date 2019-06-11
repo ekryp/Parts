@@ -1159,6 +1159,11 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('replenish_time', required=True, location='form')
         self.reqparse.add_argument('is_mtbf', required=True, location='form')
         self.reqparse.add_argument('is_inservice_only', required=False, location='form')
+        self.reqparse.add_argument('item_category', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_category', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_family', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_phase', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_type', required=False, location='form', action='append')
         super(PostSparePartAnalysis, self).__init__()
 
     @requires_auth
@@ -1180,6 +1185,12 @@ class PostSparePartAnalysis(Resource):
             is_inservice_only = False
         elif is_inservice_only == 'true':
             is_inservice_only = True
+
+        item_category = request.form.getlist('item_category')
+        product_category = request.form.getlist('product_category')
+        product_family = request.form.getlist('product_family')
+        product_phase = request.form.getlist('product_phase')
+        product_type = request.form.getlist('product_type')
 
         def save_analysis_record_db(input_file):
 
@@ -1380,27 +1391,26 @@ class PostSparePartAnalysis(Resource):
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only)
+                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type)
 
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time,args['analysis_name'], is_mtbf, is_inservice_only])
-
+                                                               customer_name, prospect_id, replenish_time,
+                                                                     args['analysis_name'], is_mtbf, is_inservice_only,
+                                                                     item_category, product_category, product_family,
+                                                                     product_phase, product_type])
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                #bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
-
-
+                # bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
 
                 celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf])
-
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
 
