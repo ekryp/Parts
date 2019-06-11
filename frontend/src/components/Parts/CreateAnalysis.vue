@@ -25,7 +25,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[0]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <input
                 v-if="requestId === ''"
                 type="text"
@@ -41,7 +41,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[1]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <multiselect
                 v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
                 :value="customerNames"
@@ -59,7 +59,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[2]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <input
                 v-if="requestId === ''"
                 type="text"
@@ -76,7 +76,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[3]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <input
                 v-if="requestId !== '' && partsAnalysisData.analysisType !== undefined"
                 type="text"
@@ -101,7 +101,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[4]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <multiselect
                 v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
                 v-model="replensihTime"
@@ -130,7 +130,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[5]}}</label>
             </div>
-            <div class="col-lg-6 form-group">
+            <div class="col-lg-7 form-group">
               <div class="row">
                 <div class="col-lg-2">
                   <input type="radio" id="DNA" value="dna" v-model="fileType">
@@ -158,6 +158,133 @@
             </div>
           </div>
           <br>
+
+<div class="row text-center">
+          <div class="col-lg-2" v-if="!advanceFlag" @click="changeFilter()" align="left">
+            <i class="fas fa-bars fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
+          </div>
+          <div class="col-lg-2" v-if="advanceFlag" @click="changeFilter()" align="left">
+            <i class="fas fa-times fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
+          </div>
+          
+          <div class="col"></div>
+        </div>
+        <br v-if="!advanceFlag">
+
+          <transition name="fade">
+          <div class="row" style="paddingTop:0.6em" v-if="advanceFlag">
+            <div class="col-lg-12">
+              <div class="p-3 mb-3 ">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label>{{createAnalysisConstant.advanceOptions[0]}}</label>
+                  </div>
+                  <div class="col-lg-7">
+                   
+                     <Multiselect
+                        v-model="itemCategoryValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[0]"
+                        label="name"
+                        track-by="name"
+                        :options="itemCategoryOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label>{{createAnalysisConstant.advanceOptions[1]}}</label>
+                  </div>
+                  <div class="col-lg-7">
+                    <Multiselect
+                        v-model="productCategoryValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[1]"
+                        label="name"
+                        track-by="name"
+                        :options="productCategoryOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                  </div>
+                </div>
+                 <br>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label>{{createAnalysisConstant.advanceOptions[2]}}</label>
+                  </div>
+                  <div class="col-lg-7">
+                    <Multiselect
+                        v-model="productFamilyValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[2]"
+                        label="name"
+                        track-by="name"
+                        :options="productFamilyOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                  </div>
+                </div>
+                 <br>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label>{{createAnalysisConstant.advanceOptions[3]}}</label>
+                  </div>
+                  <div class="col-lg-7">
+                   <Multiselect
+                        v-model="productPhaseValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[3]"
+                        label="name"
+                        track-by="name"
+                        :options="productPhaseOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                  </div>
+                </div>
+                 <br>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label>{{createAnalysisConstant.advanceOptions[4]}}</label>
+                  </div>
+                  <div class="col-lg-7">
+                     <Multiselect
+                        v-model="productTypeValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[4]"
+                        label="name"
+                        track-by="name"
+                        :options="productTypeOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
               <label v-if="fileType === 'dna'">{{createAnalysisConstant.createAnalysisLabels[9]}}</label>
@@ -316,6 +443,7 @@ export default {
     clearInterval(window.intervalObj);
     console.log("created");
     this.get_spare_part_analysis();
+    this.getAdvancedSettings();
   },
   components: {
     SideNav,
@@ -336,6 +464,16 @@ export default {
       customerNames: "",
       analysisType: "4 Hr Analysis",
       replensihTime: "Ratio of PON - 2Day",
+      itemCategoryOptions:[],
+      itemCategoryValues:[],
+      productCategoryOptions:[],
+      productCategoryValues:[],
+      productFamilyOptions:[],
+      productFamilyValues:[],
+      productPhaseOptions:[],
+      productPhaseValues:[],
+      productTypeOptions:[],
+      productTypeValues:[],
       date: new Date(),
       dnafile: "",
       sapfile: "",
@@ -356,7 +494,7 @@ export default {
       mtbf: true,
       isInserviceOnly: false,
       fileType: "dna",
-
+      advanceFlag:false,
       sampleBOM: sampleBomData
     };
   },
@@ -428,6 +566,9 @@ export default {
           }
         });
       }
+    },
+    changeFilter() {
+      this.advanceFlag = !this.advanceFlag;
     },
     downloadSampleBOM() {
       var fileContent = String(this.sampleBOM);
@@ -582,6 +723,47 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    getAdvancedSettings()
+    {
+      fetch(constant.APIURL + "api/v1/get_advance_settings", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        }
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data ---->", data);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            for(var i=0;i<data.item_category.length;i++)
+            {
+              this.itemCategoryOptions.push({name:data.item_category[i]});
+            }
+            for(var i=0;i<data.product_category.length;i++)
+            {
+              this.productCategoryOptions.push({name:data.product_category[i]});
+            }
+            for(var i=0;i<data.product_family.length;i++)
+            {
+              this.productFamilyOptions.push({name:data.product_family[i]});
+            }
+            for(var i=0;i<data.product_phase.length;i++)
+            {
+              this.productPhaseOptions.push({name:data.product_phase[i]});
+            }
+            for(var i=0;i<data.product_type.length;i++)
+            {
+              this.productTypeOptions.push({name:data.product_type[i]});
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
     redirectToSummary() {
       console.log("inside summary");
       router.push({
@@ -602,6 +784,41 @@ export default {
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
       formData.append("is_mtbf", data.mtbf);
+      if(this.itemCategoryValues.length>0)
+      {
+        for(var i=0;i<this.itemCategoryValues.length;i++)
+        {
+          formData.append("item_category", this.itemCategoryValues[i].name);
+        }
+      }
+      if(this.productCategoryValues.length>0)
+      {
+        for(var i=0;i<this.productCategoryValues.length;i++)
+        {
+          formData.append("product_category", this.productCategoryValues[i].name);
+        }
+      }
+      if(this.productFamilyValues.length>0)
+      {
+        for(var i=0;i<this.productFamilyValues.length;i++)
+        {
+          formData.append("product_family", this.productFamilyValues[i].name);
+        }
+      }
+      if(this.productPhaseValues.length>0)
+      {
+        for(var i=0;i<this.productPhaseValues.length;i++)
+        {
+          formData.append("product_phase", this.productPhaseValues[i].name);
+        }
+      }
+      if(this.productTypeValues.length>0)
+      {
+        for(var i=0;i<this.productTypeValues.length;i++)
+        {
+          formData.append("product_type", this.productTypeValues[i].name);
+        }
+      }
       if (this.fileType === "dna") {
         formData.append("is_inservice_only", data.isInserviceOnly);
         formData.append("customer_dna_file", data.dnafile);
