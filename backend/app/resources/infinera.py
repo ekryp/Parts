@@ -1406,11 +1406,15 @@ class PostSparePartAnalysis(Resource):
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                # bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
+                # bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, item_category, product_category, product_family, product_phase, product_type)
+
 
                 celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf])
+                                                               customer_name, prospect_id, replenish_time,
+                                                                         args['analysis_name'], is_mtbf, item_category,
+                                 product_category, product_family, product_phase, product_type])
+
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
 

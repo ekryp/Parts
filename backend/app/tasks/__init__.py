@@ -231,7 +231,7 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type):
 
     # 5.2 Capture the data from the file in PON-Depot and Inventory values.
     # Note some of these parts may not be sparable and will perform such checks later.
@@ -272,6 +272,19 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
 
     # Keep only sparable pons
     valid_pon = valid_pon[valid_pon['is_sparrable'] == True]
+
+    # Added Code for adv settings here
+    # First check whther we received adv setting
+    # If received then only get parts with matching adv settings
+
+    if item_category or product_category or product_family or product_phase or product_type:
+        part_in_adv_settings = get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type)
+        if part_in_adv_settings.empty:
+            raise CustomException("no valid parts in advance settings - Aborting the analysis")
+        valid_pon = pd.merge(valid_pon, part_in_adv_settings, how='inner', left_on='Product Ordering Name', right_on='parts_adv')
+        valid_pon = valid_pon.drop(['parts_adv'], 1)
+
+
 
     # Keep only parts which has standard_cost
     valid_pon['has_std_cost'] = False
@@ -430,10 +443,15 @@ def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, 
     print('BOM calculation complete')
 
 
-def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type):
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function_for_bom_record(bom_file, sap_file, analysis_date,
-                                                                                                           analysis_id, prospect_id, replenish_time)
+                                                                                                           analysis_id, prospect_id, replenish_time,
+                                                                                                           item_category,
+                                                                                                           product_category,
+                                                                                                           product_family,
+                                                                                                           product_phase,
+                                                                                                           product_type)
 
     '''
     Install base PON quantity logic change for BOM file as BOM
@@ -845,11 +863,13 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, repleni
         return gross_depot_hnad, high_spares, standard_cost, parts
 
 
-def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf):
+def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation_for_bom_records(bom_file, sap_file,
                                                                                      analysis_date, analysis_id,
-                                                                                     prospect_id, replenish_time)
+                                                                                     prospect_id, replenish_time,
+                                                                                    item_category, product_category,
+                                                                        product_family, product_phase, product_type)
 
     # Flag will be there to choose from simple or mtbf calculation.
     if is_mtbf.lower() == 'no':
@@ -952,7 +972,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         print(150 * "*")
 
 @celery.task
-def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf):
+def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, item_category, product_category, product_family, product_phase, product_type):
 
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your " + analysis_name + " Analysis Submitted Successfully..")
@@ -966,7 +986,7 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
             engine.execute(query)
 
         single_bom, high_spares, standard_cost, parts = get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id,
-                                                                replenish_time, is_mtbf)
+                                                                replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type)
 
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
