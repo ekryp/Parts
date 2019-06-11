@@ -166,7 +166,8 @@
           <div class="col-lg-1" v-if="advanceFlag" @click="changeFilter()" align="left">
             <i class="fas fa-times fa-lg" style="color:#169f85"></i>
           </div>
-
+          <div class="col-lg-2"></div>
+          <div class="col" style="textAlign:left">Advance Settings</div>
           <div class="col"></div>
         </div>
         <br v-if="!advanceFlag">
