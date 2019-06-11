@@ -1876,6 +1876,36 @@ class GetAnalysisDashboardCount(Resource):
             return response
 
 
+class AdvaceSettings(Resource):
 
+    @requires_auth
+    def get(self):
+        connection = Configuration.INFINERA_DB_URL
+        product_type_query = 'SELECT distinct(product_type) FROM parts;'
+        product_type_df = read_data(product_type_query, connection)
+        product_type = product_type_df['product_type'].tolist()
 
+        product_family_query = 'SELECT distinct(product_family) FROM parts;'
+        product_family_df = read_data(product_family_query, connection)
+        product_family = product_family_df['product_family'].tolist()
 
+        product_category_query = 'SELECT distinct(product_category) FROM parts;'
+        product_category_df = read_data(product_category_query, connection)
+        product_category = product_category_df['product_category'].tolist()
+
+        item_category_query = 'SELECT distinct(item_category) FROM parts;'
+        item_category_df = read_data(item_category_query, connection)
+        item_category = item_category_df['item_category'].tolist()
+
+        product_phase_query = 'SELECT distinct(product_phase) FROM parts;'
+        product_phase_df = read_data(product_phase_query, connection)
+        product_phase = product_phase_df['product_phase'].tolist()
+
+        response = {
+            'product_type': product_type,
+            'product_family': product_family,
+            'product_category': product_category,
+            'item_category': item_category,
+            'product_phase': product_phase
+        }
+        return response
