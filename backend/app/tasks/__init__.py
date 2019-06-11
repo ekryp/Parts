@@ -10,7 +10,8 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
-    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status, to_sql_lab_systems
+    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status, to_sql_lab_systems, \
+    get_part_names_for_adv_settings
 
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
@@ -20,13 +21,14 @@ from flask_restful import Resource
 from app.tasks.bom_data import read_bom_file
 
 
-
 engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 connection = Configuration.INFINERA_DB_URL
+
 
 class CustomException(Exception):
     def __init__(self, msg):
         self.msg = msg
+
 
 def make_celery(app):
     celery = Celery(app.import_name,
@@ -41,7 +43,9 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
+
 celery = make_celery(app)
+
 
 def add_prospect(email_id):
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
@@ -78,7 +82,7 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
         print("Failed to update status for prospects_id {0}".format(prospects_id))
 
 
-def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only):
+def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
 
     # 5.4 Load all Data elements from Reference Data
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
@@ -134,6 +138,15 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
 
     # Keep only sparable pons
     valid_pon = valid_pon[valid_pon['is_sparrable'] == True]
+
+    # Added Code for adv settings here
+    # First check whther we received adv setting
+    # If received then only get parts with matching adv settings
+
+    if item_category or product_category or product_family or product_phase or product_type:
+        part_in_adv_settings = get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type)
+        valid_pon = pd.merge(valid_pon, part_in_adv_settings, how='inner', left_on='Product Ordering Name', right_on='parts_adv')
+        valid_pon = valid_pon.drop(['parts_adv'], 1)
 
     # all_valid conditions
     # PON with sparable, has_std_cost,has_node_depot and valid pon_name & depot name
@@ -384,12 +397,14 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only):
+def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file,
                                                                                             analysis_date, analysis_id,
                                                                                             prospect_id, replenish_time,
-                                                                                            is_inservice_only)
+                                                                                            is_inservice_only, item_category,
+                                                                                            product_category, product_family,
+                                                                                            product_phase, product_type)
 
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
@@ -402,6 +417,7 @@ def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, 
     get_bom_for_table = get_bom_for_table.rename(columns={'0': 'PON Quanity'})
     #get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
     to_sql_current_ib('current_ib', get_bom_for_table, analysis_id)
+
     get_bom_for_table.rename(columns={
         'pon_quanity': 'PON Quanity',
         'product_ordering_name': 'Product Ordering Name'
@@ -793,11 +809,14 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 '''
 
 
-def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only):
+def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file,
                                                                                      analysis_date, analysis_id,
-                                                                                     prospect_id, replenish_time, is_inservice_only)
+                                                                                     prospect_id, replenish_time,
+                                                                                     is_inservice_only, item_category,
+                                                                                     product_category, product_family,
+                                                                                     product_phase, product_type)
 
     # Flag will be there to choose from simple or mtbf calculation.
 
@@ -898,7 +917,7 @@ def sendEmailNotificatio(user_email_id,subject,message):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, is_inservice_only):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
    
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Submitted Successfully..")
@@ -910,7 +929,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
             print(query)
             engine.execute(query)
 
-        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only)
+        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type)
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
                            user_email_id, analysis_id, customer_name)

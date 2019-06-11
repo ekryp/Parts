@@ -1159,6 +1159,11 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('replenish_time', required=True, location='form')
         self.reqparse.add_argument('is_mtbf', required=True, location='form')
         self.reqparse.add_argument('is_inservice_only', required=False, location='form')
+        self.reqparse.add_argument('item_category', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_category', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_family', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_phase', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_type', required=False, location='form', action='append')
         super(PostSparePartAnalysis, self).__init__()
 
     @requires_auth
@@ -1180,6 +1185,12 @@ class PostSparePartAnalysis(Resource):
             is_inservice_only = False
         elif is_inservice_only == 'true':
             is_inservice_only = True
+
+        item_category = request.form.getlist('item_category')
+        product_category = request.form.getlist('product_category')
+        product_family = request.form.getlist('product_family')
+        product_phase = request.form.getlist('product_phase')
+        product_type = request.form.getlist('product_type')
 
         def save_analysis_record_db(input_file):
 
@@ -1230,7 +1241,7 @@ class PostSparePartAnalysis(Resource):
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
             '''
 
-        def check_dna_file(dna_file, extension):
+        def check_dna_file(dna_file, extension, is_inservice_only):
 
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file, nrows=200)
@@ -1251,12 +1262,17 @@ class PostSparePartAnalysis(Resource):
                             break
 
                 columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name', 'Part#',
-                           'Serial#']
+                           'Serial#', 'Service State']
                 dna_df = pd.read_csv(dna_file, sep='\t', skiprows=lines, names=columns)
 
             dna_row, dna_cols = dna_df.shape
             if dna_row < 1:
                 raise FileFormatIssue(dna_file, "No Records to process,BAD DNA File")
+
+            if is_inservice_only:
+                if 'Service State' not in dna_df.columns:
+                    raise FileFormatIssue(dna_file, "You selected in-service only option but DNA file "
+                                                    "do not have 'Service State' column,BAD DNA File")
 
         def check_bom_file(bom_file, extension):
 
@@ -1318,7 +1334,7 @@ class PostSparePartAnalysis(Resource):
                     my_tsvs.save(file, folder=dest_folder)
 
                 dna_file = os.path.join(full_path, customer_dna_file)
-                check_dna_file(dna_file, extension)
+                check_dna_file(dna_file, extension, is_inservice_only)
 
             for file in request.files.getlist('sap_export_file'):
 
@@ -1375,25 +1391,26 @@ class PostSparePartAnalysis(Resource):
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only)
+                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type)
+
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time,args['analysis_name'], is_mtbf, is_inservice_only])
+                                                               customer_name, prospect_id, replenish_time,
+                                                                     args['analysis_name'], is_mtbf, is_inservice_only,
+                                                                     item_category, product_category, product_family,
+                                                                     product_phase, product_type])
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                #bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
-
-
+                # bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
 
                 celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf])
-
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
 
@@ -1869,6 +1886,36 @@ class GetAnalysisDashboardCount(Resource):
             return response
 
 
+class AdvaceSettings(Resource):
 
+    @requires_auth
+    def get(self):
+        connection = Configuration.INFINERA_DB_URL
+        product_type_query = 'SELECT distinct(product_type) FROM parts;'
+        product_type_df = read_data(product_type_query, connection)
+        product_type = product_type_df['product_type'].tolist()
 
+        product_family_query = 'SELECT distinct(product_family) FROM parts;'
+        product_family_df = read_data(product_family_query, connection)
+        product_family = product_family_df['product_family'].tolist()
 
+        product_category_query = 'SELECT distinct(product_category) FROM parts;'
+        product_category_df = read_data(product_category_query, connection)
+        product_category = product_category_df['product_category'].tolist()
+
+        item_category_query = 'SELECT distinct(item_category) FROM parts;'
+        item_category_df = read_data(item_category_query, connection)
+        item_category = item_category_df['item_category'].tolist()
+
+        product_phase_query = 'SELECT distinct(product_phase) FROM parts;'
+        product_phase_df = read_data(product_phase_query, connection)
+        product_phase = product_phase_df['product_phase'].tolist()
+
+        response = {
+            'product_type': product_type,
+            'product_family': product_family,
+            'product_category': product_category,
+            'item_category': item_category,
+            'product_phase': product_phase
+        }
+        return response
