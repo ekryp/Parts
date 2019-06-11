@@ -145,6 +145,8 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
 
     if item_category or product_category or product_family or product_phase or product_type:
         part_in_adv_settings = get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type)
+        if part_in_adv_settings.empty:
+            raise CustomException("no valid parts in advance settings - Aborting the analysis")
         valid_pon = pd.merge(valid_pon, part_in_adv_settings, how='inner', left_on='Product Ordering Name', right_on='parts_adv')
         valid_pon = valid_pon.drop(['parts_adv'], 1)
 
