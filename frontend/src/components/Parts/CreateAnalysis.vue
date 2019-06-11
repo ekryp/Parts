@@ -161,7 +161,7 @@
 
 <div class="row text-center">
           <div class="col-lg-1" v-if="!advanceFlag" @click="changeFilter()" align="left">
-            <i class="fas fa-filter fa-lg" style="color:#169f85"></i>
+            <i class="fas fa-bars fa-lg" style="color:#169f85"></i>
           </div>
           <div class="col-lg-1" v-if="advanceFlag" @click="changeFilter()" align="left">
             <i class="fas fa-times fa-lg" style="color:#169f85"></i>
