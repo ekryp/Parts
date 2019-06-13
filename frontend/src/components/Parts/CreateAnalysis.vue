@@ -125,29 +125,53 @@
           </div>
         </div>
         <br>
-        <div class="form-group">
-          <div class="row" style="marginTop:0%">
-            <div class="col-lg-3">
-              <label>{{createAnalysisConstant.createAnalysisLabels[5]}}</label>
-            </div>
-            <div class="col-lg-7 form-group">
-              <div class="row">
-                <div class="col-lg-2">
-                  <input type="radio" id="DNA" value="dna" v-model="fileType">
-                  &nbsp
-                  <label>DNA</label>
+            <div class="form-group">
+              <div class="row" style="marginTop:0%">
+                <div class="col-lg-3">
+                  <label>{{createAnalysisConstant.createAnalysisLabels[5]}}</label>
                 </div>
-                <div class="col-lg-2">
-                  <input type="radio" id="BOM" value="bom" v-model="fileType">
-                  &nbsp
-                  <label>BOM</label>
+                <div class="col-lg-7 form-group">
+                  <div class="row">
+                      <div class="col-lg-2">
+                        <input type="radio" id="DNA" value="dna" v-model="fileType">
+                        &nbsp
+                        <label>DNA</label>
+                        </div>
+                      <div class="col-lg-2">
+                        <input type="radio" id="BOM" value="bom" v-model="fileType">
+                        &nbsp
+                        <label>BOM</label>
+                      </div>
+                  </div>
                 </div>
               </div>
-              <!-- <div class="row" style="marginTop:3%">
-                
-              </div>-->
-            </div>
-          </div>
+              
+              <div class="row" style="marginTop:0%">
+                <div class="col-lg-3">
+                  <label>{{createAnalysisConstant.createAnalysisLabels[11]}}</label>
+                </div>
+                <div class="col-lg-7 form-group">
+                  <div class="row">
+                      <div class="col-lg-2">
+                        <input type="radio" id="Quote" value="Quote" v-model="requestType">
+                        &nbsp
+                        <label>Quote</label>
+                        </div>
+                      <div class="col-lg-2">
+                        <input type="radio" id="Project" value="Project" v-model="requestType">
+                        &nbsp
+                        <label>Project</label>
+                      </div>
+                      <div class="col-lg-2">
+                        <input type="radio" id="Install_Base" value="Install Base" v-model="requestType">
+                        &nbsp
+                        <label>Install Base</label>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              
+          
           <div class="row" style="marginTop:0%" v-if="fileType === 'dna'">
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[10]}}</label>
@@ -494,6 +518,7 @@ export default {
       mtbf: true,
       isInserviceOnly: false,
       fileType: "dna",
+      requestType:"Install Base",
       advanceFlag:false,
       sampleBOM: sampleBomData
     };
@@ -616,6 +641,7 @@ export default {
       });
     },
     formSubmit() {
+      console.log('request type',this.requestType)
       var mtbfValue;
       if (this.mtbf) {
         mtbfValue = "yes";
@@ -629,6 +655,7 @@ export default {
         customerNames: this.customerNames,
         analysisType: this.analysisType,
         replensihTime: this.replensihTime,
+        requestType:this.requestType,
         date: new Date(),
         dnafile: this.dnafile,
         sapfile: this.sapfile,
@@ -784,6 +811,7 @@ export default {
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
       formData.append("is_mtbf", data.mtbf);
+      formData.append("request_type",data.requestType);
       if(this.itemCategoryValues.length>0)
       {
         for(var i=0;i<this.itemCategoryValues.length;i++)
