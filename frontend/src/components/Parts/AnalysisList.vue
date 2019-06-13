@@ -209,6 +209,7 @@ export default {
         "Analysis Name",
         "Analysis Type",
         "Customer Name",
+        "Email",
         "Status",
         "Created Date"
       ],
@@ -285,6 +286,7 @@ export default {
                 analysis_type: this.partsAnalysisRequestList[i].analysis_type,
                 customer_name: this.partsAnalysisRequestList[i].customer_name,
                 requestStatus: this.partsAnalysisRequestList[i].requestStatus,
+                user_email_id:this.partsAnalysisRequestList[i].user_email_id,
                 createdDate: new Date(
                   this.partsAnalysisRequestList[i].created_at
                 ),
@@ -295,6 +297,7 @@ export default {
                 analysis_name: this.partsAnalysisRequestList[i].analysis_name,
                 analysis_type: this.partsAnalysisRequestList[i].analysis_type,
                 customer_name: this.partsAnalysisRequestList[i].customer_name,
+                user_email_id:this.partsAnalysisRequestList[i].user_email_id,
                 requestStatus: this.partsAnalysisRequestList[i].requestStatus,
                 createdDate: new Date(
                   this.partsAnalysisRequestList[i].created_at
@@ -354,6 +357,11 @@ export default {
         {
           headerName: "Customer Name",
           field: "customer_name",
+          width: 150
+        },
+         {
+          headerName: "Email",
+          field: "user_email_id",
           width: 150
         },
         {

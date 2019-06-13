@@ -153,17 +153,17 @@
                 <div class="col-lg-7 form-group">
                   <div class="row">
                       <div class="col-lg-2">
-                        <input type="radio" id="Quote" value="quote" v-model="requestType">
+                        <input type="radio" id="Quote" value="Quote" v-model="requestType">
                         &nbsp
                         <label>Quote</label>
                         </div>
                       <div class="col-lg-2">
-                        <input type="radio" id="Project" value="project" v-model="requestType">
+                        <input type="radio" id="Project" value="Project" v-model="requestType">
                         &nbsp
                         <label>Project</label>
                       </div>
                       <div class="col-lg-2">
-                        <input type="radio" id="Install_Base" value="install_base" v-model="requestType">
+                        <input type="radio" id="Install_Base" value="Install Base" v-model="requestType">
                         &nbsp
                         <label>Install Base</label>
                       </div>
@@ -518,7 +518,7 @@ export default {
       mtbf: true,
       isInserviceOnly: false,
       fileType: "dna",
-      requestType:"install_base",
+      requestType:"Install Base",
       advanceFlag:false,
       sampleBOM: sampleBomData
     };
@@ -641,6 +641,7 @@ export default {
       });
     },
     formSubmit() {
+      console.log('request type',this.requestType)
       var mtbfValue;
       if (this.mtbf) {
         mtbfValue = "yes";
