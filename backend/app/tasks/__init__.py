@@ -553,7 +553,7 @@ def remove_hub_depot(df, depot):
     all_depots = all_depots[['Product Ordering Name', 'node_depot_belongs', 'PON Quanity']]
     return all_depots
 
-def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id, customer_name):
+def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id, customer_name, request_type):
 
     '''
     step 1. first get parts and its high spare
@@ -700,11 +700,36 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # & new records getting inserted are by default is_latest='Y'
 
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
-    query = "update summary set is_latest='N' where customer_name='{0}'".format(customer_name)
-    print(query)
-    engine.execute(query)
-    single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
-    print("Loaded data into summary table")
+
+    if request_type == 'Quote':
+        # Set is_latest='N' so that Quote never gets calculated on Dashboard
+        single_bom.loc[:, 'request_type'] = request_type
+        single_bom.loc[:, 'is_latest'] = 'N'
+        single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+        single_bom = single_bom.drop(['request_type', 'is_latest'], 1)
+        print("Loaded data into summary table")
+
+    elif request_type == 'Install Base':
+        # Set is_latest='N' so that  all previous Install Base & Project do not get calculated for
+        # that customer
+        query = "update summary set is_latest='N' where customer_name='{0}'".format(customer_name)
+        print(query)
+        engine.execute(query)
+        single_bom.loc[:, 'request_type'] = request_type
+        single_bom.loc[:, 'is_latest'] = 'Y'
+        single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+        single_bom = single_bom.drop(['request_type', 'is_latest'], 1)
+        print("Loaded data into summary table")
+
+    elif request_type == 'Project':
+        # last Install Base and any Project (S)  based analysis since the last Install Base was run
+        # should be calculated for Dashboard
+
+        single_bom.loc[:, 'request_type'] = request_type
+        single_bom.loc[:, 'is_latest'] = 'Y'
+        single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+        single_bom = single_bom.drop(['request_type', 'is_latest'], 1)
+
 
     # Initially make shared_
     # quantiity for all PON as 0,
@@ -939,7 +964,7 @@ def sendEmailNotificatio(user_email_id,subject,message):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, request_type):
    
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Submitted Successfully..")
@@ -954,7 +979,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type)
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
-                           user_email_id, analysis_id, customer_name)
+                           user_email_id, analysis_id, customer_name, request_type)
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
         set_request_status('Completed', analysis_id, 'Success')
@@ -972,7 +997,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         print(150 * "*")
 
 @celery.task
-def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, item_category, product_category, product_family, product_phase, product_type):
+def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, item_category, product_category, product_family, product_phase, product_type, request_type):
 
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your " + analysis_name + " Analysis Submitted Successfully..")
@@ -990,7 +1015,7 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
 
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
-                               user_email_id, analysis_id, customer_name)
+                               user_email_id, analysis_id, customer_name, request_type)
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
         set_request_status('Completed', analysis_id, 'Success')
