@@ -1164,6 +1164,7 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('product_family', required=False, location='form', action='append')
         self.reqparse.add_argument('product_phase', required=False, location='form', action='append')
         self.reqparse.add_argument('product_type', required=False, location='form', action='append')
+        self.reqparse.add_argument('request_type', required=True, location='form', action='append')
         super(PostSparePartAnalysis, self).__init__()
 
     @requires_auth
@@ -1191,18 +1192,19 @@ class PostSparePartAnalysis(Resource):
         product_family = request.form.getlist('product_family')
         product_phase = request.form.getlist('product_phase')
         product_type = request.form.getlist('product_type')
+        request_type = request.form.get('request_type')
 
         def save_analysis_record_db(input_file):
 
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
-                    "current_inventory_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
-                    "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
+                    "current_inventory_file_name, customer_name, request_type) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
+                    "'{6}','{7}','{8}', '{9}')".format(7, args['analysis_name'], args['analysis_type'],
                                                 replenish_time,
                                                 args['user_email_id'], analysis_date,
                                                 input_file, sap_export_file,
-                                                customer_name)
+                                                customer_name, request_type)
             engine.execute(query)
 
         def get_analysis_id():
@@ -1391,7 +1393,8 @@ class PostSparePartAnalysis(Resource):
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type)
+                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, request_type)
+
 
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
@@ -1399,21 +1402,22 @@ class PostSparePartAnalysis(Resource):
                                                                customer_name, prospect_id, replenish_time,
                                                                      args['analysis_name'], is_mtbf, is_inservice_only,
                                                                      item_category, product_category, product_family,
-                                                                     product_phase, product_type])
+                                                                     product_phase, product_type, request_type])
+                
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                # bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, item_category, product_category, product_family, product_phase, product_type)
+                # bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, item_category, product_category, product_family, product_phase, product_type, request_type)
 
 
                 celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time,
                                                                          args['analysis_name'], is_mtbf, item_category,
-                                 product_category, product_family, product_phase, product_type])
+                                 product_category, product_family, product_phase, product_type, request_type])
 
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
