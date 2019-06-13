@@ -88,7 +88,7 @@ export const ListLabScreen = {
 
 export const CreateAnalysisScreen = {
   breadcrumbs: ["Analysis", "Analysis Create"],
-  createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?", "DNA File :", "Is Service Only?"],
+  createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?", "DNA File :", "Is Service Only?", "Request Type :"],
   createAnalysisPlaceHolders: ["Enter Analysis Name ", "Select Customer ", " Select Analysis Type", "Select Replenish Time ", "no file selected"],
   buttons: ["Back", "Submit For Analysis", "ReSubmit For Analysis", "Uploading"],
   advanceOptions: ["Item Category", "Product Category", "Product Family", "Product Phase", "Product Type"],

@@ -1856,12 +1856,12 @@ import headernav from "@/components/header/header";
 import * as constant from "../constant/constant";
 import swal from "sweetalert";
 import Vudal from "vudal";
-import accounting from "../../utilies/accounting";
+
 import Multiselect from "vue-multiselect";
 import tagsinput from "vue-tagsinput";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
-import * as solutionFilterData from "../../utilies/solutionfiltersample.json";
+
 import DatePicker from "vue2-datepicker";
 //import * as data from "../../utilies/tabledata.json";
 
