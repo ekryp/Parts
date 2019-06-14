@@ -196,6 +196,9 @@
                     v-if="dnafileName !== ''"
                     disabled @click="getServiceStates()"
                   >Get service states ?</a>
+                  
+
+                  
                 </div>
                 <div class="col-lg-5" v-if="fileType === 'dna'">
                   <span
@@ -221,6 +224,16 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="row" style="marginTop:0%" v-if="isServiceStates">
+             <div class="col-lg-3">
+              <label>{{createAnalysisConstant.createAnalysisLabels[10]}}</label>
+            </div>
+             <div class="col-lg-4">
+              <label v-if="serviceStates.length === 0" style="color:blue"> No Service States available ..!</label>
+            </div>
+            
           </div>
 
            <div class="row" style="marginTop:0%" v-if="fileType === 'dna' && serviceStates.length !== 0">
@@ -540,7 +553,8 @@ export default {
       sampleBOM: sampleBomData,
       serviceStates: [],
       serviveStatesOption: [],
-      serviveStatesValues: []
+      serviveStatesValues: [],
+      isServiceStates: false
     };
   },
   methods: {
@@ -558,6 +572,8 @@ export default {
         response.text().then(text =>{
           const data = text && JSON.parse(text);
           this.serviceStates = data.service_states
+          if (data.service_states.length === 0)
+              this.isServiceStates = true
           this.serviceStates.forEach(doc => {
               this.serviveStatesOption.push({name: doc})
           });
@@ -593,6 +609,8 @@ export default {
         console.log(file.name);
         this.dnafileName = file.name;
         this.dnafile = file;
+        this.serviceStates =[]
+        this.isServiceStates = false
       } else {
         swal({
           title: "Error",
