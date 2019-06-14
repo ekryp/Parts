@@ -1936,6 +1936,7 @@ class DNAPreprocess(Resource):
         self.reqparse.add_argument('user_email_id', required=True, location='form')
         super(DNAPreprocess, self).__init__()
 
+    @requires_auth
     def post(self):
 
         def get_service_state(dna_file, extension):
