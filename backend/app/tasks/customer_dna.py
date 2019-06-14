@@ -101,7 +101,7 @@ def clean_file(file, is_inservice_only):
 
         if is_inservice_only:
             # Keep only in_service pon
-            mask = data_frame_file['Service State'] == 'In-Service'
+            mask = data_frame_file['Service State'].isin(is_inservice_only)
             print(data_frame_file.shape)
             data_frame_file = data_frame_file[mask]
             data_frame_file = data_frame_file.drop(['Service State'], 1)
@@ -117,7 +117,7 @@ def clean_file(file, is_inservice_only):
         new_data['Source'] = os.path.basename(file)
         if is_inservice_only:
             # Keep only in_service pon
-            mask = new_data['Service State'] == 'In-Service'
+            mask = new_data['Service State'].isin(is_inservice_only)
             print(new_data.shape)
             new_data = new_data[mask]
             new_data = new_data.drop(['Service State'], 1)
