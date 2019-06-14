@@ -195,7 +195,8 @@
                   <a style='color:green; cursor:pointer'
                     v-if="dnafileName !== ''"
                     disabled @click="getServiceStates()"
-                  >Get service states ?</a>
+                  >Get service states ? <img v-if="serviceStateapi" :src=gifLoader></a>
+                 
                   
 
                   
@@ -489,6 +490,7 @@ import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
 import swal from "sweetalert";
 import * as sampleBomData from "../../utilies/sampleBOM.txt";
+const loader = require('../../assets/Spinner-1s-50px.svg')
 
 export default {
   name: "CreateAnalysis",
@@ -554,11 +556,16 @@ export default {
       serviceStates: [],
       serviveStatesOption: [],
       serviveStatesValues: [],
-      isServiceStates: false
+      isServiceStates: false,
+      gifLoader: loader,
+      serviceStateapi: false
     };
   },
   methods: {
     getServiceStates(){
+      this.serviceStates =[]
+      this.isServiceStates = false
+      this.serviceStateapi = true
       let formData = new FormData();
       formData.append("customer_dna_file", this.dnafile);
       formData.append("user_email_id", localStorage.getItem("email_id"));
@@ -569,6 +576,7 @@ export default {
           Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
         }
       }).then(response=>{
+        this.serviveStatesOption = []
         response.text().then(text =>{
           const data = text && JSON.parse(text);
           this.serviceStates = data.service_states
@@ -577,6 +585,7 @@ export default {
           this.serviceStates.forEach(doc => {
               this.serviveStatesOption.push({name: doc})
           });
+          this.serviceStateapi = false
         })
       }).catch(error=>{
         console.log('error ------>',error)
