@@ -1179,14 +1179,7 @@ class PostSparePartAnalysis(Resource):
         customer_name = args['customer_name'].replace(",", "|")
         replenish_time = args['replenish_time'].replace(",", "|")
         is_mtbf = request.form.get('is_mtbf')
-        is_inservice_only = request.form.get('is_inservice_only')
-        if is_inservice_only is None:
-            is_inservice_only = False
-        elif is_inservice_only == 'false':
-            is_inservice_only = False
-        elif is_inservice_only == 'true':
-            is_inservice_only = True
-
+        is_inservice_only = request.form.getlist('is_inservice_only')
         item_category = request.form.getlist('item_category')
         product_category = request.form.getlist('product_category')
         product_family = request.form.getlist('product_family')
@@ -1395,15 +1388,12 @@ class PostSparePartAnalysis(Resource):
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
                 # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, request_type)
 
-
-
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
                                                                customer_name, prospect_id, replenish_time,
                                                                      args['analysis_name'], is_mtbf, is_inservice_only,
                                                                      item_category, product_category, product_family,
                                                                      product_phase, product_type, request_type])
-                
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
