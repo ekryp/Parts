@@ -1927,3 +1927,105 @@ class AdvaceSettings(Resource):
             'product_phase': product_phase
         }
         return response
+
+
+class DNAPreprocess(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_email_id', required=True, location='form')
+        super(DNAPreprocess, self).__init__()
+
+    def post(self):
+
+        def get_service_state(dna_file, extension):
+
+            if extension.lower() == '.csv':
+                dna_df = pd.read_csv(dna_file)
+
+            elif extension.lower() == '.txt':
+                dna_df = pd.read_csv(dna_file, sep='\t')
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dna_df = pd.read_excel(dna_file)
+
+            elif extension.lower() == '.tsv':
+                lookup = '#Type'
+                lines = []
+                with open(dna_file) as myFile:
+                    for num, line in enumerate(myFile, 1):
+                        if lookup in line:
+                            lines.append(num)
+
+                data_frame_list = []
+                data = pd.DataFrame()
+                print(lines)
+                columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
+                               'Part#', 'Serial#', 'Service State']
+
+                for index, line in enumerate(lines):
+                    data_frame = pd.DataFrame()
+                    try:
+                        print("getting data from {0} to {1}".format(lines[index] - 1,
+                                                                    lines[index + 1] - lines[index] - 2))
+                        data_frame = pd.read_csv(dna_file, sep='\t', skiprows=lines[index] - 1,
+                                                 nrows=lines[index + 1] - lines[index] - 2, usecols=columns)
+
+                    except:
+                        print("getting data from {0} to end ".format(lines[index] - 1))
+                        data_frame = pd.read_csv(dna_file, sep='\t', skiprows=lines[index] - 1, usecols=columns)
+
+                    data_frame_list.append(data_frame)
+
+                dna_df = pd.concat(data_frame_list)
+
+
+            dna_row, dna_cols = dna_df.shape
+            if dna_row < 1:
+                raise FileFormatIssue(dna_file, "No Records to pre-process,BAD DNA File")
+
+            if 'Service State' not in dna_df.columns:
+                response = {'service_states': []}
+            else:
+                response = { 'service_states' : dna_df['Service State'].unique().tolist()}
+
+            return response
+        
+        dest_folder = request.form.get('user_email_id')
+        analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+
+        for file in request.files.getlist('customer_dna_file'):
+
+            name, extension = os.path.splitext(file.filename)
+
+            if extension.lower() == '.csv':
+                dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                csvs.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                excel.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.txt':
+                dir_path = os.path.join(app.config.get("UPLOADED_TEXT_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                mytext.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.tsv':
+                dir_path = os.path.join(app.config.get("UPLOADED_TSV_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                my_tsvs.save(file, folder=dest_folder)
+
+            dna_file = os.path.join(full_path, customer_dna_file)
+            return get_service_state(dna_file, extension)
+
