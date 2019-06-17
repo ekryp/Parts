@@ -13,7 +13,7 @@ from flask import request
 from flask_restful import Resource
 from flask_restful import reqparse
 from sqlalchemy import create_engine
-from app.tasks.common_functions import read_data
+from app.tasks.common_functions import read_data, read_df
 from app.tasks import derive_table_creation, bom_derive_table_creation
 
 
@@ -1240,12 +1240,15 @@ class PostSparePartAnalysis(Resource):
 
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file, nrows=200)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.txt':
                 dna_df = pd.read_csv(dna_file, sep='\t', nrows=200)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 dna_df = pd.read_excel(dna_file)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.tsv':
                 lookup = '#Type'
@@ -1930,61 +1933,6 @@ class DNAPreprocess(Resource):
     def post(self):
 
         def get_service_state(dna_file, extension):
-
-            def read_df(df):
-
-                data_frame_list = []
-                data_frame = pd.DataFrame()
-                # step 1
-                data = df
-
-                # step 3
-                valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
-                                     'Part#', 'Serial#', 'Service State']
-
-                index = data[(data.values == '#Type')].index
-
-                # step 3.
-                if index.empty == False:
-                    for col in range(len(index)):
-                        # step 4
-                        try:
-                            end_index = data.index[data.iloc[:, 0].isnull().values][col + 1]
-                        except:
-                            # Because we want last row + 1
-                            end_index = (data.index[-1] + 1)
-                        # step 4.
-                        data_frame = data[index[col]: end_index]
-
-                        # set row with #Type as first row as column
-                        data_frame.columns = data.iloc[index[col]]
-                        # select only valid columns
-                        try:
-                            data_frame = data_frame[valid_columns]
-                        except KeyError:
-                            valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
-                                             'Product Ordering Name',
-                                             'Part#', 'Serial#']
-                            data_frame = data_frame[valid_columns]
-
-                        # step 6
-                        data_frame = data_frame[~(data_frame['#Type'].str.contains('#Type', na=False))]
-                        data_frame_list.append(data_frame)
-                    data_frame_file = pd.concat(data_frame_list)
-
-                    # step 7
-                    return data_frame_file
-
-                else:
-                    try:
-                        new_data = data[valid_columns]
-                    except KeyError:
-                        valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
-                                         'Product Ordering Name',
-                                         'Part#', 'Serial#']
-                        new_data = data[valid_columns]
-
-                    return new_data
 
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file)

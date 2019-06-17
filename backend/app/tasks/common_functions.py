@@ -678,3 +678,58 @@ def get_part_names_for_adv_settings(item_category, product_category, product_fam
     connection = Configuration.INFINERA_DB_URL
     parts_with_adv = read_data(filter_query, connection)
     return parts_with_adv
+
+
+def read_df(df):
+    data_frame_list = []
+    data_frame = pd.DataFrame()
+    # step 1
+    data = df
+
+    # step 3
+    valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
+                     'Part#', 'Serial#', 'Service State']
+
+    index = data[(data.values == '#Type')].index
+
+    # step 3.
+    if index.empty == False:
+        for col in range(len(index)):
+            # step 4
+            try:
+                end_index = data.index[data.iloc[:, 0].isnull().values][col + 1]
+            except:
+                # Because we want last row + 1
+                end_index = (data.index[-1] + 1)
+            # step 4.
+            data_frame = data[index[col]: end_index]
+
+            # set row with #Type as first row as column
+            data_frame.columns = data.iloc[index[col]]
+            # select only valid columns
+            try:
+                data_frame = data_frame[valid_columns]
+            except KeyError:
+                valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
+                                 'Product Ordering Name',
+                                 'Part#', 'Serial#']
+                data_frame = data_frame[valid_columns]
+
+            # step 6
+            data_frame = data_frame[~(data_frame['#Type'].str.contains('#Type', na=False))]
+            data_frame_list.append(data_frame)
+        data_frame_file = pd.concat(data_frame_list)
+
+        # step 7
+        return data_frame_file
+
+    else:
+        try:
+            new_data = data[valid_columns]
+        except KeyError:
+            valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
+                             'Product Ordering Name',
+                             'Part#', 'Serial#']
+            new_data = data[valid_columns]
+
+        return new_data
