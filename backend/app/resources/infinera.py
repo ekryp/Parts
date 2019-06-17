@@ -13,7 +13,7 @@ from flask import request
 from flask_restful import Resource
 from flask_restful import reqparse
 from sqlalchemy import create_engine
-from app.tasks.common_functions import read_data
+from app.tasks.common_functions import read_data, read_df
 from app.tasks import derive_table_creation, bom_derive_table_creation
 
 
@@ -1240,12 +1240,15 @@ class PostSparePartAnalysis(Resource):
 
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file, nrows=200)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.txt':
                 dna_df = pd.read_csv(dna_file, sep='\t', nrows=200)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 dna_df = pd.read_excel(dna_file)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.tsv':
                 lookup = '#Type'
@@ -1933,12 +1936,15 @@ class DNAPreprocess(Resource):
 
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.txt':
                 dna_df = pd.read_csv(dna_file, sep='\t')
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 dna_df = pd.read_excel(dna_file)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.tsv':
                 lookup = '#Type'
@@ -1969,7 +1975,6 @@ class DNAPreprocess(Resource):
                     data_frame_list.append(data_frame)
 
                 dna_df = pd.concat(data_frame_list)
-
 
             dna_row, dna_cols = dna_df.shape
             if dna_row < 1:
