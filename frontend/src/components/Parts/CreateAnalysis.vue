@@ -114,7 +114,6 @@
             </div>
           </div>
         </div>
-
         <div class="row" style="marginTop:0%">
           <div class="col-lg-3">
             <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
@@ -146,6 +145,7 @@
             </div>
           </div>
 
+
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[11]}}</label>
@@ -172,6 +172,8 @@
           </div>
 
          
+
+
 
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
@@ -548,7 +550,6 @@ export default {
       loaderFlag: false,
       diasableFlag: false,
       mtbf: true,
-      isInserviceOnly: false,
       fileType: "dna",
       requestType: "Install Base",
       advanceFlag: false,
@@ -729,8 +730,7 @@ export default {
         dnafile: this.dnafile,
         sapfile: this.sapfile,
         bomfile: this.bomFile,
-        mtbf: mtbfValue,
-        isInserviceOnly: this.isInserviceOnly
+        mtbf: mtbfValue
       };
       var filePresent = false;
       if (
@@ -906,9 +906,11 @@ export default {
         }
       }
       if (this.fileType === "dna") {
+
         this.serviveStatesValues.forEach(doc=>{
          formData.append("is_inservice_only", doc.name);
         })
+
         formData.append("customer_dna_file", data.dnafile);
       } else {
         formData.append("bom_file", data.bomfile);
@@ -935,31 +937,24 @@ export default {
               this.uploading = false;
               this.resubmit = true;
               this.diasableFlag = false;
-              if (this.fileType === "dna") {
-                swal({
-                  title: "Error",
-                  text: data.msg,
-                  icon: "error"
-                });
-              } else {
-                swal({
-                  title: "Error",
-                  text: data.msg,
-                  icon: "error",
-                  buttons: {
-                    download: {
-                      text: "Download Sample",
-                      value: "yes"
-                    },
-                    ok: true
-                  }
-                }).then(value => {
-                  switch (value) {
-                    case "yes":
-                      this.downloadSampleBOM();
-                  }
-                });
-              }
+
+              swal({
+                title: "Error",
+                text: data.msg,
+                icon: "error",
+                buttons: {
+                  download: {
+                    text: "Download Sample",
+                    value: "yes"
+                  },
+                  ok: true
+                }
+              }).then(value => {
+                switch (value) {
+                  case "yes":
+                    this.downloadSampleBOM();
+                }
+              });
               this.loaderFlag = false;
             }
           });
