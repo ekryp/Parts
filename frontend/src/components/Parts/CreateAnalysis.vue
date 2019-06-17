@@ -192,14 +192,10 @@
                     v-if="dnafileName === ''"
                   >{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
                   <span v-if="dnafileName !== ''">{{dnafileName}}</span> &nbsp;&nbsp;&nbsp;&nbsp;
-                  <a style='color:green; cursor:pointer'
+                  <a style='color:green; cursor:pointer; text-decoration: underline'
                     v-if="dnafileName !== ''"
                     disabled @click="getServiceStates()"
                   >Get service states ? <img v-if="serviceStateapi" :src=gifLoader></a>
-                 
-                  
-
-                  
                 </div>
                 <div class="col-lg-5" v-if="fileType === 'dna'">
                   <span
