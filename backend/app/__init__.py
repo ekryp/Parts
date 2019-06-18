@@ -124,7 +124,8 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
-    GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard, GetAnalysisDashboardCount, AdvaceSettings, DNAPreprocess
+    GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard, GetAnalysisDashboardCount, AdvaceSettings,\
+    DNAPreprocess, GetTopPonsIB, GetTopDepotsIB
 
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
     UploadMisnomer, UploadRatio, UploadEndCustomer, UploadLabDetails
@@ -210,6 +211,8 @@ api.add_resource(GetAllLabRequest, '/lab/requests', endpoint='lab_requests')
 api.add_resource(UploadLabDetails, '/post_lab_details', endpoint='post_lab_details')
 api.add_resource(AdvaceSettings, '/get_advance_settings', endpoint='get_advance_settings')
 api.add_resource(DNAPreprocess, '/get_service_states', endpoint='get_service_states')
+api.add_resource(GetTopPonsIB, '/get_top_pons_IB', endpoint='get_top_pons_IB')
+api.add_resource(GetTopDepotsIB, '/get_top_depots_IB', endpoint='get_top_depots_IB')
 app.register_blueprint(api_blueprint)
 api.init_app(app)
 

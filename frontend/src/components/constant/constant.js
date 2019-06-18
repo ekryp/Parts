@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'local') {
   ELKURL = "https://infinera-elk.ekryp.com/"
 }
 
-export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction', 'knowledgeMap', 'internal']
+export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction', 'knowledgeMap', 'internal', 'LabAvailability']
 
 
 export const Dashboard = {
