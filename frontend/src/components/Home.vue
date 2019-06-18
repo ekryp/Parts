@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     login() {
+      localStorage.clear();
       router.push("/login");
     }
   }
