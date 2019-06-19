@@ -1186,18 +1186,26 @@ class PostSparePartAnalysis(Resource):
         product_phase = request.form.getlist('product_phase')
         product_type = request.form.getlist('product_type')
         request_type = request.form.get('request_type')
+        item_category_col_val = 'All' if not item_category else ','.join(item_category)
+        product_category_col_val = 'All' if not product_category else ','.join(product_category)
+        product_family_col_val = 'All' if not product_family else ','.join(product_family)
+        product_phase_col_val = 'All' if not product_phase else ','.join(product_phase)
+        product_type_col_val = 'All' if not product_type else ','.join(product_type)
+        inservice_type_col_val = 'All' if not is_inservice_only else ','.join(is_inservice_only)
 
         def save_analysis_record_db(input_file):
 
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
-                    "current_inventory_file_name, customer_name, request_type) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
-                    "'{6}','{7}','{8}', '{9}')".format(7, args['analysis_name'], args['analysis_type'],
+                    "current_inventory_file_name, customer_name, request_type, item_category, " \
+                    "product_category, product_family, product_phase, product_type, inservice_type) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
+                    "'{6}','{7}','{8}', '{9}','{10}','{11}','{12}','{13}','{14}','{15}')".format(7, args['analysis_name'], args['analysis_type'],
                                                 replenish_time,
                                                 args['user_email_id'], analysis_date,
                                                 input_file, sap_export_file,
-                                                customer_name, request_type)
+                                                customer_name, request_type, item_category_col_val, product_category_col_val,
+                                                product_family_col_val, product_phase_col_val, product_type_col_val, inservice_type_col_val)
             engine.execute(query)
 
         def get_analysis_id():
