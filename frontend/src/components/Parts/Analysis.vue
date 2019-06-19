@@ -160,6 +160,112 @@
                 </div>
               </div>
           </div>-->
+
+           <!-- Advance settings -->
+          <div class="row text-center">
+            <div class="col-lg-2" v-if="!advanceFlag" @click="changeFilter()" align="left">
+              <i class="fas fa-bars fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
+            </div>
+            <div class="col-lg-2" v-if="advanceFlag" @click="changeFilter()" align="left">
+              <i class="fas fa-times fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
+            </div>
+
+            <div class="col"></div>
+          </div>
+          <br v-if="!advanceFlag">
+
+          <transition name="fade">
+            <div class="row" style="paddingTop:0.6em" v-if="advanceFlag">
+              <div class="col-lg-12">
+                <div class="p-3 mb-3">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label>Item Category</label>
+                    </div>
+                    <div class="col-lg-7">
+                     <input
+                        v-if="requestId !== '' && partsAnalysisData.item_category !== undefined"
+                        type="text"
+                        class="form-control"
+                        v-model="partsAnalysisData.item_category"
+                        disabled
+                      >
+                    </div>
+                  </div>
+                  <br>
+                  
+
+                   <div class="row">
+                    <div class="col-lg-3">
+                      <label>Product Category</label>
+                    </div>
+                    <div class="col-lg-7">
+                     <input
+                        v-if="requestId !== '' && partsAnalysisData.product_category !== undefined"
+                        type="text"
+                        class="form-control"
+                        v-model="partsAnalysisData.product_category"
+                        disabled
+                      >
+                    </div>
+                  </div>
+                  <br>
+
+                   <div class="row">
+                    <div class="col-lg-3">
+                      <label>Product Family</label>
+                    </div>
+                    <div class="col-lg-7">
+                     <input
+                        v-if="requestId !== '' && partsAnalysisData.product_family !== undefined"
+                        type="text"
+                        class="form-control"
+                        v-model="partsAnalysisData.product_family"
+                        disabled
+                      >
+                    </div>
+                  </div>
+                  <br>
+
+                   <div class="row">
+                    <div class="col-lg-3">
+                      <label>Product Phase</label>
+                    </div>
+                    <div class="col-lg-7">
+                     <input
+                        v-if="requestId !== '' && partsAnalysisData.product_phase !== undefined"
+                        type="text"
+                        class="form-control"
+                        v-model="partsAnalysisData.product_phase"
+                        disabled
+                      >
+                    </div>
+                  </div>
+                  <br>
+
+                   <div class="row">
+                    <div class="col-lg-3">
+                      <label>Product Type</label>
+                    </div>
+                    <div class="col-lg-7">
+                     <input
+                        v-if="requestId !== '' && partsAnalysisData.product_type !== undefined"
+                        type="text"
+                        class="form-control"
+                        v-model="partsAnalysisData.product_type"
+                        disabled
+                      >
+                    </div>
+                  </div>
+                  <br>
+                 
+                </div>
+              </div>
+            </div>
+          </transition>
+
+
+
           <!-- Status Tracker -->
           <div style="marginTop:2%" v-if="requestId !== ''">
             <div
@@ -1183,12 +1289,15 @@ export default {
       show: false,
       label: "Loading...",
       uploading: false,
-      loaderFlag: false
+      loaderFlag: false,
+      advanceFlag:false
     };
   },
   methods: {
     
-   
+    changeFilter() {
+      this.advanceFlag = !this.advanceFlag;
+    },
     cancel() {
       router.push("/parts/analysis/dashboard");
     },
@@ -1226,7 +1335,12 @@ export default {
               date: payload[0].analysis_request_time,
               requestStatus: payload[0].requestStatus,
               stepName: payload[0].step_name,
-              stepId: payload[0].step_id
+              stepId: payload[0].step_id,
+              item_category:payload[0].item_category,
+              product_category:payload[0].product_category,
+              product_family:payload[0].product_family,
+              product_phase:payload[0].product_phase,
+              product_type:payload[0].product_type
             };
             this.partsAnalysisData = object;
             if (this.partsAnalysisData.requestStatus === "Processing") {
