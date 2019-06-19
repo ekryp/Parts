@@ -2047,6 +2047,10 @@ class GetTopPonsIB(Resource):
         args = self.reqparse.parse_args()
         filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
 
+        base_query = 'select product_ordering_name,count(*) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+
+
         '''
         Here we are converting list of customer_name & depot_name to sql in clause
         t = tuple(l)
@@ -2057,20 +2061,17 @@ class GetTopPonsIB(Resource):
 
         if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
             customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
-            filter_query = filter_query + customer_filter
+            base_query = base_query + customer_filter
         elif args.get('customer_filter'):
             customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
-            filter_query = filter_query + customer_filter
+            base_query = base_query + customer_filter
 
         if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
-            depot_filter = " and depot_name in {0} ".format(tuple(args.get('depot_filter')))
-            filter_query = filter_query + depot_filter
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
         elif args.get('depot_filter'):
-            depot_filter = " and depot_name in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
-            filter_query = filter_query + depot_filter
-
-        base_query = 'select product_ordering_name,count(*) as pon_count FROM current_ib ' \
-                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
 
         qroup_by_query = ' group by product_ordering_name order by pon_count desc;'
 
@@ -2097,6 +2098,9 @@ class GetTopDepotsIB(Resource):
         args = self.reqparse.parse_args()
         filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
 
+        base_query = 'select node_depot_belongs as depot_name ,count(*) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+
         '''
         Here we are converting list of customer_name & depot_name to sql in clause
         t = tuple(l)
@@ -2107,24 +2111,22 @@ class GetTopDepotsIB(Resource):
 
         if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
             customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
-            filter_query = filter_query + customer_filter
+            base_query = base_query + customer_filter
         elif args.get('customer_filter'):
             customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
-            filter_query = filter_query + customer_filter
+            base_query = base_query + customer_filter
 
         if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
-            depot_filter = " and depot_name in {0} ".format(tuple(args.get('depot_filter')))
-            filter_query = filter_query + depot_filter
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
         elif args.get('depot_filter'):
-            depot_filter = " and depot_name in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
-            filter_query = filter_query + depot_filter
-
-        base_query = 'select node_depot_belongs as depot_name ,count(*) as pon_count FROM current_ib ' \
-                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
 
         qroup_by_query = ' group by depot_name order by pon_count desc;'
 
         query = base_query + qroup_by_query
+
         print(query)
         result = get_df_from_sql_query(
             query=query,
