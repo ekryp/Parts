@@ -16,8 +16,20 @@ export default {
     console.log(JSON.stringify(localStorage));
     let userId = localStorage.getItem("auth0_user_id");
     console.log("userId---->", userId);
+    var authorization = localStorage.getItem("authorization");
+    var permissions = authorization.split(",");
+    var dashboardFlag = false;
+    permissions.forEach(doc => {
+      if (doc == "Dashboard") {
+        this.dashboardFlag = true;
+      }
+    });
     if (userId !== null && userId !== undefined) {
-      router.push("/dashboard");
+      if (this.dashboardFlag) {
+        router.push("/dashboard");
+      } else {
+        router.push("/solution");
+      }
     }
   },
   data() {
@@ -26,6 +38,7 @@ export default {
   },
   methods: {
     login() {
+      localStorage.clear();
       router.push("/login");
     }
   }

@@ -412,7 +412,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
+def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file,
                                                                                             analysis_date, analysis_id,
@@ -429,6 +429,7 @@ def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, 
     Get_Fru.groupby(['Product Ordering Name', 'node_depot_belongs'])['count'].last().unstack(
         fill_value=0).stack().to_csv(Configuration.bom_table, header=True)
     get_bom_for_table = pd.read_csv(Configuration.bom_table)
+    get_bom_for_table['customer_name'] = customer_name
     get_bom_for_table = get_bom_for_table.rename(columns={'0': 'PON Quanity'})
     #get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
     to_sql_current_ib('current_ib', get_bom_for_table, analysis_id)
@@ -438,12 +439,12 @@ def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, 
         'product_ordering_name': 'Product Ordering Name'
     }, inplace=True
     )
-    get_bom_for_table.drop(['request_id'], 1, inplace=True)
+    get_bom_for_table.drop(['request_id', 'customer_name'], 1, inplace=True)
     return get_bom_for_table, get_ratio_to_pon, parts, depot, high_spares, standard_cost
     print('BOM calculation complete')
 
 
-def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type):
+def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function_for_bom_record(bom_file, sap_file, analysis_date,
                                                                                                            analysis_id, prospect_id, replenish_time,
@@ -468,6 +469,7 @@ def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_i
     '''
     get_bom_for_table = all_valid[['Product Ordering Name', 'node_depot_belongs', 'PON Quantity']]
     get_bom_for_table = get_bom_for_table.rename(columns={'PON Quantity': 'PON Quanity'})
+    get_bom_for_table['customer_name'] = customer_name
     #get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
     to_sql_current_ib('current_ib', get_bom_for_table, analysis_id)
     get_bom_for_table.rename(columns={
@@ -475,7 +477,7 @@ def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_i
         'product_ordering_name': 'Product Ordering Name'
     }, inplace=True
     )
-    get_bom_for_table.drop(['request_id'], 1, inplace=True)
+    get_bom_for_table.drop(['request_id', 'customer_name'], 1, inplace=True)
     return get_bom_for_table, get_ratio_to_pon, parts, depot, high_spares, standard_cost
     print('BOM calculation complete')
 
@@ -854,14 +856,14 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 '''
 
 
-def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
+def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file,
                                                                                      analysis_date, analysis_id,
                                                                                      prospect_id, replenish_time,
                                                                                      is_inservice_only, item_category,
                                                                                      product_category, product_family,
-                                                                                     product_phase, product_type)
+                                                                                     product_phase, product_type, customer_name)
 
     # Flag will be there to choose from simple or mtbf calculation.
 
@@ -888,13 +890,13 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, repleni
         return gross_depot_hnad, high_spares, standard_cost, parts
 
 
-def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type):
+def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation_for_bom_records(bom_file, sap_file,
                                                                                      analysis_date, analysis_id,
                                                                                      prospect_id, replenish_time,
                                                                                     item_category, product_category,
-                                                                        product_family, product_phase, product_type)
+                                                                        product_family, product_phase, product_type, customer_name)
 
     # Flag will be there to choose from simple or mtbf calculation.
     if is_mtbf.lower() == 'no':
@@ -976,7 +978,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
             print(query)
             engine.execute(query)
 
-        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type)
+        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name)
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
                            user_email_id, analysis_id, customer_name, request_type)
@@ -1011,7 +1013,7 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
             engine.execute(query)
 
         single_bom, high_spares, standard_cost, parts = get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id,
-                                                                replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type)
+                                                                replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type, customer_name)
 
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
