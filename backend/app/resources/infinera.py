@@ -2134,3 +2134,55 @@ class GetTopDepotsIB(Resource):
 
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
+
+
+class GetTopCustomerIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopCustomerIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select customer_name,count(product_ordering_name) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0}) '.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by customer_name order by pon_count desc'
+
+        query = base_query + qroup_by_query
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
