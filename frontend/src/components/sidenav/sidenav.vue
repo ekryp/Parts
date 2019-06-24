@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <nav id="sidebar">
-      <ul class="list-unstyled components">
-        <li class="active nav-custom" style="margin-top: 40px;cursor:pointer " v-if="dashboardFlag">
+      <ul class="list-unstyled components" style="margin-top: 40px;">
+        <li class="nav-custom" style="cursor:pointer " v-if="dashboardFlag ">
           <div class="text-center" v-if="!diasableFlag" @click="dashboard()">
             <i class="fas fa-home" style="fontSize:2em"></i>
             <br>
@@ -14,7 +14,7 @@
             <p class="upload-text">{{sidanavConstants.dashboardText}}</p>
           </div>
         </li>
-        <hr v-if="analysisFlag">
+        <hr v-if="dashboardFlag">
         <!-- <li class="nav-custom" style="cursor:pointer">
           <div class="text-center" @click="reference()">
             <i class="fas fa-swatchbook" style="fontSize:20px"></i>
@@ -35,7 +35,7 @@
             <p class="upload-text">{{sidanavConstants.analysis}}</p>
           </div>
         </li>
-        <hr v-if="createAnalysisFlag">
+        <hr v-if="analysisFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="createAnalysisFlag">
           <div class="text-center" @click="createPartsRequest()">
             <i class="fas fa-plus" style="fontSize:2em"></i>
@@ -43,7 +43,7 @@
             <p class="upload-text">{{sidanavConstants.createAnalysisRequest}}</p>
           </div>
         </li>
-        <hr v-if="referenceDataFlag">
+        <hr v-if="createAnalysisFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="referenceDataFlag">
           <div class="text-center" v-if="!diasableFlag" @click="reference()">
             <i class="fas fa-file-alt" style="fontSize:2em"></i>
@@ -57,7 +57,7 @@
             <p class="upload-text">{{sidanavConstants.referenceData}}</p>
           </div>
         </li>
-        <hr v-if="solutionFlag">
+        <hr v-if="referenceDataFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="solutionFlag">
           <div class="text-center" v-if="!diasableFlag" @click="mockup()">
             <i class="fa fa-puzzle-piece" style="fontSize:2em"></i>
@@ -71,7 +71,7 @@
             <p class="upload-text">{{sidanavConstants.solutionPrediction}}</p>
           </div>
         </li>
-        <hr v-if="knowledgeMapFlag">
+        <hr v-if="solutionFlag">
         <li class="nav-custom" style="cursor:pointer" v-if="knowledgeMapFlag">
           <div class="text-center" v-if="!diasableFlag" @click="knowledgeMap()">
             <i class="fa fa-dice-d6" style="fontSize:2em"></i>
@@ -87,7 +87,7 @@
         </li>
 
         <hr v-if="knowledgeMapFlag">
-        <li class="nav-custom" style="cursor:pointer" v-if="knowledgeMapFlag">
+        <li class="nav-custom" style="cursor:pointer" v-if="labAvailabilityFlag">
           <div class="text-center" v-if="!diasableFlag" @click="labAvailability()">
             <i class="fa fa-calendar-alt" style="fontSize:2em"></i>
 
@@ -100,7 +100,7 @@
             <p class="upload-text">{{sidanavConstants.labAvailability}}</p>
           </div>
         </li>
-        <hr>
+        <hr v-if="labAvailabilityFlag">
       </ul>
     </nav>
   </div>
@@ -124,7 +124,8 @@ export default {
       referenceDataFlag: false,
       groupFlag: false,
       solutionFlag: false,
-      knowledgeMapFlag: false
+      knowledgeMapFlag: false,
+      labAvailabilityFlag: false
     };
   },
   created() {
@@ -164,6 +165,8 @@ export default {
         this.solutionFlag = true;
       } else if (permissions[i] === constant.PERMISSIONS[9]) {
         this.knowledgeMapFlag = true;
+      } else if (permissions[i] === constant.PERMISSIONS[11]) {
+        this.labAvailabilityFlag = true;
       }
       if (permissions[i] === "EditReference") {
         localStorage.setItem("editFlag", true);
@@ -171,7 +174,7 @@ export default {
       if (permissions[i] === "internal") {
         localStorage.setItem("internalFlag", true);
       }
-       if (permissions[i] === "EkrypUser") {
+      if (permissions[i] === "EkrypUser") {
         localStorage.setItem("ekrypUserFlag", true);
       }
     }

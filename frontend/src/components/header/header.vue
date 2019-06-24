@@ -25,7 +25,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
-        <li style="color:#515356; fontWeight:500;" class="nav-item dropdown">
+          <li style="color:#515356; fontWeight:500;" class="nav-item dropdown">
             <a
               class="nav-link"
               aria-expanded="false"
@@ -39,8 +39,7 @@
               aria-expanded="false"
               style="color:#515356; fontWeight:500;cursor:pointer;"
               @click="redirectHelp()"
-            >
-            Help</a>
+            >Help</a>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -145,8 +144,7 @@ export default {
     redirectRole() {
       router.push("/role");
     },
-    redirectFeedback()
-    {
+    redirectFeedback() {
       router.push("/feedback");
     },
     redirectChangePassword() {

@@ -1186,18 +1186,26 @@ class PostSparePartAnalysis(Resource):
         product_phase = request.form.getlist('product_phase')
         product_type = request.form.getlist('product_type')
         request_type = request.form.get('request_type')
+        item_category_col_val = 'All' if not item_category else ','.join(item_category)
+        product_category_col_val = 'All' if not product_category else ','.join(product_category)
+        product_family_col_val = 'All' if not product_family else ','.join(product_family)
+        product_phase_col_val = 'All' if not product_phase else ','.join(product_phase)
+        product_type_col_val = 'All' if not product_type else ','.join(product_type)
+        inservice_type_col_val = 'All' if not is_inservice_only else ','.join(is_inservice_only)
 
         def save_analysis_record_db(input_file):
 
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
-                    "current_inventory_file_name, customer_name, request_type) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
-                    "'{6}','{7}','{8}', '{9}')".format(7, args['analysis_name'], args['analysis_type'],
+                    "current_inventory_file_name, customer_name, request_type, item_category, " \
+                    "product_category, product_family, product_phase, product_type, inservice_type) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
+                    "'{6}','{7}','{8}', '{9}','{10}','{11}','{12}','{13}','{14}','{15}')".format(7, args['analysis_name'], args['analysis_type'],
                                                 replenish_time,
                                                 args['user_email_id'], analysis_date,
                                                 input_file, sap_export_file,
-                                                customer_name, request_type)
+                                                customer_name, request_type, item_category_col_val, product_category_col_val,
+                                                product_family_col_val, product_phase_col_val, product_type_col_val, inservice_type_col_val)
             engine.execute(query)
 
         def get_analysis_id():
@@ -2025,3 +2033,261 @@ class DNAPreprocess(Resource):
             dna_file = os.path.join(full_path, customer_dna_file)
             return get_service_state(dna_file, extension)
 
+
+class GetTopPonsIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopPonsIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select product_ordering_name,count(*) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by product_ordering_name order by pon_count desc;'
+
+        query = base_query + qroup_by_query
+        print(query)
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopDepotsIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopDepotsIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select node_depot_belongs as depot_name ,count(*) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by depot_name order by pon_count desc;'
+
+        query = base_query + qroup_by_query
+
+        print(query)
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopCustomerIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopCustomerIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select customer_name,count(product_ordering_name) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0}) '.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by customer_name order by pon_count desc'
+
+        query = base_query + qroup_by_query
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopExtendedIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopExtendedIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select product_ordering_name,node_depot_belongs as depot_name,customer_name,count(*) as pon_count FROM current_ib ' \
+                'where pon_quanity > 0  and request_id in ({0}) '.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by product_ordering_name,depot_name, customer_name order by pon_count desc'
+
+        query = base_query + qroup_by_query
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetLatLonIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetLatLonIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+        base_query = 'SELECT a.node_depot_belongs as depot_name,b.lat,b.long,count(product_ordering_name) as pon_count  FROM current_ib as a' \
+                ' right join depot as b on a.node_depot_belongs= b.depot_name where a.node_depot_belongs is not null and ' \
+                'b.lat is not null and b.long is not null and a.request_id in ({0})'.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and a.customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and a.customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and a.node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and a.node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by depot_name order by pon_count desc'
+
+        query = base_query + qroup_by_query
+
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
