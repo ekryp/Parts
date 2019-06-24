@@ -446,16 +446,16 @@ class GetRatio(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('replenish_time',  location='form')
         self.reqparse.add_argument('product_family', location='form')
-        self.reqparse.add_argument('number_of_spares_1', location='form')
-        self.reqparse.add_argument('number_of_spares_2', location='form')
-        self.reqparse.add_argument('number_of_spares_3', location='form')
-        self.reqparse.add_argument('number_of_spares_4',  location='form')
-        self.reqparse.add_argument('number_of_spares_5', location='form')
-        self.reqparse.add_argument('number_of_spares_6', location='form')
-        self.reqparse.add_argument('number_of_spares_7', location='form')
-        self.reqparse.add_argument('number_of_spares_8', location='form')
-        self.reqparse.add_argument('number_of_spares_9', location='form')
-        self.reqparse.add_argument('number_of_spares_10', location='form')
+        self.reqparse.add_argument('number_of_spares1', location='form')
+        self.reqparse.add_argument('number_of_spares2', location='form')
+        self.reqparse.add_argument('number_of_spares3', location='form')
+        self.reqparse.add_argument('number_of_spares4',  location='form')
+        self.reqparse.add_argument('number_of_spares5', location='form')
+        self.reqparse.add_argument('number_of_spares6', location='form')
+        self.reqparse.add_argument('number_of_spares7', location='form')
+        self.reqparse.add_argument('number_of_spares8', location='form')
+        self.reqparse.add_argument('number_of_spares9', location='form')
+        self.reqparse.add_argument('number_of_spares10', location='form')
         self.reqparse.add_argument('pon_type', type=str,required=True, help='pon_type', location='args')
         self.reqparse.add_argument('reliability_id', type=str,required=False, help='reliability_id', location='args')
         super(GetRatio, self).__init__()
@@ -465,16 +465,16 @@ class GetRatio(Resource):
         args = self.reqparse.parse_args()
         pon_type = args['pon_type']
         product_family = args['product_family']
-        number_of_spares_1 = args['number_of_spares_1']
-        number_of_spares_2 = args['number_of_spares_2']
-        number_of_spares_3 = args['number_of_spares_3']
-        number_of_spares_4 = args['number_of_spares_4']
-        number_of_spares_5 = args['number_of_spares_5']
-        number_of_spares_6 = args['number_of_spares_6']
-        number_of_spares_7 = args['number_of_spares_7']
-        number_of_spares_8 = args['number_of_spares_8']
-        number_of_spares_9 = args['number_of_spares_9']
-        number_of_spares_10 = args['number_of_spares_10']
+        number_of_spares_1 = args['number_of_spares1']
+        number_of_spares_2 = args['number_of_spares2']
+        number_of_spares_3 = args['number_of_spares3']
+        number_of_spares_4 = args['number_of_spares4']
+        number_of_spares_5 = args['number_of_spares5']
+        number_of_spares_6 = args['number_of_spares6']
+        number_of_spares_7 = args['number_of_spares7']
+        number_of_spares_8 = args['number_of_spares8']
+        number_of_spares_9 = args['number_of_spares9']
+        number_of_spares_10 = args['number_of_spares10']
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="Insert into reliability_class (cust_id,replenish_time,product_family,`1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`,`10`) values({0},'{1}','{2}',{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})".format(7,pon_type,product_family,number_of_spares_1,number_of_spares_2,number_of_spares_3,number_of_spares_4,number_of_spares_5,number_of_spares_6,number_of_spares_7,number_of_spares_8,number_of_spares_9,number_of_spares_10)
@@ -489,16 +489,16 @@ class GetRatio(Resource):
         pon_type = args['pon_type']
         product_family = args['product_family']
         reliability_id = args['reliability_id']
-        number_of_spares_1 = args['number_of_spares_1']
-        number_of_spares_2 = args['number_of_spares_2']
-        number_of_spares_3 = args['number_of_spares_3']
-        number_of_spares_4 = args['number_of_spares_4']
-        number_of_spares_5 = args['number_of_spares_5']
-        number_of_spares_6 = args['number_of_spares_6']
-        number_of_spares_7 = args['number_of_spares_7']
-        number_of_spares_8 = args['number_of_spares_8']
-        number_of_spares_9 = args['number_of_spares_9']
-        number_of_spares_10 = args['number_of_spares_10']
+        number_of_spares_1 = args['number_of_spares1']
+        number_of_spares_2 = args['number_of_spares2']
+        number_of_spares_3 = args['number_of_spares3']
+        number_of_spares_4 = args['number_of_spares4']
+        number_of_spares_5 = args['number_of_spares5']
+        number_of_spares_6 = args['number_of_spares6']
+        number_of_spares_7 = args['number_of_spares7']
+        number_of_spares_8 = args['number_of_spares8']
+        number_of_spares_9 = args['number_of_spares9']
+        number_of_spares_10 = args['number_of_spares10']
         try:
 
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
