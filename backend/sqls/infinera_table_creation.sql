@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: 35.199.174.191    Database: infinera_staging
+-- Host: infinera-prod.cnccf8ulxory.us-west-2.rds.amazonaws.com    Database: infinera_staging
 -- ------------------------------------------------------
--- Server version	5.7.14-google-log
+-- Server version	5.7.22-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,12 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-
-
---
--- GTID state at the beginning of the backup 
---
 
 --
 -- Table structure for table `analysis_request`
@@ -34,6 +28,13 @@ CREATE TABLE `analysis_request` (
   `customer_name` varchar(5000) DEFAULT NULL,
   `analysis_name` varchar(45) DEFAULT NULL,
   `analysis_type` varchar(45) DEFAULT NULL,
+  `request_type` varchar(45) DEFAULT NULL,
+  `item_category` varchar(100) DEFAULT NULL,
+  `product_category` varchar(100) DEFAULT NULL,
+  `product_family` varchar(100) DEFAULT NULL,
+  `product_phase` varchar(100) DEFAULT NULL,
+  `product_type` varchar(100) DEFAULT NULL,
+  `inservice_type` varchar(100) DEFAULT NULL,
   `replenish_time` varchar(45) DEFAULT NULL,
   `user_email_id` varchar(45) DEFAULT NULL,
   `analysis_request_time` datetime DEFAULT NULL,
@@ -44,7 +45,7 @@ CREATE TABLE `analysis_request` (
   `requestStatus` varchar(100) DEFAULT 'Processing',
   `failure_reason` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`analysis_request_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=387 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,6 +65,26 @@ CREATE TABLE `analysis_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `bom_record`
+--
+
+DROP TABLE IF EXISTS `bom_record`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bom_record` (
+  `bom_record_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cust_id` varchar(45) DEFAULT NULL,
+  `request_id` int(11) DEFAULT NULL,
+  `part_name` varchar(45) DEFAULT NULL,
+  `depot_name` varchar(45) DEFAULT NULL,
+  `part_quantity` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`bom_record_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=188252 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `current_ib`
 --
 
@@ -75,12 +96,13 @@ CREATE TABLE `current_ib` (
   `cust_id` int(11) DEFAULT NULL,
   `product_ordering_name` varchar(45) DEFAULT NULL,
   `node_depot_belongs` varchar(45) DEFAULT NULL,
+  `customer_name` varchar(5000) DEFAULT NULL,
   `pon_quanity` int(11) DEFAULT NULL,
   `request_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`current_ib_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=153295 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=441898 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +130,7 @@ CREATE TABLE `current_inventory` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`current_inventory_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4317726 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7970758 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +181,7 @@ CREATE TABLE `customer_dna_record` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`dna_record_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=565567 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1066050 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +210,23 @@ CREATE TABLE `depot` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`depot_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3442 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5111 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ekryp_usecase`
+--
+
+DROP TABLE IF EXISTS `ekryp_usecase`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ekryp_usecase` (
+  `ekryp_usecase_id` int(11) NOT NULL AUTO_INCREMENT,
+  `usecase` varchar(600) DEFAULT NULL,
+  `brief_description` text,
+  `description` text,
+  PRIMARY KEY (`ekryp_usecase_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +251,7 @@ CREATE TABLE `end_customer` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`end_cust_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13599 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34989 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +278,41 @@ CREATE TABLE `error_records` (
   `analysis_request_time` datetime DEFAULT NULL,
   `request_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`error_record_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64092 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=85316 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `faq_details`
+--
+
+DROP TABLE IF EXISTS `faq_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `faq_details` (
+  `faq_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(400) DEFAULT NULL,
+  `image_url` varchar(600) DEFAULT NULL,
+  `description` text,
+  `permissions` text,
+  PRIMARY KEY (`faq_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `feedback`
+--
+
+DROP TABLE IF EXISTS `feedback`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feedback` (
+  `feedback_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` text,
+  `feedback` text,
+  `enable_flag` int(11) DEFAULT '0',
+  `solution` text,
+  PRIMARY KEY (`feedback_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,7 +331,49 @@ CREATE TABLE `high_spare` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`high_spare_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11476 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13237 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `lab_request`
+--
+
+DROP TABLE IF EXISTS `lab_request`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lab_request` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `lab_resource` varchar(255) NOT NULL,
+  `requested_date` varchar(255) NOT NULL,
+  `start_time` varchar(255) NOT NULL,
+  `end_time` varchar(2555) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` varchar(255) NOT NULL,
+  `created_by` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `lab_systems`
+--
+
+DROP TABLE IF EXISTS `lab_systems`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lab_systems` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `system_name` varchar(255) NOT NULL,
+  `product_type` varchar(255) NOT NULL,
+  `ip_address` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `serial_console` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,7 +392,7 @@ CREATE TABLE `misnomer_part_conversion` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`reference_table_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1168 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1376 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +412,7 @@ CREATE TABLE `mtbf_bom_calculated` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bom_calculated_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=153460 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=449835 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -318,7 +432,7 @@ CREATE TABLE `node` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`node_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=109874 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=163330 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,7 +453,7 @@ CREATE TABLE `part_cost` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`part_cost_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=207760 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=195914 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -367,7 +481,7 @@ CREATE TABLE `parts` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`part_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=243202 DEFAULT CHARSET=latin1
+) ENGINE=InnoDB AUTO_INCREMENT=252479 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -381,7 +495,7 @@ CREATE TABLE `prospect_details` (
   `prospects_id` int(11) NOT NULL AUTO_INCREMENT,
   `prospects_email` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`prospects_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -463,7 +577,7 @@ CREATE TABLE `reliability_class` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`reliability_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2156 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2964 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -527,29 +641,14 @@ CREATE TABLE `summary` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `customer_name` varchar(5000) DEFAULT NULL,
   `is_latest` varchar(1) DEFAULT 'Y',
+  `request_type` varchar(45) DEFAULT NULL,
   `used_spare_count_total_stock` int(11) DEFAULT '0',
   `used_spare_count_reorder` int(11) DEFAULT '0',
   `High_spare_reoderpoint_cost` double DEFAULT '0',
   `High_spare_totalstock_cost` double DEFAULT '0',
   PRIMARY KEY (`summary_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=151890 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=448299 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-DROP TABLE IF EXISTS `bom_record`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bom_record` (
-  `bom_record_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cust_id` varchar(45) DEFAULT NULL,
-  `request_id` int(11) DEFAULT NULL,
-  `part_name` varchar(45) DEFAULT NULL,
-  `depot_name` varchar(45) DEFAULT NULL,
-  `part_quantity` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`bom_record_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=151890 DEFAULT CHARSET=utf8;
-
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -560,4 +659,4 @@ CREATE TABLE `bom_record` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-14 10:52:05
+-- Dump completed on 2019-06-20 16:06:45
