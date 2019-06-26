@@ -82,11 +82,11 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
         print("Failed to update status for prospects_id {0}".format(prospects_id))
 
 
-def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type):
+def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     # 5.4 Load all Data elements from Reference Data
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
-     parts_cost, high_spares, depot) = fetch_db(replenish_time)
+     parts_cost, high_spares, depot) = fetch_db(replenish_time, customer_name)
 
     # clean PONs, part# and installed equipments
     input_db = cleaned_dna_file(dna_file, is_inservice_only)
@@ -231,7 +231,7 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type):
+def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     # 5.2 Capture the data from the file in PON-Depot and Inventory values.
     # Note some of these parts may not be sparable and will perform such checks later.
@@ -254,7 +254,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
     # Unspared pon table , High spares table (Substitution matrix data)
 
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
-     parts_cost, high_spares, depot) = fetch_db(replenish_time)
+     parts_cost, high_spares, depot) = fetch_db(replenish_time, customer_name)
 
     # Section 5.7 validate_PON & validate_depot
     # This step checks if PON has invalid names and Depots have valid names.
@@ -419,7 +419,7 @@ def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, 
                                                                                             prospect_id, replenish_time,
                                                                                             is_inservice_only, item_category,
                                                                                             product_category, product_family,
-                                                                                            product_phase, product_type)
+                                                                                            product_phase, product_type, customer_name)
 
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
@@ -452,7 +452,8 @@ def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_i
                                                                                                            product_category,
                                                                                                            product_family,
                                                                                                            product_phase,
-                                                                                                           product_type)
+                                                                                                           product_type,
+                                                                                                           customer_name)
 
     '''
     Install base PON quantity logic change for BOM file as BOM

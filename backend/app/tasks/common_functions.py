@@ -399,14 +399,15 @@ def validate_depot_for_bom(pon, analysis_date, analysis_id):
     return valid_pon
 
 
-def fetch_db(replenish_time):
+def fetch_db(replenish_time, customer_name):
     print('fetching data from db...')
     connection = Configuration.ECLIPSE_DATA_DB_URI
     get_misnomer_sql = "SELECT mp.misnomer_part_name, pt.part_name FROM `misnomer_part_conversion` mp, `parts` pt where mp.correct_part_name = pt.part_name;"
     get_standard_cost = "select pt.part_name,pt.material_number,pid.standard_cost from parts pt " \
                         "left join `part_cost` pid on pt.part_id =pid.part_id where part_name != 'null'"
 
-    get_node = "SELECT * FROM node;"
+    get_node = "SELECT * FROM node where end_customer_node_belongs = '{0}'".format(customer_name)
+    print(get_node)
 
     # to_sql_customer_dna_record('customer_dna_record', input_db)
 
