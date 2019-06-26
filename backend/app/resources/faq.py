@@ -23,6 +23,7 @@ class FAQ(Resource):
         self.reqparse.add_argument('description', location='form')
         self.reqparse.add_argument('permissions', location='form')
         self.reqparse.add_argument('faq_id', location='form')
+        self.reqparse.add_argument('unique_id', location='args')
         super(FAQ, self).__init__()
 
     @requires_auth
@@ -84,7 +85,7 @@ class FAQ(Resource):
     @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
-        faq_id = args['faq_id']
+        faq_id = args['unique_id']
         try:
             query = "delete from faq_details where faq_id = {0}".format(faq_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
