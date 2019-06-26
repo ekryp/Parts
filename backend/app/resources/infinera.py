@@ -1109,7 +1109,8 @@ class GetAnalysisName(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'SELECT analysis_name FROM analysis_request where analysis_request_id={0}'.format(request_id)
+        query = 'SELECT analysis_name, customer_name FROM analysis_request where analysis_request_id={0}'.format(
+            request_id)
 
         result = get_df_from_sql_query(
             query=query,
