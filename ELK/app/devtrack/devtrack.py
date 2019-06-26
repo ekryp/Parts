@@ -767,7 +767,21 @@ class DevTrackPhrasePrefix(Resource):
                             #    filterList[key].append(doc["_source"][key])
                         
                     for key in filterKeys:
-                            tempSet=list(set(filterList[key]))
+                            try:
+                                tempSet=list(set(filterList[key]))
+                            except:
+                                # Converting a nested list to a set
+                                '''
+                                >>> a = [1,2,3,4,[5,6,7],8,9]
+                                >>> set(a)
+                                Traceback (most recent call last):
+                                 File "<stdin>", line 1, in <module>
+                                TypeError: unhashable type: 'list'
+                                We have upvotedUsers= [['user1@email.com'],['user1@email.com']]
+                                which was causing trouble
+                                '''
+                                tempSet = list(set([item for sublist in filterList[key] for item in sublist]))
+
                             filterList[key]=[]
                             for temp in tempSet:
                                 if not (temp == ""):
