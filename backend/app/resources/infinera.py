@@ -2292,3 +2292,22 @@ class GetLatLonIB(Resource):
 
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
+
+
+class GetSerial(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
+        super(GetSerial, self).__init__()
+
+    @requires_auth
+    def get(self):
+        args = self.reqparse.parse_args()
+        query = "select serial from sn_part_conversion where request_id = {0}".format(args.get('request_id'))
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
