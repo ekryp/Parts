@@ -23,6 +23,7 @@ class Usecase(Resource):
         self.reqparse.add_argument('brief_description', location='form')
         self.reqparse.add_argument('description', location='form')
         self.reqparse.add_argument('ekryp_usecase_id', location='form')
+        self.reqparse.add_argument('unique_id', location='args')
         super(Usecase, self).__init__()
 
     @requires_auth
@@ -76,7 +77,7 @@ class Usecase(Resource):
     @requires_auth
     def delete(self):
         args = self.reqparse.parse_args()
-        ekryp_usecase_id = args['ekryp_usecase_id']
+        ekryp_usecase_id = args['unique_id']
         try:
             query = "delete from ekryp_usecase where ekryp_usecase_id = {0}".format(ekryp_usecase_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
