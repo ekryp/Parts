@@ -634,6 +634,17 @@ def to_sql_lab_systems(df):
     print("Loaded into lab_systems table")
 
 
+def to_sql_sn_part_conversion(table_name, df, analysis_id):
+    keep_col = ['Serial#', 'request_id']
+    df.loc[:, 'request_id'] = analysis_id
+    df = df[keep_col]
+    df.rename(columns={
+         'Serial#': 'serial',
+    }, inplace=True)
+    df.to_sql(name=table_name, con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into '{0}' table".format(table_name))
+
+
 def get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type):
     filter_query = "select part_name as parts_adv from parts where 1=1 "
     if item_category and len(item_category) > 1:
