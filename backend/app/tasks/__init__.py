@@ -11,7 +11,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
     validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status, to_sql_lab_systems, \
-    get_part_names_for_adv_settings
+    get_part_names_for_adv_settings, to_sql_sn_part_conversion
 
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
@@ -228,6 +228,8 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
 
     update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
+
+    to_sql_sn_part_conversion('sn_part_conversion', all_valid.copy(), analysis_id)
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
@@ -408,6 +410,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         depot_not_in_sap_file = depot_not_in_sap_file.drop(['node_depot_belongs'], 1)
         depot_not_in_sap_file.to_sql(name='error_records', con=engine, index=False, if_exists='append')
         print("Loaded Data into table : {0}".format('error_records'))
+        to_sql_sn_part_conversion('sn_part_conversion', all_valid.copy(), analysis_id)
 
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
