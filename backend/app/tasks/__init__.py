@@ -229,7 +229,7 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
 
     update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
 
-    to_sql_sn_part_conversion('sn_part_conversion', all_valid.copy(), analysis_id)
+    # to_sql_sn_part_conversion('sn_part_conversion', all_valid.copy(), analysis_id)
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
