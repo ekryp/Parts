@@ -1222,10 +1222,10 @@ def misnomer_table_creation(misnomer_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
-        print("The task ratio_table_creation is paused, as analysis request is running")
+        print("The task misnomer_table_creation is paused, as analysis request is running")
         time.sleep(60)
 
-    print("The task ratio_table_creation started, as No analyis request is running")
+    print("The task misnomer_table_creation started, as No analyis request is running")
 
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 

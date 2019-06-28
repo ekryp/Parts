@@ -307,7 +307,7 @@ class User(Resource):
             pass
             # ignore error msg from mailgun
 
-        return jsonify(msg="User Created Successfully", http_status_code=200)
+        return jsonify(msg="User Created Successfully", user_id=response.json().get('user_id'), http_status_code=200)
 
     @requires_auth
     def delete(self):
