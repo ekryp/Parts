@@ -410,7 +410,6 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         depot_not_in_sap_file = depot_not_in_sap_file.drop(['node_depot_belongs'], 1)
         depot_not_in_sap_file.to_sql(name='error_records', con=engine, index=False, if_exists='append')
         print("Loaded Data into table : {0}".format('error_records'))
-        to_sql_sn_part_conversion('sn_part_conversion', all_valid.copy(), analysis_id)
 
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
