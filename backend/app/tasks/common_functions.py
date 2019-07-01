@@ -617,6 +617,19 @@ def check_analysis_task_status():
     return is_running
 
 
+def check_sn_conversion_task_status(request_id):
+    import pdb
+    pdb.set_trace()
+    not_received = True
+    query = "SELECT distinct(IND_Received) FROM sn_part_conversion where request_id=119;"
+    print(query)
+    connection = Configuration.INFINERA_DB_URL
+    ind_received = read_data(query, connection)
+    if 'Y' in ind_received['IND_Received'].tolist():
+        not_received = False
+    return not_received
+
+
 def to_sql_lab_systems(df):
 
     df.rename(columns={
