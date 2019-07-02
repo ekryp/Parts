@@ -154,6 +154,13 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     # PON with sparable, has_std_cost,has_node_depot and valid pon_name & depot name
     all_valid = valid_pon[((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
     if all_valid.empty:
+        query = "insert into error_records (error_reason, cust_id, request_id) " \
+                "values ('{0}','{1}', {2})".format("no valid record to process - Aborting the analysis, "
+                                                  "possible problems might be 1. DNA File do not havid valid items 2. "
+                                                  "Wrong Customer Name Chosen for DNA file", 7, analysis_id)
+
+        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+        engine.execute(query)
         raise CustomException("no valid record to process - Aborting the analysis")
 
     invalid_pon = valid_pon[~((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
