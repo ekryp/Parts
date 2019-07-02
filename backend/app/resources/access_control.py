@@ -195,6 +195,7 @@ class User(Resource):
 
     @requires_auth
     def get(self):
+
         def create_request_parser():
             self.parser = reqparse.RequestParser()
             return self.parser
@@ -209,27 +210,74 @@ class User(Resource):
         routes = 'groups' + '/' + Configuration.AUTH0_INFINERA_GROUP_ID + '/' + 'members'
         ext_url = Configuration.AUTH0_EXTERNAL_API + routes
         response = requests.get(ext_url, headers=headers)
+        total = response.json().get('total')
+        print("total users are: {0}".format(str(total)))
         users = []
-        for each_user in response.json().get('users'):
-            users_dict = {}
-            users_dict['email'] = each_user.get('email')
-            users_dict['username'] = each_user.get('username', "NA")
-            headers = {
-            'Authorization': 'Bearer {0}'.format(extension_access_token),
-            'content-type': 'application/json',
-            }
+        if total > 25:
+            '''
+            The Auth0 APi sends only 25 User data in one go,Here we have more than 25 users
+            So we have to call auth0 APi multiple times to fetch all users data.
+            Lets say we have 28 users
+            So we will call auth0 API twice
+            groups/GROUP_ID/members?per_page=25&page=1   This will give first 25
+            groups/GROUP_ID/members?per_page=25&page=2   This will give remaining 3
+            
+            '''
 
-            routes = 'users' + '/' + each_user.get('user_id') + '/' + 'roles'
-            ext_url = Configuration.AUTH0_EXTERNAL_API + routes
-            response = requests.get(ext_url, headers=headers)
-            application_specific_role = []
-            for role in response.json():
-                if Configuration.AUTH0_CLIENT_ID == role.get('applicationId'):
-                    application_specific_role.append(role)
+            from math import ceil
+            pages = ceil(total/25)
+            pages = list(range(pages))
+            for page in pages:
+                print("Paginating page {0}:".format(str(page+1)))
+                per_page = 25
+                routes = 'groups' + '/' + Configuration.AUTH0_INFINERA_GROUP_ID + '/' + 'members' + '?per_page=' + str(per_page) +'&page=' + str(page + 1)
+                print(routes)
+                ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+                response = requests.get(ext_url, headers=headers)
+                for each_user in response.json().get('users'):
+                    users_dict = {}
+                    users_dict['email'] = each_user.get('email')
+                    users_dict['username'] = each_user.get('username', "NA")
+                    headers = {
+                        'Authorization': 'Bearer {0}'.format(extension_access_token),
+                        'content-type': 'application/json',
+                    }
 
-            users_dict['user_id'] = each_user.get('user_id')
-            users_dict['roles']=application_specific_role
-            users.append(users_dict)
+                    routes = 'users' + '/' + each_user.get('user_id') + '/' + 'roles'
+                    ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+                    response = requests.get(ext_url, headers=headers)
+                    application_specific_role = []
+                    for role in response.json():
+                        if Configuration.AUTH0_CLIENT_ID == role.get('applicationId'):
+                            application_specific_role.append(role)
+
+                    users_dict['user_id'] = each_user.get('user_id')
+                    users_dict['roles'] = application_specific_role
+                    print(users_dict.get('username'),users_dict.get('email'))
+                    users.append(users_dict)
+
+        else:
+
+            for each_user in response.json().get('users'):
+                users_dict = {}
+                users_dict['email'] = each_user.get('email')
+                users_dict['username'] = each_user.get('username', "NA")
+                headers = {
+                'Authorization': 'Bearer {0}'.format(extension_access_token),
+                'content-type': 'application/json',
+                }
+
+                routes = 'users' + '/' + each_user.get('user_id') + '/' + 'roles'
+                ext_url = Configuration.AUTH0_EXTERNAL_API + routes
+                response = requests.get(ext_url, headers=headers)
+                application_specific_role = []
+                for role in response.json():
+                    if Configuration.AUTH0_CLIENT_ID == role.get('applicationId'):
+                        application_specific_role.append(role)
+
+                users_dict['user_id'] = each_user.get('user_id')
+                users_dict['roles']=application_specific_role
+                users.append(users_dict)
 
         return users
 
