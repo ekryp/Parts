@@ -156,7 +156,7 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     if all_valid.empty:
         query = "insert into error_records (error_reason, cust_id, request_id) " \
                 "values ('{0}','{1}', {2})".format("no valid record to process - Aborting the analysis, "
-                                                  "possible problems might be 1. DNA File do not havid valid items 2. "
+                                                  "possible problems might be 1. DNA File does not have valid items 2. "
                                                   "Wrong Customer Name Chosen for DNA file", 7, analysis_id)
 
         engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
