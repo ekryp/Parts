@@ -1367,9 +1367,29 @@ def lab_table_creation(lab_file, extension, user_email_id):
     to_sql_lab_systems(lab_df)
     sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ", " Your Request to upload Labs data finished ")
 
+@celery.task
+def remove_analysis_task(request_id, user_email_id):
 
+    def remove_analysis_data(table_name, request_id):
+        while check_analysis_task_status():
+            import time
+            print("The task Remove Analysis data is paused, as analysis request is running")
+            time.sleep(60)
+        if table_name == 'analysis_request':
+            query = "delete from {0} where analysis_request_id = {1}".format(table_name, request_id)
+        else:
+            query = "delete from {0} where request_id = {1}".format(table_name, request_id)
+        print(query)
+        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+        engine.execute(query)
 
+    all_tables = ['analysis_request', 'bom_record', 'current_ib', 'current_inventory', 'customer_dna_record',
+                  'error_records', 'mtbf_bom_calculated', 'simple_bom_calculated', 'summary']
 
+    for table in all_tables:
+        remove_analysis_data(table, request_id)
+    sendEmailNotificatio(user_email_id, " Infinera Request Data Deletion  ",
+                         " Your Request to delete data finished ")
 
 
 

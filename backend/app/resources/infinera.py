@@ -13,8 +13,8 @@ from flask import request
 from flask_restful import Resource
 from flask_restful import reqparse
 from sqlalchemy import create_engine
-from app.tasks.common_functions import read_data, read_df
-from app.tasks import derive_table_creation, bom_derive_table_creation
+from app.tasks.common_functions import read_data, read_df, check_analysis_task_status
+from app.tasks import derive_table_creation, bom_derive_table_creation, remove_analysis_task
 
 
 class GetSparePartAnalysis(Resource):
@@ -2311,3 +2311,21 @@ class GetSerial(Resource):
             db_connection_string=Configuration.INFINERA_DB_URL)
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
+
+
+class RemoveAnalysis(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=True, help='Please Provide request id', location='args')
+        self.reqparse.add_argument('user_email_id', type=str, required=True, help='Please Provide User Email id', location='args')
+        super(RemoveAnalysis, self).__init__()
+
+    @requires_auth
+    def delete(self):
+        args = self.reqparse.parse_args()
+        request_id = args.get('request_id')
+        email_id = args.get('user_email_id')
+        # remove_analysis_task(request_id, email_id)
+        celery.send_task('app.tasks.remove_analysis_task', [request_id, email_id])
+        return jsonify(msg="Your Request to delete data has been accepted,"
+                           "you will receive an email once it gets deleted.Thank You", http_status_code=200)
