@@ -742,12 +742,12 @@ class DevTrackPhrasePrefix(Resource):
                     #PARAMS = PARAMS[:-1]
                     PARAMS+="]}}}}}"
                     #PARAMS+="]}}}}"
-                print("Devtrack Params : ",PARAMS)
+                
                 
 
                 es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
                 data = es.search(index="devtrack", body=json.loads(PARAMS))
-                print('data needed ',data)
+                
                 devtrackmaxScore = data['hits']['max_score']
                 devtrackList = data['hits']['hits']
                 devTrack = []
@@ -785,7 +785,46 @@ class DevTrackPhrasePrefix(Resource):
                             filterList[key]=[]
                             for temp in tempSet:
                                 if not (temp == ""):
-                                    filterList[key].append({"name":temp})
+                                    filterList[key].append({"name":temp,"value":False})
+               
+                if(len(product_filter)>0):
+                    for tmp in filterList['product']:
+                        if tmp['name'] in product_filter :
+                            tmp['value']=True
+                        
+
+                if(len(group_filter)>0):
+                    for tmp in filterList['group']:
+                        if tmp['name'] in group_filter :
+                            tmp['value']=True
+                        
+
+                if(len(found_in_release_filter)>0):
+                    for tmp in filterList['foundinRelease']:
+                        if tmp['name'] in found_in_release_filter :
+                            tmp['value']=True
+
+                if(len(fixed_in_release_filter)>0):
+                    for tmp in filterList['fixedinRelease']:
+                        if tmp['name'] in fixed_in_release_filter :
+                            tmp['value']=True
+                       
+
+                if(len(severity_filter)>0):
+                    for tmp in filterList['severity']:
+                        if tmp['name'] in severity_filter :
+                            tmp['value']=True
+                       
+                if(len(priority_filter)>0):
+                    for tmp in filterList['priority']:
+                        if tmp['name'] in priority_filter :
+                            tmp['value']=True
+
+                if(len(service_account_filter)>0):
+                    for tmp in filterList['serviceAccount']:
+                        if tmp['name'] in service_account_filter :
+                            tmp['value']=True
+
 
                 for doc in devtrackList:
                     data = doc["_source"]
@@ -938,9 +977,9 @@ class DevTrackPhrasePrefix(Resource):
             final_list=[]
             if (len(predict_value_list)>0):
                 predict_value_list.pop(0)    
-                for predict_list in predict_value_list:
+                for product_filter in predict_value_list:
                     filter_list=[]
-                    for tmp in predict_list.split('|')[1:]:
+                    for tmp in product_filter.split('|')[1:]:
                         filter_list.append(tmp)
                     final_list.append(filter_list)    
                 print('filter list ',final_list)
