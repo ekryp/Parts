@@ -438,6 +438,7 @@ class DevTrackPhrasePrefix(Resource):
                 PARAMS=""
                 URL=config.ELK_URI+"devtrack/_doc/_search"
                 headers = {'Content-type': 'application/json'}
+                print('Product Filters',product_filter)
                 if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                     print(check_title)
                     if(check_title == "true"):
@@ -787,6 +788,7 @@ class DevTrackPhrasePrefix(Resource):
                                 if not (temp == ""):
                                     filterList[key].append({"name":temp,"value":False})
                
+                print('Product Type',product_filter)
                 if(len(product_filter)>0):
                     for tmp in filterList['product']:
                         if tmp['name'] in product_filter :
@@ -831,7 +833,6 @@ class DevTrackPhrasePrefix(Resource):
                     # print('DATA',data)
                     data["probability"]= round((doc["_score"]/devtrackmaxScore)*100)
                     devTrack.append(data)
-
                 devTrackResponse={
                     "devtrack":devTrack,
                     "devtrackFilters":filterList
@@ -977,9 +978,9 @@ class DevTrackPhrasePrefix(Resource):
             final_list=[]
             if (len(predict_value_list)>0):
                 predict_value_list.pop(0)    
-                for product_filter in predict_value_list:
+                for predict_filter in predict_value_list:
                     filter_list=[]
-                    for tmp in product_filter.split('|')[1:]:
+                    for tmp in predict_filter.split('|')[1:]:
                         filter_list.append(tmp)
                     final_list.append(filter_list)    
                 print('filter list ',final_list)
