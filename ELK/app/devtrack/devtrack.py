@@ -438,6 +438,7 @@ class DevTrackPhrasePrefix(Resource):
                 PARAMS=""
                 URL=config.ELK_URI+"devtrack/_doc/_search"
                 headers = {'Content-type': 'application/json'}
+                print('Product Filters',product_filter)
                 if((len(product_filter)==0) and (len(group_filter)==0)and (len(found_in_release_filter)==0)and (len(fixed_in_release_filter)==0)and (len(severity_filter)==0)and (len(priority_filter)==0)and (len(found_on_platform_filter)==0)and (len(date_filter)==0)and (len(service_account_filter)==0)):
                     print(check_title)
                     if(check_title == "true"):
@@ -742,12 +743,12 @@ class DevTrackPhrasePrefix(Resource):
                     #PARAMS = PARAMS[:-1]
                     PARAMS+="]}}}}}"
                     #PARAMS+="]}}}}"
-                print("Devtrack Params : ",PARAMS)
+                
                 
 
                 es = Elasticsearch(config.ELK_URI, http_auth=(config.ELK_USERNAME,config.ELK_PASSWORD))
                 data = es.search(index="devtrack", body=json.loads(PARAMS))
-                print('data needed ',data)
+                
                 devtrackmaxScore = data['hits']['max_score']
                 devtrackList = data['hits']['hits']
                 devTrack = []
@@ -785,14 +786,53 @@ class DevTrackPhrasePrefix(Resource):
                             filterList[key]=[]
                             for temp in tempSet:
                                 if not (temp == ""):
-                                    filterList[key].append({"name":temp})
+                                    filterList[key].append({"name":temp,"value":False})
+               
+                print('Product Type',product_filter)
+                if(len(product_filter)>0):
+                    for tmp in filterList['product']:
+                        if tmp['name'] in product_filter :
+                            tmp['value']=True
+                        
+
+                if(len(group_filter)>0):
+                    for tmp in filterList['group']:
+                        if tmp['name'] in group_filter :
+                            tmp['value']=True
+                        
+
+                if(len(found_in_release_filter)>0):
+                    for tmp in filterList['foundinRelease']:
+                        if tmp['name'] in found_in_release_filter :
+                            tmp['value']=True
+
+                if(len(fixed_in_release_filter)>0):
+                    for tmp in filterList['fixedinRelease']:
+                        if tmp['name'] in fixed_in_release_filter :
+                            tmp['value']=True
+                       
+
+                if(len(severity_filter)>0):
+                    for tmp in filterList['severity']:
+                        if tmp['name'] in severity_filter :
+                            tmp['value']=True
+                       
+                if(len(priority_filter)>0):
+                    for tmp in filterList['priority']:
+                        if tmp['name'] in priority_filter :
+                            tmp['value']=True
+
+                if(len(service_account_filter)>0):
+                    for tmp in filterList['serviceAccount']:
+                        if tmp['name'] in service_account_filter :
+                            tmp['value']=True
+
 
                 for doc in devtrackList:
                     data = doc["_source"]
                     # print('DATA',data)
                     data["probability"]= round((doc["_score"]/devtrackmaxScore)*100)
                     devTrack.append(data)
-
                 devTrackResponse={
                     "devtrack":devTrack,
                     "devtrackFilters":filterList
@@ -938,9 +978,9 @@ class DevTrackPhrasePrefix(Resource):
             final_list=[]
             if (len(predict_value_list)>0):
                 predict_value_list.pop(0)    
-                for predict_list in predict_value_list:
+                for predict_filter in predict_value_list:
                     filter_list=[]
-                    for tmp in predict_list.split('|')[1:]:
+                    for tmp in predict_filter.split('|')[1:]:
                         filter_list.append(tmp)
                     final_list.append(filter_list)    
                 print('filter list ',final_list)

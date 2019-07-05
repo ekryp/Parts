@@ -11,7 +11,7 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
     validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status, to_sql_lab_systems, \
-    get_part_names_for_adv_settings, to_sql_sn_part_conversion, check_sn_conversion_task_status
+    get_part_names_for_adv_settings
 
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
@@ -154,13 +154,6 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     # PON with sparable, has_std_cost,has_node_depot and valid pon_name & depot name
     all_valid = valid_pon[((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
     if all_valid.empty:
-        query = "insert into error_records (error_reason, cust_id, request_id) " \
-                "values ('{0}','{1}', {2})".format("no valid record to process - Aborting the analysis, "
-                                                  "possible problems might be 1. DNA File do not havid valid items 2. "
-                                                  "Wrong Customer Name Chosen for DNA file", 7, analysis_id)
-
-        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
-        engine.execute(query)
         raise CustomException("no valid record to process - Aborting the analysis")
 
     invalid_pon = valid_pon[~((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
@@ -235,13 +228,6 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
 
     update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
-    '''
-    to_sql_sn_part_conversion('sn_part_conversion', all_valid.copy(), analysis_id)
-    while check_sn_conversion_task_status(analysis_id):
-        import time
-        print("we have not received the serial no conversion data from infinera")
-        time.sleep(60)
-    '''
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
@@ -1234,10 +1220,10 @@ def misnomer_table_creation(misnomer_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
-        print("The task misnomer_table_creation is paused, as analysis request is running")
+        print("The task ratio_table_creation is paused, as analysis request is running")
         time.sleep(60)
 
-    print("The task misnomer_table_creation started, as No analyis request is running")
+    print("The task ratio_table_creation started, as No analyis request is running")
 
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 

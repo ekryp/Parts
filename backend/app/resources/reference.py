@@ -13,8 +13,6 @@ import pdb
 import os
 from app.resources.infinera import FileFormatIssue
 from app.auth.authorization import requires_auth
-from app import Configuration
-from sqlalchemy import create_engine
 
 
 def check_part_file(part_file, extension):
@@ -609,27 +607,3 @@ class UploadLabDetails(Resource):
         except Exception as e:
             print(str(e))
             return jsonify(msg="Error in File Uploading,Please try again", http_status_code=400)
-
-
-class PostSerial(Resource):
-
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
-        super(PostSerial, self).__init__()
-
-    @requires_auth
-    def post(self):
-        args = self.reqparse.parse_args()
-        request_id = args['request_id']
-        records = request.get_json()
-        engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
-        for record in records:
-            material_number = record.get('material_no')
-            part_name = record.get('part_name')
-            serial = record.get('serial')
-            query = "update sn_part_conversion set material_number='{0}', part_name='{1}', " \
-                    "IND_Received='Y' where request_id={2} and serial='{3}'".format(material_number, part_name, request_id,serial)
-            print(query)
-            engine.execute(query)
-        return jsonify(msg="Part name & material number updated successfully", http_status_code=200)

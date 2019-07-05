@@ -617,19 +617,6 @@ def check_analysis_task_status():
     return is_running
 
 
-def check_sn_conversion_task_status(request_id):
-    import pdb
-    pdb.set_trace()
-    not_received = True
-    query = "SELECT distinct(IND_Received) FROM sn_part_conversion where request_id=119;"
-    print(query)
-    connection = Configuration.INFINERA_DB_URL
-    ind_received = read_data(query, connection)
-    if 'Y' in ind_received['IND_Received'].tolist():
-        not_received = False
-    return not_received
-
-
 def to_sql_lab_systems(df):
 
     df.rename(columns={
@@ -645,17 +632,6 @@ def to_sql_lab_systems(df):
     )
     df.to_sql(name='lab_systems', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into lab_systems table")
-
-
-def to_sql_sn_part_conversion(table_name, df, analysis_id):
-    keep_col = ['Serial#', 'request_id']
-    df.loc[:, 'request_id'] = analysis_id
-    df = df[keep_col]
-    df.rename(columns={
-         'Serial#': 'serial',
-    }, inplace=True)
-    df.to_sql(name=table_name, con=engine, index=False, if_exists='append', chunksize=1000)
-    print("Loaded into '{0}' table".format(table_name))
 
 
 def get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type):

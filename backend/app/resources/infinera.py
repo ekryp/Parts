@@ -22,7 +22,7 @@ class GetSparePartAnalysis(Resource):
     @requires_auth
     def get(self):
         engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
-        query = "SELECT end_cust_name FROM end_customer"
+        query = "SELECT concat(concat(end_cust_name,'_'),end_cust_id_from_source) as end_cust_name FROM end_customer"
         end_customer_name_df = pd.read_sql(query, engine)
         customer_names = end_customer_name_df['end_cust_name'].tolist()
         query = "SELECT distinct(analysis_type_name)  FROM analysis_type"
@@ -2290,24 +2290,5 @@ class GetLatLonIB(Resource):
             query=query,
             db_connection_string=Configuration.INFINERA_DB_URL)
 
-        response = json.loads(result.to_json(orient="records", date_format='iso'))
-        return response
-
-
-class GetSerial(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
-        super(GetSerial, self).__init__()
-
-    @requires_auth
-    def get(self):
-        args = self.reqparse.parse_args()
-        query = "select serial from sn_part_conversion where request_id = {0}".format(args.get('request_id'))
-        print(query)
-
-        result = get_df_from_sql_query(
-            query=query,
-            db_connection_string=Configuration.INFINERA_DB_URL)
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
