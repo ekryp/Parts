@@ -434,6 +434,13 @@ class DevTrackPhrasePrefix(Resource):
                     for phrase in phrase_query:
                         search_param_list.append(phrase)
                 search_param_list = list( dict.fromkeys(search_param_list)) 
+                product_filter = list(dict.fromkeys(product_filter))
+                group_filter = list(dict.fromkeys(group_filter))
+                found_in_release_filter = list(dict.fromkeys(found_in_release_filter))
+                fixed_in_release_filter = list(dict.fromkeys(fixed_in_release_filter))
+                severity_filter = list(dict.fromkeys(severity_filter))
+                priority_filter = list(dict.fromkeys(priority_filter))
+                service_account_filter = list(dict.fromkeys(service_account_filter))
                 DATE_FILTER_PARAMS=""
                 PARAMS=""
                 URL=config.ELK_URI+"devtrack/_doc/_search"
