@@ -512,7 +512,7 @@ class GetRatio(Resource):
     def get(self):
         args = self.reqparse.parse_args()
         pon_type = args['pon_type']
-        query = "SELECT reliability_id,product_family,`1`  as number_of_spares1,`2`  as number_of_spares2,`3`  as number_of_spares3,`4`  as number_of_spares4,`5`  as number_of_spares5,`6`  as number_of_spares6,`7`  as number_of_spares7,`8`  as number_of_spares8,`9`  as number_of_spares9,`10`  as number_of_spares10 FROM reliability_class WHERE replenish_time = '{0}'".format(pon_type)
+        query = "SELECT reliability_id,product_family as Products,`1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`,`10` FROM reliability_class WHERE replenish_time = '{0}'".format(pon_type)
         result = get_df_from_sql_query(
             query=query,
             db_connection_string=Configuration.INFINERA_DB_URL)
