@@ -464,17 +464,17 @@ class GetRatio(Resource):
     def put(self):
         args = self.reqparse.parse_args()
         pon_type = args['pon_type']
-        product_family = args['product_family']
-        number_of_spares_1 = args['number_of_spares1']
-        number_of_spares_2 = args['number_of_spares2']
-        number_of_spares_3 = args['number_of_spares3']
-        number_of_spares_4 = args['number_of_spares4']
-        number_of_spares_5 = args['number_of_spares5']
-        number_of_spares_6 = args['number_of_spares6']
-        number_of_spares_7 = args['number_of_spares7']
-        number_of_spares_8 = args['number_of_spares8']
-        number_of_spares_9 = args['number_of_spares9']
-        number_of_spares_10 = args['number_of_spares10']
+        product_family = args['Products']
+        number_of_spares_1 = args['1']
+        number_of_spares_2 = args['2']
+        number_of_spares_3 = args['3']
+        number_of_spares_4 = args['4']
+        number_of_spares_5 = args['5']
+        number_of_spares_6 = args['6']
+        number_of_spares_7 = args['7']
+        number_of_spares_8 = args['8']
+        number_of_spares_9 = args['9']
+        number_of_spares_10 = args['10']
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="Insert into reliability_class (cust_id,replenish_time,product_family,`1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`,`10`) values({0},'{1}','{2}',{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})".format(7,pon_type,product_family,number_of_spares_1,number_of_spares_2,number_of_spares_3,number_of_spares_4,number_of_spares_5,number_of_spares_6,number_of_spares_7,number_of_spares_8,number_of_spares_9,number_of_spares_10)
@@ -487,18 +487,18 @@ class GetRatio(Resource):
     def patch(self):
         args = self.reqparse.parse_args()
         pon_type = args['pon_type']
-        product_family = args['product_family']
+        product_family = args['Products']
         reliability_id = args['reliability_id']
-        number_of_spares_1 = args['number_of_spares1']
-        number_of_spares_2 = args['number_of_spares2']
-        number_of_spares_3 = args['number_of_spares3']
-        number_of_spares_4 = args['number_of_spares4']
-        number_of_spares_5 = args['number_of_spares5']
-        number_of_spares_6 = args['number_of_spares6']
-        number_of_spares_7 = args['number_of_spares7']
-        number_of_spares_8 = args['number_of_spares8']
-        number_of_spares_9 = args['number_of_spares9']
-        number_of_spares_10 = args['number_of_spares10']
+        number_of_spares_1 = args['1']
+        number_of_spares_2 = args['2']
+        number_of_spares_3 = args['3']
+        number_of_spares_4 = args['4']
+        number_of_spares_5 = args['5']
+        number_of_spares_6 = args['6']
+        number_of_spares_7 = args['7']
+        number_of_spares_8 = args['8']
+        number_of_spares_9 = args['9']
+        number_of_spares_10 = args['10']
         try:
 
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
