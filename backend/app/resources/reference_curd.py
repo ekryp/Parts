@@ -375,16 +375,16 @@ class GetMisnomer(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('Misnomer_PON',  location='form')
-        self.reqparse.add_argument('Correct_PON', location='form')
+        self.reqparse.add_argument('Misnomer_Part',  location='form')
+        self.reqparse.add_argument('Correct_Part', location='form')
         self.reqparse.add_argument('reference_table_id', type=str,required=False, help='reference_table_id', location='args')
         super(GetMisnomer, self).__init__()
 
     @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
-        Misnomer_PON = args['Misnomer_PON']
-        Correct_PON = args['Correct_PON']
+        Misnomer_PON = args['Misnomer_Part']
+        Correct_PON = args['Correct_Part']
         reference_table_id = args['reference_table_id']
         try:
             query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_name='{1}'  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
@@ -397,8 +397,8 @@ class GetMisnomer(Resource):
     @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
-        Misnomer_PON = args['Misnomer_PON']
-        Correct_PON = args['Correct_PON']
+        Misnomer_PON = args['Misnomer_Part']
+        Correct_PON = args['Correct_Part']
         try:       
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="Insert into misnomer_part_conversion (cust_id,misnomer_part_name,correct_part_name) values ({0},'{1}','{2}')".format(7,Misnomer_PON,Correct_PON)
@@ -409,7 +409,7 @@ class GetMisnomer(Resource):
 
     @requires_auth
     def get(self):
-        query = "select correct_part_name as Correct_PON, misnomer_part_name as Misnomer_PON, reference_table_id "\
+        query = "select correct_part_name as Correct_Part, misnomer_part_name as Misnomer_Part, reference_table_id "\
                 " from misnomer_part_conversion "
                
         result = get_df_from_sql_query(
