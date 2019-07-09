@@ -319,6 +319,13 @@ class UploadHighSpare(Resource):
                 high_spare_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "high_spare_file_{0}{1}".format(upload_date, extension.lower())
+                high_spare_file = file.filename
+                excel.save(file, folder=dest_folder)
+
             high_spare_file = os.path.join(full_path, high_spare_file)
         try:
             check_high_spare_file(high_spare_file, extension)
