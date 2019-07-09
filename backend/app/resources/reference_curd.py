@@ -549,9 +549,9 @@ class Customer(Resource):
         self.reqparse.add_argument('cust_id', location='form')
         self.reqparse.add_argument('end_cust_country', location='form')
         self.reqparse.add_argument('end_cust_geo', location='form')
-        self.reqparse.add_argument('end_cust_name', location='form')
+        self.reqparse.add_argument('Customer_Name', location='form')
         self.reqparse.add_argument('end_cust_id', required=False, help='reference_table_id', location='args')
-        self.reqparse.add_argument('end_cust_id_from_source', location='form')
+        self.reqparse.add_argument('Sold_To_Customer', location='form')
         self.reqparse.add_argument('end_cust_industry', location='form')
         self.reqparse.add_argument('end_cust_site_count', location='form')
         self.reqparse.add_argument('end_cust_status', location='form')
@@ -565,13 +565,13 @@ class Customer(Resource):
         end_cust_country = args['end_cust_country']
         end_cust_geo = args['end_cust_geo']
         end_cust_id = args['end_cust_id']
-        end_cust_id_from_source = args['end_cust_id_from_source']
+        end_cust_id_from_source = args['Sold_To_Customer']
         end_cust_industry = args['end_cust_industry']
         end_cust_site_count = args['end_cust_site_count']
         end_cust_status = args['end_cust_status']
         end_cust_target_market_segment = args['end_cust_target_market_segment']
         end_cust_tz = args['end_cust_tz']
-        end_cust_name = args['end_cust_name']
+        end_cust_name = args['Customer_Name']
         try:
             query = "update end_customer set end_cust_id_from_source='{0}',end_cust_name='{1}'  where end_cust_id = {2}".format(end_cust_id_from_source,end_cust_name,end_cust_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
@@ -617,6 +617,11 @@ class Customer(Resource):
 
         result = result.loc[:, ~result.columns.duplicated()]
         #Removes duplicate column names not column values
+        result.rename(columns={
+            'end_cust_id_from_source': 'Sold_To_Customer',
+            'end_cust_name': 'Customer_Name'
+        }, inplace=True
+        )
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
