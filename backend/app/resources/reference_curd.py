@@ -134,8 +134,8 @@ class GetHighSpare(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('SubstitutionPON',  location='form')
-        self.reqparse.add_argument('ClassicPON', location='form')
+        self.reqparse.add_argument('Substitution_Part',  location='form')
+        self.reqparse.add_argument('Classic_Part', location='form')
         self.reqparse.add_argument('high_spare_id', type=str,required=False, help='high_spare_id', location='args')
         super(GetHighSpare, self).__init__()
 
@@ -145,8 +145,8 @@ class GetHighSpare(Resource):
     @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
-        SubstitutionPON = args['SubstitutionPON']
-        ClassicPON = args['ClassicPON']
+        SubstitutionPON = args['Substitution_Part']
+        ClassicPON = args['Classic_Part']
         high_spare_id = args['high_spare_id']
         try:
             query = "update high_spare set part_name='{0}',high_spare_part_name='{1}'  where high_spare_id = {2}".format(ClassicPON,SubstitutionPON,high_spare_id)
@@ -159,8 +159,8 @@ class GetHighSpare(Resource):
     @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
-        ClassicPON = args['ClassicPON']
-        SubstitutionPON = args['SubstitutionPON']
+        ClassicPON = args['Classic_Part']
+        SubstitutionPON = args['Substitution_Part']
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             part_cost_query="Insert into high_spare (cust_id,part_name,high_spare_part_name) values ({0},'{1}','{2}')".format(7,ClassicPON,SubstitutionPON)
@@ -171,7 +171,7 @@ class GetHighSpare(Resource):
 
     @requires_auth
     def get(self):
-        query = "select part_name as ClassicPON, high_spare_part_name as SubstitutionPON, high_spare_id " \
+        query = "select part_name as Classic_Part, high_spare_part_name as Substitution_Part, high_spare_id " \
                 "from high_spare "
 
         result = get_df_from_sql_query(
