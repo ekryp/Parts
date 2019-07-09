@@ -134,8 +134,8 @@ class GetHighSpare(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('SubstitutionPON',  location='form')
-        self.reqparse.add_argument('ClassicPON', location='form')
+        self.reqparse.add_argument('Substitution_Part',  location='form')
+        self.reqparse.add_argument('Classic_Part', location='form')
         self.reqparse.add_argument('high_spare_id', type=str,required=False, help='high_spare_id', location='args')
         super(GetHighSpare, self).__init__()
 
@@ -145,8 +145,8 @@ class GetHighSpare(Resource):
     @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
-        SubstitutionPON = args['SubstitutionPON']
-        ClassicPON = args['ClassicPON']
+        SubstitutionPON = args['Substitution_Part']
+        ClassicPON = args['Classic_Part']
         high_spare_id = args['high_spare_id']
         try:
             query = "update high_spare set part_name='{0}',high_spare_part_name='{1}'  where high_spare_id = {2}".format(ClassicPON,SubstitutionPON,high_spare_id)
@@ -159,8 +159,8 @@ class GetHighSpare(Resource):
     @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
-        ClassicPON = args['ClassicPON']
-        SubstitutionPON = args['SubstitutionPON']
+        ClassicPON = args['Classic_Part']
+        SubstitutionPON = args['Substitution_Part']
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             part_cost_query="Insert into high_spare (cust_id,part_name,high_spare_part_name) values ({0},'{1}','{2}')".format(7,ClassicPON,SubstitutionPON)
@@ -171,7 +171,7 @@ class GetHighSpare(Resource):
 
     @requires_auth
     def get(self):
-        query = "select part_name as ClassicPON, high_spare_part_name as SubstitutionPON, high_spare_id " \
+        query = "select part_name as Classic_Part, high_spare_part_name as Substitution_Part, high_spare_id " \
                 "from high_spare "
 
         result = get_df_from_sql_query(
@@ -375,16 +375,16 @@ class GetMisnomer(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('Misnomer_PON',  location='form')
-        self.reqparse.add_argument('Correct_PON', location='form')
+        self.reqparse.add_argument('Misnomer_Part',  location='form')
+        self.reqparse.add_argument('Correct_Part', location='form')
         self.reqparse.add_argument('reference_table_id', type=str,required=False, help='reference_table_id', location='args')
         super(GetMisnomer, self).__init__()
 
     @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
-        Misnomer_PON = args['Misnomer_PON']
-        Correct_PON = args['Correct_PON']
+        Misnomer_PON = args['Misnomer_Part']
+        Correct_PON = args['Correct_Part']
         reference_table_id = args['reference_table_id']
         try:
             query = "update misnomer_part_conversion set misnomer_part_name='{0}',correct_part_name='{1}'  where reference_table_id = {2}".format(Misnomer_PON,Correct_PON,reference_table_id)
@@ -397,8 +397,8 @@ class GetMisnomer(Resource):
     @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
-        Misnomer_PON = args['Misnomer_PON']
-        Correct_PON = args['Correct_PON']
+        Misnomer_PON = args['Misnomer_Part']
+        Correct_PON = args['Correct_Part']
         try:       
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="Insert into misnomer_part_conversion (cust_id,misnomer_part_name,correct_part_name) values ({0},'{1}','{2}')".format(7,Misnomer_PON,Correct_PON)
@@ -409,7 +409,7 @@ class GetMisnomer(Resource):
 
     @requires_auth
     def get(self):
-        query = "select correct_part_name as Correct_PON, misnomer_part_name as Misnomer_PON, reference_table_id "\
+        query = "select correct_part_name as Correct_Part, misnomer_part_name as Misnomer_Part, reference_table_id "\
                 " from misnomer_part_conversion "
                
         result = get_df_from_sql_query(
@@ -549,9 +549,9 @@ class Customer(Resource):
         self.reqparse.add_argument('cust_id', location='form')
         self.reqparse.add_argument('end_cust_country', location='form')
         self.reqparse.add_argument('end_cust_geo', location='form')
-        self.reqparse.add_argument('end_cust_name', location='form')
+        self.reqparse.add_argument('Customer_Name', location='form')
         self.reqparse.add_argument('end_cust_id', required=False, help='reference_table_id', location='args')
-        self.reqparse.add_argument('end_cust_id_from_source', location='form')
+        self.reqparse.add_argument('Sold_To_Customer', location='form')
         self.reqparse.add_argument('end_cust_industry', location='form')
         self.reqparse.add_argument('end_cust_site_count', location='form')
         self.reqparse.add_argument('end_cust_status', location='form')
@@ -565,13 +565,13 @@ class Customer(Resource):
         end_cust_country = args['end_cust_country']
         end_cust_geo = args['end_cust_geo']
         end_cust_id = args['end_cust_id']
-        end_cust_id_from_source = args['end_cust_id_from_source']
+        end_cust_id_from_source = args['Sold_To_Customer']
         end_cust_industry = args['end_cust_industry']
         end_cust_site_count = args['end_cust_site_count']
         end_cust_status = args['end_cust_status']
         end_cust_target_market_segment = args['end_cust_target_market_segment']
         end_cust_tz = args['end_cust_tz']
-        end_cust_name = args['end_cust_name']
+        end_cust_name = args['Customer_Name']
         try:
             query = "update end_customer set end_cust_id_from_source='{0}',end_cust_name='{1}'  where end_cust_id = {2}".format(end_cust_id_from_source,end_cust_name,end_cust_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
@@ -617,6 +617,11 @@ class Customer(Resource):
 
         result = result.loc[:, ~result.columns.duplicated()]
         #Removes duplicate column names not column values
+        result.rename(columns={
+            'end_cust_id_from_source': 'Sold_To_Customer',
+            'end_cust_name': 'Customer_Name'
+        }, inplace=True
+        )
         response = json.loads(result.to_json(orient="records", date_format='iso'))
         return response
 
