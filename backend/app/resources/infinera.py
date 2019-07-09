@@ -1131,8 +1131,8 @@ class GetErrorRecords(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'SELECT  error_reason,type,PON,node_name  FROM error_records where request_id={0} ' \
-                'group by error_reason,type,PON,node_name'.format(request_id)
+        query = 'SELECT  error_reason,type,PON,node_name,error_code  FROM error_records where request_id={0} ' \
+                'group by error_reason,type,PON,node_name order by error_code'.format(request_id)
 
         result = get_df_from_sql_query(
             query=query,
