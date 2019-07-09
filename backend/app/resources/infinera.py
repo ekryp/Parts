@@ -5,7 +5,7 @@ from app.auth.authorization import requires_auth
 import pandas as pd
 from app import Configuration
 from app import app
-from app import csvs, excel, mytext
+from app import csvs, excel, mytext, my_tsvs
 from app.tasks import celery, add_prospect, update_prospect_step
 from app.utils.utils import get_df_from_sql_query
 from flask import jsonify
@@ -13,8 +13,8 @@ from flask import request
 from flask_restful import Resource
 from flask_restful import reqparse
 from sqlalchemy import create_engine
-from app.tasks.common_functions import read_data
-from app.tasks import derive_table_creation, bom_derive_table_creation
+from app.tasks.common_functions import read_data, read_df, check_analysis_task_status
+from app.tasks import derive_table_creation, bom_derive_table_creation, remove_analysis_task
 
 
 class GetSparePartAnalysis(Resource):
@@ -22,7 +22,7 @@ class GetSparePartAnalysis(Resource):
     @requires_auth
     def get(self):
         engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
-        query = "SELECT concat(concat(end_cust_name,'_'),end_cust_id_from_source) as end_cust_name FROM end_customer"
+        query = "SELECT end_cust_name FROM end_customer"
         end_customer_name_df = pd.read_sql(query, engine)
         customer_names = end_customer_name_df['end_cust_name'].tolist()
         query = "SELECT distinct(analysis_type_name)  FROM analysis_type"
@@ -50,7 +50,7 @@ class GetstepsAllUsers(Resource):
                 "on c.step_id = b.prospects_step " \
                 "right join analysis_request as d on " \
                 "d.analysis_request_time = b.analysis_request_time " \
-                "where prospects_email is NOT NULL order by prospects_email"
+                "where prospects_email is NOT NULL order by d.analysis_request_time desc"
 
 
         result = get_df_from_sql_query(
@@ -1109,7 +1109,8 @@ class GetAnalysisName(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'SELECT analysis_name FROM analysis_request where analysis_request_id={0}'.format(request_id)
+        query = 'SELECT analysis_name, customer_name FROM analysis_request where analysis_request_id={0}'.format(
+            request_id)
 
         result = get_df_from_sql_query(
             query=query,
@@ -1130,7 +1131,8 @@ class GetErrorRecords(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'SELECT  error_reason,type,PON,node_name  FROM error_records where request_id={0}'.format(request_id)
+        query = 'SELECT  error_reason,type,PON,node_name  FROM error_records where request_id={0} ' \
+                'group by error_reason,type,PON,node_name'.format(request_id)
 
         result = get_df_from_sql_query(
             query=query,
@@ -1157,6 +1159,13 @@ class PostSparePartAnalysis(Resource):
         self.reqparse.add_argument('user_email_id', required=True, location='form')
         self.reqparse.add_argument('replenish_time', required=True, location='form')
         self.reqparse.add_argument('is_mtbf', required=True, location='form')
+        self.reqparse.add_argument('is_inservice_only', required=False, location='form')
+        self.reqparse.add_argument('item_category', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_category', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_family', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_phase', required=False, location='form', action='append')
+        self.reqparse.add_argument('product_type', required=False, location='form', action='append')
+        self.reqparse.add_argument('request_type', required=True, location='form', action='append')
         super(PostSparePartAnalysis, self).__init__()
 
     @requires_auth
@@ -1171,18 +1180,33 @@ class PostSparePartAnalysis(Resource):
         customer_name = args['customer_name'].replace(",", "|")
         replenish_time = args['replenish_time'].replace(",", "|")
         is_mtbf = request.form.get('is_mtbf')
+        is_inservice_only = request.form.getlist('is_inservice_only')
+        item_category = request.form.getlist('item_category')
+        product_category = request.form.getlist('product_category')
+        product_family = request.form.getlist('product_family')
+        product_phase = request.form.getlist('product_phase')
+        product_type = request.form.getlist('product_type')
+        request_type = request.form.get('request_type')
+        item_category_col_val = 'All' if not item_category else ','.join(item_category)
+        product_category_col_val = 'All' if not product_category else ','.join(product_category)
+        product_family_col_val = 'All' if not product_family else ','.join(product_family)
+        product_phase_col_val = 'All' if not product_phase else ','.join(product_phase)
+        product_type_col_val = 'All' if not product_type else ','.join(product_type)
+        inservice_type_col_val = 'All' if not is_inservice_only else ','.join(is_inservice_only)
 
         def save_analysis_record_db(input_file):
 
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
             query = "INSERT INTO analysis_request (cust_id, analysis_name, analysis_type, " \
                     "replenish_time, user_email_id, analysis_request_time, dna_file_name, " \
-                    "current_inventory_file_name, customer_name) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
-                    "'{6}','{7}','{8}')".format(7, args['analysis_name'], args['analysis_type'],
+                    "current_inventory_file_name, customer_name, request_type, item_category, " \
+                    "product_category, product_family, product_phase, product_type, inservice_type) values ({0},'{1}','{2}','{3}','{4}','{5}'," \
+                    "'{6}','{7}','{8}', '{9}','{10}','{11}','{12}','{13}','{14}','{15}')".format(7, args['analysis_name'], args['analysis_type'],
                                                 replenish_time,
                                                 args['user_email_id'], analysis_date,
                                                 input_file, sap_export_file,
-                                                customer_name)
+                                                customer_name, request_type, item_category_col_val, product_category_col_val,
+                                                product_family_col_val, product_phase_col_val, product_type_col_val, inservice_type_col_val)
             engine.execute(query)
 
         def get_analysis_id():
@@ -1221,19 +1245,41 @@ class PostSparePartAnalysis(Resource):
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
             '''
 
-        def check_dna_file(dna_file, extension):
+        def check_dna_file(dna_file, extension, is_inservice_only):
+
             if extension.lower() == '.csv':
                 dna_df = pd.read_csv(dna_file, nrows=200)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.txt':
                 dna_df = pd.read_csv(dna_file, sep='\t', nrows=200)
+                dna_df = read_df(dna_df)
 
             elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
                 dna_df = pd.read_excel(dna_file)
+                dna_df = read_df(dna_df)
+
+            elif extension.lower() == '.tsv':
+                lookup = '#Type'
+                lines = 0
+                with open(dna_file) as myFile:
+                    for num, line in enumerate(myFile, 1):
+                        if lookup in line:
+                            lines=num
+                            break
+
+                columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name', 'Part#',
+                           'Serial#', 'Service State']
+                dna_df = pd.read_csv(dna_file, sep='\t', skiprows=lines, names=columns)
 
             dna_row, dna_cols = dna_df.shape
             if dna_row < 1:
                 raise FileFormatIssue(dna_file, "No Records to process,BAD DNA File")
+
+            if is_inservice_only:
+                if 'Service State' not in dna_df.columns:
+                    raise FileFormatIssue(dna_file, "You selected in-service only option but DNA file "
+                                                    "do not have 'Service State' column,BAD DNA File")
 
         def check_bom_file(bom_file, extension):
 
@@ -1287,8 +1333,15 @@ class PostSparePartAnalysis(Resource):
                     customer_dna_file = file.filename
                     mytext.save(file, folder=dest_folder)
 
+                elif extension.lower() == '.tsv':
+                    dir_path = os.path.join(app.config.get("UPLOADED_TSV_DEST"), dest_folder)
+                    full_path = os.path.abspath(dir_path)
+                    file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                    customer_dna_file = file.filename
+                    my_tsvs.save(file, folder=dest_folder)
+
                 dna_file = os.path.join(full_path, customer_dna_file)
-                check_dna_file(dna_file, extension)
+                check_dna_file(dna_file, extension, is_inservice_only)
 
             for file in request.files.getlist('sap_export_file'):
 
@@ -1345,26 +1398,28 @@ class PostSparePartAnalysis(Resource):
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                #derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
-
+                # derive_table_creation(dna_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, request_type)
 
                 celery.send_task('app.tasks.derive_table_creation', [dna_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time,args['analysis_name'], is_mtbf])
-
+                                                               customer_name, prospect_id, replenish_time,
+                                                                     args['analysis_name'], is_mtbf, is_inservice_only,
+                                                                     item_category, product_category, product_family,
+                                                                     product_phase, product_type, request_type])
 
             elif bom_file:
                 save_analysis_record_db(bom_file)
                 analysis_id = get_analysis_id()
                 update_prospect_step(prospect_id, 1, analysis_date)  # Processing Files Status
                 print("Prospect :'{0}' is at prospect_id: {1}".format(args['user_email_id'], prospect_id))
-                #bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf)
-
+                # bom_derive_table_creation(bom_file, sap_file, analysis_date, args['user_email_id'], analysis_id, customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf, item_category, product_category, product_family, product_phase, product_type, request_type)
 
 
                 celery.send_task('app.tasks.bom_derive_table_creation', [bom_file, sap_file, analysis_date,
                                                                 args['user_email_id'], analysis_id,
-                                                               customer_name, prospect_id, replenish_time, args['analysis_name'], is_mtbf])
+                                                               customer_name, prospect_id, replenish_time,
+                                                                         args['analysis_name'], is_mtbf, item_category,
+                                 product_category, product_family, product_phase, product_type, request_type])
 
 
             return jsonify(msg="Files Uploaded Successfully", http_status_code=200, analysis_id=analysis_id)
@@ -1841,6 +1896,436 @@ class GetAnalysisDashboardCount(Resource):
             return response
 
 
+class AdvaceSettings(Resource):
+
+    @requires_auth
+    def get(self):
+        connection = Configuration.INFINERA_DB_URL
+        product_type_query = 'SELECT distinct(product_type) FROM parts;'
+        product_type_df = read_data(product_type_query, connection)
+        product_type = product_type_df['product_type'].tolist()
+
+        product_family_query = 'SELECT distinct(product_family) FROM parts;'
+        product_family_df = read_data(product_family_query, connection)
+        product_family = product_family_df['product_family'].tolist()
+
+        product_category_query = 'SELECT distinct(product_category) FROM parts;'
+        product_category_df = read_data(product_category_query, connection)
+        product_category = product_category_df['product_category'].tolist()
+
+        item_category_query = 'SELECT distinct(item_category) FROM parts;'
+        item_category_df = read_data(item_category_query, connection)
+        item_category = item_category_df['item_category'].tolist()
+
+        product_phase_query = 'SELECT distinct(product_phase) FROM parts;'
+        product_phase_df = read_data(product_phase_query, connection)
+        product_phase = product_phase_df['product_phase'].tolist()
+
+        response = {
+            'product_type': product_type,
+            'product_family': product_family,
+            'product_category': product_category,
+            'item_category': item_category,
+            'product_phase': product_phase
+        }
+        return response
 
 
+class DNAPreprocess(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_email_id', required=True, location='form')
+        super(DNAPreprocess, self).__init__()
+
+    @requires_auth
+    def post(self):
+
+        def get_service_state(dna_file, extension):
+
+            if extension.lower() == '.csv':
+                dna_df = pd.read_csv(dna_file)
+                dna_df = read_df(dna_df)
+
+            elif extension.lower() == '.txt':
+                dna_df = pd.read_csv(dna_file, sep='\t')
+                dna_df = read_df(dna_df)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dna_df = pd.read_excel(dna_file)
+                dna_df = read_df(dna_df)
+
+            elif extension.lower() == '.tsv':
+                lookup = '#Type'
+                lines = []
+                with open(dna_file) as myFile:
+                    for num, line in enumerate(myFile, 1):
+                        if lookup in line:
+                            lines.append(num)
+
+                data_frame_list = []
+                data = pd.DataFrame()
+                print(lines)
+                columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
+                               'Part#', 'Serial#', 'Service State']
+
+                for index, line in enumerate(lines):
+                    data_frame = pd.DataFrame()
+                    try:
+                        print("getting data from {0} to {1}".format(lines[index] - 1,
+                                                                    lines[index + 1] - lines[index] - 2))
+                        data_frame = pd.read_csv(dna_file, sep='\t', skiprows=lines[index] - 1,
+                                                 nrows=lines[index + 1] - lines[index] - 2, usecols=columns)
+
+                    except:
+                        print("getting data from {0} to end ".format(lines[index] - 1))
+                        data_frame = pd.read_csv(dna_file, sep='\t', skiprows=lines[index] - 1, usecols=columns)
+
+                    data_frame_list.append(data_frame)
+
+                dna_df = pd.concat(data_frame_list)
+
+            dna_row, dna_cols = dna_df.shape
+            if dna_row < 1:
+                raise FileFormatIssue(dna_file, "No Records to pre-process,BAD DNA File")
+
+            if 'Service State' not in dna_df.columns:
+                response = {'service_states': []}
+            else:
+                response = { 'service_states' : dna_df['Service State'].unique().tolist()}
+
+            return response
+        
+        dest_folder = request.form.get('user_email_id')
+        analysis_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+
+        for file in request.files.getlist('customer_dna_file'):
+
+            name, extension = os.path.splitext(file.filename)
+
+            if extension.lower() == '.csv':
+                dir_path = os.path.join(app.config.get("UPLOADED_CSV_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                csvs.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                excel.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.txt':
+                dir_path = os.path.join(app.config.get("UPLOADED_TEXT_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                mytext.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.tsv':
+                dir_path = os.path.join(app.config.get("UPLOADED_TSV_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "customer_dna_file_{0}{1}".format(analysis_date, extension.lower())
+                customer_dna_file = file.filename
+                my_tsvs.save(file, folder=dest_folder)
+
+            dna_file = os.path.join(full_path, customer_dna_file)
+            return get_service_state(dna_file, extension)
+
+
+class GetTopPonsIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopPonsIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select product_ordering_name,count(*) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by product_ordering_name order by pon_count desc;'
+
+        query = base_query + qroup_by_query
+        print(query)
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopDepotsIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopDepotsIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select node_depot_belongs as depot_name ,count(*) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0})'.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by depot_name order by pon_count desc;'
+
+        query = base_query + qroup_by_query
+
+        print(query)
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopCustomerIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopCustomerIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select customer_name,count(product_ordering_name) as pon_count FROM current_ib ' \
+                     'where pon_quanity > 0  and request_id in ({0}) '.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by customer_name order by pon_count desc'
+
+        query = base_query + qroup_by_query
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetTopExtendedIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetTopExtendedIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+
+        base_query = 'select product_ordering_name,node_depot_belongs as depot_name,customer_name,count(*) as pon_count FROM current_ib ' \
+                'where pon_quanity > 0  and request_id in ({0}) '.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by product_ordering_name,depot_name, customer_name order by pon_count desc'
+
+        query = base_query + qroup_by_query
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetLatLonIB(Resource):
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('customer_filter', required=False, location='args', action='append')
+        self.reqparse.add_argument('depot_filter', required=False, location='args', action='append')
+        super(GetLatLonIB, self).__init__()
+
+    @requires_auth
+    def get(self):
+
+        args = self.reqparse.parse_args()
+        filter_query = 'SELECT distinct(request_id) FROM summary where is_latest="Y" '
+        base_query = 'SELECT a.node_depot_belongs as depot_name,b.lat,b.long,count(product_ordering_name) as pon_count  FROM current_ib as a' \
+                ' right join depot as b on a.node_depot_belongs= b.depot_name where a.node_depot_belongs is not null and ' \
+                'b.lat is not null and b.long is not null and a.request_id in ({0})'.format(filter_query)
+
+        '''
+        Here we are converting list of customer_name & depot_name to sql in clause
+        t = tuple(l)
+        query = "select name from studens where id IN {}".format(t)   
+        But if list contains 1 item,then it would create problem as in (1,)
+        which is bad syntax in SQL thats reason we added check of len.
+        '''
+
+        if args.get('customer_filter') and len(args.get('customer_filter')) > 1:
+            customer_filter = " and a.customer_name in {0} ".format(tuple(args.get('customer_filter')))
+            base_query = base_query + customer_filter
+        elif args.get('customer_filter'):
+            customer_filter = " and a.customer_name in ('{0}') ".format(str(tuple(args.get('customer_filter'))[0]))
+            base_query = base_query + customer_filter
+
+        if args.get('depot_filter') and len(args.get('depot_filter')) > 1:
+            depot_filter = " and a.node_depot_belongs in {0} ".format(tuple(args.get('depot_filter')))
+            base_query = base_query + depot_filter
+        elif args.get('depot_filter'):
+            depot_filter = " and a.node_depot_belongs in ('{0}') ".format(str(tuple(args.get('depot_filter'))[0]))
+            base_query = base_query + depot_filter
+
+        qroup_by_query = ' group by depot_name order by pon_count desc'
+
+        query = base_query + qroup_by_query
+
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class GetSerial(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=True, help='id', location='args')
+        super(GetSerial, self).__init__()
+
+    @requires_auth
+    def get(self):
+        args = self.reqparse.parse_args()
+        query = "select serial from sn_part_conversion where request_id = {0}".format(args.get('request_id'))
+        print(query)
+
+        result = get_df_from_sql_query(
+            query=query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        return response
+
+
+class RemoveAnalysis(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('request_id', type=int, required=True, help='Please Provide request id', location='args')
+        self.reqparse.add_argument('user_email_id', type=str, required=True, help='Please Provide User Email id', location='args')
+        super(RemoveAnalysis, self).__init__()
+
+    @requires_auth
+    def delete(self):
+        args = self.reqparse.parse_args()
+        request_id = args.get('request_id')
+        email_id = args.get('user_email_id')
+        # remove_analysis_task(request_id, email_id)
+        celery.send_task('app.tasks.remove_analysis_task', [request_id, email_id])
+        return jsonify(msg="Your Request to delete data has been accepted,"
+                           "you will receive an email once it gets deleted.Thank You", http_status_code=200)

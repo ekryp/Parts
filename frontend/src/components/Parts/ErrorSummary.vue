@@ -34,7 +34,24 @@
         >
           <br>
           <div class="shadow p-3 mb-5 bg-white rounded" id="ErrorDiv">
-            <div class="float-right" style="paddingBottom:1%"></div>
+            <div class="float-right" style="paddingBottom:1%">
+              <button
+                type="button"
+                class="btn btn-success"
+                v-tooltip.top.hover.focus="'Click to Download'"
+              >
+                <DownloadExcel
+                  :data="errorData"
+                  type="csv"
+                  name="ErrorData.csv"
+                  :columnHeaders="errorTitle"
+                >
+                  <i class="fas fa-file-excel"></i>
+                  &nbsp;
+                  Export
+                </DownloadExcel>
+              </button>
+            </div>
 
             <br>
             <ag-grid-vue
@@ -68,12 +85,14 @@ import * as data from "./data.json";
 import Vue from "vue";
 import * as constant from "../constant/constant";
 import { AgGridVue } from "ag-grid-vue";
+import DownloadExcel from "@/components/DownloadExcel/JsonExcel";
 
 export default {
   name: "ErrorSummary",
   components: {
     SideNav,
     headernav,
+    DownloadExcel,
     AgGridVue
   },
   created() {
@@ -91,6 +110,7 @@ export default {
       currentInventory: [],
       partsAnalysisSummaryReslut: [],
       dispId: "",
+      errorTitle: ["Part Name", "Error Reason", "Node Name", "Type"],
       analysisName: [],
       currentGross: [],
       errorData: [],
@@ -99,6 +119,7 @@ export default {
       current: "Error Summary",
       errorColumnDefs: null,
       errorRowData: [],
+      errorData: [],
       ErrorGridOptions: {
         rowStyle: {
           color: "#72879d"
@@ -126,15 +147,15 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+            Authorization:
+              "Bearer " + localStorage.getItem("auth0_access_token")
           }
         }
       )
         .then(response => {
           response.text().then(text => {
             const payload = text && JSON.parse(text);
-            if(data.code === "token_expired")
-            {
+            if (data.code === "token_expired") {
               this.logout();
             }
             console.log("Get Error data ---->", payload);
@@ -147,6 +168,7 @@ export default {
                 type: this.errorData[i].type
               });
             }
+            this.errorData = this.errorRowData;
           });
         })
         .catch(handleError => {

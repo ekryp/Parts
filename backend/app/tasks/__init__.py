@@ -10,7 +10,8 @@ from app.tasks.common_functions import fetch_db, misnomer_conversion, \
     add_hnad, to_sql_bom, read_data, to_sql_mtbf, to_sql_current_ib, to_sql_part_table,\
     to_sql_std_cost_table, to_sql_depot_table, to_sql_node_table, to_sql_end_customer_table, \
     to_sql_high_spare_table, to_sql_misnomer_table, to_sql_reliability_class_table, to_sql_bom_record,\
-    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status
+    validate_pon_for_bom, validate_depot_for_bom, to_sql_end_customer, check_analysis_task_status, to_sql_lab_systems, \
+    get_part_names_for_adv_settings, to_sql_sn_part_conversion, check_sn_conversion_task_status
 
 from app.tasks.customer_dna import cleaned_dna_file
 from celery import Celery
@@ -20,13 +21,14 @@ from flask_restful import Resource
 from app.tasks.bom_data import read_bom_file
 
 
-
 engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 connection = Configuration.INFINERA_DB_URL
+
 
 class CustomException(Exception):
     def __init__(self, msg):
         self.msg = msg
+
 
 def make_celery(app):
     celery = Celery(app.import_name,
@@ -41,7 +43,9 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
+
 celery = make_celery(app)
+
 
 def add_prospect(email_id):
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
@@ -78,14 +82,14 @@ def update_prospect_step(prospects_id, step_id, analysis_date):
         print("Failed to update status for prospects_id {0}".format(prospects_id))
 
 
-def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     # 5.4 Load all Data elements from Reference Data
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
-     parts_cost, high_spares, depot) = fetch_db(replenish_time)
+     parts_cost, high_spares, depot) = fetch_db(replenish_time, customer_name)
 
     # clean PONs, part# and installed equipments
-    input_db = cleaned_dna_file(dna_file)
+    input_db = cleaned_dna_file(dna_file, is_inservice_only)
 
 
     # 5.5 Convert Misnomer PON to correct PON
@@ -135,10 +139,28 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     # Keep only sparable pons
     valid_pon = valid_pon[valid_pon['is_sparrable'] == True]
 
+    # Added Code for adv settings here
+    # First check whther we received adv setting
+    # If received then only get parts with matching adv settings
+
+    if item_category or product_category or product_family or product_phase or product_type:
+        part_in_adv_settings = get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type)
+        if part_in_adv_settings.empty:
+            raise CustomException("no valid parts in advance settings - Aborting the analysis")
+        valid_pon = pd.merge(valid_pon, part_in_adv_settings, how='inner', left_on='Product Ordering Name', right_on='parts_adv')
+        valid_pon = valid_pon.drop(['parts_adv'], 1)
+
     # all_valid conditions
     # PON with sparable, has_std_cost,has_node_depot and valid pon_name & depot name
     all_valid = valid_pon[((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
     if all_valid.empty:
+        query = "insert into error_records (error_reason, cust_id, request_id) " \
+                "values ('{0}','{1}', {2})".format("no valid record to process - Aborting the analysis, "
+                                                  "possible problems might be 1. DNA File does not have valid items 2. "
+                                                  "Wrong Customer Name Chosen for DNA file", 7, analysis_id)
+
+        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+        engine.execute(query)
         raise CustomException("no valid record to process - Aborting the analysis")
 
     invalid_pon = valid_pon[~((valid_pon['has_std_cost'] == True) & (valid_pon['has_node_depot'] == True))]
@@ -213,10 +235,17 @@ def shared_function(dna_file, sap_file, analysis_date, analysis_id, prospect_id,
     to_sql_current_inventory('current_inventory', sap_inventory, analysis_date, analysis_id)
 
     update_prospect_step(prospect_id, 4, analysis_date)  # Dump sap_inventory Table Status
+    '''
+    to_sql_sn_part_conversion('sn_part_conversion', all_valid.copy(), analysis_id)
+    while check_sn_conversion_task_status(analysis_id):
+        import time
+        print("we have not received the serial no conversion data from infinera")
+        time.sleep(60)
+    '''
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     # 5.2 Capture the data from the file in PON-Depot and Inventory values.
     # Note some of these parts may not be sparable and will perform such checks later.
@@ -239,7 +268,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
     # Unspared pon table , High spares table (Substitution matrix data)
 
     (misnomer_pons, standard_cost, node, spared_pons, highspares, get_ratio_to_pon, parts,
-     parts_cost, high_spares, depot) = fetch_db(replenish_time)
+     parts_cost, high_spares, depot) = fetch_db(replenish_time, customer_name)
 
     # Section 5.7 validate_PON & validate_depot
     # This step checks if PON has invalid names and Depots have valid names.
@@ -257,6 +286,19 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
 
     # Keep only sparable pons
     valid_pon = valid_pon[valid_pon['is_sparrable'] == True]
+
+    # Added Code for adv settings here
+    # First check whther we received adv setting
+    # If received then only get parts with matching adv settings
+
+    if item_category or product_category or product_family or product_phase or product_type:
+        part_in_adv_settings = get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type)
+        if part_in_adv_settings.empty:
+            raise CustomException("no valid parts in advance settings - Aborting the analysis")
+        valid_pon = pd.merge(valid_pon, part_in_adv_settings, how='inner', left_on='Product Ordering Name', right_on='parts_adv')
+        valid_pon = valid_pon.drop(['parts_adv'], 1)
+
+
 
     # Keep only parts which has standard_cost
     valid_pon['has_std_cost'] = False
@@ -303,7 +345,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         high_spares_not_in_sap.loc[:, 'request_id'] = analysis_id
         high_spares_not_in_sap.loc[:, 'error_code'] = 2
         for index, row in high_spares_not_in_sap.iterrows():
-            high_spares_not_in_sap['error_reason'] = 'High Spare {0} for Part {1} not present in SAP file'.format(row['high_spare'], row['PON'])
+            high_spares_not_in_sap.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} not present in SAP file'.format(row['high_spare'], row['PON'])
 
         high_spares_not_in_sap = high_spares_not_in_sap.drop(['high_spare'], 1)
         high_spares_not_in_sap.to_sql(name='error_records', con=engine, index=False, if_exists='append')
@@ -328,7 +370,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         not_in_sap_file.loc[:, 'request_id'] = analysis_id
         not_in_sap_file.loc[:, 'error_code'] = 1
         for index, row in not_in_sap_file.iterrows():
-            not_in_sap_file['error_reason'] = 'Part {0} not present in SAP file'.format(row['PON'])
+            not_in_sap_file.loc[index, 'error_reason'] = 'Part {0} not present in SAP file'.format(row['PON'])
 
         not_in_sap_file.to_sql(name='error_records', con=engine, index=False, if_exists='append')
         print("Loaded Data into table : {0}".format('error_records'))
@@ -356,7 +398,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         high_spare_no_std_cost.loc[:, 'request_id'] = analysis_id
         high_spare_no_std_cost.loc[:, 'error_code'] = 7
         for index, row in high_spare_no_std_cost.iterrows():
-            high_spare_no_std_cost['error_reason'] = 'High Spare for Part {0} do not have standard cost'.format(row['PON'])
+            high_spare_no_std_cost.loc[index, 'error_reason'] = 'High Spare for Part {0} do not have standard cost'.format(row['PON'])
 
         high_spare_no_std_cost.to_sql(name='error_records', con=engine, index=False, if_exists='append')
         print("Loaded Data into table : {0}".format('error_records'))
@@ -379,7 +421,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         depot_not_in_sap_file.loc[:, 'request_id'] = analysis_id
         depot_not_in_sap_file.loc[:, 'error_code'] = 4
         for index, row in depot_not_in_sap_file.iterrows():
-            depot_not_in_sap_file['error_reason'] = 'Depot {0} for Part {1} not present in SAP file'.format(row['node_depot_belongs'], row['PON'])
+            depot_not_in_sap_file.loc[index, 'error_reason'] = 'Depot {0} for Part {1} not present in SAP file'.format(row['node_depot_belongs'], row['PON'])
 
         depot_not_in_sap_file = depot_not_in_sap_file.drop(['node_depot_belongs'], 1)
         depot_not_in_sap_file.to_sql(name='error_records', con=engine, index=False, if_exists='append')
@@ -388,11 +430,14 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
     return all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost
 
 
-def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function(dna_file, sap_file,
                                                                                             analysis_date, analysis_id,
-                                                                                            prospect_id, replenish_time)
+                                                                                            prospect_id, replenish_time,
+                                                                                            is_inservice_only, item_category,
+                                                                                            product_category, product_family,
+                                                                                            product_phase, product_type, customer_name)
 
     Get_Fru = pd.DataFrame(
         all_valid.groupby(['Product Ordering Name', 'node_depot_belongs'])['node_depot_belongs'].count())
@@ -402,23 +447,31 @@ def bom_calcuation(dna_file, sap_file, analysis_date, analysis_id, prospect_id, 
     Get_Fru.groupby(['Product Ordering Name', 'node_depot_belongs'])['count'].last().unstack(
         fill_value=0).stack().to_csv(Configuration.bom_table, header=True)
     get_bom_for_table = pd.read_csv(Configuration.bom_table)
+    get_bom_for_table['customer_name'] = customer_name
     get_bom_for_table = get_bom_for_table.rename(columns={'0': 'PON Quanity'})
     #get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
     to_sql_current_ib('current_ib', get_bom_for_table, analysis_id)
+
     get_bom_for_table.rename(columns={
         'pon_quanity': 'PON Quanity',
         'product_ordering_name': 'Product Ordering Name'
     }, inplace=True
     )
-    get_bom_for_table.drop(['request_id'], 1, inplace=True)
+    get_bom_for_table.drop(['request_id', 'customer_name'], 1, inplace=True)
     return get_bom_for_table, get_ratio_to_pon, parts, depot, high_spares, standard_cost
     print('BOM calculation complete')
 
 
-def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time):
+def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     all_valid, parts, get_ratio_to_pon, depot, high_spares, standard_cost = shared_function_for_bom_record(bom_file, sap_file, analysis_date,
-                                                                                                           analysis_id, prospect_id, replenish_time)
+                                                                                                           analysis_id, prospect_id, replenish_time,
+                                                                                                           item_category,
+                                                                                                           product_category,
+                                                                                                           product_family,
+                                                                                                           product_phase,
+                                                                                                           product_type,
+                                                                                                           customer_name)
 
     '''
     Install base PON quantity logic change for BOM file as BOM
@@ -435,6 +488,7 @@ def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_i
     '''
     get_bom_for_table = all_valid[['Product Ordering Name', 'node_depot_belongs', 'PON Quantity']]
     get_bom_for_table = get_bom_for_table.rename(columns={'PON Quantity': 'PON Quanity'})
+    get_bom_for_table['customer_name'] = customer_name
     #get_bom_for_table.to_csv("/Users/anup/eKryp/infinera/Parts-Analysis/data/install_base.csv", index=False)
     to_sql_current_ib('current_ib', get_bom_for_table, analysis_id)
     get_bom_for_table.rename(columns={
@@ -442,7 +496,7 @@ def bom_calcuation_for_bom_records(bom_file, sap_file, analysis_date, analysis_i
         'product_ordering_name': 'Product Ordering Name'
     }, inplace=True
     )
-    get_bom_for_table.drop(['request_id'], 1, inplace=True)
+    get_bom_for_table.drop(['request_id', 'customer_name'], 1, inplace=True)
     return get_bom_for_table, get_ratio_to_pon, parts, depot, high_spares, standard_cost
     print('BOM calculation complete')
 
@@ -521,7 +575,7 @@ def remove_hub_depot(df, depot):
     all_depots = all_depots[['Product Ordering Name', 'node_depot_belongs', 'PON Quanity']]
     return all_depots
 
-def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id, customer_name):
+def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date, user_email_id, analysis_id, customer_name, request_type):
 
     '''
     step 1. first get parts and its high spare
@@ -668,11 +722,36 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
     # & new records getting inserted are by default is_latest='Y'
 
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
-    query = "update summary set is_latest='N' where customer_name='{0}'".format(customer_name)
-    print(query)
-    engine.execute(query)
-    single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
-    print("Loaded data into summary table")
+
+    if request_type == 'Quote':
+        # Set is_latest='N' so that Quote never gets calculated on Dashboard
+        single_bom.loc[:, 'request_type'] = request_type
+        single_bom.loc[:, 'is_latest'] = 'N'
+        single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+        single_bom = single_bom.drop(['request_type', 'is_latest'], 1)
+        print("Loaded data into summary table")
+
+    elif request_type == 'Install Base':
+        # Set is_latest='N' so that  all previous Install Base & Project do not get calculated for
+        # that customer
+        query = "update summary set is_latest='N' where customer_name='{0}'".format(customer_name)
+        print(query)
+        engine.execute(query)
+        single_bom.loc[:, 'request_type'] = request_type
+        single_bom.loc[:, 'is_latest'] = 'Y'
+        single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+        single_bom = single_bom.drop(['request_type', 'is_latest'], 1)
+        print("Loaded data into summary table")
+
+    elif request_type == 'Project':
+        # last Install Base and any Project (S)  based analysis since the last Install Base was run
+        # should be calculated for Dashboard
+
+        single_bom.loc[:, 'request_type'] = request_type
+        single_bom.loc[:, 'is_latest'] = 'Y'
+        single_bom.to_sql(name='summary', con=engine, index=False, if_exists='append')
+        single_bom = single_bom.drop(['request_type', 'is_latest'], 1)
+
 
     # Initially make shared_
     # quantiity for all PON as 0,
@@ -797,11 +876,14 @@ def calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analys
 '''
 
 
-def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf):
+def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation(dna_file, sap_file,
                                                                                      analysis_date, analysis_id,
-                                                                                     prospect_id, replenish_time)
+                                                                                     prospect_id, replenish_time,
+                                                                                     is_inservice_only, item_category,
+                                                                                     product_category, product_family,
+                                                                                     product_phase, product_type, customer_name)
 
     # Flag will be there to choose from simple or mtbf calculation.
 
@@ -828,11 +910,13 @@ def get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, repleni
         return gross_depot_hnad, high_spares, standard_cost, parts
 
 
-def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf):
+def get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type, customer_name):
 
     bom, get_ratio_to_pon, parts, depot, high_spares, standard_cost = bom_calcuation_for_bom_records(bom_file, sap_file,
                                                                                      analysis_date, analysis_id,
-                                                                                     prospect_id, replenish_time)
+                                                                                     prospect_id, replenish_time,
+                                                                                    item_category, product_category,
+                                                                        product_family, product_phase, product_type, customer_name)
 
     # Flag will be there to choose from simple or mtbf calculation.
     if is_mtbf.lower() == 'no':
@@ -902,7 +986,7 @@ def sendEmailNotificatio(user_email_id,subject,message):
 
 
 @celery.task
-def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf):
+def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, request_type):
    
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your "+analysis_name+" Analysis Submitted Successfully..")
@@ -914,10 +998,10 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
             print(query)
             engine.execute(query)
 
-        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf)
+        single_bom, high_spares, standard_cost, parts = get_bom(dna_file, sap_file, analysis_date, analysis_id, prospect_id, replenish_time, is_mtbf, is_inservice_only, item_category, product_category, product_family, product_phase, product_type, customer_name)
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
-                           user_email_id, analysis_id, customer_name)
+                           user_email_id, analysis_id, customer_name, request_type)
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
         set_request_status('Completed', analysis_id, 'Success')
@@ -935,7 +1019,7 @@ def derive_table_creation(dna_file, sap_file, analysis_date, user_email_id, anal
         print(150 * "*")
 
 @celery.task
-def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf):
+def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, analysis_id, customer_name, prospect_id, replenish_time, analysis_name, is_mtbf, item_category, product_category, product_family, product_phase, product_type, request_type):
 
     try:
         sendEmailNotificatio(user_email_id, " Infinera Analysis ", " Your " + analysis_name + " Analysis Submitted Successfully..")
@@ -949,11 +1033,11 @@ def bom_derive_table_creation(bom_file, sap_file, analysis_date, user_email_id, 
             engine.execute(query)
 
         single_bom, high_spares, standard_cost, parts = get_bom_for_bom_record(bom_file, sap_file, analysis_date, analysis_id, prospect_id,
-                                                                replenish_time, is_mtbf)
+                                                                replenish_time, is_mtbf, item_category, product_category, product_family, product_phase, product_type, customer_name)
 
         update_prospect_step(prospect_id, 5, analysis_date)  # BOM calculation Status
         calculate_shared_depot(single_bom, high_spares, standard_cost, parts, analysis_date,
-                               user_email_id, analysis_id, customer_name)
+                               user_email_id, analysis_id, customer_name, request_type)
 
         update_prospect_step(prospect_id, 6, analysis_date)  # Summary Calculation  Status
         set_request_status('Completed', analysis_id, 'Success')
@@ -1003,7 +1087,8 @@ def part_table_creation(part_file, extension, user_email_id):
     part_df['part_reliability_class'] = part_df['part_reliability_class'].fillna('Others')
 
     # Part table is without std_cost ,std_cost is seperate table
-    part_table_column = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute']
+    part_table_column = ['material_number', 'part_name', 'part_reliability_class', 'spared_attribute'
+                         , 'product_type', 'product_family', 'product_category', 'item_category', 'product_phase']
 
     # delete parts & append with new values
     query = "delete from parts"
@@ -1154,10 +1239,10 @@ def misnomer_table_creation(misnomer_file, extension, user_email_id):
 
     while check_analysis_task_status():
         import time
-        print("The task ratio_table_creation is paused, as analysis request is running")
+        print("The task misnomer_table_creation is paused, as analysis request is running")
         time.sleep(60)
 
-    print("The task ratio_table_creation started, as No analyis request is running")
+    print("The task misnomer_table_creation started, as No analyis request is running")
 
     engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
@@ -1256,9 +1341,60 @@ def end_customer_table_creation(end_customer_file, extension, user_email_id):
     sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ", " Your Request to upload Customer data finished ")
 
 
+@celery.task
+def lab_table_creation(lab_file, extension, user_email_id):
 
+    while check_analysis_task_status():
+        import time
+        print("The task lab_table_creation is paused, as analysis request is running")
+        time.sleep(60)
 
+    print("The task lab_table_creation task started, as No analyis request is running")
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
+    if extension.lower() == '.csv':
+        lab_df = pd.read_csv(lab_file, error_bad_lines=False)
+
+    elif extension.lower() == '.txt':
+        lab_df = pd.read_csv(lab_file, sep='\t')
+
+    elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+        lab_df = pd.read_excel(lab_file)
+
+    # Remove duplicate cust_name
+    lab_df.drop_duplicates(subset="Lab System Name", keep="first", inplace=True)
+
+    # delete end_customer  & append with new values
+    query = "delete from lab_systems"
+    engine.execute(query)
+
+    # lab_systems table populated
+    to_sql_lab_systems(lab_df)
+    sendEmailNotificatio(user_email_id, " Infinera Reference Data Upload  ", " Your Request to upload Labs data finished ")
+
+@celery.task
+def remove_analysis_task(request_id, user_email_id):
+
+    def remove_analysis_data(table_name, request_id):
+        while check_analysis_task_status():
+            import time
+            print("The task Remove Analysis data is paused, as analysis request is running")
+            time.sleep(60)
+        if table_name == 'analysis_request':
+            query = "delete from {0} where analysis_request_id = {1}".format(table_name, request_id)
+        else:
+            query = "delete from {0} where request_id = {1}".format(table_name, request_id)
+        print(query)
+        engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
+        engine.execute(query)
+
+    all_tables = ['analysis_request', 'bom_record', 'current_ib', 'current_inventory', 'customer_dna_record',
+                  'error_records', 'mtbf_bom_calculated', 'simple_bom_calculated', 'summary']
+
+    for table in all_tables:
+        remove_analysis_data(table, request_id)
+    sendEmailNotificatio(user_email_id, " Infinera Request Data Deletion  ",
+                         " Your Request to delete data finished ")
 
 
 

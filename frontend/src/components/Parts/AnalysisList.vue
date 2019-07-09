@@ -87,7 +87,7 @@
           <span class="count">{{dashboard_request_count.saved_request}}</span>
         </div>
       </div>-->
-      <div class="float-right" style="marginTop:1%">
+      <div class="float-right" style="marginTop:1%" v-if="createAnalysisFlag === 'true' ">
         <button
           type="button"
           class="btn btn-success"
@@ -138,17 +138,16 @@
           </div>
         </div>
       </div>
-      
     </div>
     <div>
-        <!-- Footer -->
-        <footer class="footer  font-small blue">
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-      </div>
+      <!-- Footer -->
+      <footer class="footer font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
 </template>
 
@@ -184,6 +183,8 @@ export default {
     console.log("beforeMount -- get_all_request_analysis", this.$store);
     this.get_all_request_analysis();
     clearInterval(window.intervalObj);
+    this.createAnalysisFlag = localStorage.getItem("createAnalysisFlag");
+    console.log("this.createAnalysisFlag", this.createAnalysisFlag);
     this.get_dashboard_request_count();
     this.createColumnDefs();
   },
@@ -194,7 +195,7 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
-      analysisDashboardConstant:constant.AnalysisDashboardScreen,
+      analysisDashboardConstant: constant.AnalysisDashboardScreen,
 
       options: [
         { name: "Total Analysis Request" },
@@ -208,6 +209,8 @@ export default {
         "Analysis Name",
         "Analysis Type",
         "Customer Name",
+        "Email",
+        "Request Type",
         "Status",
         "Created Date"
       ],
@@ -215,6 +218,7 @@ export default {
       partsAnalysisRequestDownload: [],
       dashboard_request_count: "",
       current: "Analysis",
+      createAnalysisFlag: false,
       columnDefs: null,
       rowData: [],
       gridOptions: {
@@ -283,6 +287,9 @@ export default {
                 analysis_type: this.partsAnalysisRequestList[i].analysis_type,
                 customer_name: this.partsAnalysisRequestList[i].customer_name,
                 requestStatus: this.partsAnalysisRequestList[i].requestStatus,
+                
+                user_email_id:this.partsAnalysisRequestList[i].user_email_id,
+                request_type:this.partsAnalysisRequestList[i].request_type,
                 createdDate: new Date(
                   this.partsAnalysisRequestList[i].created_at
                 ),
@@ -293,6 +300,8 @@ export default {
                 analysis_name: this.partsAnalysisRequestList[i].analysis_name,
                 analysis_type: this.partsAnalysisRequestList[i].analysis_type,
                 customer_name: this.partsAnalysisRequestList[i].customer_name,
+                user_email_id:this.partsAnalysisRequestList[i].user_email_id,
+                request_type:this.partsAnalysisRequestList[i].request_type,
                 requestStatus: this.partsAnalysisRequestList[i].requestStatus,
                 createdDate: new Date(
                   this.partsAnalysisRequestList[i].created_at
@@ -352,6 +361,16 @@ export default {
         {
           headerName: "Customer Name",
           field: "customer_name",
+          width: 150
+        },
+         {
+          headerName: "Email",
+          field: "user_email_id",
+          width: 150
+        },
+        {
+          headerName: "Request Type",
+          field: "request_type",
           width: 150
         },
         {
@@ -434,7 +453,7 @@ function actionCellRenderer(params) {
   font-weight: 500;
 }
 .count {
-  font-size: 2.500em;
+  font-size: 2.5em;
   font-weight: 600;
 }
 .myBreadCrumb {

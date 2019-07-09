@@ -9,7 +9,10 @@
       <div>
         <div class="myBreadCrumb" style="margin-bottom:1px">
           <p>
-            <span class="in-progress" @click="redirectToAnalysis()">{{spareDetailsConstant.breadcrumbs[0]}}</span>
+            <span
+              class="in-progress"
+              @click="redirectToAnalysis()"
+            >{{spareDetailsConstant.breadcrumbs[0]}}</span>
             <span style="font-size: 14px;">{{spareDetailsConstant.breadcrumbs[1]}}</span>
           </p>
         </div>
@@ -352,25 +355,34 @@
         <div class="tab-pane fade" id="nav-error" role="tabpanel" aria-labelledby="nav-error-tab">
           <br>
           <div class="shadow p-3 mb-5 bg-white rounded" id="ErrorDiv">
-            <!-- <div class="float-right">
-              <toggle-button
+            <div class="float-right">
+              <!--<toggle-button
                 :value="state"
                 :color="{checked: 'green', unchecked: 'green'}"
                 :sync="true"
                 :labels="{checked: 'ReOrder', unchecked: 'Total'}"
                 :width="80"
                 @change="stateChange()"
-              />
-              <button type="button" class="btn btn-success">
-                <download-excel :data="currentNet" type="csv">
+              />-->
+              <button
+                type="button"
+                class="btn btn-success"
+                v-tooltip.top.hover.focus="'Click to Download'"
+              >
+                <DownloadExcel
+                  :data="errorRowData"
+                  type="csv"
+                  name="ErrorData.csv"
+                  :columnHeaders="errorTitle"
+                >
                   <i class="fas fa-file-excel"></i>
                   &nbsp;
                   Export
-                </download-excel>
+                </DownloadExcel>
               </button>
             </div>
             <br>
-            <br>-->
+            <br>
             <br>
             <ag-grid-vue
               style="width: 100%; height: 400px;"
@@ -391,17 +403,16 @@
           </div>
         </div>
       </div>
-      
     </div>
     <div>
-        <!-- Footer -->
-        <footer class="footer  font-small blue" >
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-      </div>
+      <!-- Footer -->
+      <footer class="footer font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
 </template>
 
@@ -450,18 +461,20 @@ export default {
     return {
       requestID: "",
       data: data,
-      spareDetailsConstant:constant.SpareSummaryScreen,
+      spareDetailsConstant: constant.SpareSummaryScreen,
       state: true,
       isLoading: false,
       fullPage: true,
       toggle: "reorder",
       currentInventory: [],
+      errorTitle: ["Part Name", "Error Reason", "Node Name", "Type"],
       currentInventoryTitle: ["Part Name", "Depot Name", "Reorder Point"],
       currentGross: [],
       currentNet: [],
       netTitle: ["Part Name", "Depot Name", "Net Quantity"],
       currentib: [],
       errorData: [],
+
       grossColumnDefs: null,
       grossRowData: [],
       grossTitle: ["Part Name", "Depot Name", "Gross Quantity"],
@@ -526,12 +539,10 @@ export default {
         this.get_analysis_dashboard_count(this.requestID);
         this.get_current_net_specific_request(this.requestID);
         this.get_current_inventory_specific_request(this.requestID);
-        this.get_current_inventory_specific_request(this.requestID);
       } else {
         this.toggle = "total_stock";
         this.get_analysis_dashboard_count(this.requestID);
         this.get_current_net_specific_request(this.requestID);
-        this.get_current_inventory_specific_request(this.requestID);
         this.get_current_inventory_specific_request(this.requestID);
       }
     },
@@ -552,6 +563,55 @@ export default {
     // },
     get_current_inventory_specific_request(requestId) {
       this.isLoading = true;
+      this.currRowData = [];
+      if (this.toggle === "reorder") {
+        this.currColumnDefs = [];
+        this.currentInventoryTitle = [
+          "Part Name",
+          "Depot Name",
+          "Reorder Point"
+        ];
+        this.currColumnDefs = [
+          {
+            headerName: "Part Name",
+            field: "part_name",
+            width: 250
+          },
+          {
+            headerName: "Depot Name",
+            field: "depot_name",
+            width: 150
+          },
+          {
+            headerName: "Reorder Point",
+            field: "curr_quantity",
+            width: 150,
+            cellStyle: { "text-align": "right" }
+          }
+        ];
+      } else if (this.toggle === "total_stock") {
+        this.currColumnDefs = [];
+        this.currentInventoryTitle = ["Part Name", "Depot Name", "Total Point"];
+        this.currColumnDefs = [
+          {
+            headerName: "Part Name",
+            field: "part_name",
+            width: 250
+          },
+          {
+            headerName: "Depot Name",
+            field: "depot_name",
+            width: 150
+          },
+          {
+            headerName: "Total Point",
+            field: "curr_quantity",
+            width: 150,
+            cellStyle: { "text-align": "right" }
+          }
+        ];
+      }
+
       fetch(
         constant.APIURL +
           "api/v1/get_current_inventory_specific_request?request_id=" +
@@ -576,7 +636,9 @@ export default {
               "data -- get_current_inventory_specific_request-->",
               data
             );
+            this.currOnReady(this.gridOptions3);
             this.currentInventory = data;
+
             for (let i = 0; i < this.currentInventory.length; i++) {
               this.currRowData.push({
                 part_name: this.currentInventory[i].part_name,
@@ -594,6 +656,7 @@ export default {
     },
     get_gross_specific_request(requestId) {
       this.isLoading = true;
+      this.grossRowData = [];
       fetch(
         constant.APIURL +
           "api/v1/get_gross_specific_request?request_id=" +
@@ -631,6 +694,7 @@ export default {
     },
     get_error_records(requestId) {
       this.isLoading = true;
+      this.errorRowData = [];
       fetch(
         constant.APIURL + "api/v1/get_error_records?request_id=" + requestId,
         {
@@ -657,6 +721,7 @@ export default {
                 type: this.errorData[i].type
               });
             }
+
             this.isLoading = false;
           });
         })
@@ -666,6 +731,7 @@ export default {
     },
     get_current_net_specific_request(requestId) {
       this.isLoading = true;
+      this.netRowData = [];
       fetch(
         constant.APIURL +
           "api/v1/get_current_net_specific_request?request_id=" +
@@ -1067,7 +1133,7 @@ a {
   color: #71869e;
 }
 .count {
-  font-size: 2.500em;
+  font-size: 2.5em;
   font-weight: 600;
 }
 </style>

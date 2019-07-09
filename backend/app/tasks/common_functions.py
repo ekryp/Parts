@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 engine = create_engine(Configuration.ECLIPSE_DATA_DB_URI, connect_args=Configuration.ssl_args)
 
 
+
 def read_data(sql, con):
     connection = create_engine(con, connect_args=Configuration.ssl_args)
     return pd.read_sql(sql, con=connection)
@@ -404,14 +405,15 @@ def validate_depot_for_bom(pon, analysis_date, analysis_id):
     return valid_pon
 
 
-def fetch_db(replenish_time):
+def fetch_db(replenish_time, customer_name):
     print('fetching data from db...')
     connection = Configuration.ECLIPSE_DATA_DB_URI
     get_misnomer_sql = "SELECT mp.misnomer_part_name, pt.part_name FROM `misnomer_part_conversion` mp, `parts` pt where mp.correct_part_name = pt.part_name;"
     get_standard_cost = "select pt.part_name,pt.material_number,pid.standard_cost from parts pt " \
                         "left join `part_cost` pid on pt.part_id =pid.part_id where part_name != 'null'"
 
-    get_node = "SELECT * FROM node;"
+    get_node = "SELECT * FROM node where end_customer_node_belongs = '{0}'".format(customer_name)
+    print(get_node)
 
     # to_sql_customer_dna_record('customer_dna_record', input_db)
 
@@ -621,10 +623,144 @@ def check_analysis_task_status():
     return is_running
 
 
+def check_sn_conversion_task_status(request_id):
+    import pdb
+    pdb.set_trace()
+    not_received = True
+    query = "SELECT distinct(IND_Received) FROM sn_part_conversion where request_id=119;"
+    print(query)
+    connection = Configuration.INFINERA_DB_URL
+    ind_received = read_data(query, connection)
+    if 'Y' in ind_received['IND_Received'].tolist():
+        not_received = False
+    return not_received
 
 
+def to_sql_lab_systems(df):
+
+    df.rename(columns={
+        'Lab Id': 'id',
+        'Lab System Name': 'system_name',
+        'Product Type': 'product_type',
+        'IP Address': 'ip_address',
+        'Log In Name': 'username',
+        'Password': 'password',
+        'Serial Console': 'serial_console'
+
+    }, inplace=True
+    )
+    df.to_sql(name='lab_systems', con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into lab_systems table")
 
 
+def to_sql_sn_part_conversion(table_name, df, analysis_id):
+    keep_col = ['Serial#', 'request_id']
+    df.loc[:, 'request_id'] = analysis_id
+    df = df[keep_col]
+    df.rename(columns={
+         'Serial#': 'serial',
+    }, inplace=True)
+    df.to_sql(name=table_name, con=engine, index=False, if_exists='append', chunksize=1000)
+    print("Loaded into '{0}' table".format(table_name))
 
 
+def get_part_names_for_adv_settings(item_category, product_category, product_family, product_phase, product_type):
+    filter_query = "select part_name as parts_adv from parts where 1=1 "
+    if item_category and len(item_category) > 1:
+        item_category_filter = " and item_category in {0}".format(tuple(item_category))
+        filter_query = filter_query + item_category_filter
 
+    elif item_category:
+        item_category_filter = " and item_category in ('{0}')".format(str(tuple(item_category)[0]))
+        filter_query = filter_query + item_category_filter
+
+    if product_category and len(product_category) > 1:
+        product_category_filter = " and product_category in {0}".format(tuple(product_category))
+        filter_query = filter_query + product_category_filter
+
+    elif product_category:
+        product_category_filter = " and product_category in ('{0}')".format(str(tuple(product_category)[0]))
+        filter_query = filter_query + product_category_filter
+
+    if product_family and len(product_family) > 1:
+        product_family_filter = " and product_family in {0}".format(tuple(product_family))
+        filter_query = filter_query + product_family_filter
+
+    elif product_family:
+        product_family_filter = " and product_family in ('{0}')".format(str(tuple(product_family)[0]))
+        filter_query = filter_query + product_family_filter
+
+    if product_phase and len(product_phase) > 1:
+        product_phase_filter = " and product_phase in {0}".format(tuple(product_phase))
+        filter_query = filter_query + product_phase_filter
+
+    elif product_phase:
+        product_phase_filter = " and product_phase in ('{0}')".format(str(tuple(product_phase)[0]))
+        filter_query = filter_query + product_phase_filter
+
+    if product_type and len(product_type) > 1:
+        product_type_filter = " and product_type in {0}".format(tuple(product_type))
+        filter_query = filter_query + product_type_filter
+    elif product_type:
+        product_type_filter = " and product_type in ('{0}')".format(str(tuple(product_type)[0]))
+        filter_query = filter_query + product_type_filter
+
+    print(filter_query)
+    connection = Configuration.INFINERA_DB_URL
+    parts_with_adv = read_data(filter_query, connection)
+    return parts_with_adv
+
+
+def read_df(df):
+    data_frame_list = []
+    data_frame = pd.DataFrame()
+    # step 1
+    data = df
+
+    # step 3
+    valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt', 'Product Ordering Name',
+                     'Part#', 'Serial#', 'Service State']
+
+    index = data[(data.values == '#Type')].index
+
+    # step 3.
+    if index.empty == False:
+        for col in range(len(index)):
+            # step 4
+            try:
+                end_index = data.index[data.iloc[:, 0].isnull().values][col + 1]
+            except:
+                # Because we want last row + 1
+                end_index = (data.index[-1] + 1)
+            # step 4.
+            data_frame = data[index[col]: end_index]
+
+            # set row with #Type as first row as column
+            data_frame.columns = data.iloc[index[col]]
+            # select only valid columns
+            try:
+                data_frame = data_frame[valid_columns]
+            except KeyError:
+                valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
+                                 'Product Ordering Name',
+                                 'Part#', 'Serial#']
+                data_frame = data_frame[valid_columns]
+
+            # step 6
+            data_frame = data_frame[~(data_frame['#Type'].str.contains('#Type', na=False))]
+            data_frame_list.append(data_frame)
+        data_frame_file = pd.concat(data_frame_list)
+
+        # step 7
+        return data_frame_file
+
+    else:
+        try:
+            new_data = data[valid_columns]
+        except KeyError:
+            valid_columns = ['#Type', 'Node ID', 'Node Name', 'AID', 'InstalledEqpt',
+                             'Product Ordering Name',
+                             'Part#', 'Serial#']
+            new_data = data[valid_columns]
+
+        return new_data

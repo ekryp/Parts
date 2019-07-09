@@ -18,7 +18,18 @@ import ChangePassword from '@/components/ManageRoles/ChangePassword'
 import ManageUser from '@/components/ManageRoles/ManageUser'
 import SolutionScreen from '@/components/MockUp/SolutionScreen'
 import MockUpNew from '@/components/MockUp/MockUpNew'
-
+import TestPlanKnowledgeMap from '@/components/KnowledgeMap/TestPlanKnowledgeMap'
+import KnowledgeMap from '@/components/KnowledgeMap/KnowledgeMap'
+import FsbKnowledgeMap from '@/components/KnowledgeMap/FsbKnowledgeMap'
+import MopKnowledgeMap from '@/components/KnowledgeMap/MopKnowledgeMap'
+import ReleaseNotesKnowledgeMap from '@/components/KnowledgeMap/ReleaseNotesKnowledgeMap'
+import TechNotesKnowledgeMap from '@/components/KnowledgeMap/TechNotesKnowledgeMap'
+import FAQ from '@/components/KnowledgeMap/FAQ'
+import EkrypUsecases from '@/components/KnowledgeMap/EkrypUsecases'
+import Calendar from '@/components/LabAvailability/Calendar'
+import LabList from '@/components/LabAvailability/LabList'
+import Help from '@/components/help/Help'
+import SendFeedback from '@/components/help/SendFeedback'
 Vue.use(Router)
 
 export default new Router({
@@ -150,8 +161,107 @@ export default new Router({
       name: 'MockUpNew',
       component: MockUpNew,
       meta: {
+        permission: 'SolutionPrediction'
+      }
+    },
+    {
+      path: '/knowledge/testplan',
+      name: 'KnowledgeMap',
+      component: TestPlanKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/fsb',
+      name: 'FSBKnowledgeMap',
+      component: FsbKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/releasenotes',
+      name: 'ReleaseNotesKnowledgeMap',
+      component: ReleaseNotesKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/mop',
+      name: 'MopKnowledgeMap',
+      component: MopKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/technotes',
+      name: 'TechNotesKnowledgeMap',
+      component: TechNotesKnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge/faq',
+      name: 'FAQ',
+      component: FAQ,
+      meta: {
+        permission: 'EkrypUser'
+      }
+    },
+    {
+      path: '/knowledge/usecase',
+      name: 'EkrypUsecases',
+      component: EkrypUsecases,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/knowledge',
+      name: 'KnowledgeMap',
+      component: KnowledgeMap,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/lab',
+      name: 'LabList',
+      component: LabList,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+
+    },
+    {
+      path: '/help',
+      name: 'Help',
+      component: Help,
+      meta: {
         permission: 'Dashboard'
       }
+
+    },
+    {
+      path: '/create_event',
+      name: 'Calendar',
+      component: Calendar,
+      meta: {
+        permission: 'knowledgeMap'
+      }
+    },
+    {
+      path: '/feedback',
+      name: 'SendFeedback',
+      component: SendFeedback,
+      meta: {
+        permission: 'Dashboard'
+      }
+
     }
   ]
 

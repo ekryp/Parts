@@ -9,8 +9,14 @@
           <div class="myBreadCrumb">
             <p>
               <span class="in-progress" @click="cancel()">{{postMenu}}</span>
-              <span v-if="requestId!==''" style="font-size: 14px;">{{createAnalysisConstant.breadcrumbs[0]}}</span>
-              <span v-if="requestId===''" style="font-size: 14px;">{{createAnalysisConstant.breadcrumbs[1]}}</span>
+              <span
+                v-if="requestId!==''"
+                style="font-size: 14px;"
+              >{{createAnalysisConstant.breadcrumbs[0]}}</span>
+              <span
+                v-if="requestId===''"
+                style="font-size: 14px;"
+              >{{createAnalysisConstant.breadcrumbs[1]}}</span>
             </p>
           </div>
         </div>
@@ -19,7 +25,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[0]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <input
                 v-if="requestId === ''"
                 type="text"
@@ -35,7 +41,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[1]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <multiselect
                 v-if="requestId === '' && partsAnalysis.customer_names !== undefined"
                 :value="customerNames"
@@ -53,7 +59,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[2]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <input
                 v-if="requestId === ''"
                 type="text"
@@ -70,7 +76,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[3]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <input
                 v-if="requestId !== '' && partsAnalysisData.analysisType !== undefined"
                 type="text"
@@ -95,7 +101,7 @@
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[4]}}</label>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
               <multiselect
                 v-if="requestId === '' && partsAnalysis.replenish_times !== undefined"
                 v-model="replensihTime"
@@ -108,49 +114,70 @@
             </div>
           </div>
         </div>
-        <div class="row" style="marginTop:0%">
-           <div class="col-lg-3">
-             <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
-           </div>
-           
-           <div class="col-lg-2">
-             <input type="checkbox" id="checkbox" v-model="mtbf">
 
-           </div>
+        <div class="row" style="marginTop:0%">
+          <div class="col-lg-3">
+            <label>{{createAnalysisConstant.createAnalysisLabels[8]}}</label>
           </div>
-          <br>
+
+          <div class="col-lg-2">
+            <input type="checkbox" id="checkbox" v-model="mtbf">
+          </div>
+        </div>
+        <br>
         <div class="form-group">
-          
-          <div class="row" style="marginTop:0%" >
+          <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
               <label>{{createAnalysisConstant.createAnalysisLabels[5]}}</label>
             </div>
-            <div class="col-lg-6 form-group">
+            <div class="col-lg-7 form-group">
               <div class="row">
                 <div class="col-lg-2">
-             <input type="radio" id="DNA" value="dna" v-model="fileType">
-             &nbsp
-             <label>DNA </label>
-           </div>
-           <div class="col-lg-2">
-             <input type="radio" id="BOM" value="bom" v-model="fileType">
-           &nbsp
-             <label>BOM</label>
-           </div> 
-                
+                  <input type="radio" id="DNA" value="dna" v-model="fileType">
+                  &nbsp
+                  <label>DNA</label>
+                </div>
+                <div class="col-lg-2">
+                  <input type="radio" id="BOM" value="bom" v-model="fileType">
+                  &nbsp
+                  <label>BOM</label>
+                </div>
               </div>
-              <!-- <div class="row" style="marginTop:3%">
-                
-              </div> -->
             </div>
           </div>
 
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
+              <label>{{createAnalysisConstant.createAnalysisLabels[11]}}</label>
+            </div>
+            <div class="col-lg-7 form-group">
+              <div class="row">
+                <div class="col-lg-2">
+                  <input type="radio" id="Quote" value="Quote" v-model="requestType">
+                  &nbsp
+                  <label>Quote</label>
+                </div>
+                <div class="col-lg-2">
+                  <input type="radio" id="Project" value="Project" v-model="requestType">
+                  &nbsp
+                  <label>Project</label>
+                </div>
+                <div class="col-lg-3">
+                  <input type="radio" id="Install_Base" value="Install Base" v-model="requestType">
+                  &nbsp
+                  <label>Install Base</label>
+                </div>
+              </div>
+            </div>
+          </div>
 
+         
+
+          <div class="row" style="marginTop:0%">
+            <div class="col-lg-3">
               <label v-if="fileType === 'dna'">{{createAnalysisConstant.createAnalysisLabels[9]}}</label>
               <label v-if="fileType === 'bom'">{{createAnalysisConstant.createAnalysisLabels[7]}}</label>
-            </div >
+            </div>
             <div class="col-lg-6 form-group">
               <div class="row">
                 <div class="col-lg-1" v-if="fileType === 'dna'">
@@ -159,24 +186,32 @@
                     <i class="fas fa-paperclip fa-2x"></i>
                   </label>
                 </div>
-                  
-                <div class="col-lg-5" v-if="fileType === 'dna'" >
-                  <span v-if="dnafileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
-                  <span v-if="dnafileName !== ''">{{dnafileName}}</span>
+
+                <div class="col-lg-11" v-if="fileType === 'dna'">
+                  <span
+                    v-if="dnafileName === ''"
+                  >{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
+                  <span v-if="dnafileName !== ''">{{dnafileName}}</span> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <a style='color:green; cursor:pointer; text-decoration: underline'
+                    v-if="dnafileName !== ''"
+                    disabled @click="getServiceStates()"
+                  >Get service states ? <img v-if="serviceStateapi" :src=gifLoader></a>
                 </div>
                 <div class="col-lg-5" v-if="fileType === 'dna'">
                   <span
                     v-if="partsAnalysisData.dnafileName !== ''"
                   >{{partsAnalysisData.dnafileName}}</span>
                 </div>
-                 <div class="col-lg-1" v-if="fileType === 'bom'">
+                <div class="col-lg-1" v-if="fileType === 'bom'">
                   <label for="fileupload" class="file">
                     <input type="file" @change="bomFileEvent" id="fileupload" style="display:none">
                     <i class="fas fa-paperclip fa-2x"></i>
                   </label>
                 </div>
-                 <div class="col-lg-5" v-if="fileType === 'bom'">
-                  <span v-if="bomFileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
+                <div class="col-lg-5" v-if="fileType === 'bom'">
+                  <span
+                    v-if="bomFileName === ''"
+                  >{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
                   <span v-if="bomFileName !== ''">{{bomFileName}}</span>
                 </div>
                 <div class="col-lg-5" v-if="fileType === 'bom'">
@@ -188,7 +223,38 @@
             </div>
           </div>
 
-         
+          <div class="row" style="marginTop:0%" v-if="isServiceStates">
+             <div class="col-lg-3">
+              <label>{{createAnalysisConstant.createAnalysisLabels[10]}}</label>
+            </div>
+             <div class="col-lg-4">
+              <label v-if="serviceStates.length === 0" style="color:blue"> No Service States available ..!</label>
+            </div>
+            
+          </div>
+
+           <div class="row" style="marginTop:0%" v-if="fileType === 'dna' && serviceStates.length !== 0">
+            <div class="col-lg-3">
+              <label>{{createAnalysisConstant.createAnalysisLabels[10]}}</label>
+            </div>
+
+            <div class="col-lg-4">
+               <Multiselect
+                        v-model="serviveStatesValues"
+                        tag-placeholder="Add this as new tag"
+                        placeholder="Select Service States"
+                        label="name"
+                        track-by="name"
+                        :options="serviveStatesOption"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+            </div>
+          </div>
+          <br>
 
           <div class="row" style="marginTop:0%">
             <div class="col-lg-3">
@@ -203,7 +269,9 @@
                   </label>
                 </div>
                 <div class="col-lg-8" v-if="requestId === ''">
-                  <span v-if="sapfileName === ''">{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
+                  <span
+                    v-if="sapfileName === ''"
+                  >{{createAnalysisConstant.createAnalysisPlaceHolders[4]}}</span>
                   <span v-if="sapfileName !== ''">{{sapfileName}}</span>
                 </div>
                 <div class="col-lg-8" v-if="requestId !== ''">
@@ -214,6 +282,132 @@
               </div>
             </div>
           </div>
+          <!-- Advance settings -->
+          <div class="row text-center">
+            <div class="col-lg-2" v-if="!advanceFlag" @click="changeFilter()" align="left">
+              <i class="fas fa-bars fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
+            </div>
+            <div class="col-lg-2" v-if="advanceFlag" @click="changeFilter()" align="left">
+              <i class="fas fa-times fa-lg" style="color:#169f85">&nbsp;Advance Settings</i>
+            </div>
+
+            <div class="col"></div>
+          </div>
+          <br v-if="!advanceFlag">
+
+          <transition name="fade">
+            <div class="row" style="paddingTop:0.6em" v-if="advanceFlag">
+              <div class="col-lg-12">
+                <div class="p-3 mb-3">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label>{{createAnalysisConstant.advanceOptions[0]}}</label>
+                    </div>
+                    <div class="col-lg-7">
+                      <Multiselect
+                        v-model="itemCategoryValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[0]"
+                        label="name"
+                        track-by="name"
+                        :options="itemCategoryOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label>{{createAnalysisConstant.advanceOptions[1]}}</label>
+                    </div>
+                    <div class="col-lg-7">
+                      <Multiselect
+                        v-model="productCategoryValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[1]"
+                        label="name"
+                        track-by="name"
+                        :options="productCategoryOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label>{{createAnalysisConstant.advanceOptions[2]}}</label>
+                    </div>
+                    <div class="col-lg-7">
+                      <Multiselect
+                        v-model="productFamilyValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[2]"
+                        label="name"
+                        track-by="name"
+                        :options="productFamilyOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label>{{createAnalysisConstant.advanceOptions[3]}}</label>
+                    </div>
+                    <div class="col-lg-7">
+                      <Multiselect
+                        v-model="productPhaseValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[3]"
+                        label="name"
+                        track-by="name"
+                        :options="productPhaseOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <label>{{createAnalysisConstant.advanceOptions[4]}}</label>
+                    </div>
+                    <div class="col-lg-7">
+                      <Multiselect
+                        v-model="productTypeValues"
+                        tag-placeholder="Add this as new tag"
+                        :placeholder="createAnalysisConstant.advanceOptionsPlaceHolders[4]"
+                        label="name"
+                        track-by="name"
+                        :options="productTypeOptions"
+                        :close-on-select="false"
+                        :multiple="true"
+                        :clear-on-select="false"
+                        :hide-selected="true"
+                        :taggable="true"
+                      ></Multiselect>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </transition>
+          <!-- Advance Settings End -->
           <!-- <div class="row" style="marginTop:0%">
               <div class="col-lg-3"></div>
               <div class="col-lg-3">
@@ -231,7 +425,12 @@
           </div>-->
           <div class="float-right" style="marginBottom:5%">
             <div class="row">
-              <button type="button" v-if="uploading" class="btn btn-danger" disabled>{{createAnalysisConstant.buttons[0]}}</button>&nbsp; &nbsp;
+              <button
+                type="button"
+                v-if="uploading"
+                class="btn btn-danger"
+                disabled
+              >{{createAnalysisConstant.buttons[0]}}</button>&nbsp; &nbsp;
               <button
                 type="button"
                 v-if="!uploading"
@@ -253,23 +452,27 @@
                 @click="formSubmit()"
                 v-tooltip.top.hover.focus="'Click to Resubmit'"
               >{{createAnalysisConstant.buttons[2]}}</button>
-              <button v-if="uploading " type="button" class="btn btn-success" disabled>{{createAnalysisConstant.buttons[3]}}</button>
+              <button
+                v-if="uploading "
+                type="button"
+                class="btn btn-success"
+                disabled
+              >{{createAnalysisConstant.buttons[3]}}</button>
             </div>
           </div>
         </div>
       </form>
       <!-- </div> -->
-
     </div>
-     <div>
-        <!-- Footer -->
-        <footer class="footer fixed-bottom font-small blue">
-          <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
-          <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-      </div>
+    <div>
+      <!-- Footer -->
+      <footer class="footer fixed-bottom font-small blue">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Powered By Ekryp</div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+    </div>
   </div>
 </template>
 <script>
@@ -283,6 +486,7 @@ import { mapState, mapActions } from "vuex";
 import * as constant from "../constant/constant";
 import swal from "sweetalert";
 import * as sampleBomData from "../../utilies/sampleBOM.txt";
+const loader = require('../../assets/Spinner-1s-50px.svg')
 
 export default {
   name: "CreateAnalysis",
@@ -291,6 +495,7 @@ export default {
     clearInterval(window.intervalObj);
     console.log("created");
     this.get_spare_part_analysis();
+    this.getAdvancedSettings();
   },
   components: {
     SideNav,
@@ -302,7 +507,7 @@ export default {
   data() {
     console.log("Parts-Analysis", this.$store.state);
     return {
-      createAnalysisConstant:constant.CreateAnalysisScreen,
+      createAnalysisConstant: constant.CreateAnalysisScreen,
       requestId: "",
       dnafileName: "",
       sapfileName: "",
@@ -311,10 +516,20 @@ export default {
       customerNames: "",
       analysisType: "4 Hr Analysis",
       replensihTime: "Ratio of PON - 2Day",
+      itemCategoryOptions: [],
+      itemCategoryValues: [],
+      productCategoryOptions: [],
+      productCategoryValues: [],
+      productFamilyOptions: [],
+      productFamilyValues: [],
+      productPhaseOptions: [],
+      productPhaseValues: [],
+      productTypeOptions: [],
+      productTypeValues: [],
       date: new Date(),
       dnafile: "",
       sapfile: "",
-      bomFile:"",
+      bomFile: "",
       partsAnalysisData: "",
       partsAnalysis: "",
       partsClose: true,
@@ -328,13 +543,50 @@ export default {
       resubmit: false,
       loaderFlag: false,
       diasableFlag: false,
-      mtbf:true,
-      fileType:"dna",
-    
-      sampleBOM:sampleBomData
-      };
+      mtbf: true,
+      isInserviceOnly: false,
+      fileType: "dna",
+      requestType: "Install Base",
+      advanceFlag: false,
+      sampleBOM: sampleBomData,
+      serviceStates: [],
+      serviveStatesOption: [],
+      serviveStatesValues: [],
+      isServiceStates: false,
+      gifLoader: loader,
+      serviceStateapi: false
+    };
   },
   methods: {
+    getServiceStates(){
+      this.serviceStates =[]
+      this.isServiceStates = false
+      this.serviceStateapi = true
+      let formData = new FormData();
+      formData.append("customer_dna_file", this.dnafile);
+      formData.append("user_email_id", localStorage.getItem("email_id"));
+      fetch(constant.APIURL + "api/v1/get_service_states", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        }
+      }).then(response=>{
+        this.serviveStatesOption = []
+        response.text().then(text =>{
+          const data = text && JSON.parse(text);
+          this.serviceStates = data.service_states
+          if (data.service_states.length === 0)
+              this.isServiceStates = true
+          this.serviceStates.forEach(doc => {
+              this.serviveStatesOption.push({name: doc})
+          });
+          this.serviceStateapi = false
+        })
+      }).catch(error=>{
+        console.log('error ------>',error)
+      })
+    },
     selectedCustomerName(value) {
       this.customerNames = value;
     },
@@ -355,54 +607,58 @@ export default {
         file.name.endsWith("XLSX") ||
         file.name.endsWith("CSV") ||
         file.name.endsWith("txt") ||
-        file.name.endsWith("TXT")
+        file.name.endsWith("TXT") ||
+        file.name.endsWith("tsv") ||
+        file.name.endsWith("TSV")
       ) {
         console.log(file.name);
         this.dnafileName = file.name;
         this.dnafile = file;
+        this.serviceStates =[]
+        this.isServiceStates = false
       } else {
-       swal({
-              title: "Error",
-              text: "Please Upload a .CSV or .TXT or .XLSX File",
-              icon: "error"
-            });
+        swal({
+          title: "Error",
+          text: "Please Upload a .CSV or .TXT or .TSV or .XLSX File",
+          icon: "error"
+        });
       }
     },
-   
+
     bomFileEvent(e) {
       console.log("image ------>", e.target.files);
       const file = e.target.files[0];
       if (
-        file.name.endsWith("xlsx")||
+        file.name.endsWith("xlsx") ||
         file.name.endsWith("csv") ||
         file.name.endsWith("XLSX") ||
         file.name.endsWith("CSV")
-
       ) {
         console.log(file.name);
         this.bomFileName = file.name;
         this.bomFile = file;
       } else {
-       swal({
-              title: "Error",
-              text: "Please Upload a .CSV or .XSLX File",
-              icon: "error",
-                buttons:{
-                  download :{
-                    text:"Download Sample",
-                    value:"yes"
-                    },
-                    ok : true
-                      },
-                      })
-                  .then((value) => {
-                    switch (value) {
-                    case "yes":
-                    this.downloadSampleBOM();
-                    }
-              
-            });
+        swal({
+          title: "Error",
+          text: "Please Upload a .CSV or .XSLX File",
+          icon: "error",
+          buttons: {
+            download: {
+              text: "Download Sample",
+              value: "yes"
+            },
+            ok: true
+          }
+        }).then(value => {
+          switch (value) {
+            case "yes":
+              this.downloadSampleBOM();
+          }
+        });
       }
+    },
+    changeFilter() {
+      this.advanceFlag = !this.advanceFlag;
     },
     downloadSampleBOM() {
       var fileContent = String(this.sampleBOM);
@@ -426,23 +682,20 @@ export default {
         file.name.endsWith("xlsx") ||
         file.name.endsWith("xls") ||
         file.name.endsWith("XLSX") ||
-        file.name.endsWith("XLS") 
-       
-        
+        file.name.endsWith("XLS")
       ) {
         console.log(file.name);
         this.sapfileName = file.name;
         this.sapfile = file;
       } else {
         swal({
-              title: "Error",
-               text: "Please Upload a  .XLS or .XLSX File",
-              icon: "error"
-              
-                    });
+          title: "Error",
+          text: "Please Upload a  .XLS or .XLSX File",
+          icon: "error"
+        });
       }
     },
-    
+
     cancel() {
       router.push("/parts/analysis/dashboard");
     },
@@ -453,13 +706,12 @@ export default {
       });
     },
     formSubmit() {
+      console.log("request type", this.requestType);
       var mtbfValue;
-      if(this.mtbf)
-      {
-        mtbfValue="yes";
-      }else
-      {
-        mtbfValue="no"
+      if (this.mtbf) {
+        mtbfValue = "yes";
+      } else {
+        mtbfValue = "no";
       }
       let data = {
         dnafileName: this.dnafileName,
@@ -468,49 +720,44 @@ export default {
         customerNames: this.customerNames,
         analysisType: this.analysisType,
         replensihTime: this.replensihTime,
+        requestType: this.requestType,
         date: new Date(),
         dnafile: this.dnafile,
         sapfile: this.sapfile,
-        bomfile:this.bomFile,
-        mtbf:mtbfValue
+        bomfile: this.bomFile,
+        mtbf: mtbfValue,
+        isInserviceOnly: this.isInserviceOnly
       };
-      var filePresent=false;
+      var filePresent = false;
       if (
         this.analyisisName !== "" &&
         this.customerNames !== "" &&
         this.analysisType !== "" &&
         this.replensihTime !== ""
       ) {
-        if(this.fileType === "dna")
-        {
-          if(this.dnafile !== "")
-          {
-            filePresent=true
-          }else
-          {
+        if (this.fileType === "dna") {
+          if (this.dnafile !== "") {
+            filePresent = true;
+          } else {
             swal({
               title: "Error",
               text: "Please Attach the DNA File",
               icon: "error"
             });
           }
-        }else
-        {
-           if(this.bomFile !== "")
-          {
-            filePresent=true
-          }else
-          {
-          swal({
-            title: "Error",
-            text: "Please Attach the BOM File",
-            icon: "error"
+        } else {
+          if (this.bomFile !== "") {
+            filePresent = true;
+          } else {
+            swal({
+              title: "Error",
+              text: "Please Attach the BOM File",
+              icon: "error"
             });
           }
         }
 
-        if(filePresent)
-        {
+        if (filePresent) {
           if (this.sapfile !== "") {
             this.diasableFlag = true;
             this.uploading = true;
@@ -568,6 +815,43 @@ export default {
           console.log(" Error Response ------->", handleError);
         });
     },
+    getAdvancedSettings() {
+      fetch(constant.APIURL + "api/v1/get_advance_settings", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth0_access_token")
+        }
+      })
+        .then(response => {
+          response.text().then(text => {
+            const data = text && JSON.parse(text);
+            console.log("data ---->", data);
+            if (data.code === "token_expired") {
+              this.logout();
+            }
+            for (var i = 0; i < data.item_category.length; i++) {
+              this.itemCategoryOptions.push({ name: data.item_category[i] });
+            }
+            for (var i = 0; i < data.product_category.length; i++) {
+              this.productCategoryOptions.push({
+                name: data.product_category[i]
+              });
+            }
+            for (var i = 0; i < data.product_family.length; i++) {
+              this.productFamilyOptions.push({ name: data.product_family[i] });
+            }
+            for (var i = 0; i < data.product_phase.length; i++) {
+              this.productPhaseOptions.push({ name: data.product_phase[i] });
+            }
+            for (var i = 0; i < data.product_type.length; i++) {
+              this.productTypeOptions.push({ name: data.product_type[i] });
+            }
+          });
+        })
+        .catch(handleError => {
+          console.log(" Error Response ------->", handleError);
+        });
+    },
     redirectToSummary() {
       console.log("inside summary");
       router.push({
@@ -587,11 +871,42 @@ export default {
       formData.append("user_email_id", localStorage.getItem("email_id"));
       formData.append("customer_name", data.customerNames);
       formData.append("sap_export_file", data.sapfile);
-      formData.append("is_mtbf",data.mtbf)
-      if(this.fileType ==="dna")
-      {
+      formData.append("is_mtbf", data.mtbf);
+      formData.append("request_type", data.requestType);
+      if (this.itemCategoryValues.length > 0) {
+        for (var i = 0; i < this.itemCategoryValues.length; i++) {
+          formData.append("item_category", this.itemCategoryValues[i].name);
+        }
+      }
+      if (this.productCategoryValues.length > 0) {
+        for (var i = 0; i < this.productCategoryValues.length; i++) {
+          formData.append(
+            "product_category",
+            this.productCategoryValues[i].name
+          );
+        }
+      }
+      if (this.productFamilyValues.length > 0) {
+        for (var i = 0; i < this.productFamilyValues.length; i++) {
+          formData.append("product_family", this.productFamilyValues[i].name);
+        }
+      }
+      if (this.productPhaseValues.length > 0) {
+        for (var i = 0; i < this.productPhaseValues.length; i++) {
+          formData.append("product_phase", this.productPhaseValues[i].name);
+        }
+      }
+      if (this.productTypeValues.length > 0) {
+        for (var i = 0; i < this.productTypeValues.length; i++) {
+          formData.append("product_type", this.productTypeValues[i].name);
+        }
+      }
+      if (this.fileType === "dna") {
+        this.serviveStatesValues.forEach(doc=>{
+         formData.append("is_inservice_only", doc.name);
+        })
         formData.append("customer_dna_file", data.dnafile);
-      }else{
+      } else {
         formData.append("bom_file", data.bomfile);
       }
       console.log("formdata ----->", formData.get("analysis_name"));
@@ -616,25 +931,31 @@ export default {
               this.uploading = false;
               this.resubmit = true;
               this.diasableFlag = false;
-
-              swal({
-                title: "Error",
-                text: data.msg,
-                icon: "error",
-                buttons:{
-                  download :{
-                    text:"Download Sample",
-                    value:"yes"
+              if (this.fileType === "dna") {
+                swal({
+                  title: "Error",
+                  text: data.msg,
+                  icon: "error"
+                });
+              } else {
+                swal({
+                  title: "Error",
+                  text: data.msg,
+                  icon: "error",
+                  buttons: {
+                    download: {
+                      text: "Download Sample",
+                      value: "yes"
                     },
-                    ok : true
-                      },
-                      })
-                  .then((value) => {
-                    switch (value) {
+                    ok: true
+                  }
+                }).then(value => {
+                  switch (value) {
                     case "yes":
-                    this.downloadSampleBOM();
-                    }
-              });
+                      this.downloadSampleBOM();
+                  }
+                });
+              }
               this.loaderFlag = false;
             }
           });

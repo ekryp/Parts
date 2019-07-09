@@ -3,8 +3,9 @@ export let APPURL = "";
 export let ELKURL = "";
 if (process.env.NODE_ENV === 'local') {
   APIURL = "http://localhost:5000/";
+  ELKURL = "http://localhost:5002/";
   APPURL = "http://localhost:2323/";
-  ELKURL = "https://staging-elk.ekryp.com/"
+  //ELKURL = "https://staging-elk.ekryp.com/"
 } else if (process.env.NODE_ENV === 'uat') {
   APIURL = "https://staging-ib-services.ekryp.com/";
   APPURL = "https://staging-ib.ekryp.com/";
@@ -15,7 +16,7 @@ if (process.env.NODE_ENV === 'local') {
   ELKURL = "https://infinera-elk.ekryp.com/"
 }
 
-export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction']
+export const PERMISSIONS = ['Dashboard', 'CreateAnalysis', 'ViewAnalysis', 'ViewReference', 'EditReference', 'ViewAnalysisDetails', 'ManageRole', 'ManageUser', 'SolutionPrediction', 'knowledgeMap', 'internal', 'LabAvailability']
 
 
 export const Dashboard = {
@@ -78,11 +79,28 @@ export const AnalysisDashboardScreen = {
   createAnalysisButton: "Create Analysis"
 }
 
+export const ListLabScreen = {
+  breadcrumb: "Lab",
+
+  exportButton: "Import",
+  createAnalysisButton: "Request Lab"
+}
+
 export const CreateAnalysisScreen = {
   breadcrumbs: ["Analysis", "Analysis Create"],
-  createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?", "DNA File :"],
+  createAnalysisLabels: ["Analysis Name :", "Customer Name :", "Date :", "Analysis Type :", "Replenish Time :", "File Type:", "SAP Current Inventory File :", "BOM File :", "Is MTBF?", "DNA File :", "Service States :", "Request Type :"],
   createAnalysisPlaceHolders: ["Enter Analysis Name ", "Select Customer ", " Select Analysis Type", "Select Replenish Time ", "no file selected"],
-  buttons: ["Back", "Submit For Analysis", "ReSubmit For Analysis", "Uploading"]
+  buttons: ["Back", "Submit For Analysis", "ReSubmit For Analysis", "Uploading"],
+  advanceOptions: ["Item Category", "Product Category", "Product Family", "Product Phase", "Product Type"],
+  advanceOptionsPlaceHolders: ["Select Item Category", "Select Product Category", "Select Product Family", "Select Product Phase", "Select Product Type"]
+}
+
+
+export const LabScreen = {
+  breadcrumbs: ["Lab Availability"],
+  labLabels: ["Title (Purpose of the System):", "Lab Needed:", "Requested Date :", "End Time :", "Request Type :", "Decription :", "Start Time :"],
+  labPlaceHolders: ["Enter Title ", "Select Lab ", "Enter Meeting Start Time", "Enter Meeting Start Time", "Enter Request Type", "Enter Decription"],
+  buttons: ["Back", "Request Lab"]
 }
 
 
@@ -116,23 +134,33 @@ export const ReferenceViewScreen = {
     "Download Sample_Customer.csv"
   ]
 }
+
+
+export const KnowledgeMapScreen = {
+  docNames: ["Release Notes", "FSB", "Tech Notes", "Debug Procedure", "MOP", "Ekryp Help", "Ekryp Use Cases"],
+  breadcrumb: "Knowledge Map",
+  tableHeader: "Knowledge Map Information :",
+}
+
 export const SolutionScreen = {
   breadcrumb: "Solution",
   modalHeader: "Patches",
   modalTabHeaders: ["Details", "Description"],
   modalContentsLabels: ["Title:", "Description:", "Progress Status:", "Group:", "Severity:", "Found In Build:", "Traget Release:", "Date Closed:", "Product:", "Service Account:", "Fixed In Release:"],
-  problemDescriptionName: "Problem Description",
+  problemDescriptionName: "Search",
   problemAreaHeader: "Problem Area",
   checkBoxLabel: "Exact Match",
-  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Probability"],
-  cardLables: ["Dev Track", "Release Notes", "SDFC"],
+  tableHeaders: ["Issue Id", "Title", "Severity", "Found In Release", "Date Submitted", "Date Closed", "Confidence (%)", "Confirm"],
+  cardLables: ["Dev Track", "Release Notes", "FSB", "Debug Procedure", "MOP", "Tech Notes"],
   logInfo: "Log Info",
   tags: "Tags",
+  filterButtons: ["All", "Clear"],
+  filterNames: ["Product", "Group", " Severity", "Priority", "Found on Platform", "Fixed in Release", "Found in Release", "Date Closed On or Before", "Service Account"],
   tarBall: "TAR Ball",
   labAvailablity: "Lab Availablity",
-  buttons: ["Predict", "Reserve", "Refine"],
+  buttons: ["Refine", "Reserve", "Predict"],
   potentialSolutionHeader: "Potential Solutions",
-  tagHeader: "Keywords",
+  tagHeader: "Further Refine Based On",
   errorMessage: "No Data Found ",
   suggestionsHeader: "Solution Links",
 }
@@ -143,7 +171,9 @@ export const Sidenav = {
   analysis: "Analysis",
   createAnalysisRequest: "Create Analysis Request",
   referenceData: "Reference Data",
-  solutionPrediction: "Solution Prediction",
+  solutionPrediction: "Resolution Prediction",
+  knowledgeMap: "Knowledge Map",
+  labAvailability: " Lab \n Availability"
 
 
 }
@@ -159,6 +189,53 @@ export const editReferenceScreen = {
   createButton: "Create"
 }
 
+export const testPlanScreen = {
+  breadcrumbs: ["Knowledge Map > Debug Procedure"],
+  PopUpHeaders: ["Debug Procedure Details"],
+  popUpFields: ["Release :", "Objective :", "Procedure :", "Expected Result :", "Setup :", "Title :"],
+  addButton: "Create Debug Procedure",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Debug Procedure Details",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+
+export const FaqScreen = {
+  breadcrumbs: ["Knowledge Map > Ekryp Help"],
+  PopUpHeaders: ["FAQ Details"],
+  popUpFields: ["Title :", "Permissions :", "Description :"],
+  addButton: "Create Ekryp Help",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Ekryp Help",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+
+export const UseCaseScreen = {
+  breadcrumbs: ["Knowledge Map > Ekryp Use Cases"],
+  PopUpHeaders: ["Ekryp Use Cases Details"],
+  popUpFields: ["Use Case Title :", "Brief Description :", "Detailed Description :"],
+  addButton: "Create Ekryp Use Cases",
+  exportButton: "Export",
+  cancelButton: "Cancel",
+  updateButton: "Update",
+  tableName: "Ekryp Use Cases",
+  backButton: "Back",
+  createButton: "Create"
+}
+
+export const SendFeedbackScreen = {
+  breadcrumbs: ["Send Feedback"],
+  labLabels: ["Brief Title:", "Detailed Feedback:"],
+  labPlaceHolders: ["Enter Title ", "Enter Your Feedback Here "],
+  buttons: ["Back", "Send"]
+}
 
 // export const  partsFileData={
 //     title:"Parts Details",

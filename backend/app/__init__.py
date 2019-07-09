@@ -45,6 +45,7 @@ csvs = UploadSet('csv', DATA)
 mytext = UploadSet('text', TEXT)
 excel = UploadSet('excel', DOCUMENTS)
 images = UploadSet('image', IMAGES)
+my_tsvs = UploadSet('tsv', ('tsv',))
 
 if platform.system() == 'Windows':
     app.config['UPLOADED_CSV_DEST'] = 'static\csvs'
@@ -58,11 +59,13 @@ else:
     app.config['UPLOADED_SQLS_DEST'] = 'static/'
     app.config['UPLOADED_EXCEL_DEST'] = 'static/'
     app.config['UPLOADED_IMAGE_DEST'] = 'static/'
+    app.config['UPLOADED_TSV_DEST'] = 'static/'
 
 configure_uploads(app, csvs)
 configure_uploads(app, images)
 configure_uploads(app, mytext)
 configure_uploads(app, excel)
+configure_uploads(app, my_tsvs)
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 app.config.from_object(Configuration)
@@ -121,16 +124,24 @@ from app.resources.infinera import GetSparePartAnalysis,PostSparePartAnalysis,Re
     GetstepsforSpecificRequest, GetSummaryforSpecificRequest,GetDashboardRequestCount,\
     GetMainDashboardCount, GetPieChart, GetTopPons, GetTopDepots, GetTopCustomer, GetTopExtended,\
     GetGrossforSpecificRequest, GetCurrentInventory, GetCurrentNet, GetCurrentIB, GetLatLon, GetAnalysisName, \
-    GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard, GetAnalysisDashboardCount
+    GetErrorRecords, GetSummaryByPONforSpecificRequest, FilterMainDashboard, GetAnalysisDashboardCount, AdvaceSettings,\
+    DNAPreprocess, GetTopPonsIB, GetTopDepotsIB, GetTopCustomerIB, GetTopExtendedIB, GetLatLonIB, GetSerial, RemoveAnalysis
 
 from app.resources.reference import UploadParts, UploadDepot, UploadNode, UploadHighSpare,\
-    UploadMisnomer, UploadRatio, UploadEndCustomer
+    UploadMisnomer, UploadRatio, UploadEndCustomer, UploadLabDetails, PostSerial
 
 from app.resources.reference_curd import GetParts,GetHighSpare,GetNode,GetDepot,GetMisnomer,GetRatio,Customer
+
+from app.resources.faq import FAQ
+
+from app.resources.feedback import Feedback
+from app.resources.usecase import Usecase
 
 from app.resources.access_control import ResetPassword, Role, User, User_Role
 
 from app.auth.authorization import Roles, Permission
+
+from app.resources.labrequest import PostLabRequest, GetAllLabRequest
 
 api.add_resource(Callback, '/token')
 api.add_resource(Logout, '/logout')
@@ -192,6 +203,22 @@ api.add_resource(User, '/info/members/delete-user', endpoint='delete-user')
 api.add_resource(User_Role, '/info/members/get-all-roles-by-user', endpoint='get-all-roles-by-user')
 api.add_resource(Roles, '/info/members/update-roles', endpoint='update_role_for_particular_user')
 api.add_resource(FilterMainDashboard, '/get_filter_main_dashboard', endpoint='get_filter_main_dashboard')
+api.add_resource(FAQ, '/get_faq', endpoint='get_faq')
+api.add_resource(Usecase, '/get_usecase', endpoint='get_usecase')
+api.add_resource(Feedback, '/send_feedback', endpoint='send_feedback')
+api.add_resource(PostLabRequest, '/lab/request', endpoint='lab_request')
+api.add_resource(GetAllLabRequest, '/lab/requests', endpoint='lab_requests')
+api.add_resource(UploadLabDetails, '/post_lab_details', endpoint='post_lab_details')
+api.add_resource(AdvaceSettings, '/get_advance_settings', endpoint='get_advance_settings')
+api.add_resource(DNAPreprocess, '/get_service_states', endpoint='get_service_states')
+api.add_resource(GetTopPonsIB, '/get_top_pons_IB', endpoint='get_top_pons_IB')
+api.add_resource(GetTopDepotsIB, '/get_top_depots_IB', endpoint='get_top_depots_IB')
+api.add_resource(GetTopCustomerIB, '/get_top_customers_IB', endpoint='get_top_customers_IB')
+api.add_resource(GetTopExtendedIB, '/get_top_extended_IB', endpoint='get_top_extended_IB')
+api.add_resource(GetLatLonIB, '/get_lat_lon_IB', endpoint='get_lat_lon_IB')
+api.add_resource(GetSerial, '/get_serial', endpoint='get_serial')
+api.add_resource(PostSerial, '/post_serial', endpoint='post_serial')
+api.add_resource(RemoveAnalysis, '/remove_analysis', endpoint='remove_analysis')
 app.register_blueprint(api_blueprint)
 api.init_app(app)
 
