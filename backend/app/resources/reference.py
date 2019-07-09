@@ -411,11 +411,6 @@ def check_ratio_file(ratio_file, extension):
     elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
         ratio_df = pd.read_excel(ratio_file)
 
-    # Reformat file to be in proper dataframe
-
-    ratio_df.columns = ratio_df.iloc[np.where((ratio_df.isin(['Products'])) == True)[0]].values[0]
-    ratio_df = ratio_df.iloc[(int(np.where((ratio_df.isin(['Products']) == True))[0])) + 1:]
-
     ratio_df_row, ratio_df_cols = ratio_df.shape
     if ratio_df_row < 1:
         raise FileFormatIssue(ratio_file, "No Records to process, BAD Ratio File")
@@ -426,7 +421,7 @@ def check_ratio_file(ratio_file, extension):
     if ratio_df_cols > 11:
         raise FileFormatIssue(ratio_file, "More than required 11 columns, BAD Ratio File")
 
-    ratio_cols = ['Products', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ratio_cols = ['Products', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
     if set(ratio_df.columns.values.tolist()) != set(ratio_cols):
         raise FileFormatIssue(ratio_file, "Header mismatch, BAD Ratio File")
@@ -461,6 +456,13 @@ class UploadRatio(Resource):
                 file.filename = "ratio_file_{0}{1}".format(upload_date, extension.lower())
                 ratio_file = file.filename
                 csvs.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "ratio_file_{0}{1}".format(upload_date, extension.lower())
+                ratio_file = file.filename
+                excel.save(file, folder=dest_folder)
 
             ratio_file = os.path.join(full_path, ratio_file)
         try:

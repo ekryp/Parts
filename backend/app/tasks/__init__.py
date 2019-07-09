@@ -1289,11 +1289,6 @@ def ratio_table_creation(ratio_file, extension, analysis_type, user_email_id):
     elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
         ratio_df = pd.read_excel(ratio_file)
 
-    # Reformat file to be in proper dataframe
-
-    ratio_df.columns = ratio_df.iloc[np.where((ratio_df.isin(['Products'])) == True)[0]].values[0]
-    ratio_df = ratio_df.iloc[(int(np.where((ratio_df.isin(['Products']) == True))[0])) + 1:]
-
     # Remove duplicate from dataframe
     ratio_df.drop_duplicates(keep="first", inplace=True)
     ratio_df['replenish_time'] = analysis_type
