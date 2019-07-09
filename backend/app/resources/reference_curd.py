@@ -588,7 +588,7 @@ class Customer(Resource):
         end_cust_country = args['end_cust_country']
         end_cust_geo = args['end_cust_geo']
         end_cust_id = args['end_cust_id']
-        end_cust_id_from_source = args['end_cust_id_from_source']
+        end_cust_id_from_source = args['Sold_To_Customer']
         end_cust_industry = args['end_cust_industry']
         end_cust_site_count = args['end_cust_site_count']
         end_cust_status = args['end_cust_status']
