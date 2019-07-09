@@ -73,6 +73,13 @@ class UploadParts(Resource):
                 parts_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "parts_file_{0}{1}".format(upload_date, extension.lower())
+                parts_file = file.filename
+                excel.save(file, folder=dest_folder)
+
             parts_file = os.path.join(full_path, parts_file)
         try:
             check_part_file(parts_file, extension)
@@ -171,6 +178,13 @@ class UploadDepot(Resource):
                 depot_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "depot_file_{0}{1}".format(upload_date, extension.lower())
+                depot_file = file.filename
+                excel.save(file, folder=dest_folder)
+
             depot_file = os.path.join(full_path, depot_file)
         try:
             check_depot_file(depot_file, extension)
@@ -242,6 +256,13 @@ class UploadNode(Resource):
                 node_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "node_file_{0}{1}".format(upload_date, extension.lower())
+                node_file = file.filename
+                excel.save(file, folder=dest_folder)
+
             node_file = os.path.join(full_path, node_file)
         try:
             check_node_file(node_file, extension)
@@ -311,6 +332,13 @@ class UploadHighSpare(Resource):
                 file.filename = "high_spare_file_{0}{1}".format(upload_date, extension.lower())
                 high_spare_file = file.filename
                 csvs.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "high_spare_file_{0}{1}".format(upload_date, extension.lower())
+                high_spare_file = file.filename
+                excel.save(file, folder=dest_folder)
 
             high_spare_file = os.path.join(full_path, high_spare_file)
         try:
@@ -382,6 +410,13 @@ class UploadMisnomer(Resource):
                 file.filename = "misnomer_file_{0}{1}".format(upload_date, extension.lower())
                 misnomer_file = file.filename
                 csvs.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "misnomer_file_{0}{1}".format(upload_date, extension.lower())
+                misnomer_file = file.filename
+                excel.save(file, folder=dest_folder)
 
             misnomer_file = os.path.join(full_path, misnomer_file)
         try:
@@ -532,6 +567,13 @@ class UploadEndCustomer(Resource):
                 file.filename = "end_customer_file_{0}{1}".format(upload_date, extension.lower())
                 end_customer_file = file.filename
                 csvs.save(file, folder=dest_folder)
+
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "end_customer_file_{0}{1}".format(upload_date, extension.lower())
+                end_customer_file = file.filename
+                excel.save(file, folder=dest_folder)
 
             end_customer_file = os.path.join(full_path, end_customer_file)
         try:
