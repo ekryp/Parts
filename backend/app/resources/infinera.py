@@ -2318,14 +2318,19 @@ class RemoveAnalysis(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('request_id', type=int, required=True, help='Please Provide request id', location='args')
         self.reqparse.add_argument('user_email_id', type=str, required=True, help='Please Provide User Email id', location='args')
+        self.reqparse.add_argument('analysis_name', type=str, required=True, help='Please Provide analysis name',
+                                   location='args')
         super(RemoveAnalysis, self).__init__()
 
     @requires_auth
     def delete(self):
+
         args = self.reqparse.parse_args()
         request_id = args.get('request_id')
         email_id = args.get('user_email_id')
+        analysis_name = args.get('analysis_name')
         # remove_analysis_task(request_id, email_id)
         celery.send_task('app.tasks.remove_analysis_task', [request_id, email_id])
-        return jsonify(msg="Your Request to delete data has been accepted,"
-                           "you will receive an email once it gets deleted.Thank You", http_status_code=200)
+        return jsonify(msg="Your Request to delete {0} data has been accepted,"
+                           "you will receive an email once it gets deleted.Thank You".format(analysis_name),
+                       http_status_code=200)
