@@ -390,6 +390,13 @@ class UploadMisnomer(Resource):
                 misnomer_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "misnomer_file_{0}{1}".format(upload_date, extension.lower())
+                misnomer_file = file.filename
+                excel.save(file, folder=dest_folder)
+
             misnomer_file = os.path.join(full_path, misnomer_file)
         try:
             check_misnomer_file(misnomer_file, extension)
