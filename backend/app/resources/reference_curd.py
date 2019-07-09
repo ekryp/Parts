@@ -203,19 +203,19 @@ class GetHighSpare(Resource):
 class GetNode(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('node_name',  location='form')
-        self.reqparse.add_argument('end_customer_node_belongs', location='form')
-        self.reqparse.add_argument('node_depot_belongs', location='form')
+        self.reqparse.add_argument('Node_Name',  location='form')
+        self.reqparse.add_argument('End_Customer', location='form')
+        self.reqparse.add_argument('Depot', location='form')
         self.reqparse.add_argument('node_id', type=str,required=False, help='node_id', location='args')
         super(GetNode, self).__init__()
 
     @requires_auth
     def patch(self):
         args = self.reqparse.parse_args()
-        node_name = args['node_name']
-        end_customer_node_belongs = args['end_customer_node_belongs']
+        node_name = args['Node_Name']
+        end_customer_node_belongs = args['End_Customer']
         node_id = args['node_id']
-        node_depot_belongs = args['node_depot_belongs']
+        node_depot_belongs = args['Depot']
         try:
             query = "update node set node_name='{0}',end_customer_node_belongs='{1}',node_depot_belongs='{2}' where node_id={3}".format(node_name,end_customer_node_belongs,node_depot_belongs,node_id)
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
@@ -227,9 +227,9 @@ class GetNode(Resource):
     @requires_auth
     def put(self):
         args = self.reqparse.parse_args()
-        node_name = args['node_name']
-        end_customer_node_belongs = args['end_customer_node_belongs']
-        node_depot_belongs = args['node_depot_belongs']
+        node_name = args['Node_Name']
+        end_customer_node_belongs = args['End_Customer']
+        node_depot_belongs = args['Depot']
         try:
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="insert into node (cust_id,node_name,end_customer_node_belongs,node_depot_belongs) values({0},'{1}','{2}','{3}')".format(7,node_name,end_customer_node_belongs,node_depot_belongs)
@@ -240,7 +240,7 @@ class GetNode(Resource):
 
     @requires_auth
     def get(self):
-        query = "SELECT node.node_id,node.node_name,node.end_customer_node_belongs,node.node_depot_belongs FROM node"
+        query = "SELECT node_id,node_name as Node_Name,end_customer_node_belongs as End_Customer,node_depot_belongs as Depot FROM node"
 
         result = get_df_from_sql_query(
             query=query,
@@ -445,17 +445,17 @@ class GetRatio(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('replenish_time',  location='form')
-        self.reqparse.add_argument('product_family', location='form')
-        self.reqparse.add_argument('number_of_spares1', location='form')
-        self.reqparse.add_argument('number_of_spares2', location='form')
-        self.reqparse.add_argument('number_of_spares3', location='form')
-        self.reqparse.add_argument('number_of_spares4',  location='form')
-        self.reqparse.add_argument('number_of_spares5', location='form')
-        self.reqparse.add_argument('number_of_spares6', location='form')
-        self.reqparse.add_argument('number_of_spares7', location='form')
-        self.reqparse.add_argument('number_of_spares8', location='form')
-        self.reqparse.add_argument('number_of_spares9', location='form')
-        self.reqparse.add_argument('number_of_spares10', location='form')
+        self.reqparse.add_argument('Products', location='form')
+        self.reqparse.add_argument('1', location='form')
+        self.reqparse.add_argument('2', location='form')
+        self.reqparse.add_argument('3', location='form')
+        self.reqparse.add_argument('4',  location='form')
+        self.reqparse.add_argument('5', location='form')
+        self.reqparse.add_argument('6', location='form')
+        self.reqparse.add_argument('7', location='form')
+        self.reqparse.add_argument('8', location='form')
+        self.reqparse.add_argument('9', location='form')
+        self.reqparse.add_argument('10', location='form')
         self.reqparse.add_argument('pon_type', type=str,required=True, help='pon_type', location='args')
         self.reqparse.add_argument('reliability_id', type=str,required=False, help='reliability_id', location='args')
         super(GetRatio, self).__init__()
