@@ -178,6 +178,13 @@ class UploadDepot(Resource):
                 depot_file = file.filename
                 csvs.save(file, folder=dest_folder)
 
+            elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
+                dir_path = os.path.join(app.config.get("UPLOADED_EXCEL_DEST"), dest_folder)
+                full_path = os.path.abspath(dir_path)
+                file.filename = "depot_file_{0}{1}".format(upload_date, extension.lower())
+                depot_file = file.filename
+                excel.save(file, folder=dest_folder)
+
             depot_file = os.path.join(full_path, depot_file)
         try:
             check_depot_file(depot_file, extension)
