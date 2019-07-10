@@ -594,7 +594,7 @@ class Customer(Resource):
         end_cust_status = args['end_cust_status']
         end_cust_target_market_segment = args['end_cust_target_market_segment']
         end_cust_tz = args['end_cust_tz']
-        end_cust_name = args['end_cust_name']
+        end_cust_name = args['Customer_Name']
         try:       
             engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args, echo=False)
             query="Insert into end_customer (cust_id,end_cust_country,end_cust_geo,end_cust_id,end_cust_id_from_source,end_cust_name,end_cust_industry,end_cust_site_count,end_cust_status,end_cust_target_market_segment,end_cust_tz) values ({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')".format(7,end_cust_country,end_cust_geo,end_cust_id,end_cust_id_from_source,end_cust_name,end_cust_industry,end_cust_site_count,end_cust_status,end_cust_target_market_segment,end_cust_tz)
