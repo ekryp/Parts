@@ -226,31 +226,37 @@ def process_error_pon(table_name, df, analysis_date, analysis_id):
         try:
             if row['has_node_depot'] == False:
                 df.loc[index, 'error_reason'] = 'PON {0} with no depot'.format(row['Product Ordering Name'])  # error 5
+                df.loc[index, 'error_code'] = 5
         except KeyError:
             pass
         try:
             if row['has_std_cost'] == False:
                 df.loc[index, 'error_reason'] = 'PON {0} with no std cost'.format(row['Product Ordering Name'])  # error 3
+                df.loc[index, 'error_code'] = 3
         except KeyError:
             pass
         try:
             if row['present_in_sap'] == False:
                 df.loc[index, 'error_reason'] = 'Part {0} not present in SAP file'.format(row['Product Ordering Name']) # error 1
+                df.loc[index, 'error_code'] = 1
         except KeyError:
             pass
         try:
             if row['high_spare_present_in_sap'] == False:
                 df.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} not present in SAP file'.format(row['high_spare'], row['part_name'])  # error 2
+                df.loc[index, 'error_code'] = 2
         except KeyError:
             pass
         try:
             if row['depot_in_sap_file'] == False:
                 df.loc[index, 'error_reason'] = 'Depot {0} for Part {1} not present in SAP file'.format(row['node_depot_belongs'], row['Product Ordering Name'])  # error 4
+                df.loc[index, 'error_code'] = 4
         except KeyError:
             pass
         try:
             if row['high_spare_no_std_cost'] == False:
                 df.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} do not have standard cost'.format(row['high_spare'], row['part_name'])  # error 7
+                df.loc[index, 'error_code'] = 7
         except KeyError:
             pass
     df = df.drop(['node_depot_belongs'], 1)

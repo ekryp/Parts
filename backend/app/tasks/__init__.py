@@ -343,6 +343,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         high_spares_not_in_sap.loc[:, 'analysis_request_time'] = analysis_date
         high_spares_not_in_sap.loc[:, 'cust_id'] = 7
         high_spares_not_in_sap.loc[:, 'request_id'] = analysis_id
+        high_spares_not_in_sap.loc[:, 'error_code'] = 2
         for index, row in high_spares_not_in_sap.iterrows():
             high_spares_not_in_sap.loc[index, 'error_reason'] = 'High Spare {0} for Part {1} not present in SAP file'.format(row['high_spare'], row['PON'])
 
@@ -367,6 +368,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         not_in_sap_file.loc[:, 'analysis_request_time'] = analysis_date
         not_in_sap_file.loc[:, 'cust_id'] = 7
         not_in_sap_file.loc[:, 'request_id'] = analysis_id
+        not_in_sap_file.loc[:, 'error_code'] = 1
         for index, row in not_in_sap_file.iterrows():
             not_in_sap_file.loc[index, 'error_reason'] = 'Part {0} not present in SAP file'.format(row['PON'])
 
@@ -394,6 +396,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         high_spare_no_std_cost.loc[:, 'analysis_request_time'] = analysis_date
         high_spare_no_std_cost.loc[:, 'cust_id'] = 7
         high_spare_no_std_cost.loc[:, 'request_id'] = analysis_id
+        high_spare_no_std_cost.loc[:, 'error_code'] = 7
         for index, row in high_spare_no_std_cost.iterrows():
             high_spare_no_std_cost.loc[index, 'error_reason'] = 'High Spare for Part {0} do not have standard cost'.format(row['PON'])
 
@@ -416,6 +419,7 @@ def shared_function_for_bom_record(bom_file, sap_file, analysis_date, analysis_i
         depot_not_in_sap_file.loc[:, 'analysis_request_time'] = analysis_date
         depot_not_in_sap_file.loc[:, 'cust_id'] = 7
         depot_not_in_sap_file.loc[:, 'request_id'] = analysis_id
+        depot_not_in_sap_file.loc[:, 'error_code'] = 4
         for index, row in depot_not_in_sap_file.iterrows():
             depot_not_in_sap_file.loc[index, 'error_reason'] = 'Depot {0} for Part {1} not present in SAP file'.format(row['node_depot_belongs'], row['PON'])
 
@@ -539,6 +543,7 @@ def mtbf_calculation(get_bom_for_table, get_ratio_to_pon, parts, analysis_date, 
         reliabilty_class_missing.loc[:, 'analysis_request_time'] = analysis_date
         reliabilty_class_missing.loc[:, 'cust_id'] = 7
         reliabilty_class_missing.loc[:, 'request_id'] = analysis_id
+        reliabilty_class_missing.loc[:, 'error_code'] = 6
         reliabilty_class_missing.to_sql(name='error_records', con=engine, index=False, if_exists='append')
         print("Loaded Data into table : {0}".format('error_records'))
 
@@ -1283,11 +1288,6 @@ def ratio_table_creation(ratio_file, extension, analysis_type, user_email_id):
 
     elif extension.lower() == '.xls' or extension.lower() == '.xlsx':
         ratio_df = pd.read_excel(ratio_file)
-
-    # Reformat file to be in proper dataframe
-
-    ratio_df.columns = ratio_df.iloc[np.where((ratio_df.isin(['Products'])) == True)[0]].values[0]
-    ratio_df = ratio_df.iloc[(int(np.where((ratio_df.isin(['Products']) == True))[0])) + 1:]
 
     # Remove duplicate from dataframe
     ratio_df.drop_duplicates(keep="first", inplace=True)
