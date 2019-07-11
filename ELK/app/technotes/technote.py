@@ -1,5 +1,6 @@
 import config
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from app.auth.authorization import requires_auth
 from flask import jsonify
 import requests
 from flask_restful import Resource
@@ -20,6 +21,7 @@ class TechNotes(Resource):
         self.reqparse.add_argument('predict_value', required=False, help='predict_value', location='args')
         super(TechNotes, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
 
@@ -97,6 +99,7 @@ class TechNotes(Resource):
         response['technotes'] = technotes
         return jsonify(data=response, http_status_code=200)
 
+    @requires_auth
     def put(self):
         try:
             args = self.reqparse.parse_args()
@@ -122,6 +125,7 @@ class TechNotePhrase(Resource):
        
         super(TechNotePhrase, self).__init__()
         
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
 

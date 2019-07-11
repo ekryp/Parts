@@ -7,6 +7,7 @@ import pandas as pd
 import nltk
 nltk.download('stopwords')
 import re
+from app.auth.authorization import requires_auth
 
 
 class GetMLKeyWords(Resource):
@@ -14,7 +15,7 @@ class GetMLKeyWords(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('search_param', required=True, location='args')
         super(GetMLKeyWords, self).__init__()
-
+    @requires_auth
     def get(self):
             args = self.reqparse.parse_args()
             search_param = args['search_param']

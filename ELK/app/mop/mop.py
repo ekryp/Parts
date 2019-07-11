@@ -8,6 +8,7 @@ from requests.auth import HTTPBasicAuth
 from flask_restful import reqparse
 from elasticsearch import Elasticsearch
 from app.common import escapeESArg
+from app.auth.authorization import requires_auth
 import re
 
 class MOP(Resource):
@@ -19,6 +20,7 @@ class MOP(Resource):
         self.reqparse.add_argument('predict_value', required=False, help='predict_value', location='args')
         super(MOP, self).__init__()
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -96,6 +98,7 @@ class MOP(Resource):
         response['mop'] = mop
         return jsonify(data=response, http_status_code=200)
 
+    @requires_auth
     def put(self):
         try:
             args = self.reqparse.parse_args()
@@ -108,6 +111,7 @@ class MOP(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
 
+    @requires_auth
     def delete(self):
         def create_request_parser():
             self.parser = reqparse.RequestParser()
@@ -131,7 +135,8 @@ class MopPhrase(Resource):
         self.reqparse.add_argument('data',required=False,help='data',location='form')
        
         super(MopPhrase, self).__init__()
-        
+
+    @requires_auth 
     def get(self):
         args = self.reqparse.parse_args()
 

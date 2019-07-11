@@ -4,6 +4,7 @@ import requests
 import re
 import config
 from app.common import escapeESArg
+from app.auth.authorization import requires_auth
 from requests.auth import HTTPBasicAuth
 from flask_restful import Resource
 from flask_restful import reqparse
@@ -32,7 +33,8 @@ class DevTrackData(Resource):
         self.reqparse.add_argument('check_title',required=False,help='check_title',location='args')
         self.reqparse.add_argument('internal', required=False, location='args')
         super(DevTrackData, self).__init__()
-
+    
+    @requires_auth
     def get(self):
 
         def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,checkTitle,service_account_filter):
@@ -363,7 +365,7 @@ class DevTrackData(Resource):
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=500)
-
+    @requires_auth
     def put(self):
         try:
             args = self.reqparse.parse_args()
@@ -404,7 +406,7 @@ class DevTrackPhrasePrefix(Resource):
 
         
         super(DevTrackPhrasePrefix, self).__init__()
-
+    @requires_auth
     def get(self):
 
         def devtrack(search_param,product_filter,group_filter,found_in_release_filter,fixed_in_release_filter,severity_filter,priority_filter,found_on_platform_filter,date_filter,checkTitle,service_account_filter,phrase_query,final_list):

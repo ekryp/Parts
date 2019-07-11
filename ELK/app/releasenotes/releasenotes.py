@@ -4,6 +4,7 @@ import requests
 import re
 import config
 from requests.auth import HTTPBasicAuth
+from app.auth.authorization import requires_auth
 from flask_restful import Resource
 from flask_restful import reqparse
 import csv, json
@@ -26,6 +27,7 @@ class ReleaseNotes(Resource):
         self.reqparse.add_argument('data',required=False,help='data',location='form')
         super(ReleaseNotes, self).__init__()
 
+    @requires_auth
     def put(self):
         try:
             args = self.reqparse.parse_args()
@@ -38,6 +40,7 @@ class ReleaseNotes(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
