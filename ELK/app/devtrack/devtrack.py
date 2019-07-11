@@ -365,6 +365,7 @@ class DevTrackData(Resource):
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=500)
+
     @requires_auth
     def put(self):
         try:
@@ -406,6 +407,7 @@ class DevTrackPhrasePrefix(Resource):
 
         
         super(DevTrackPhrasePrefix, self).__init__()
+        
     @requires_auth
     def get(self):
 
