@@ -13,6 +13,7 @@ import logging
 
 from flask import jsonify
 from app.common import escapeESArg
+from app.auth.authorization import requires_auth
 from flask import request
 import requests
 from flask_restful import Resource
@@ -26,6 +27,7 @@ class FSB(Resource):
         self.reqparse.add_argument('data',required=False,help='data',location='form')
         super(FSB, self).__init__()
 
+    @requires_auth
     def put(self):
         try:
             args = self.reqparse.parse_args()
@@ -37,7 +39,8 @@ class FSB(Resource):
         except Exception as e:
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
-
+            
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
