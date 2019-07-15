@@ -532,6 +532,7 @@ def to_sql_current_ib(table_name, df, analysis_id):
 
 
 def to_sql_part_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df['cust_id'] = 7
     df['part_number'] = 0
     df.to_sql(name='parts', con=engine, index=False, if_exists='append', chunksize=1000)
@@ -539,23 +540,27 @@ def to_sql_part_table(df):
 
 
 def to_sql_std_cost_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.to_sql(name='part_cost', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into std_cost table")
 
 
 def to_sql_depot_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.loc[:, 'cust_id'] = 7
     df.to_sql(name='depot', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into depot table")
 
 
 def to_sql_node_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.loc[:, 'cust_id'] = 7
     df.to_sql(name='node', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into node table")
 
 
 def to_sql_end_customer_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.loc[:, 'end_cust_site_count'] = df.groupby('end_customer_node_belongs')['node_name'].transform('count')
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'end_cust_status'] = 'Active'
@@ -571,6 +576,7 @@ def to_sql_end_customer_table(df):
 
 
 def to_sql_end_customer(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.loc[:, 'cust_id'] = 7
     df.loc[:, 'end_cust_status'] = 'Active'
     df.rename(columns={
@@ -581,13 +587,16 @@ def to_sql_end_customer(df):
     df.to_sql(name='end_customer', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into end_customer table")
 
+
 def to_sql_high_spare_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.loc[:, 'cust_id'] = 7
     df.to_sql(name='high_spare', con=engine, index=False, if_exists='append', chunksize=1000)
     print("Loaded into high_spare table")
 
 
 def to_sql_misnomer_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.loc[:, 'cust_id'] = 7
     df.rename(columns={
         'Misnomer_Part': 'misnomer_part_name',
@@ -599,6 +608,7 @@ def to_sql_misnomer_table(df):
 
 
 def to_sql_reliability_class_table(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     df.loc[:, 'cust_id'] = 7
     df.rename(columns={
         'Products': 'product_family',
@@ -637,6 +647,7 @@ def check_sn_conversion_task_status(request_id):
 
 
 def to_sql_lab_systems(df):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
 
     df.rename(columns={
         'Lab Id': 'id',
@@ -654,6 +665,7 @@ def to_sql_lab_systems(df):
 
 
 def to_sql_sn_part_conversion(table_name, df, analysis_id):
+    engine = create_engine(Configuration.INFINERA_DB_URL, connect_args=Configuration.ssl_args)
     keep_col = ['Serial#', 'request_id']
     df.loc[:, 'request_id'] = analysis_id
     df = df[keep_col]
