@@ -1597,6 +1597,18 @@ class GetSummaryByPONforSpecificRequest(Resource):
         toggle = args['toggle']
         # toggle is True by default meaning by default reorder
         # False means total_stock
+
+        # Check if request is failed or success if failed return immediately
+        # If success then only do calculations
+        request_status_query = "select requestStatus from analysis_request where analysis_request_id={}".format(request_id)
+        result = get_df_from_sql_query(
+            query=request_status_query,
+            db_connection_string=Configuration.INFINERA_DB_URL)
+
+        request_status = result['requestStatus'].tolist()[0]
+        if request_status == 'Failed':
+            return []
+
         if toggle == 'reorder':
             # Find Current Gross
             gross_query = 'SELECT part_name,depot_name,pon_quantity as gross_qty,request_id FROM mtbf_bom_calculated ' \
