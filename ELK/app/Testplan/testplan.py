@@ -5,6 +5,7 @@ import re
 from app.common import escapeESArg
 import config
 from requests.auth import HTTPBasicAuth
+from app.auth.authorization import requires_auth
 from flask_restful import Resource
 from flask_restful import reqparse
 import csv, json
@@ -29,6 +30,7 @@ class TestPlan(Resource):
         self.reqparse.add_argument('predict_value', required=False, help='predict_value', location='args')
         super(TestPlan, self).__init__()
 
+    @requires_auth
     def post(self):
        
         try:
@@ -42,6 +44,7 @@ class TestPlan(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
 
+    @requires_auth
     def put(self):
         try:
             args = self.reqparse.parse_args()
@@ -54,6 +57,7 @@ class TestPlan(Resource):
             print(e)
             return jsonify(msg="Error in Fetching Data,Please try again", http_status_code=400)
 
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -136,6 +140,7 @@ class TestPlan(Resource):
         response['test_plan'] = test_plan
         return jsonify(data=response, http_status_code=200)
 
+    @requires_auth
     def delete(self):
         def create_request_parser():
             self.parser = reqparse.RequestParser()
@@ -162,6 +167,7 @@ class TestPlanPhrase(Resource):
        
         super(TestPlanPhrase, self).__init__()
         
+    @requires_auth
     def get(self):
         args = self.reqparse.parse_args()
 
