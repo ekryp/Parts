@@ -1131,14 +1131,32 @@ class GetErrorRecords(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'SELECT  error_reason,type,PON,node_name,error_code  FROM error_records where request_id={0} ' \
-                'group by error_reason,type,PON,node_name order by error_code'.format(request_id)
+        query = 'SELECT  distinct(error_code) from error_records where request_id = {0}'.format(request_id)
 
         result = get_df_from_sql_query(
             query=query,
             db_connection_string=Configuration.INFINERA_DB_URL)
 
-        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        error_codes = result['error_code'].tolist()
+        response = {}
+
+        def get_error_groupby_error_codes(error_code):
+            query = 'SELECT error_reason,type,PON,node_name, error_code from error_records ' \
+                    'where request_id = {0} and error_code = {1} '.format(request_id, error_code)
+
+            grouped = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            return json.loads(grouped.to_json(orient="records", date_format='iso'))
+
+        error_code_mapping = {1: "Undefined_PON", 2: "Undefined_High_Spare", 3: "Missing_Standard_Cost",
+                              4: "Undefined_Depot", 5: "Undefined_Node", 6: "Undefine_Reliablity_Class_for_PON",
+                              7: "Missing_Standard_Cost_For_High_Spare"}
+
+        for error_code in error_codes:
+            response[error_code_mapping.get(error_code)] = get_error_groupby_error_codes(error_code)
+
         return response
 
 
@@ -1228,7 +1246,7 @@ class PostSparePartAnalysis(Resource):
             
             if len(sap_inventory_data.columns) < 10:
                     raise FileFormatIssue(filename, "Number of columns is less than minimum columns 10, BAD Current Inventory File")
-            '''
+
             our_columns = ['Plant', 'Storage Location = Depot Name', 'Material Number', 'Material Description = Part Name',
                        'Total Stock', 'Reorder Point', 'Standard Cost', 'Total Standard Cost', 'STO - Qty To be Dlv.',
                        'Delivery - Qty To be Dlv.']
@@ -1241,7 +1259,12 @@ class PostSparePartAnalysis(Resource):
                     'Storage Location': 'Storage Location = Depot Name',
                                     }, inplace=True
                                     )
-
+            if set(sap_inventory_data.columns) != set(our_columns):
+                raise FileFormatIssue(bom_file, "Headers mismatch in SAP file column header should be {0}, {1}, {2} ,{3}, {4}, {5}, {6}, {7}, {8}, {9} "
+                                                "BAD SAP File".format(infinera_columns[0], infinera_columns[1], infinera_columns[2], infinera_columns[3],
+                                                                      infinera_columns[4], infinera_columns[5], infinera_columns[6], infinera_columns[7],
+                                                                      infinera_columns[8], infinera_columns[9]))
+            '''
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
             '''
 
