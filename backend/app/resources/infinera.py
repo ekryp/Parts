@@ -1228,7 +1228,7 @@ class PostSparePartAnalysis(Resource):
             
             if len(sap_inventory_data.columns) < 10:
                     raise FileFormatIssue(filename, "Number of columns is less than minimum columns 10, BAD Current Inventory File")
-            '''
+
             our_columns = ['Plant', 'Storage Location = Depot Name', 'Material Number', 'Material Description = Part Name',
                        'Total Stock', 'Reorder Point', 'Standard Cost', 'Total Standard Cost', 'STO - Qty To be Dlv.',
                        'Delivery - Qty To be Dlv.']
@@ -1241,7 +1241,12 @@ class PostSparePartAnalysis(Resource):
                     'Storage Location': 'Storage Location = Depot Name',
                                     }, inplace=True
                                     )
-
+            if set(sap_inventory_data.columns) != set(our_columns):
+                raise FileFormatIssue(bom_file, "Headers mismatch in SAP file column header should be {0}, {1}, {2} ,{3}, {4}, {5}, {6}, {7}, {8}, {9} "
+                                                "BAD SAP File".format(infinera_columns[0], infinera_columns[1], infinera_columns[2], infinera_columns[3],
+                                                                      infinera_columns[4], infinera_columns[5], infinera_columns[6], infinera_columns[7],
+                                                                      infinera_columns[8], infinera_columns[9]))
+            '''
             sap_inventory_data.to_excel(os.path.join(file_location, filename), index=False)
             '''
 
