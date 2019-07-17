@@ -1140,6 +1140,9 @@ class GetErrorRecords(Resource):
 
         error_codes = result['error_code'].tolist()
         response = {}
+        error_code_mapping = {1: "Undefined_PON", 2: "Undefined_High_Spare", 3: "Missing_Standard_Cost",
+                              4: "Undefined_Depot", 5: "Undefined_Node", 6: "Undefine_Reliablity_Class_for_PON",
+                              7: "Missing_Standard_Cost_For_High_Spare"}
 
         def get_error_groupby_error_codes(error_code):
             query = 'SELECT error_reason,type,PON,node_name, error_code from error_records ' \
@@ -1149,11 +1152,11 @@ class GetErrorRecords(Resource):
                 query=query,
                 db_connection_string=Configuration.INFINERA_DB_URL)
 
+            grouped['error_code'] = grouped['error_code'].apply(lambda x: error_code_mapping.get(x, x))
+
             return json.loads(grouped.to_json(orient="records", date_format='iso'))
 
-        error_code_mapping = {1: "Undefined_PON", 2: "Undefined_High_Spare", 3: "Missing_Standard_Cost",
-                              4: "Undefined_Depot", 5: "Undefined_Node", 6: "Undefine_Reliablity_Class_for_PON",
-                              7: "Missing_Standard_Cost_For_High_Spare"}
+
         # If there are no error_records for analysis request
         if not error_codes:
             return []
