@@ -1154,8 +1154,10 @@ class GetErrorRecords(Resource):
         error_code_mapping = {1: "Undefined_PON", 2: "Undefined_High_Spare", 3: "Missing_Standard_Cost",
                               4: "Undefined_Depot", 5: "Undefined_Node", 6: "Undefine_Reliablity_Class_for_PON",
                               7: "Missing_Standard_Cost_For_High_Spare"}
-
-        if error_codes[0] is None:
+        # If there are no error_records for analysis request
+        if not error_codes:
+            return []
+        elif error_codes[0] is None:
             return []
         for error_code in error_codes:
             response[error_code_mapping.get(error_code)] = get_error_groupby_error_codes(error_code)
