@@ -1131,14 +1131,32 @@ class GetErrorRecords(Resource):
         args = self.reqparse.parse_args()
         request_id = args['request_id']
 
-        query = 'SELECT  error_reason,type,PON,node_name,error_code  FROM error_records where request_id={0} ' \
-                'group by error_reason,type,PON,node_name order by error_code'.format(request_id)
+        query = 'SELECT  distinct(error_code) from error_records where request_id = {0}'.format(request_id)
 
         result = get_df_from_sql_query(
             query=query,
             db_connection_string=Configuration.INFINERA_DB_URL)
 
-        response = json.loads(result.to_json(orient="records", date_format='iso'))
+        error_codes = result['error_code'].tolist()
+        response = {}
+
+        def get_error_groupby_error_codes(error_code):
+            query = 'SELECT error_reason,type,PON,node_name, error_code from error_records ' \
+                    'where request_id = {0} and error_code = {1} '.format(request_id, error_code)
+
+            grouped = get_df_from_sql_query(
+                query=query,
+                db_connection_string=Configuration.INFINERA_DB_URL)
+
+            return json.loads(grouped.to_json(orient="records", date_format='iso'))
+
+        error_code_mapping = {1: "Undefined_PON", 2: "Undefined_High_Spare", 3: "Missing_Standard_Cost",
+                              4: "Undefined_Depot", 5: "Undefined_Node", 6: "Undefine_Reliablity_Class_for_PON",
+                              7: "Missing_Standard_Cost_For_High_Spare"}
+
+        for error_code in error_codes:
+            response[error_code_mapping.get(error_code)] = get_error_groupby_error_codes(error_code)
+
         return response
 
 
