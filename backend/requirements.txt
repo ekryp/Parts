@@ -11,7 +11,7 @@ click==6.7
 configparser==3.5.0
 cymysql==0.8.9
 decorator==4.1.2
-ecdsa==0.13
+ecdsa==0.13.3
 entrypoints==0.2.3
 et-xmlfile==1.0.1
 Flask==0.12.1
