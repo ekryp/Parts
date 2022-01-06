@@ -6,7 +6,7 @@ appnope==0.1.0
 billiard==3.5.0.4
 bleach==1.5.0
 blinker==1.4
-celery==4.1.1
+celery==5.2.2
 click==6.7
 configparser==3.5.0
 cymysql==0.8.9
